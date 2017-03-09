@@ -1,0 +1,35 @@
+sudo: true
+
+language:
+  - android
+
+android:
+  components:
+    - tools # to get the new `repository-11.xml`
+    - tools # see https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943)
+    - platform-tools
+    - build-tools-25.0.2
+    - android-25
+    - android-24
+    - android-23
+    - extra-android-m2repository
+    - sys-img-armeabi-v7a-android-24
+    - sys-img-armeabi-v7a-android-17
+
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-19
+
+jdk:
+  - oraclejdk8
+
+before_script:
+  - echo n | android create avd --force --name test --target android-24 --abi armeabi-v7a --tag default
+  - emulator -avd test -no-window -gpu off &
+  - android-wait-for-emulator
+  - adb shell wm dismiss-keyguard
+
+before_install:
+  - mkdir -p $ANDROID_HOME/licenses
+  - echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > $ANDROID_HOME/licenses/android-sdk-license
