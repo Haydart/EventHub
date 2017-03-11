@@ -11,7 +11,7 @@ import rx.schedulers.Schedulers;
 
 class EventsPresenter extends BasePresenter<EventsView> {
 
-    private Repository<pl.rmakowiecki.eventhub.model.local.Event> repository;
+    private Repository<Event> repository;
 
     public EventsPresenter() {
         repository = new EventsRepository();
