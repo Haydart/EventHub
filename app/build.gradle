@@ -1,4 +1,17 @@
+plugins {
+	id 'pl.droidsonroids.localization' version '1.0.11'
+}
+
 apply plugin: 'com.android.application'
+
+
+localization {
+	csvFileURI = 'https://docs.google.com/spreadsheets/d/1nJN5h7NlIV1UFN8cnJ4OJ4lUHdrqKUsGDs8RpAR7zRE/export?format=csv'
+	defaultColumnName = 'en'
+	nameColumnName = 'key'
+	ignorableColumns = ['Section', 'Subsection']
+	escapeSlashes = false
+}
 
 android {
 	compileSdkVersion 25
@@ -45,3 +58,5 @@ dependencies {
 
 	testCompile 'junit:junit:4.12'
 }
+
+
