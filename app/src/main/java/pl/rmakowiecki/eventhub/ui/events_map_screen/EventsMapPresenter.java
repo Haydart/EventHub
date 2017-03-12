@@ -1,6 +1,5 @@
-package pl.rmakowiecki.eventhub;
+package pl.rmakowiecki.eventhub.ui.events_map_screen;
 
-import java.util.List;
 import pl.rmakowiecki.eventhub.api.EventsSpecification;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.repository.EventsRepository;
@@ -9,30 +8,34 @@ import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-class EventsPresenter extends BasePresenter<EventsView> {
+class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
     private Repository<Event> repository;
 
-    public EventsPresenter() {
+    public EventsMapPresenter() {
         repository = new EventsRepository();
     }
 
     public void onEventsNeeded() {
         repository
-                .query(new EventsSpecification() {})
+                .query(new EventsSpecification() {
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
-                .map(this::doSomeComputation)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(view::showEvents);
     }
 
-    private List<Event> doSomeComputation(List<Event> events) {
-        return events;
+    public void onViewInitialization() {
+        view.initMap();
+    }
+
+    public void onMapViewInitialized() {
+        // TODO: 12/03/2017 implement
     }
 
     @Override
-    public EventsView getNoOpView() {
+    public EventsMapView getNoOpView() {
         return null;
     }
 }
