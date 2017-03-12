@@ -4,13 +4,18 @@ plugins {
 
 apply plugin: 'com.android.application'
 
-
 localization {
 	csvFileURI = 'https://docs.google.com/spreadsheets/d/1nJN5h7NlIV1UFN8cnJ4OJ4lUHdrqKUsGDs8RpAR7zRE/export?format=csv'
 	defaultColumnName = 'en'
 	nameColumnName = 'key'
 	ignorableColumns = ['Section', 'Subsection']
 	escapeSlashes = false
+}
+
+ext {
+	build_version = "25.2.0"
+	firebase_components_version = "10.2.0"
+	gms_components_version = "10.2.0"
 }
 
 android {
@@ -44,14 +49,24 @@ dependencies {
 	androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
 		exclude group: 'com.android.support', module: 'support-annotations'
 	})
-	compile 'com.android.support:appcompat-v7:25.2.0'
-	compile 'com.android.support.constraint:constraint-layout:1.0.2'
+
+	//Android
+	compile "com.android.support:appcompat-v7:${build_version}"
+	compile "com.android.support:support-v4:${build_version}"
+	compile "com.android.support:design:${build_version}"
+	compile "com.android.support:support-fragment:${build_version}"
+
+	//Firebase
+	compile "com.google.firebase:firebase-core:${firebase_components_version}"
+	compile "com.google.firebase:firebase-database:${firebase_components_version}"
+	compile "com.google.firebase:firebase-auth:${firebase_components_version}"
+	compile "com.google.firebase:firebase-storage:${firebase_components_version}"
 
 	//Google APIs
-	compile "com.google.android.gms:play-services-maps:10.2.0"
-	compile "com.google.android.gms:play-services-places:10.2.0"
-	compile "com.google.android.gms:play-services-location:10.2.0"
-	compile "com.google.android.gms:play-services-base:10.2.0"
+	compile "com.google.android.gms:play-services-maps:${gms_components_version}"
+	compile "com.google.android.gms:play-services-places:${gms_components_version}"
+	compile "com.google.android.gms:play-services-location:${gms_components_version}"
+	compile "com.google.android.gms:play-services-base:${gms_components_version}"
 
 	//RxJava
 	compile 'io.reactivex:rxandroid:1.2.1'
@@ -65,4 +80,4 @@ dependencies {
 	testCompile 'junit:junit:4.12'
 }
 
-
+apply plugin: 'com.google.gms.google-services'
