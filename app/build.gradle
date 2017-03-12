@@ -47,6 +47,12 @@ dependencies {
 	compile 'com.android.support:appcompat-v7:25.2.0'
 	compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
+	//Google APIs
+	compile "com.google.android.gms:play-services-maps:10.2.0"
+	compile "com.google.android.gms:play-services-places:10.2.0"
+	compile "com.google.android.gms:play-services-location:10.2.0"
+	compile "com.google.android.gms:play-services-base:10.2.0"
+
 	//RxJava
 	compile 'io.reactivex:rxandroid:1.2.1'
 	compile 'io.reactivex:rxjava:1.2.1'
