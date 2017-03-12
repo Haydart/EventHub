@@ -25,7 +25,7 @@ jdk:
 notifications:
   slack:
     template:
-      - "Build <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch} by %{author} %{result} in %{duration}"
+      - "W POLSCE JAK W LESIE KUCHHWAA!\nBuild <%{build_url}|#%{build_number}> (<%{compare_url}|%{commit}>) of %{repository}@%{branch} by %{author} %{result} in %{duration}"
     on_success: always
     on_failure: always
     on_start: never
@@ -34,13 +34,11 @@ notifications:
 
 before_script:
   - echo n | android create avd --force --name test --target android-21 --abi armeabi-v7a --tag default
-  - emulator -avd test -no-skin -no-audio -no-window &
+  - emulator -avd test -no-audio -no-window &
   - android-wait-for-emulator
   - adb shell wm dismiss-keyguard
 
 script:
-  - echo "Travis branch is $TRAVIS_BRANCH"
-  - echo "Travis branch is in pull request $TRAVIS_PULL+REQUEST"
   - ./gradlew test
   - ./gradlew connectedAndroidTest
 
