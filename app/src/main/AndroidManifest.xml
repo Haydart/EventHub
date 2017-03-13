@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="pl.rmakowiecki.eventhub">
 
-    <uses-library android:name="com.google.android.maps" />v
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,9 +12,11 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyDCZOCaDZPbpo30Sh0mkofxKjm0Pw7Bmis" />
+            android:value="AIzaSyAGoSHs_fLSza280Wt5FR55jWrH81gnQL4" />
 
-        <activity android:name=".ui.events_map_screen.EventsMapActivity">
+        <activity android:name=".ui.events_map_screen.EventsMapActivity"
+            android:screenOrientation="portrait"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -24,5 +24,4 @@
             </intent-filter>
         </activity>
     </application>
-
 </manifest>

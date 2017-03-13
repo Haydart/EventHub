@@ -56,17 +56,17 @@ dependencies {
 	compile "com.android.support:design:${build_version}"
 	compile "com.android.support:support-fragment:${build_version}"
 
-	//Firebase
-	compile "com.google.firebase:firebase-core:${firebase_components_version}"
-	compile "com.google.firebase:firebase-database:${firebase_components_version}"
-	compile "com.google.firebase:firebase-auth:${firebase_components_version}"
-	compile "com.google.firebase:firebase-storage:${firebase_components_version}"
-
 	//Google APIs
 	compile "com.google.android.gms:play-services-maps:${gms_components_version}"
 	compile "com.google.android.gms:play-services-places:${gms_components_version}"
 	compile "com.google.android.gms:play-services-location:${gms_components_version}"
 	compile "com.google.android.gms:play-services-base:${gms_components_version}"
+
+	//Firebase
+	compile "com.google.firebase:firebase-core:${firebase_components_version}"
+	compile "com.google.firebase:firebase-database:${firebase_components_version}"
+	compile "com.google.firebase:firebase-auth:${firebase_components_version}"
+	compile "com.google.firebase:firebase-storage:${firebase_components_version}"
 
 	//RxJava
 	compile 'io.reactivex:rxandroid:1.2.1'
