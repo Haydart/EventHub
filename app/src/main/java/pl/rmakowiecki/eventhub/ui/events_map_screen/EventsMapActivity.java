@@ -1,14 +1,10 @@
 package pl.rmakowiecki.eventhub.ui.events_map_screen;
 
 import android.os.Bundle;
-import android.widget.TextView;
-
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import java.util.List;
-
-import butterknife.BindView;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
