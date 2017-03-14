@@ -8,26 +8,26 @@ public class EventsRepository implements Repository<Event> {
 
     @Override
     public void add(Event item) {
-
+        // TODO: 14/03/2017 implement
     }
 
     @Override
     public void add(Iterable<Event> items) {
-
+        // TODO: 14/03/2017 implement
     }
 
     @Override
     public void update(Event item) {
-
+        // TODO: 14/03/2017 implement
     }
 
     @Override
     public void remove(Event item) {
-
+        // TODO: 14/03/2017 implement
     }
 
     @Override
     public Observable<List<Event>> query(Specification specification) {
-        return null;
+        return Observable.empty();
     }
 }
