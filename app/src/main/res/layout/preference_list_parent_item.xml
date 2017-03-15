@@ -1,0 +1,15 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#dbdbda">
+
+    <TextView
+        android:id="@+id/preference_category_list_item_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:textStyle="bold"
+        android:text="Category"
+        android:drawableLeft="@android:drawable/arrow_down_float"/>
+
+</FrameLayout>
