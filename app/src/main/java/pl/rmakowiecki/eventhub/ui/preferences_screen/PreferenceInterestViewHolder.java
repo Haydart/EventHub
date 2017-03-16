@@ -13,13 +13,15 @@ import pl.rmakowiecki.eventhub.R;
 
 public class PreferenceInterestViewHolder extends ChildViewHolder {
 
-    @BindView(R.id.preference_interest_list_item_text_view)TextView activityNameTextView;
-    @BindView(R.id.preference_interest_list_item_checkbox)CheckBox activityInterestedCheckBox;
+    @BindView(R.id.preference_interest_list_item_text_view)TextView interestNameTextView;
+    @BindView(R.id.preference_interest_list_item_checkbox)CheckBox interestInterestedCheckBox;
 
-    public PreferenceInterestViewHolder(View itemView)
-    {
+    public static final int PREFERENCE_INTEREST_PADDING_TOP = 8;
+
+    public PreferenceInterestViewHolder(View itemView) {
         super(itemView);
 
         ButterKnife.bind(this, itemView);
+        interestNameTextView.setPadding(0, PREFERENCE_INTEREST_PADDING_TOP, 0, 0);
     }
 }

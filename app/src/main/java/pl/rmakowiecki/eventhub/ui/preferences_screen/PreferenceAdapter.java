@@ -6,10 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bignerdranch.expandablerecyclerview.ChildViewHolder;
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
-import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
-import com.bignerdranch.expandablerecyclerview.model.Parent;
 
 import java.util.List;
 
@@ -40,15 +37,13 @@ public class PreferenceAdapter extends ExpandableRecyclerAdapter<PreferenceCateg
     }
 
     @Override
-    public void onBindParentViewHolder(@NonNull PreferenceCategoryViewHolder parentViewHolder, int parentPosition, @NonNull PreferenceCategory parent) {
-        PreferenceCategory category = (PreferenceCategory) parent;
+    public void onBindParentViewHolder(@NonNull PreferenceCategoryViewHolder parentViewHolder, int parentPosition, @NonNull PreferenceCategory category) {
         parentViewHolder.categoryNameTextView.setText(category.getTitle());
     }
 
     @Override
-    public void onBindChildViewHolder(@NonNull PreferenceInterestViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull PreferenceInterest child) {
-        PreferenceInterest interest = (PreferenceInterest) child;
-        childViewHolder.activityNameTextView.setText(interest.getTitle());
-        childViewHolder.activityInterestedCheckBox.setChecked(interest.isInterested());
+    public void onBindChildViewHolder(@NonNull PreferenceInterestViewHolder childViewHolder, int parentPosition, int childPosition, @NonNull PreferenceInterest interest) {
+        childViewHolder.interestNameTextView.setText(interest.getTitle());
+        childViewHolder.interestInterestedCheckBox.setChecked(interest.isInterested());
     }
 }

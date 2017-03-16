@@ -13,8 +13,7 @@ public class PreferenceCategoryViewHolder extends ParentViewHolder {
 
     @BindView(R.id.preference_category_list_item_text_view)TextView categoryNameTextView;
 
-    public PreferenceCategoryViewHolder(View itemView)
-    {
+    public PreferenceCategoryViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }

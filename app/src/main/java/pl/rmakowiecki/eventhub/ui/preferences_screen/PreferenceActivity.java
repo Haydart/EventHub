@@ -4,8 +4,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.bignerdranch.expandablerecyclerview.model.Parent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +32,8 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     private List<PreferenceCategory> generateCategories() {
 
-        // TO DO: Load categories from server
+        // TODO: 2017-03-16 Load categories from server
+        // TODO: 2017-03-16 Remove debug categories
         PreferenceCategory sport = new PreferenceCategory("SPORT");
         sport.addChildObject(new PreferenceInterest("Piłka nożna", false));
         sport.addChildObject(new PreferenceInterest("Koszykówka", false));
@@ -50,11 +49,6 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     protected void initPresenter() {
         presenter = new PreferencePresenter();
     }
@@ -66,6 +60,6 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @Override
     public void showPreferences(List<Preference> preferenceList) {
-
+        // TODO: 2017-03-16
     }
 }

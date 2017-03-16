@@ -5,8 +5,7 @@ import com.bignerdranch.expandablerecyclerview.model.Parent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PreferenceCategory implements Parent<PreferenceInterest>
-{
+public class PreferenceCategory implements Parent<PreferenceInterest> {
     private String title;
     private List<Object> childrenList;
 

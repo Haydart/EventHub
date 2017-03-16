@@ -2,14 +2,13 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#cbcbcb">
+    android:background="@color/colorGray">
 
     <TextView
         android:id="@+id/preference_interest_list_item_text_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="8dp"
-        android:text="Category Activity Name" />
+        android:text="@string/preference_category_name" />
 
     <CheckBox
         android:id="@+id/preference_interest_list_item_checkbox"
@@ -17,6 +16,6 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_marginRight="8dp"
-        android:text="Interested" />
+        android:text="@string/preference_interest_checkbox_text" />
 
 </LinearLayout>
