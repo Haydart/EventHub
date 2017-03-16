@@ -13,5 +13,5 @@ public interface Repository<T> {
 
     void remove(T item);
 
-    Observable<List<Event>> query(Specification specification);
+    Observable<List<T>> query(Specification specification);
 }

@@ -2,4 +2,6 @@
 <resources>
   <string name="app_name" translatable="false">EventHub</string>
   <string name="hello_world">Hello World</string>
+  <string name="preference_category_name">Preference Category Name</string>
+  <string name="preference_interest_checkbox_text">Interested</string>
 </resources>
