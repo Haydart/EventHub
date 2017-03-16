@@ -83,6 +83,9 @@ dependencies {
 	provided "com.jenzz.noop:annotation:1.2.0"
 	annotationProcessor "com.jenzz.noop:processor:1.2.0"
 
+	//ExtendedRecyclerView
+	compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
+
 	testCompile 'junit:junit:4.12'
 }
 
