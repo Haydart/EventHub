@@ -23,7 +23,6 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Recycler View
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         adapter = new PreferenceAdapter(getBaseContext(), generateCategories());
