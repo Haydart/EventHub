@@ -16,12 +16,16 @@ import rx.schedulers.Schedulers;
 
 class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
-    private static final long CAMERA_MOVE_TO_LOCATION_DELAY = 3000;
+    private static final int CAMERA_MOVE_TO_LOCATION_DELAY = 1000;
 
     private Repository<Event> repository;
     private LocationProvider locationProvider;
     private LocationCoordinates lastKnownDeviceLocation;
-    private Subscription mapCameraTransitionSubscription;
+    private LocationCoordinates markerLocation;
+    private Subscription mapTransitionSubscription;
+
+    private boolean isMapClickMarkerShown = false;
+    private boolean shouldMapBeInitializedToDeviceLocation;
 
     EventsMapPresenter() {
         repository = new EventsRepository();
@@ -31,7 +35,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     @Override
     protected void onViewStarted(EventsMapView view) {
         super.onViewStarted(view);
-        appointMapTransitionTask();
+        if(!isMapClickMarkerShown) shouldMapBeInitializedToDeviceLocation = true;
     }
 
     @Override
@@ -45,8 +49,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     void onLocationPermissionsGranted() {
-        locationProvider
-                .getLocationUpdates()
+        locationProvider.getLocationUpdates()
                 .filter(location -> location != null)
                 .compose(applySchedulers())
                 .subscribe(
@@ -64,28 +67,57 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 .subscribe(view::showEvents);
     }
 
-    void onMapCameraIdle() {
-        appointMapTransitionTask();
+    void onMapClicked(LocationCoordinates locationCoordinates) {
+        isMapClickMarkerShown = !isMapClickMarkerShown;
+        if (isMapClickMarkerShown) {
+            markerLocation = locationCoordinates;
+            view.showMapClickMarker(locationCoordinates);
+            view.showBottomSheet();
+            view.setBottomMapPadding();
+            dismissMapTransitionTask();
+            appointMapTransitionTask(markerLocation, 0);
+        } else {
+            markerLocation = null;
+            view.hideMapClickMarker(locationCoordinates);
+            view.hideBottomSheet();
+            view.setDefaultMapPadding();
+            dismissMapTransitionTask();
+            appointMapTransitionTask(lastKnownDeviceLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
+        }
     }
 
-    void onMapCameraMovementStarted() {
+    void onMapCameraIdle() {
+        if (isMapClickMarkerShown) {
+            appointMapTransitionTask(markerLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
+        } else {
+            appointMapTransitionTask(lastKnownDeviceLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
+        }
+    }
+
+    void onMapCameraMove() {
         dismissMapTransitionTask();
     }
 
-    private void appointMapTransitionTask() {
-        mapCameraTransitionSubscription = Observable
-                .timer(CAMERA_MOVE_TO_LOCATION_DELAY, TimeUnit.MILLISECONDS)
-                .map(tick -> lastKnownDeviceLocation)
+    private void appointMapTransitionTask(LocationCoordinates location, int delay) {
+        mapTransitionSubscription = Observable
+                .timer(delay, TimeUnit.MILLISECONDS)
+                .map(tick -> location)
+                .filter(mapTargetLocation -> mapTargetLocation != null)
                 .compose(applySchedulers())
                 .subscribe(view::moveMapCamera);
     }
 
     private void dismissMapTransitionTask() {
-        mapCameraTransitionSubscription.unsubscribe();
+        mapTransitionSubscription.unsubscribe();
     }
 
     private void updateCurrentLocation(LocationCoordinates locationCoordinates) {
         lastKnownDeviceLocation = locationCoordinates;
+        if (shouldMapBeInitializedToDeviceLocation) {
+            shouldMapBeInitializedToDeviceLocation = false;
+            appointMapTransitionTask(lastKnownDeviceLocation, 100);
+            view.showDeviceLocation();
+        }
     }
 
     private <T> Observable.Transformer<T, T> applySchedulers() {

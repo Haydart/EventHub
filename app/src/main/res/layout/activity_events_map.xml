@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="pl.rmakowiecki.eventhub.ui.events_map_screen.EventsMapActivity">
 
     <fragment
@@ -11,4 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-</FrameLayout>
+    <FrameLayout
+        android:id="@+id/place_bottom_sheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
+        app:elevation="@dimen/default_item_elevation"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <TextView
+            android:id="@+id/bottom_sheet_text"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:text="BOTTOM SHEET" />
+    </FrameLayout>
+
+</android.support.design.widget.CoordinatorLayout>

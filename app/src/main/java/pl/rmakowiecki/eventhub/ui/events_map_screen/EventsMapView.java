@@ -13,4 +13,18 @@ interface EventsMapView extends BaseView {
     void initMap();
 
     void moveMapCamera(LocationCoordinates locationCoordinates);
+
+    void showMapClickMarker(LocationCoordinates locationCoordinates);
+
+    void hideMapClickMarker(LocationCoordinates locationCoordinates);
+
+    void showBottomSheet();
+
+    void showDeviceLocation();
+
+    void hideBottomSheet();
+
+    void setBottomMapPadding();
+
+    void setDefaultMapPadding();
 }
