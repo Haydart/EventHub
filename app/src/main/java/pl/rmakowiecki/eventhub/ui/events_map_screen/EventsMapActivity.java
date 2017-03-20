@@ -6,6 +6,14 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.util.Log;
 import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -19,6 +27,8 @@ import com.google.android.gms.maps.model.PointOfInterest;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+
+import butterknife.BindView;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
@@ -30,7 +40,9 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         GoogleMap.OnCameraIdleListener,
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnMapClickListener,
-        GoogleMap.OnPoiClickListener {
+        GoogleMap.OnPoiClickListener,
+        NavigationView.OnNavigationItemSelectedListener {
+
 
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
@@ -41,10 +53,14 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private GoogleMap googleMap;
     private Marker mapClickMarker;
     private BottomSheetBehavior bottomSheetBehavior;
+    @BindView(R.id.drawer_layout) DrawerLayout drawer;
+    @BindView(R.id.nav_view) NavigationView navigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         new RxPermissions(this)
                 .request(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
                 .delay(PERMISSION_GRANTING_DELAY, TimeUnit.MILLISECONDS)
@@ -56,6 +72,9 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                         // TODO: 14/03/2017 implement user revoke reaction
                     }
                 });
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
 
         View bottomSheet = findViewById(R.id.place_bottom_sheet);
         bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
@@ -88,6 +107,14 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                 Log.i("BottomSheetCallback", "slideOffset: " + slideOffset);
             }
         });
+
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+
+        navigationView.setNavigationItemSelectedListener(this);
+
     }
 
     @Override
@@ -191,6 +218,11 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_navigation;
+    }
+
+    @Override
     public void showEvents(List<Event> eventsList) {
         // TODO: 12/03/2017
     }
@@ -200,8 +232,49 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         presenter = new EventsMapPresenter();
     }
 
+
     @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_events_map;
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navigation, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_settings) {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.nav_camera) {
+            Toast.makeText(getApplicationContext(), "First sample item clicked", Toast.LENGTH_SHORT).show();
+        }else if (id == R.id.nav_share) {
+            Toast.makeText(getApplicationContext(), "Second sample item clicked", Toast.LENGTH_SHORT).show();
+
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
     }
 }

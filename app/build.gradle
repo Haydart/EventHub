@@ -1,92 +1,94 @@
 plugins {
-	id 'pl.droidsonroids.localization' version '1.0.11'
+    id 'pl.droidsonroids.localization' version '1.0.11'
 }
 
 apply plugin: 'com.android.application'
 
 localization {
-	csvFileURI = 'https://docs.google.com/spreadsheets/d/1nJN5h7NlIV1UFN8cnJ4OJ4lUHdrqKUsGDs8RpAR7zRE/export?format=csv'
-	defaultColumnName = 'en'
-	nameColumnName = 'key'
-	ignorableColumns = ['Section', 'Subsection']
-	escapeSlashes = false
+    csvFileURI = 'https://docs.google.com/spreadsheets/d/1nJN5h7NlIV1UFN8cnJ4OJ4lUHdrqKUsGDs8RpAR7zRE/export?format=csv'
+    defaultColumnName = 'en'
+    nameColumnName = 'key'
+    ignorableColumns = ['Section', 'Subsection']
+    escapeSlashes = false
 }
 
 ext {
-	build_version = "25.2.0"
-	firebase_components_version = "10.2.0"
-	gms_components_version = "10.2.0"
+    build_version = "25.2.0"
+    firebase_components_version = "10.2.0"
+    gms_components_version = "10.2.0"
 }
 
 android {
-	compileSdkVersion 25
-	buildToolsVersion "25.0.2"
-	defaultConfig {
-		jackOptions {
-			enabled true
-		}
-		applicationId "pl.rmakowiecki.eventhub"
-		minSdkVersion 21
-		targetSdkVersion 25
-		versionCode 1
-		versionName "1.0"
-		testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-	}
-	buildTypes {
-		release {
-			minifyEnabled false
-			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-		}
-	}
-	compileOptions {
-		targetCompatibility 1.8
-		sourceCompatibility 1.8
-	}
+    compileSdkVersion 25
+    buildToolsVersion "25.0.2"
+    defaultConfig {
+        jackOptions {
+            enabled true
+        }
+        applicationId "pl.rmakowiecki.eventhub"
+        minSdkVersion 21
+        targetSdkVersion 25
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 dependencies {
-	compile fileTree(dir: 'libs', include: ['*.jar'])
-	androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-		exclude group: 'com.android.support', module: 'support-annotations'
-	})
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
 
-	//Android
-	compile "com.android.support:appcompat-v7:${build_version}"
-	compile "com.android.support:support-v4:${build_version}"
-	compile "com.android.support:design:${build_version}"
-	compile "com.android.support:support-fragment:${build_version}"
+    //Android
+    compile "com.android.support:appcompat-v7:${build_version}"
+    compile "com.android.support:support-v4:${build_version}"
+    compile "com.android.support:design:${build_version}"
+    compile "com.android.support:support-fragment:${build_version}"
 
-	//Google APIs
-	compile "com.google.android.gms:play-services-maps:${gms_components_version}"
-	compile "com.google.android.gms:play-services-places:${gms_components_version}"
-	compile "com.google.android.gms:play-services-location:${gms_components_version}"
-	compile "com.google.android.gms:play-services-base:${gms_components_version}"
+    //Google APIs
+    compile "com.google.android.gms:play-services-maps:${gms_components_version}"
+    compile "com.google.android.gms:play-services-places:${gms_components_version}"
+    compile "com.google.android.gms:play-services-location:${gms_components_version}"
+    compile "com.google.android.gms:play-services-base:${gms_components_version}"
 
-	//Firebase
-	compile "com.google.firebase:firebase-core:${firebase_components_version}"
-	compile "com.google.firebase:firebase-database:${firebase_components_version}"
-	compile "com.google.firebase:firebase-auth:${firebase_components_version}"
-	compile "com.google.firebase:firebase-storage:${firebase_components_version}"
+    //Firebase
+    compile "com.google.firebase:firebase-core:${firebase_components_version}"
+    compile "com.google.firebase:firebase-database:${firebase_components_version}"
+    compile "com.google.firebase:firebase-auth:${firebase_components_version}"
+    compile "com.google.firebase:firebase-storage:${firebase_components_version}"
 
-	//RxJava
-	compile 'io.reactivex:rxandroid:1.2.1'
-	compile 'io.reactivex:rxjava:1.2.1'
-	compile 'com.artemzin.rxjava:proguard-rules:1.2.1.0'
+    //RxJava
+	
 
-	//RxPermissions
-	compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.3@aar'
-
+    //RxPermissions
+	
 	//Butterknife
-	compile 'com.jakewharton:butterknife:8.5.1'
-	annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-
+	
 	//No-Op
-	provided "com.jenzz.noop:annotation:1.2.0"
-	annotationProcessor "com.jenzz.noop:processor:1.2.0"
-
+	
 	//ExtendedRecyclerView
-	compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
-
-	testCompile 'junit:junit:4.12'
+	
+	compile 'io.reactivex:rxandroid:1.2.1'
+    compile 'io.reactivex:rxjava:1.2.1'
+    compile 'com.artemzin.rxjava:proguard-rules:1.2.1.0'
+    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.3@aar'
+    compile 'com.jakewharton:butterknife:8.5.1'
+    compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    testCompile 'junit:junit:4.12'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
+    annotationProcessor 'com.jenzz.noop:processor:1.2.0'
+    provided 'com.jenzz.noop:annotation:1.2.0'
 }
 
 

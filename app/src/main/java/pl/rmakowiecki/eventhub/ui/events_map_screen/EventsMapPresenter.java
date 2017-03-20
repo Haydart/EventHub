@@ -13,7 +13,6 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-
 class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
     private static final int CAMERA_MOVE_TO_LOCATION_DELAY = 1000;
