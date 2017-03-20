@@ -16,6 +16,8 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context="pl.rmakowiecki.eventhub.ui.events_map_screen.EventsMapActivity">
 
+        <include layout="@layout/app_bar_navigation" />
+
         <fragment
             android:id="@+id/events_map_fragment"
             class="com.google.android.gms.maps.MapFragment"
@@ -41,16 +43,6 @@
         </FrameLayout>
 
     </android.support.design.widget.CoordinatorLayout>
-
-
-    <include
-        layout="@layout/app_bar_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-
-
-
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
