@@ -1,6 +1,5 @@
 package pl.rmakowiecki.eventhub.model.local;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import pl.rmakowiecki.eventhub.repository.DataItem;
@@ -10,10 +9,10 @@ public final class Preference implements DataItem {
     private final String categoryName;
     private final List<String> subCategories;
 
-    public Preference(int id, String categoryName) {
+    public Preference(int id, String categoryName, List<String> subCategories) {
         this.id = id;
         this.categoryName = categoryName;
-        subCategories = new ArrayList<>();
+        this.subCategories = subCategories;
     }
 
     public int getId() {
@@ -22,10 +21,6 @@ public final class Preference implements DataItem {
 
     public String getName() {
         return categoryName;
-    }
-
-    public void addSubcategory(String subcategory) {
-        subCategories.add(subcategory);
     }
 
     public List<String> getSubCategories() {

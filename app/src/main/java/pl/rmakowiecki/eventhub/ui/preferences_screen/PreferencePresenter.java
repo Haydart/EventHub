@@ -16,19 +16,19 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
         repository = new PreferencesRepository();
     }
 
-    public void subscribeToPreferences() {
+    public void onViewInitialization() {
         repository
                 .query(new PreferencesSpecification() {})
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(view::onPreferenceLoad);
+                .subscribe(view::showPreferences);
     }
 
     @Override
     protected void onViewStarted(PreferenceView view) {
         super.onViewStarted(view);
-        subscribeToPreferences();
+        onViewInitialization();
     }
 
     @Override

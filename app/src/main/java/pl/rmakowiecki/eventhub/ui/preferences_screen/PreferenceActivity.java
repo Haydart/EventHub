@@ -37,7 +37,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     }
 
     @Override
-    public void onPreferenceLoad(List<Preference> preferences) {
+    public void showPreferences(List<Preference> preferences) {
         List<PreferenceCategory> categories = new ArrayList<>();
         for (Preference preference : preferences)
         {
