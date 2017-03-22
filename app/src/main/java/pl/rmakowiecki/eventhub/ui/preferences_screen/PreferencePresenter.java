@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
-import java.util.List;
-
 import pl.rmakowiecki.eventhub.api.PreferencesSpecification;
 import pl.rmakowiecki.eventhub.model.local.Preference;
 import pl.rmakowiecki.eventhub.repository.PreferencesRepository;
@@ -18,13 +16,19 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
         repository = new PreferencesRepository();
     }
 
-    public void onPreferencesNeeded() {
+    public void subscribeToPreferences() {
         repository
                 .query(new PreferencesSpecification() {})
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(view::showPreferences);
+                .subscribe(view::onPreferenceLoad);
+    }
+
+    @Override
+    protected void onViewStarted(PreferenceView view) {
+        super.onViewStarted(view);
+        subscribeToPreferences();
     }
 
     @Override

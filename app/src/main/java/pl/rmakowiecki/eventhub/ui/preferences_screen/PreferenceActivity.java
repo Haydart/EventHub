@@ -24,27 +24,6 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
         super.onCreate(savedInstanceState);
 
         layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        adapter = new PreferenceAdapter(getBaseContext(), generateCategories());
-        recyclerView.setAdapter(adapter);
-    }
-
-    private List<PreferenceCategory> generateCategories() {
-
-        // TODO: 2017-03-16 Load categories from server
-        // TODO: 2017-03-16 Remove debug categories
-        PreferenceCategory sport = new PreferenceCategory("SPORT");
-        sport.addChildObject(new PreferenceInterest("Piłka nożna", false));
-        sport.addChildObject(new PreferenceInterest("Koszykówka", false));
-
-        PreferenceCategory muzyka = new PreferenceCategory("MUZYKA");
-        muzyka.addChildObject(new PreferenceInterest("Klasyczna", false));
-        muzyka.addChildObject(new PreferenceInterest("Metal", false));
-
-        List<PreferenceCategory> categoriesList = new ArrayList<>();
-        categoriesList.add(sport);
-        categoriesList.add(muzyka);
-        return categoriesList;
     }
 
     @Override
@@ -58,7 +37,22 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     }
 
     @Override
-    public void showPreferences(List<Preference> preferenceList) {
-        // TODO: 2017-03-16
+    public void onPreferenceLoad(List<Preference> preferences) {
+        List<PreferenceCategory> categories = new ArrayList<>();
+        for (Preference preference : preferences)
+        {
+            PreferenceCategory category = new PreferenceCategory(preference.getName());
+            for (String interestName : preference.getSubCategories())
+                category.addChildObject(new PreferenceInterest(interestName, false));
+            categories.add(category);
+        }
+        initPreferences(categories);
+    }
+
+    @Override
+    public void initPreferences(final List<PreferenceCategory> categories) {
+        adapter = new PreferenceAdapter(getBaseContext(), categories);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
     }
 }
