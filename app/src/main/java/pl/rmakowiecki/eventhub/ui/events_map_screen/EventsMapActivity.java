@@ -252,7 +252,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation, menu);
+        getMenuInflater().inflate(R.menu.overflow_menu, menu);
         return true;
     }
 

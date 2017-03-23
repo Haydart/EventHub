@@ -8,7 +8,6 @@
     android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
-
     <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -24,23 +23,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <FrameLayout
-            android:id="@+id/map_bottom_sheet"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            app:behavior_hideable="true"
-            app:behavior_peekHeight="@dimen/bottom_sheet_peek_height"
-            app:elevation="@dimen/default_item_elevation"
-            app:layout_behavior="@string/bottom_sheet_behavior">
-
-            <TextView
-                android:id="@+id/bottom_sheet_text"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                android:text="BOTTOM SHEET" />
-        </FrameLayout>
+        <include layout="@layout/map_bottom_sheet" />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/bottom_sheet_fab"
@@ -48,10 +31,10 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin_large"
             android:src="@drawable/ic_add_white_24dp"
+            android:visibility="invisible"
             app:fabSize="normal"
             app:layout_anchor="@+id/map_bottom_sheet"
-            app:layout_anchorGravity="top|end"
-            android:visibility="invisible" />
+            app:layout_anchorGravity="top|end" />
 
     </android.support.design.widget.CoordinatorLayout>
 
@@ -62,6 +45,6 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_navigation"
-        app:menu="@menu/activity_navigation_drawer" />
+        app:menu="@menu/navigation_drawer" />
 
 </android.support.v4.widget.DrawerLayout>
