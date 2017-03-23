@@ -31,8 +31,7 @@
         <activity
             android:name=".ui.preferences_screen.PreferenceActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
 
     </application>
 
