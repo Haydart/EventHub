@@ -13,7 +13,7 @@ import pl.rmakowiecki.eventhub.model.local.Preference;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor {
+public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<Preference>> {
 
     @Override
     protected void setDatabaseQueryNode() {
