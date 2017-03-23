@@ -30,6 +30,6 @@ public class PreferencesRepository implements Repository<Preference> {
 
     @Override
     public Observable<List<Preference>> query(Specification specification) {
-        return new PreferencesDatabaseInteractor().getPublishSubject();
+        return new PreferencesDatabaseInteractor().getData();
     }
 }

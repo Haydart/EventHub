@@ -3,6 +3,7 @@ package pl.rmakowiecki.eventhub.api;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import rx.Observable;
 import rx.subjects.PublishSubject;
 
 public abstract class BaseDatabaseInteractor<T> {
@@ -16,5 +17,5 @@ public abstract class BaseDatabaseInteractor<T> {
 
     protected abstract void setDatabaseQueryNode();
 
-    public abstract PublishSubject<T> getPublishSubject();
+    public abstract Observable<T> getData();
 }

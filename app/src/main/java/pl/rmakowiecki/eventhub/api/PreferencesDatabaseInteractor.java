@@ -10,11 +10,10 @@ import java.util.List;
 import java.util.Map;
 
 import pl.rmakowiecki.eventhub.model.local.Preference;
+import rx.Observable;
 import rx.subjects.PublishSubject;
 
 public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor {
-
-    private PublishSubject<List<Preference>> publishSubject;
 
     @Override
     protected void setDatabaseQueryNode() {
@@ -24,7 +23,7 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor {
     }
 
     @Override
-    public PublishSubject getPublishSubject() {
+    public Observable<List<Preference>> getData() {
         setDatabaseQueryNode();
         publishSubject = PublishSubject.create();
         databaseQueryNode.addListenerForSingleValueEvent(new ValueEventListener() {
