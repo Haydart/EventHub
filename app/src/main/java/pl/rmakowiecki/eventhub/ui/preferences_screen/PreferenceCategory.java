@@ -5,6 +5,7 @@ import com.bignerdranch.expandablerecyclerview.model.Parent;
 import java.util.ArrayList;
 import java.util.List;
 
+// TODO: 22.03.2017 Synchronize Preference with PreferenceCategory and PreferenceInterest
 public class PreferenceCategory implements Parent<PreferenceInterest> {
     private String title;
     private List<Object> childrenList;
