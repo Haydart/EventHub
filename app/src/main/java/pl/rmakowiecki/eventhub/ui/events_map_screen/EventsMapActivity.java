@@ -23,6 +23,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -49,6 +50,8 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private static final long PERMISSION_GRANTING_DELAY = 250;
     public static final int MAP_PADDING_TOP = 64;
     private static final int BOTTOM_SHEET_MAP_PADDING = 256;
+    public static final int FAB_ANIMATION_DURATION = 300;
+    public static final int FAB_FULL_SCALE = 1;
 
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.nav_view) NavigationView navigationView;
@@ -110,9 +113,17 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
             @Override
             public void onStateChanged(@NonNull View bottomSheet, int newState) {
                 if (BottomSheetBehavior.STATE_DRAGGING == newState) {
-                    bottomSheetFab.animate().scaleX(0).scaleY(0).setDuration(300).start();
+                    bottomSheetFab.animate()
+                            .scaleX(0)
+                            .scaleY(0)
+                            .setDuration(FAB_ANIMATION_DURATION)
+                            .start();
                 } else if (BottomSheetBehavior.STATE_COLLAPSED == newState) {
-                    bottomSheetFab.animate().scaleX(1).scaleY(1).setDuration(300).start();
+                    bottomSheetFab.animate()
+                            .scaleX(FAB_FULL_SCALE)
+                            .scaleY(FAB_FULL_SCALE)
+                            .setDuration(FAB_ANIMATION_DURATION)
+                            .start();
                 }
             }
 
@@ -185,7 +196,9 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     public void showMapClickMarker(LocationCoordinates locationCoordinates) {
         mapClickMarker = googleMap.addMarker(new MarkerOptions()
-                .position(new LatLng(locationCoordinates.getLatitude(), locationCoordinates.getLongitude())));
+                .position(new LatLng(locationCoordinates.getLatitude(), locationCoordinates.getLongitude()))
+                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
+        );
     }
 
     @Override
@@ -252,7 +265,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.navigation, menu);
+        getMenuInflater().inflate(R.menu.overflow_menu, menu);
         return true;
     }
 
