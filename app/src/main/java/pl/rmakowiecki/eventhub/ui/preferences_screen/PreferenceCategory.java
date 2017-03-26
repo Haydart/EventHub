@@ -8,20 +8,20 @@ import java.util.List;
 // TODO: 22.03.2017 Synchronize Preference with PreferenceCategory and PreferenceInterest
 public class PreferenceCategory implements Parent<PreferenceInterest> {
     private final String title;
-    private final String imageURL;
+    private final String imageUrl;
     private List<Object> childrenList;
 
-    PreferenceCategory(String categoryTitle, String imgURL) {
+    PreferenceCategory(String categoryTitle, String imgUrl) {
         childrenList = new ArrayList<>();
         title = categoryTitle;
-        imageURL = imgURL;
+        imageUrl = imgUrl.isEmpty() ? "InvalidUrl" : imgUrl;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getImageURL() { return imageURL; }
+    public String getImageUrl() { return imageUrl; }
 
     public void addChildObject(Object child) {
         childrenList.add(child);

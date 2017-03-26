@@ -42,10 +42,12 @@ public class PreferenceAdapter extends ExpandableRecyclerAdapter<PreferenceCateg
     @Override
     public void onBindParentViewHolder(@NonNull PreferenceCategoryViewHolder parentViewHolder, int parentPosition, @NonNull PreferenceCategory category) {
         // TODO: 2017-03-26 Add text under category images ->  setText(category.getTitle());
-        // TODO: 2017-03-26 Find a way to display a placeholder image when loading from URL (no image until it loads currently) 
-        Picasso.with(context).load(R.drawable.ic_image_placeholder).into(parentViewHolder.categoryNameTextView);
-        if (!category.getImageURL().isEmpty())
-            Picasso.with(context).load(category.getImageURL()).into(parentViewHolder.categoryNameTextView);
+        // TODO: 2017-03-26 Find a way to display a placeholder image when loading from URL (no image until it loads currently)
+        Picasso
+                .with(context)
+                .load(category.getImageUrl())
+                .placeholder(R.drawable.ic_image_placeholder)
+                .into(parentViewHolder.categoryImageView);
     }
 
     @Override

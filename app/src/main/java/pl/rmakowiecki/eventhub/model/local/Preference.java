@@ -8,13 +8,13 @@ public final class Preference implements DataItem {
     private final int id;
     private final String categoryName;
     private final List<String> subCategories;
-    private final String imageURL;
+    private final String imageUrl;
 
-    public Preference(int id, String categoryName, List<String> subCategories, String imageURL) {
+    public Preference(int id, String categoryName, List<String> subCategories, String imageUrl) {
         this.id = id;
         this.categoryName = categoryName;
         this.subCategories = subCategories;
-        this.imageURL = imageURL;
+        this.imageUrl = imageUrl;
     }
 
     public int getId() {
@@ -25,7 +25,7 @@ public final class Preference implements DataItem {
         return categoryName;
     }
 
-    public String getImageURL() { return imageURL; }
+    public String getImageUrl() { return imageUrl; }
 
     public List<String> getSubCategories() {
         return subCategories;
