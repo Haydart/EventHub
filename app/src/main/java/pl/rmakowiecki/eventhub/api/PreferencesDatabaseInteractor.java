@@ -29,14 +29,24 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
         databaseQueryNode.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, Object> categoryMap = (HashMap<String, Object>)dataSnapshot.getValue(); // "Category name" -> Category interest sub ArrayList
+                Map<String, Object> mainMap = (HashMap<String, Object>)dataSnapshot.getValue();
+                Map<String, String> imagesMap = (HashMap<String, String>)mainMap.get("images");
+                Map<String, Object> categoryMap = (HashMap<String, Object>)mainMap.get("categories"); // "Category name" -> Category interest sub ArrayList
                 List<Preference> preferenceList = new ArrayList<Preference>();
                 int id = 1;
                 for (Map.Entry<String, Object> entry : categoryMap.entrySet()) {
                     List<String> subCategories = new ArrayList<String>();
                     for (String interestName : (ArrayList<String>)entry.getValue())
                         subCategories.add(interestName);
-                    preferenceList.add(new Preference(id++, entry.getKey(), subCategories));
+
+                    String imageURL = "";
+                    if (!imagesMap.isEmpty()) {
+                        String s = imagesMap.get(entry.getKey());
+                        if (s != null)
+                            imageURL = s;
+                    }
+
+                    preferenceList.add(new Preference(id++, entry.getKey(), subCategories, imageURL));
                 }
 
                 publishSubject.onNext(preferenceList);

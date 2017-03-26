@@ -41,7 +41,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
         List<PreferenceCategory> categories = new ArrayList<>();
         for (Preference preference : preferences)
         {
-            PreferenceCategory category = new PreferenceCategory(preference.getName());
+            PreferenceCategory category = new PreferenceCategory(preference.getName(), preference.getImageURL());
             for (String interestName : preference.getSubCategories())
                 category.addChildObject(new PreferenceInterest(interestName, false));
             categories.add(category);

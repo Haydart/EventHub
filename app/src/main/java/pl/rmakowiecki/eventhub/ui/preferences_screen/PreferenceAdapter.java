@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -16,10 +17,12 @@ public class PreferenceAdapter extends ExpandableRecyclerAdapter<PreferenceCateg
         PreferenceInterest, PreferenceCategoryViewHolder, PreferenceInterestViewHolder> {
 
     LayoutInflater layoutInflater;
+    Context context;
 
     public PreferenceAdapter(Context context, @NonNull List<PreferenceCategory> parentItemList) {
         super(parentItemList);
         layoutInflater = LayoutInflater.from(context);
+        this.context = context;
     }
 
     @NonNull
@@ -38,7 +41,11 @@ public class PreferenceAdapter extends ExpandableRecyclerAdapter<PreferenceCateg
 
     @Override
     public void onBindParentViewHolder(@NonNull PreferenceCategoryViewHolder parentViewHolder, int parentPosition, @NonNull PreferenceCategory category) {
-        parentViewHolder.categoryNameTextView.setText(category.getTitle());
+        // TODO: 2017-03-26 Add text under category images ->  setText(category.getTitle());
+        // TODO: 2017-03-26 Find a way to display a placeholder image when loading from URL (no image until it loads currently) 
+        Picasso.with(context).load(R.drawable.ic_image_placeholder).into(parentViewHolder.categoryNameTextView);
+        if (!category.getImageURL().isEmpty())
+            Picasso.with(context).load(category.getImageURL()).into(parentViewHolder.categoryNameTextView);
     }
 
     @Override
