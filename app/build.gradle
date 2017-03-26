@@ -87,6 +87,8 @@ dependencies {
 	//ExtendedRecyclerView
     compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
 
+    //Picasso
+    compile 'com.squareup.picasso:picasso:2.5.2'
 
     testCompile 'junit:junit:4.12'
 }

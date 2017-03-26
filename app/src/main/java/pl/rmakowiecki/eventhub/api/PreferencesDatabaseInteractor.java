@@ -22,6 +22,36 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
                 .child("en"); // TODO: 22.03.2017 Specify locale in specification
     }
 
+    private List<Preference> parsePreferenceData(DataSnapshot dataSnapshot) {
+        Map<String, Object> mainMap = (HashMap<String, Object>)dataSnapshot.getValue();
+        Map<String, String> imagesMap = (HashMap<String, String>)mainMap.get("images"); // TODO: 2017-03-26 Add constant reference
+        Map<String, Object> categoryMap = (HashMap<String, Object>)mainMap.get("categories"); // TODO: 2017-03-26 Add constant reference
+        
+        return getPreferenceListFromMap(imagesMap, categoryMap);
+    }
+
+    private List<Preference> getPreferenceListFromMap(Map<String, String> imagesMap, Map<String, Object> categoryMap) {
+        List<Preference> preferenceList = new ArrayList<Preference>();
+        int id = 1;
+        for (Map.Entry<String, Object> entry : categoryMap.entrySet()) {
+            List<String> subCategories = new ArrayList<String>();
+            for (String interestName : (ArrayList<String>)entry.getValue()) {
+                subCategories.add(interestName);
+            }
+
+            String imageUrl = "";
+            if (!imagesMap.isEmpty()) {
+                String mapImageUrl = imagesMap.get(entry.getKey());
+                if (mapImageUrl != null)
+                    imageUrl = mapImageUrl;
+            }
+
+            preferenceList.add(new Preference(id++, entry.getKey(), subCategories, imageUrl));
+        }
+
+        return preferenceList;
+    }
+
     @Override
     public Observable<List<Preference>> getData() {
         setDatabaseQueryNode();
@@ -29,17 +59,7 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
         databaseQueryNode.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Map<String, Object> categoryMap = (HashMap<String, Object>)dataSnapshot.getValue(); // "Category name" -> Category interest sub ArrayList
-                List<Preference> preferenceList = new ArrayList<Preference>();
-                int id = 1;
-                for (Map.Entry<String, Object> entry : categoryMap.entrySet()) {
-                    List<String> subCategories = new ArrayList<String>();
-                    for (String interestName : (ArrayList<String>)entry.getValue())
-                        subCategories.add(interestName);
-                    preferenceList.add(new Preference(id++, entry.getKey(), subCategories));
-                }
-
-                publishSubject.onNext(preferenceList);
+                publishSubject.onNext(parsePreferenceData(dataSnapshot));
                 publishSubject.onCompleted();
             }
 
