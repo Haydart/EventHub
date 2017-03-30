@@ -5,8 +5,6 @@ import pl.rmakowiecki.eventhub.LocationProvider;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
-import pl.rmakowiecki.eventhub.repository.LocationSpecification;
-import pl.rmakowiecki.eventhub.repository.PlacesRepository;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import rx.Observable;

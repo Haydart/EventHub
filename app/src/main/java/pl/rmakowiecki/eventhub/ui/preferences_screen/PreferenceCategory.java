@@ -1,7 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
 import com.bignerdranch.expandablerecyclerview.model.Parent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,9 @@ public class PreferenceCategory implements Parent<PreferenceInterest> {
         return title;
     }
 
-    public String getImageUrl() { return imageUrl; }
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
     public void addChildObject(Object child) {
         childrenList.add(child);

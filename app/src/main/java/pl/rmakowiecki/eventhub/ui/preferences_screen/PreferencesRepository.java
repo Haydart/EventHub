@@ -1,9 +1,10 @@
-package pl.rmakowiecki.eventhub.repository;
+package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
 import java.util.List;
-
 import pl.rmakowiecki.eventhub.api.PreferencesDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Preference;
+import pl.rmakowiecki.eventhub.repository.Repository;
+import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
 public class PreferencesRepository implements Repository<Preference> {
