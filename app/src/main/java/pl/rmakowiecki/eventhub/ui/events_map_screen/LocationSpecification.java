@@ -1,6 +1,7 @@
-package pl.rmakowiecki.eventhub.repository;
+package pl.rmakowiecki.eventhub.ui.events_map_screen;
 
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
+import pl.rmakowiecki.eventhub.repository.Specification;
 
 public final class LocationSpecification implements Specification {
     private final LocationCoordinates location;

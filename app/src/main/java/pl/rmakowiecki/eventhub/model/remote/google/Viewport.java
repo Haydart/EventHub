@@ -2,6 +2,11 @@
 package pl.rmakowiecki.eventhub.model.remote.google;
 
 public class Viewport {
-    public Coordinates northeast;
-    public Coordinates southwest;
+    public final Coordinates northeast;
+    public final Coordinates southwest;
+
+    public Viewport(Coordinates northeast, Coordinates southwest) {
+        this.northeast = northeast;
+        this.southwest = southwest;
+    }
 }

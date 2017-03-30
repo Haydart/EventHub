@@ -3,21 +3,20 @@ package pl.rmakowiecki.eventhub.api;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import pl.rmakowiecki.eventhub.model.local.Preference;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
+@SuppressWarnings("unchecked")
 public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<Preference>> {
 
     @Override
     protected void setDatabaseQueryNode() {
-        databaseQueryNode = firebaseDatabase.getInstance()
+        databaseQueryNode = firebaseDatabase
                 .getReference("event_categories") // TODO: 22.03.2017 Add constant reference
                 .child("en"); // TODO: 22.03.2017 Specify locale in specification
     }
@@ -31,13 +30,11 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
     }
 
     private List<Preference> getPreferenceListFromMap(Map<String, String> imagesMap, Map<String, Object> categoryMap) {
-        List<Preference> preferenceList = new ArrayList<Preference>();
+        List<Preference> preferenceList = new ArrayList<>();
         int id = 1;
         for (Map.Entry<String, Object> entry : categoryMap.entrySet()) {
-            List<String> subCategories = new ArrayList<String>();
-            for (String interestName : (ArrayList<String>)entry.getValue()) {
-                subCategories.add(interestName);
-            }
+            List<String> subCategories = new ArrayList<>();
+            subCategories.addAll(((ArrayList<String>) entry.getValue()));
 
             String imageUrl = "";
             if (!imagesMap.isEmpty()) {
