@@ -24,7 +24,7 @@ public class NearbyPlacesListApiInteractor extends BaseApiInteractor implements 
 
     @Override
     public Observable<List<GooglePlace>> loadGooglePlaces(String location) {
-        placesResponseObservable = nearbyPlacesService.getNearbyPlaces(500, location, GoogleApiConstants.API_KEY);
+        placesResponseObservable = nearbyPlacesService.getNearbyPlaces(GoogleApiConstants.PLACE_SEARCH_RADIUS, location, GoogleApiConstants.API_KEY);
         return placesResponseObservable
                 .observeOn(Schedulers.computation())
                 .map(this::interceptNextResultPageToken)
