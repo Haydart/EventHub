@@ -1,8 +1,10 @@
 package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +25,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        layoutManager = new LinearLayoutManager(this);
+        layoutManager = new GridLayoutManager(this, 2);
     }
 
     @Override
@@ -43,7 +45,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
         {
             PreferenceCategory category = new PreferenceCategory(preference.getName(), preference.getImageUrl());
             for (String interestName : preference.getSubCategories()) {
-                category.addChildObject(new PreferenceInterest(interestName, false));
+                category.addChildString(interestName);
             }
             categories.add(category);
         }
