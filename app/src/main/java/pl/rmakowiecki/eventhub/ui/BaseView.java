@@ -4,5 +4,5 @@ import com.jenzz.noop.annotation.NoOp;
 
 @NoOp
 public interface BaseView {
-
+    //no-op
 }

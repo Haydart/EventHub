@@ -32,8 +32,8 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.R;
-import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
+import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -43,11 +43,12 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnPoiClickListener,
+        GoogleMap.OnMarkerClickListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
-    private static final long PERMISSION_GRANTING_DELAY = 250;
+    private static final long PERMISSION_CHECKING_DELAY = 250;
     public static final int MAP_PADDING_TOP = 64;
     private static final int BOTTOM_SHEET_MAP_PADDING = 256;
     public static final int FAB_ANIMATION_DURATION = 300;
@@ -57,7 +58,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.bottom_sheet_fab) FloatingActionButton bottomSheetFab;
     @BindView(R.id.toolbar) Toolbar toolbar;
-    @BindView(R.id.map_bottom_sheet) FrameLayout bottomSheetLayout;
+    @BindView(R.id.map_bottom_sheet) FrameLayout mapBottomSheet;
 
     private GoogleMap googleMap;
     private Marker mapClickMarker;
@@ -87,7 +88,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private void checkLocationPermissions() {
         new RxPermissions(this)
                 .request(Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)
-                .delay(PERMISSION_GRANTING_DELAY, TimeUnit.MILLISECONDS)
+                .delay(PERMISSION_CHECKING_DELAY, TimeUnit.MILLISECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(granted -> {
                     if (granted) {
@@ -107,7 +108,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     private void initMapBottomSheet() {
-        bottomSheetBehavior = BottomSheetBehavior.from(bottomSheetLayout);
+        bottomSheetBehavior = BottomSheetBehavior.from(mapBottomSheet);
         bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
         bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
             @Override
@@ -160,6 +161,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         googleMap.setMinZoomPreference(MIN_MAP_ZOOM);
         googleMap.setOnCameraIdleListener(this);
         googleMap.setOnMapClickListener(this);
+        googleMap.setOnMarkerClickListener(this);
         googleMap.setOnCameraMoveListener(this);
         UiSettings uiSettings = googleMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(false);
@@ -174,6 +176,15 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public void onPoiClick(PointOfInterest pointOfInterest) {
         Toast.makeText(this, "Point of interest click", Toast.LENGTH_SHORT).show();
         // TODO: 23/03/2017 remove debug
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        LatLng markerPosition = marker.getPosition();
+        presenter.onMapMarkerClicked(
+                new LocationCoordinates(markerPosition.latitude, markerPosition.longitude)
+        );
+        return false;
     }
 
     @Override
@@ -202,7 +213,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
-    public void hideMapClickMarker(LocationCoordinates locationCoordinates) {
+    public void hideMapClickMarker() {
         mapClickMarker.setVisible(false);
     }
 
@@ -243,9 +254,19 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         return R.layout.activity_navigation;
     }
 
+
     @Override
-    public void showEvents(List<Event> eventsList) {
-        // TODO: 12/03/2017
+    public void showPlaces(List<Place> placesList) {
+        for (Place place : placesList) {
+            googleMap.addMarker(new MarkerOptions()
+                    .position(new LatLng(
+                            place.getLocationCoordinates().getLatitude(),
+                            place.getLocationCoordinates().getLongitude())
+                    )
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
+                    .title(place.getName())
+            );
+        }
     }
 
     @Override
@@ -285,7 +306,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
             Toast.makeText(getApplicationContext(), "First sample item clicked", Toast.LENGTH_SHORT).show();
         }else if (id == R.id.nav_share) {
             Toast.makeText(getApplicationContext(), "Second sample item clicked", Toast.LENGTH_SHORT).show();
-
         }
 
         drawer.closeDrawer(GravityCompat.START);

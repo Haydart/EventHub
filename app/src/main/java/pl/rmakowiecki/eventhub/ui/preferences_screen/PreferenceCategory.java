@@ -4,7 +4,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.bignerdranch.expandablerecyclerview.model.Parent;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +32,9 @@ public class PreferenceCategory implements Parent<PreferenceInterest>, Parcelabl
         return title;
     }
 
-    public String getImageUrl() { return imageUrl; }
+    public String getImageUrl() {
+        return imageUrl;
+    }
 
     public void addChildString(String child) {
         childrenList.add(child);
