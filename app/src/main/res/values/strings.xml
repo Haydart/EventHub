@@ -5,4 +5,6 @@
   <string name="subcategories_msg">Choose your interests:</string>
   <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
   <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+  <string name="action_settings" translatable="false">Settings</string>
+  <string name="preference_category" translatable="false">preference_category</string>
 </resources>

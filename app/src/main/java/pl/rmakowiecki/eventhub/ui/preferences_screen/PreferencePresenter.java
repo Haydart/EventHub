@@ -29,6 +29,12 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
         onViewInitialization();
     }
 
+    protected void onPreferenceImageClick(PreferenceCategory category) {
+        if (category != null) {
+            view.displayPreferenceDetails(category);
+        }
+    }
+
     @Override
     public PreferenceView getNoOpView() {
         return null;

@@ -4,10 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.bignerdranch.expandablerecyclerview.model.Parent;
-import java.util.ArrayList;
 import java.util.List;
-
-import pl.rmakowiecki.eventhub.model.local.Preference;
 
 // TODO: 22.03.2017 Synchronize Preference with PreferenceCategory and PreferenceInterest
 public class PreferenceCategory implements Parent<PreferenceInterest>, Parcelable {
@@ -15,13 +12,13 @@ public class PreferenceCategory implements Parent<PreferenceInterest>, Parcelabl
     private final String imageUrl;
     private List<String> childrenList;
 
-    PreferenceCategory(String categoryTitle, String imgUrl) {
-        childrenList = new ArrayList<>();
+    PreferenceCategory(String categoryTitle, String imgUrl, List<String> childList) {
+        childrenList = childList;
         title = categoryTitle;
         imageUrl = imgUrl.isEmpty() ? "InvalidUrl" : imgUrl;
     }
 
-    PreferenceCategory(Parcel parcel){
+    PreferenceCategory(Parcel parcel) {
         title = parcel.readString();
         String url = parcel.readString();
         childrenList = parcel.readArrayList(Object.class.getClassLoader());
@@ -36,11 +33,6 @@ public class PreferenceCategory implements Parent<PreferenceInterest>, Parcelabl
         return imageUrl;
     }
 
-    public void addChildString(String child) {
-        childrenList.add(child);
-    }
-
-    @Override
     public List getChildList() {
         return childrenList;
     }

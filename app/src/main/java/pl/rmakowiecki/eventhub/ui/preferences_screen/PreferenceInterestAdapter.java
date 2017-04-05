@@ -19,7 +19,6 @@ public class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceIn
     List<String> interestList;
 
     public PreferenceInterestAdapter(Context context, @NonNull List<String> interestList) {
-        super();
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
         this.interestList = interestList;

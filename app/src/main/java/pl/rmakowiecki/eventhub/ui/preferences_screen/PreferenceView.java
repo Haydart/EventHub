@@ -9,4 +9,8 @@ interface PreferenceView extends BaseView {
     void showPreferences(List<Preference> preference);
 
     void initPreferences(final List<PreferenceCategory> categories);
+
+    void displayPreferenceDetails(PreferenceCategory category);
+
+    void handlePreferenceImageClick(PreferenceCategory category);
 }

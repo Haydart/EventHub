@@ -1,10 +1,8 @@
 package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +14,7 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 
 public class PreferenceAdapter extends RecyclerView.Adapter<PreferenceCategoryViewHolder> {
+
     LayoutInflater layoutInflater;
     Context context;
     List<PreferenceCategory> items;
@@ -29,21 +28,14 @@ public class PreferenceAdapter extends RecyclerView.Adapter<PreferenceCategoryVi
 
     @Override
     public PreferenceCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = layoutInflater.inflate(R.layout.preference_list_parent_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.preference_card_layout, parent, false);
         return new PreferenceCategoryViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(PreferenceCategoryViewHolder holder, int position) {
-        holder.categoryImageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent i = new Intent(context, PreferenceDetails.class);
-                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("preference_category", items.get(position));
-                context.startActivity(i);
-            }
-        });
+        holder.setImageCategory(items.get(position));
+
         Picasso
                 .with(context)
                 .load(items.get(position).getImageUrl())
