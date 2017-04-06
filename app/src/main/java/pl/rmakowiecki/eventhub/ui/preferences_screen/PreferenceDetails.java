@@ -21,6 +21,7 @@ public class PreferenceDetails extends BaseActivity {
     @BindView(R.id.interestsRecyclerView) RecyclerView recyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
+    @BindView(R.id.toolbarImage) ImageView toolbarImage;
     @BindString(R.string.preference_category) String parcelCategoryString;
 
     @Override
@@ -40,7 +41,7 @@ public class PreferenceDetails extends BaseActivity {
                 .with(getBaseContext())
                 .load(category.getImageUrl())
                 .placeholder(R.drawable.ic_image_placeholder)
-                .into((ImageView)findViewById(R.id.toolbarImage));
+                .into(toolbarImage);
     }
 
     private void changeToolbarTitles(PreferenceCategory category) {
