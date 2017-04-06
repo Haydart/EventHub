@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +24,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     private PreferenceItemListener itemListener;
 
     @BindView(R.id.preferencesRecyclerView) RecyclerView recyclerView;
+    @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
     @BindString(R.string.preference_category) String preferenceCategoryString;
 
     @Override
@@ -31,6 +33,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
         layoutManager = new GridLayoutManager(this, GRID_SPAN_COUNT);
         itemListener = category -> presenter.onPreferenceImageClick(category);
+        setSupportActionBar(preferencesToolbar);
     }
 
     @Override
@@ -67,10 +70,5 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
         i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         i.putExtra(preferenceCategoryString, category);
         getBaseContext().startActivity(i);
-    }
-
-    @Override
-    public void handlePreferenceImageClick(PreferenceCategory category) {
-        presenter.onPreferenceImageClick(category);
     }
 }
