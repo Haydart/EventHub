@@ -49,9 +49,9 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     @Override
     public void showPreferences(List<Preference> preferences) {
         List<PreferenceCategory> categories = new ArrayList<>();
+        PreferenceModelMapper mapper = new PreferenceModelMapper();
         for (Preference preference : preferences) {
-            PreferenceCategory category = new PreferenceCategory(preference.getName(), preference.getImageUrl(), preference.getSubCategories());
-            categories.add(category);
+            categories.add(mapper.map(preference));
         }
 
         initPreferences(categories);
@@ -66,9 +66,9 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @Override
     public void displayPreferenceDetails(PreferenceCategory category) {
-        Intent i = new Intent(getBaseContext(), PreferenceDetails.class);
-        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        i.putExtra(preferenceCategoryString, category);
-        getBaseContext().startActivity(i);
+        Intent intent = new Intent(getBaseContext(), PreferenceDetails.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(preferenceCategoryString, category);
+        startActivity(intent);
     }
 }

@@ -21,7 +21,6 @@ public class PreferenceAdapter extends RecyclerView.Adapter<PreferenceCategoryVi
     private PreferenceItemListener itemListener;
 
     public PreferenceAdapter(Context context, @NonNull List<PreferenceCategory> parentItemList, PreferenceItemListener listener) {
-        super();
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
         items = parentItemList;

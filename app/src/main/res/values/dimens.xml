@@ -12,5 +12,12 @@
     <dimen name="standard_margin_large">16dp</dimen>
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="text_margin">16dp</dimen>
+    <dimen name="gradient_height">100dp</dimen>
+    <dimen name="interests_recycler_view_margin">36dp</dimen>
+    <dimen name="card_corner_radius">2dp</dimen>
+    <dimen name="card_content_padding">6dp</dimen>
+    <dimen name="card_image_view_height">114dp</dimen>
+    <dimen name="card_text_margin">2dp</dimen>
+    <dimen name="preference_child_list_height">44dp</dimen>
 </resources>
 

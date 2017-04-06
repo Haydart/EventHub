@@ -14,9 +14,9 @@ import pl.rmakowiecki.eventhub.R;
 
 
 public class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceInterestViewHolder> {
-    LayoutInflater layoutInflater;
-    Context context;
-    List<String> interestList;
+    private LayoutInflater layoutInflater;
+    private Context context;
+    private List<String> interestList;
 
     public PreferenceInterestAdapter(Context context, @NonNull List<String> interestList) {
         layoutInflater = LayoutInflater.from(context);
@@ -32,8 +32,7 @@ public class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceIn
 
     @Override
     public void onBindViewHolder(PreferenceInterestViewHolder holder, int position) {
-        holder.interestInterestedCheckBox = new CheckBox(context);
-        holder.interestNameTextView.setText(interestList.get(position));
+        holder.bindView(interestList.get(position));
     }
 
     @Override

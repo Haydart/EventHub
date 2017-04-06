@@ -16,27 +16,28 @@ import butterknife.OnClick;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 
-public class PreferenceDetails extends BaseActivity {
+public class PreferenceDetails extends BaseActivity implements PreferenceDetailsView {
 
-    @BindView(R.id.interestsRecyclerView) RecyclerView recyclerView;
+    @BindView(R.id.interests_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
-    @BindView(R.id.toolbarImage) ImageView toolbarImage;
+    @BindView(R.id.toolbar_image) ImageView toolbarImage;
     @BindString(R.string.preference_category) String parcelCategoryString;
+
+    private PreferenceCategory category;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        PreferenceCategory category = getIntent().getParcelableExtra(parcelCategoryString);
-        displayToolbarImage(category);
-        changeToolbarTitles(category);
-        loadAdapter(category);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    private void displayToolbarImage(PreferenceCategory category) {
+    @Override
+    public void getPreferenceCategoryFromParcel() {
+        category = getIntent().getParcelableExtra(parcelCategoryString);
+    }
+
+    @Override
+    public void displayToolbarImage() {
         Picasso
                 .with(getBaseContext())
                 .load(category.getImageUrl())
@@ -44,17 +45,25 @@ public class PreferenceDetails extends BaseActivity {
                 .into(toolbarImage);
     }
 
-    private void changeToolbarTitles(PreferenceCategory category) {
+    @Override
+    public void changeToolbarTitles() {
         toolbar.setTitle("");
         collapsingToolbarLayout.setTitle(category.getTitle());
         setSupportActionBar(toolbar);
     }
 
-    private void loadAdapter(PreferenceCategory category) {
+    @Override
+    public void loadAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         RecyclerView.Adapter adapter = new PreferenceInterestAdapter(getBaseContext(), category.getChildList());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void enableHomeButton() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     @OnClick(R.id.preference_details_fab)
@@ -64,7 +73,7 @@ public class PreferenceDetails extends BaseActivity {
 
     @Override
     protected void initPresenter() {
-        // TODO: 05.04.2017 create view and presenter
+        presenter = new PreferenceDetailsPresenter();
     }
 
     @Override
