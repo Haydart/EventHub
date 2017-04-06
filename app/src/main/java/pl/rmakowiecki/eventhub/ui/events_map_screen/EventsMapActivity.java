@@ -1,6 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.events_map_screen;
 
 import android.Manifest;
+import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -17,6 +18,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -63,6 +65,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private GoogleMap googleMap;
     private Marker mapClickMarker;
     private BottomSheetBehavior bottomSheetBehavior;
+
 
     @OnClick(R.id.bottom_sheet_fab)
     public void onBottomSheetFabClicked() {
@@ -139,6 +142,16 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     protected void onStart() {
         super.onStart();
         presenter.onViewInitialization();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.promptForLocalizationSettings();
+    }
+
+    public void showLocationSettingsDialog(Status status) throws IntentSender.SendIntentException {
+        status.startResolutionForResult(this, 0);
     }
 
     @Override

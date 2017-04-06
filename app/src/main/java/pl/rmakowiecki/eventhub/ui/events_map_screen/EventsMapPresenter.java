@@ -1,5 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.events_map_screen;
 
+import android.content.IntentSender;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.LocationProvider;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
@@ -62,6 +64,20 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 );
     }
 
+    void promptForLocalizationSettings() {
+        locationProvider.isLocationTurnedOn()
+                .filter(response -> response != null)
+                .compose(applySchedulers())
+                .subscribe(status -> {
+                    if (status.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                        try {
+                            view.showLocationSettingsDialog(status);
+                        } catch (IntentSender.SendIntentException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
     void onMapViewInitialized() {
         //no-op
     }
