@@ -46,8 +46,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     @Override
     public void showPreferences(List<Preference> preferences) {
         List<PreferenceCategory> categories = new ArrayList<>();
-        for (Preference preference : preferences)
-        {
+        for (Preference preference : preferences) {
             PreferenceCategory category = new PreferenceCategory(preference.getName(), preference.getImageUrl(), preference.getSubCategories());
             categories.add(category);
         }
