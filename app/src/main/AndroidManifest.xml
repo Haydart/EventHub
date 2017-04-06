@@ -18,7 +18,7 @@
             android:value="AIzaSyAGoSHs_fLSza280Wt5FR55jWrH81gnQL4" />
 
         <activity
-            android:name=".ui.preferences_screen.PreferenceActivity"
+            android:name=".ui.events_map_screen.EventsMapActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -28,12 +28,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.events_map_screen.EventsMapActivity"
+            android:name=".ui.preferences_screen.PreferenceActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.preferences_screen.PreferenceDetails"
-            android:theme="@style/AppTheme"></activity>
+            android:parentActivityName=".ui.preferences_screen.PreferenceActivity"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

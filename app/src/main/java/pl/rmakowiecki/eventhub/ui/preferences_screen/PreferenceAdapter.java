@@ -15,32 +15,28 @@ import pl.rmakowiecki.eventhub.R;
 
 public class PreferenceAdapter extends RecyclerView.Adapter<PreferenceCategoryViewHolder> {
 
-    LayoutInflater layoutInflater;
-    Context context;
-    List<PreferenceCategory> items;
+    private LayoutInflater layoutInflater;
+    private Context context;
+    private List<PreferenceCategory> items;
+    private PreferenceItemListener itemListener;
 
-    public PreferenceAdapter(Context context, @NonNull List<PreferenceCategory> parentItemList) {
+    public PreferenceAdapter(Context context, @NonNull List<PreferenceCategory> parentItemList, PreferenceItemListener listener) {
         super();
         layoutInflater = LayoutInflater.from(context);
         this.context = context;
         items = parentItemList;
+        itemListener = listener;
     }
 
     @Override
     public PreferenceCategoryViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.preference_card_layout, parent, false);
-        return new PreferenceCategoryViewHolder(view);
+        return new PreferenceCategoryViewHolder(view, itemListener);
     }
 
     @Override
     public void onBindViewHolder(PreferenceCategoryViewHolder holder, int position) {
-        holder.setImageCategory(items.get(position));
-
-        Picasso
-                .with(context)
-                .load(items.get(position).getImageUrl())
-                .placeholder(R.drawable.ic_image_placeholder)
-                .into(holder.categoryImageView);
+        holder.bindView(items.get(position));
     }
 
     @Override

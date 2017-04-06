@@ -20,6 +20,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private PreferenceItemListener itemListener;
 
     @BindView(R.id.preferencesRecyclerView) RecyclerView recyclerView;
     @BindString(R.string.preference_category) String preferenceCategoryString;
@@ -29,6 +30,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
         super.onCreate(savedInstanceState);
 
         layoutManager = new GridLayoutManager(this, GRID_SPAN_COUNT);
+        itemListener = category -> presenter.onPreferenceImageClick(category);
     }
 
     @Override
@@ -55,7 +57,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @Override
     public void initPreferences(final List<PreferenceCategory> categories) {
-        adapter = new PreferenceAdapter(getBaseContext(), categories);
+        adapter = new PreferenceAdapter(getBaseContext(), categories, itemListener);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }

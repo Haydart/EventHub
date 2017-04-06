@@ -31,6 +31,8 @@ public class PreferenceDetails extends BaseActivity {
         displayToolbarImage(category);
         changeToolbarTitles(category);
         loadAdapter(category);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
     }
 
     private void displayToolbarImage(PreferenceCategory category) {
@@ -67,5 +69,10 @@ public class PreferenceDetails extends BaseActivity {
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_preference_details;
+    }
+
+    @Override
+    protected boolean shouldMoveToBack() {
+        return true;
     }
 }
