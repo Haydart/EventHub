@@ -30,5 +30,5 @@ interface EventsMapView extends BaseView {
 
     void setDefaultMapPadding();
 
-    void showLocationSettingsDialog(Status status) throws IntentSender.SendIntentException;
+    void showLocationSettingsDialog(StatusWrapper sw);
 }

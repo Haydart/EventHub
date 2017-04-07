@@ -8,13 +8,13 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.PendingResult;
 import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
+import pl.rmakowiecki.eventhub.ui.events_map_screen.StatusWrapper;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -28,7 +28,7 @@ public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnC
     @NonNull private LocationListener locationListener;
     private PublishSubject<LocationCoordinates> locationPublishSubject;
     private PendingResult<LocationSettingsResult> result;
-    private Status status;
+    private StatusWrapper statusWrapper;
 
     public RxLocationProvider() {
         initLocationRequest();
@@ -44,8 +44,8 @@ public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnC
     }
 
     @Override
-    public Observable<Status> isLocationTurnedOn() {
-        return Observable.just(status);
+    public Observable<StatusWrapper> isLocationTurnedOn() {
+        return Observable.just(statusWrapper);
     }
 
     @Override
@@ -98,7 +98,7 @@ public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnC
 
     @Override
     public void onResult(@NonNull LocationSettingsResult result) {
-        status = result.getStatus();
+        statusWrapper = new StatusWrapper(result.getStatus());
     }
 
     private interface OnClientConnectedListener {

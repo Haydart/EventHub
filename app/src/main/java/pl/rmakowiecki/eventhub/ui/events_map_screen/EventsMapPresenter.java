@@ -69,14 +69,14 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 .filter(response -> response != null)
                 .compose(applySchedulers())
                 .subscribe(status -> {
-                    if (status.getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
-                        try {
-                            view.showLocationSettingsDialog(status);
-                        } catch (IntentSender.SendIntentException e) {
-                            e.printStackTrace();
-                        }
+                    if (status.getStatus().getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                        view.showLocationSettingsDialog(status);
                     }
                 });
+    }
+
+    void onViewVisible() {
+        promptForLocalizationSettings();
     }
     void onMapViewInitialized() {
         //no-op
@@ -168,4 +168,6 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     public EventsMapView getNoOpView() {
         return NoOpEventsMapView.INSTANCE;
     }
+
+
 }

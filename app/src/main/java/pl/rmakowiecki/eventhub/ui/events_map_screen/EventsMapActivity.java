@@ -147,11 +147,15 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.promptForLocalizationSettings();
+        presenter.onViewVisible();
     }
 
-    public void showLocationSettingsDialog(Status status) throws IntentSender.SendIntentException {
-        status.startResolutionForResult(this, 0);
+    public void showLocationSettingsDialog(StatusWrapper status){
+        try {
+            status.getStatus().startResolutionForResult(this, 0);
+        } catch (IntentSender.SendIntentException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
