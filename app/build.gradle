@@ -82,15 +82,15 @@ dependencies {
 
     //RxPermissions
     compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.3@aar'
-	
+
 	//Butterknife
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-	
+
 	//No-Op
     annotationProcessor 'com.jenzz.noop:processor:1.2.0'
     provided 'com.jenzz.noop:annotation:1.2.0'
-	
+
 	//ExpandableRecyclerView
     compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
 

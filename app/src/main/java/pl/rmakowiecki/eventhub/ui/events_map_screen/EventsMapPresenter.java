@@ -62,6 +62,20 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 );
     }
 
+    void promptForLocalizationSettings() {
+        locationProvider.isLocationTurnedOn()
+                .filter(response -> response != null)
+                .compose(applySchedulers())
+                .subscribe(status -> {
+                    if (status.isLocationSettingRequired()) {
+                        view.showLocationSettingsDialog(status);
+                    }
+                });
+    }
+
+    void onViewVisible() {
+        promptForLocalizationSettings();
+    }
     void onMapViewInitialized() {
         //no-op
     }
@@ -152,4 +166,6 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     public EventsMapView getNoOpView() {
         return NoOpEventsMapView.INSTANCE;
     }
+
+
 }

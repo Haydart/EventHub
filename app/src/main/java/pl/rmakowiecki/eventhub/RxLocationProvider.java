@@ -6,15 +6,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResult;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
+import pl.rmakowiecki.eventhub.ui.events_map_screen.StatusWrapper;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
 @SuppressWarnings("MissingPermission")
-public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnConnectionFailedListener {
+public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnConnectionFailedListener, ResultCallback<LocationSettingsResult> {
     private static final int LOCATION_UPDATES_INTERVAL = 10000;
     private static final int LOCATION_UPDATES_FASTEST_INTERVAL = 5000;
 
@@ -22,6 +27,8 @@ public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnC
     private LocationRequest locationRequest;
     @NonNull private LocationListener locationListener;
     private PublishSubject<LocationCoordinates> locationPublishSubject;
+    private PendingResult<LocationSettingsResult> result;
+    private StatusWrapper statusWrapper;
 
     public RxLocationProvider() {
         initLocationRequest();
@@ -37,6 +44,11 @@ public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnC
     }
 
     @Override
+    public Observable<StatusWrapper> isLocationTurnedOn() {
+        return Observable.just(statusWrapper);
+    }
+
+    @Override
     public Observable<LocationCoordinates> getLocation() {
         buildAndConnectApiClient(() -> publishLocation(LocationServices.FusedLocationApi.getLastLocation(googleApiClient)));
         return locationPublishSubject;
@@ -49,6 +61,14 @@ public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnC
     @Override
     public Observable<LocationCoordinates> getLocationUpdates() {
         buildAndConnectApiClient(() -> LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, locationListener));
+        LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder()
+                .addLocationRequest(locationRequest);
+        builder.setAlwaysShow(true);
+        result = LocationServices.SettingsApi.checkLocationSettings(
+                googleApiClient,
+                builder.build()
+        );
+        result.setResultCallback(this);
         return locationPublishSubject;
     }
 
@@ -74,6 +94,11 @@ public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnC
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         locationPublishSubject.onError(new Exception(connectionResult.getErrorMessage()));
+    }
+
+    @Override
+    public void onResult(@NonNull LocationSettingsResult result) {
+        statusWrapper = new StatusWrapper(result.getStatus());
     }
 
     private interface OnClientConnectedListener {
