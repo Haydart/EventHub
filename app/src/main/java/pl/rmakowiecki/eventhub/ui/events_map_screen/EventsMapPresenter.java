@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.events_map_screen;
 
-import android.content.IntentSender;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.LocationProvider;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
@@ -69,7 +67,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 .filter(response -> response != null)
                 .compose(applySchedulers())
                 .subscribe(status -> {
-                    if (status.getStatus().getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED) {
+                    if (status.isLocationSettingRequired()) {
                         view.showLocationSettingsDialog(status);
                     }
                 });
