@@ -8,7 +8,6 @@ import com.google.android.gms.location.LocationSettingsStatusCodes;
  */
 
 public class StatusWrapper {
-
     Status status;
 
     public StatusWrapper(Status status)
@@ -20,8 +19,7 @@ public class StatusWrapper {
         return status;
     }
 
-    public boolean isLocationSettingRequired()
-    {
+    public boolean isLocationSettingRequired() {
         return status.getStatus().getStatusCode() == LocationSettingsStatusCodes.RESOLUTION_REQUIRED;
     }
 }
