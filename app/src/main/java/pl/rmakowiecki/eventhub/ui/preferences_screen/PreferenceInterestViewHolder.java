@@ -29,4 +29,12 @@ public class PreferenceInterestViewHolder extends ChildViewHolder {
     public void bindView(String nameText) {
         interestNameTextView.setText(nameText);
     }
+
+    public String getCategoryName() {
+        return interestNameTextView.getText().toString();
+    }
+
+    public boolean isChecked() {
+        return interestInterestedCheckBox.isChecked();
+    }
 }

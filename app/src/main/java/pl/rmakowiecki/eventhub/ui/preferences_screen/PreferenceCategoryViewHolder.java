@@ -37,9 +37,15 @@ public class PreferenceCategoryViewHolder extends ParentViewHolder {
         this.category = category;
         categoryNameView.setText(category.getTitle());
 
+        int resourceID =
+                view
+                        .getContext()
+                        .getResources()
+                        .getIdentifier(category.getImageResourceName(), "drawable", view.getContext().getPackageName());
+
         Picasso
                 .with(view.getContext())
-                .load(category.getImageUrl())
+                .load(resourceID != 0 ? resourceID : R.drawable.ic_image_placeholder)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .fit()
                 .into(categoryImageView);

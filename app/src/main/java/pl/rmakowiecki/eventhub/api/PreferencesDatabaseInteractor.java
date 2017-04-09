@@ -17,7 +17,8 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
     @Override
     protected void setDatabaseQueryNode() {
         databaseQueryNode = firebaseDatabase
-                .getReference("event_categories") // TODO: 22.03.2017 Add constant reference
+                .getReference("app_data") // TODO: 2017-04-09 Add constant reference 
+                .child("event_categories") // TODO: 22.03.2017 Add constant reference
                 .child("en"); // TODO: 22.03.2017 Specify locale in specification
     }
 

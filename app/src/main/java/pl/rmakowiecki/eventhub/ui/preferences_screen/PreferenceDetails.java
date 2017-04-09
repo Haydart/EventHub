@@ -8,7 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import butterknife.BindString;
 import butterknife.BindView;
@@ -25,6 +33,7 @@ public class PreferenceDetails extends BaseActivity implements PreferenceDetails
     @BindString(R.string.preference_category) String parcelCategoryString;
 
     private PreferenceCategory category;
+    private PreferenceInterestAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,9 +47,13 @@ public class PreferenceDetails extends BaseActivity implements PreferenceDetails
 
     @Override
     public void displayToolbarImage() {
+        int resourceID =
+                getResources()
+                .getIdentifier(category.getImageResourceName(), "drawable", getPackageName());
+
         Picasso
-                .with(getBaseContext())
-                .load(category.getImageUrl())
+                .with(this)
+                .load(resourceID != 0 ? resourceID : R.drawable.ic_image_placeholder)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .into(toolbarImage);
     }
@@ -55,7 +68,7 @@ public class PreferenceDetails extends BaseActivity implements PreferenceDetails
     @Override
     public void loadAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        RecyclerView.Adapter adapter = new PreferenceInterestAdapter(getBaseContext(), category.getChildList());
+        adapter = new PreferenceInterestAdapter(getBaseContext(), category.getChildList());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -68,7 +81,19 @@ public class PreferenceDetails extends BaseActivity implements PreferenceDetails
 
     @OnClick(R.id.preference_details_fab)
     public void onFloatingActionButtonClick(View v) {
-        // TODO: 05.04.2017
+        // TODO: 2017-04-09 Add constant references
+        List<String> subCategories = adapter.getCheckedSubCategories();
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user_data");
+        DatabaseReference userPreferencesRef =
+                reference
+                .child(user.getUid())
+                .child("preferences");
+
+        Map<String, List<String>> categories = new HashMap<>();
+        categories.put(category.getTitle(), subCategories);
+        userPreferencesRef.setValue(categories);
+        onBackPressed();
     }
 
     @Override
