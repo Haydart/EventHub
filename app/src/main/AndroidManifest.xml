@@ -32,7 +32,7 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.preferences_screen.PreferenceDetails"
+            android:name=".ui.preferences_screen.PreferenceDetailsActivity"
             android:parentActivityName=".ui.preferences_screen.PreferenceActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.events_map_screen.EventsMapActivity"

@@ -16,13 +16,11 @@ import pl.rmakowiecki.eventhub.R;
 
 public class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceInterestViewHolder> {
     private LayoutInflater layoutInflater;
-    private Context context;
     private List<String> interestList;
     private List<PreferenceInterestViewHolder> holders;
 
     public PreferenceInterestAdapter(Context context, @NonNull List<String> interestList) {
         layoutInflater = LayoutInflater.from(context);
-        this.context = context;
         this.interestList = interestList;
         holders = new ArrayList<>();
     }

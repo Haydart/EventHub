@@ -13,13 +13,11 @@ import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceActivity;
 public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthView {
 
     private FirebaseAuth firebaseAuth;
-    private FirebaseAuth.AuthStateListener authListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseAuth = FirebaseAuth.getInstance();
-        authListener = firebaseAuth1 -> {};
     }
 
     @Override
@@ -32,28 +30,14 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         return R.layout.auth_layout;
     }
 
-    @OnClick(R.id.authEventButton)
+    @OnClick(R.id.auth_event_button)
     protected void onEventButtonClick() {
         presenter.onEventButtonClick();
     }
 
-    @OnClick(R.id.authPreferencesButton)
+    @OnClick(R.id.auth_preferences_button)
     protected void onPreferencesButtonClick() {
         presenter.onPreferencesButtonClick();
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        firebaseAuth.addAuthStateListener(authListener);
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (authListener != null) {
-            firebaseAuth.removeAuthStateListener(authListener);
-        }
     }
 
     @Override
@@ -64,8 +48,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Intent intent = new Intent(getBaseContext(), EventsMapActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent intent = new Intent(this, EventsMapActivity.class);
                         startActivity(intent);
                     }
                 });
@@ -79,8 +62,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
                 .signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, task -> {
                     if (task.isSuccessful()) {
-                        Intent intent = new Intent(getBaseContext(), PreferenceActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        Intent intent = new Intent(this, PreferenceActivity.class);
                         startActivity(intent);
                     }
                 });

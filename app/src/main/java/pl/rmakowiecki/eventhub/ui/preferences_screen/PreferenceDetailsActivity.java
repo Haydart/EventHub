@@ -24,7 +24,10 @@ import butterknife.OnClick;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 
-public class PreferenceDetails extends BaseActivity implements PreferenceDetailsView {
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.userDataReference;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.userPreferencesReference;
+
+public class PreferenceDetailsActivity extends BaseActivity implements PreferenceDetailsView {
 
     @BindView(R.id.interests_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -47,8 +50,7 @@ public class PreferenceDetails extends BaseActivity implements PreferenceDetails
 
     @Override
     public void displayToolbarImage() {
-        int resourceID =
-                getResources()
+        int resourceID = getResources()
                 .getIdentifier(category.getImageResourceName(), "drawable", getPackageName());
 
         Picasso
@@ -68,7 +70,7 @@ public class PreferenceDetails extends BaseActivity implements PreferenceDetails
     @Override
     public void loadAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        adapter = new PreferenceInterestAdapter(getBaseContext(), category.getChildList());
+        adapter = new PreferenceInterestAdapter(this, category.getChildList());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -81,19 +83,26 @@ public class PreferenceDetails extends BaseActivity implements PreferenceDetails
 
     @OnClick(R.id.preference_details_fab)
     public void onFloatingActionButtonClick(View v) {
-        // TODO: 2017-04-09 Add constant references
+
         List<String> subCategories = adapter.getCheckedSubCategories();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("user_data");
-        DatabaseReference userPreferencesRef =
-                reference
-                .child(user.getUid())
-                .child("preferences");
 
-        Map<String, List<String>> categories = new HashMap<>();
-        categories.put(category.getTitle(), subCategories);
-        userPreferencesRef.setValue(categories);
-        onBackPressed();
+        if (user.getUid().isEmpty()) {
+            // TODO: 10.04.2017 Handle case when user is not logged in (save preferences temporarily)
+        }
+        else {
+            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(userDataReference);
+            DatabaseReference userPreferencesRef =
+                    reference
+                            .child(user.getUid())
+                            .child(userPreferencesReference);
+
+            Map<String, List<String>> categories = new HashMap<>();
+            categories.put(category.getTitle(), subCategories);
+            userPreferencesRef.setValue(categories);
+        }
+
+        finish();
     }
 
     @Override
