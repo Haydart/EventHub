@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="app_name" translatable="false">EventHub</string>
-  <string name="hello_world">Hello World</string>
-  <string name="subcategories_msg">Choose your interests:</string>
-  <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
-  <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-  <string name="action_settings" translatable="false">Settings</string>
-  <string name="preference_category" translatable="false">preference_category</string>
+    <string name="app_name" translatable="false">EventHub</string>
+    <string name="hello_world">Hello World</string>
+    <string name="subcategories_msg">Choose your interests:</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="preference_category" translatable="false">preference_category</string>
 </resources>

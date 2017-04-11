@@ -66,7 +66,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @Override
     public void displayPreferenceDetails(PreferenceCategory category) {
-        Intent intent = new Intent(getBaseContext(), PreferenceDetails.class);
+        Intent intent = new Intent(getBaseContext(), PreferenceDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(preferenceCategoryString, category);
         startActivity(intent);

@@ -17,6 +17,8 @@ public class PreferenceCategoryViewHolder extends ParentViewHolder {
     @BindView(R.id.preference_category_list_item_image_view) ImageView categoryImageView;
     @BindView(R.id.preference_category_list_item_category_name) TextView categoryNameView;
 
+    private final String resourceSource = "drawable";
+
     private View view;
     private PreferenceCategory category;
     private PreferenceItemListener itemListener;
@@ -37,9 +39,14 @@ public class PreferenceCategoryViewHolder extends ParentViewHolder {
         this.category = category;
         categoryNameView.setText(category.getTitle());
 
+        int resourceID = view
+                        .getContext()
+                        .getResources()
+                        .getIdentifier(category.getImageResourceName(), resourceSource, view.getContext().getPackageName());
+
         Picasso
                 .with(view.getContext())
-                .load(category.getImageUrl())
+                .load(resourceID != 0 ? resourceID : R.drawable.ic_image_placeholder)
                 .placeholder(R.drawable.ic_image_placeholder)
                 .fit()
                 .into(categoryImageView);

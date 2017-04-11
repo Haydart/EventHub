@@ -9,28 +9,28 @@ import java.util.List;
 // TODO: 22.03.2017 Synchronize Preference with PreferenceCategory and PreferenceInterest
 public class PreferenceCategory implements Parent<PreferenceInterest>, Parcelable {
     private final String title;
-    private final String imageUrl;
+    private final String imageResourceName;
     private List<String> childrenList;
 
-    PreferenceCategory(String categoryTitle, String imgUrl, List<String> childList) {
+    PreferenceCategory(String categoryTitle, String imgResourceName, List<String> childList) {
         childrenList = childList;
         title = categoryTitle;
-        imageUrl = imgUrl.isEmpty() ? "InvalidUrl" : imgUrl;
+        imageResourceName = imgResourceName.isEmpty() ? "InvalidName" : imgResourceName;
     }
 
     PreferenceCategory(Parcel parcel) {
         title = parcel.readString();
-        String url = parcel.readString();
+        String resourceName = parcel.readString();
         childrenList = parcel.readArrayList(Object.class.getClassLoader());
-        imageUrl = url.isEmpty() ? "InvalidUrl" : url;
+        imageResourceName = resourceName.isEmpty() ? "InvalidName" : resourceName;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageResourceName() {
+        return imageResourceName;
     }
 
     public List getChildList() {
@@ -61,7 +61,7 @@ public class PreferenceCategory implements Parent<PreferenceInterest>, Parcelabl
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
-        dest.writeString(imageUrl);
+        dest.writeString(imageResourceName);
         dest.writeList(childrenList);
     }
 }
