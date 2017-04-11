@@ -12,11 +12,11 @@ import pl.rmakowiecki.eventhub.model.local.Preference;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.appDataReference;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.categoriesImagesReference;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.categoriesReference;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.categoriesReferences;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.enLocaleReference;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.APP_DATA_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_IMAGES_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_REFERENCES;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EN_LOCALE_REFERENCE;
 
 @SuppressWarnings("unchecked")
 public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<Preference>> {
@@ -24,15 +24,15 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
     @Override
     protected void setDatabaseQueryNode() {
         databaseQueryNode = firebaseDatabase
-                .getReference(appDataReference)
-                .child(categoriesReference)
-                .child(enLocaleReference); // TODO: 10.04.2017 Add getting locale from query specification
+                .getReference(APP_DATA_REFERENCE)
+                .child(CATEGORIES_REFERENCE)
+                .child(EN_LOCALE_REFERENCE); // TODO: 10.04.2017 Add getting locale from query specification
     }
 
     private List<Preference> parsePreferenceData(DataSnapshot dataSnapshot) {
         Map<String, Object> mainMap = (HashMap<String, Object>)dataSnapshot.getValue();
-        Map<String, String> imagesMap = (HashMap<String, String>)mainMap.get(categoriesImagesReference);
-        Map<String, Object> categoryMap = (HashMap<String, Object>)mainMap.get(categoriesReferences);
+        Map<String, String> imagesMap = (HashMap<String, String>)mainMap.get(CATEGORIES_IMAGES_REFERENCE);
+        Map<String, Object> categoryMap = (HashMap<String, Object>)mainMap.get(CATEGORIES_REFERENCES);
         
         return getPreferenceListFromMap(imagesMap, categoryMap);
     }

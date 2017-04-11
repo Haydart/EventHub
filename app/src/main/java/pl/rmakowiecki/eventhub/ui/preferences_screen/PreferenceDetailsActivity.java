@@ -24,8 +24,8 @@ import butterknife.OnClick;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.userDataReference;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.userPreferencesReference;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_DATA_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PREFERENCES_REFERENCE;
 
 public class PreferenceDetailsActivity extends BaseActivity implements PreferenceDetailsView {
 
@@ -87,19 +87,19 @@ public class PreferenceDetailsActivity extends BaseActivity implements Preferenc
         List<String> subCategories = adapter.getCheckedSubCategories();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-        if (user.getUid().isEmpty()) {
-            // TODO: 10.04.2017 Handle case when user is not logged in (save preferences temporarily)
-        }
-        else {
-            DatabaseReference reference = FirebaseDatabase.getInstance().getReference(userDataReference);
-            DatabaseReference userPreferencesRef =
-                    reference
+        if (user != null) {
+            DatabaseReference userPreferencesRef = FirebaseDatabase
+                            .getInstance()
+                            .getReference(USER_DATA_REFERENCE)
                             .child(user.getUid())
-                            .child(userPreferencesReference);
+                            .child(USER_PREFERENCES_REFERENCE);
 
             Map<String, List<String>> categories = new HashMap<>();
             categories.put(category.getTitle(), subCategories);
             userPreferencesRef.setValue(categories);
+        }
+        else {
+            // TODO: 11.04.2017  Handle case when user is not logged in (save preferences temporarily)
         }
 
         finish();
