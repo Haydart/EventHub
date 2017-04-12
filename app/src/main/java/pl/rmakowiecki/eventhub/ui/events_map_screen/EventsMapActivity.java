@@ -96,13 +96,12 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(com.google.android.gms.location.places.Place place) {
-                Toast.makeText(EventsMapActivity.this, place.getAddress(), Toast.LENGTH_SHORT).show();
+                presenter.onSearchedPlaceSelected();
             }
 
             @Override
             public void onError(Status status) {
-                Toast.makeText(EventsMapActivity.this, "ERRUR", Toast.LENGTH_SHORT).show();
-                Log.d("SEARCH ERROR", status.getStatusMessage());
+                presenter.onPlaceSearchError();
             }
         });
     }

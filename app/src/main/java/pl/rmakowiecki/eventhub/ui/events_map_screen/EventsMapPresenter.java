@@ -124,6 +124,14 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         }
     }
 
+    void onPlaceSearchError() {
+        // TODO: 12/04/2017 implement
+    }
+
+    void onSearchedPlaceSelected() {
+        // TODO: 12/04/2017 implement
+    }
+
     void onMapCameraIdle() {
         if (isMapClickMarkerShown || isFocusedOnProvidedMarker) {
             appointMapTransitionTask(focusedMarkerLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
@@ -168,6 +176,4 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     public EventsMapView getNoOpView() {
         return NoOpEventsMapView.INSTANCE;
     }
-
-
 }
