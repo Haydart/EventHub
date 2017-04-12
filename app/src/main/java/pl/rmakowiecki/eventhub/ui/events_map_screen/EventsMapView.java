@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.events_map_screen;
 
-import android.content.IntentSender;
-import com.google.android.gms.common.api.Status;
 import com.jenzz.noop.annotation.NoOp;
 import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;

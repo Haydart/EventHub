@@ -13,7 +13,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
-    private static final int CAMERA_MOVE_TO_LOCATION_DELAY = 1000;
+    private static final int CAMERA_MOVE_TO_LOCATION_DELAY = 5000;
 
     private Repository<Place> placesRepository;
     private LocationProvider locationProvider;
@@ -53,10 +53,11 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 .subscribe(
                         locationCoordinates -> {
                             updateCurrentLocation(locationCoordinates);
-                            placesRepository
+                            /*placesRepository
                                     .query(new LocationSpecification(lastKnownDeviceLocation))
                                     .compose(applySchedulers())
-                                    .subscribe(view::showPlaces);
+                                    .subscribe(view::showPlaces);*/
+                            // TODO: 12/04/2017 find better place to make draining api calls
                         },
                         Throwable::printStackTrace
                 );
@@ -76,6 +77,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     void onViewVisible() {
         promptForLocalizationSettings();
     }
+
     void onMapViewInitialized() {
         //no-op
     }

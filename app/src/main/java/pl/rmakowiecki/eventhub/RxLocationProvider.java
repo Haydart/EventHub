@@ -20,8 +20,8 @@ import rx.subjects.PublishSubject;
 
 @SuppressWarnings("MissingPermission")
 public class RxLocationProvider implements LocationProvider, GoogleApiClient.OnConnectionFailedListener, ResultCallback<LocationSettingsResult> {
-    private static final int LOCATION_UPDATES_INTERVAL = 10000;
-    private static final int LOCATION_UPDATES_FASTEST_INTERVAL = 5000;
+    private static final int LOCATION_UPDATES_INTERVAL = 5000;
+    private static final int LOCATION_UPDATES_FASTEST_INTERVAL = 2000;
 
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
