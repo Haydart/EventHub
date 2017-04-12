@@ -15,13 +15,13 @@
         android:layout_height="match_parent"
         tools:context="pl.rmakowiecki.eventhub.ui.events_map_screen.EventsMapActivity">
 
-        <include layout="@layout/app_bar_navigation" />
-
         <fragment
             android:id="@+id/events_map_fragment"
             class="com.google.android.gms.maps.MapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <include layout="@layout/app_bar_navigation" />
 
         <include layout="@layout/map_bottom_sheet" />
 

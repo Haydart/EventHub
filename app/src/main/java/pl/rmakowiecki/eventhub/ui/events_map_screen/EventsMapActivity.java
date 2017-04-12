@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,6 +21,8 @@ import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -30,6 +34,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
+import com.squareup.picasso.Picasso;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -51,15 +56,14 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
     private static final long PERMISSION_CHECKING_DELAY = 250;
-    public static final int MAP_PADDING_TOP = 64;
-    private static final int BOTTOM_SHEET_MAP_PADDING = 256;
+    public static final int MAP_PADDING_TOP = 128;
+    private static final int BOTTOM_SHEET_MAP_PADDING = 300;
     public static final int FAB_ANIMATION_DURATION = 300;
     public static final int FAB_FULL_SCALE = 1;
 
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.bottom_sheet_fab) FloatingActionButton bottomSheetFab;
-    @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.map_bottom_sheet) FrameLayout mapBottomSheet;
 
     private GoogleMap googleMap;
@@ -82,10 +86,24 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setSupportActionBar(toolbar);
         checkLocationPermissions();
         initMapBottomSheet();
         initNavigationDrawer();
+
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(com.google.android.gms.location.places.Place place) {
+                presenter.onSearchedPlaceSelected();
+            }
+
+            @Override
+            public void onError(Status status) {
+                presenter.onPlaceSearchError();
+            }
+        });
     }
 
     private void checkLocationPermissions() {
@@ -104,7 +122,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     private void initNavigationDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
@@ -150,6 +168,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         presenter.onViewVisible();
     }
 
+    @Override
     public void showLocationSettingsDialog(StatusWrapper status){
         try {
             status.getStatus().startResolutionForResult(this, 0);
