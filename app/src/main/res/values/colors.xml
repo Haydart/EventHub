@@ -5,4 +5,6 @@
     <color name="colorAccent">#9C27B0</color>
     <color name="colorGray">#CBCBCB</color>
     <color name="white">#FFFFFF</color>
+    <color name="failure_red">#D50000</color>
+    <color name="success_green">#00C853</color>
 </resources>

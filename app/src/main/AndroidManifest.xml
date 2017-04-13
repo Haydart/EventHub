@@ -10,7 +10,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
+        android:supportsRtl="false"
         android:theme="@style/AppTheme">
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -28,13 +28,15 @@
         </activity>
         <activity
             android:name=".ui.preferences_screen.PreferenceActivity"
+            android:label="@string/title_preferences"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.preferences_screen.PreferenceDetailsActivity"
             android:parentActivityName=".ui.preferences_screen.PreferenceActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.events_map_screen.EventsMapActivity"
+        <activity
+            android:name=".ui.events_map_screen.EventsMapActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
     </application>

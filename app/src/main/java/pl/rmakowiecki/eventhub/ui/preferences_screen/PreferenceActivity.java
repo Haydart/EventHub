@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.BindString;
 import butterknife.BindView;
+import java.util.ArrayList;
+import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Preference;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
@@ -23,7 +21,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     private RecyclerView.LayoutManager layoutManager;
     private PreferenceItemListener itemListener;
 
-    @BindView(R.id.preferencesRecyclerView) RecyclerView recyclerView;
+    @BindView(R.id.preferences_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
     @BindString(R.string.preference_category) String preferenceCategoryString;
 

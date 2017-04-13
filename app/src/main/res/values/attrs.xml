@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ActionButton">
+        <attr name="text" format="string" />
+        <attr name="text_color" format="color|reference" />
+        <attr name="success_color" format="color|reference" />
+        <attr name="failure_color" format="color|reference" />
+        <attr name="default_color" format="color|reference" />
+        <attr name="success_icon" format="reference" />
+        <attr name="failure_icon" format="reference" />
+        <attr name="inactive_button_alpha" format="float" />
+        <attr name="button_shape" format="enum">
+            <enum name="pill" value="0" />
+            <enum name="rectangle" value="1" />
+        </attr>
+        <attr name="dot_loader" format="reference" />
+    </declare-styleable>
+</resources>

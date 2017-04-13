@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.wang.avi.AVLoadingIndicatorView
+        android:id="@+id/progress_indicator"
+        style="@style/AVLoadingIndicatorView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        app:indicatorColor="@android:color/white"
+        app:indicatorName="BallPulseIndicator" />
+
+    <TextView
+        android:id="@+id/text_view_button_action_desc"
+        style="@style/WhiteTextMedium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textAllCaps="true" />
+
+    <FrameLayout
+        android:id="@+id/frame_layout_button_failure"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/pill_button_background"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/icon_failure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_failure_action_button" />
+
+        <TextView
+            android:id="@+id/text_view_error_desc"
+            style="@style/WhiteTextMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textAllCaps="true" />
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_layout_button_success"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/pill_button_background"
+        android:visibility="invisible">
+
+        <ImageView
+            android:id="@+id/icon_success"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_success_action_button" />
+    </FrameLayout>
+</merge>
