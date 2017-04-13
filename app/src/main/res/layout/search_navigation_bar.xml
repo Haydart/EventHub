@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/search_bar_height"
     android:background="@drawable/map_toolbar_background"
     android:elevation="@dimen/default_item_elevation"
     android:paddingLeft="@dimen/standard_margin_medium"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:ignore="RtlSymmetry">
 
     <ImageView
         android:id="@+id/navigation_drawer_icon"
@@ -21,9 +23,3 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
-
-
-
-
-
-
