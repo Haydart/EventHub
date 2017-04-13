@@ -58,22 +58,11 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="@dimen/standard_margin_large"
-        android:layout_marginTop="@dimen/standard_margin_large"
-        android:text="@string/subcategories_msg"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/interests_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/interests_recycler_view_margin"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    </android.support.v7.widget.RecyclerView>
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/preference_details_fab"

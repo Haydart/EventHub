@@ -5,7 +5,6 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowContentTransitions">true</item>
-        <item name="android:windowTranslucentStatus">true</item>
         <item name="android:actionBarStyle">@style/ThemeActionBar</item>
         <item name="android:windowActionBarOverlay">true</item>
         <item name="actionBarStyle">@style/ThemeActionBar</item>
@@ -24,8 +23,34 @@
     <style name="ExpandedTitleText" parent="@android:style/TextAppearance">
         <item name="android:textSize">24sp</item>
     </style>
+
     <style name="GreyText" parent="@android:style/TextAppearance">
         <item name="android:textColor">#666666</item>
     </style>
 
+    <style name="MainColorTextLarge">
+        <item name="android:textSize">18sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+
+    <style name="MainColorTextMedium" parent="MainColorTextLarge">
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="MainColorTextSmall" parent="MainColorTextMedium">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="WhiteTextLarge" parent="MainColorTextLarge">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="WhiteTextMedium" parent="MainColorTextMedium">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="WhiteTextSmall" parent="MainColorTextSmall">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
 </resources>
