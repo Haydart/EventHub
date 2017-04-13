@@ -21,7 +21,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <include layout="@layout/app_bar_navigation" />
+        <include layout="@layout/search_navigation_bar" />
 
         <include layout="@layout/map_bottom_sheet" />
 

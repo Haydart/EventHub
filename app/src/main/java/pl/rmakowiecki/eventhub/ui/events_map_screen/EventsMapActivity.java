@@ -4,15 +4,12 @@ import android.Manifest;
 import android.content.IntentSender;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,7 +31,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PointOfInterest;
-import com.squareup.picasso.Picasso;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -56,7 +52,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
     private static final long PERMISSION_CHECKING_DELAY = 250;
-    public static final int MAP_PADDING_TOP = 128;
+    public static final int MAP_PADDING_TOP = 172;
     private static final int BOTTOM_SHEET_MAP_PADDING = 300;
     public static final int FAB_ANIMATION_DURATION = 300;
     public static final int FAB_FULL_SCALE = 1;
@@ -67,9 +63,13 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @BindView(R.id.map_bottom_sheet) FrameLayout mapBottomSheet;
 
     private GoogleMap googleMap;
-    private Marker mapClickMarker;
     private BottomSheetBehavior bottomSheetBehavior;
+    private Marker mapClickMarker;
 
+    @OnClick(R.id.navigation_drawer_icon)
+    public void onMenuIconClicked() {
+        drawer.openDrawer(GravityCompat.START, true);
+    }
 
     @OnClick(R.id.bottom_sheet_fab)
     public void onBottomSheetFabClicked() {
