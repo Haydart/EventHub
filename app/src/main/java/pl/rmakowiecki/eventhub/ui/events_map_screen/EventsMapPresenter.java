@@ -15,7 +15,11 @@ import rx.schedulers.Schedulers;
 class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
     private static final int CAMERA_MOVE_TO_LOCATION_DELAY = 5000;
-    public static final int LOCATION_SAFETY_DELAY = 500;
+    private static final int LOCATION_SAFETY_DELAY = 500;
+    private static final int DEFAULT_MAP_PADDING = 0;
+    private static final int SEARCH_BAR_MAP_TOP_PADDING = 172;
+    private static final int BOTTOM_SHEET_MAP_PADDING = 300;
+    public static final int MAP_TRANSITION_DELAY = 100;
 
     private Repository<Place> placesRepository;
     private LocationProvider locationProvider;
@@ -25,6 +29,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
     private boolean isMapClickMarkerShown = false;
     private boolean isFocusedOnProvidedMarker = false;
+    private boolean isSearchBarShown = true;
     private boolean shouldMapBeInitializedToDeviceLocation;
 
     EventsMapPresenter() {
@@ -49,23 +54,6 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         promptForLocalizationSettings();
     }
 
-    void onLocationPermissionsGranted() {
-        locationProvider.getLocationUpdates()
-                .filter(location -> location != null)
-                .compose(applySchedulers())
-                .subscribe(
-                        locationCoordinates -> {
-                            updateCurrentLocation(locationCoordinates);
-                            /*placesRepository
-                                    .query(new LocationSpecification(lastKnownDeviceLocation))
-                                    .compose(applySchedulers())
-                                    .subscribe(view::showPlaces);*/
-                            // TODO: 12/04/2017 find better place to make draining api calls
-                        },
-                        Throwable::printStackTrace
-                );
-    }
-
     void promptForLocalizationSettings() {
         Observable.just(null)
                 .delay(LOCATION_SAFETY_DELAY, TimeUnit.MILLISECONDS)
@@ -79,17 +67,41 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 });
     }
 
+    void onMapInitialized() {
+        placesRepository
+                .query(new LocationSpecification(lastKnownDeviceLocation))
+                .compose(applySchedulers())
+                .subscribe(
+                        view::showPlaces,
+                        Throwable::printStackTrace
+                );
+    }
+
+    void onLocationPermissionsGranted() {
+        locationProvider.getLocationUpdates()
+                .filter(location -> location != null)
+                .compose(applySchedulers())
+                .subscribe(
+                        this::updateCurrentLocation,
+                        Throwable::printStackTrace
+                );
+    }
+
     void onMapMarkerClicked(LocationCoordinates location) {
         isFocusedOnProvidedMarker = true;
-        focusedMarkerLocation = location;
         view.showBottomSheet();
-        view.setBottomMapPadding();
+        view.setMapPadding(
+                DEFAULT_MAP_PADDING,
+                DEFAULT_MAP_PADDING,
+                DEFAULT_MAP_PADDING,
+                BOTTOM_SHEET_MAP_PADDING);
+        hideSearchBar();
         dismissMapTransitionTask();
-        appointMapTransitionTask(focusedMarkerLocation, 0);
-        if (isMapClickMarkerShown) {
+        appointMapTransitionTask(focusedMarkerLocation = location, 0);
+        /*if (isMapClickMarkerShown) {
             isMapClickMarkerShown = false;
-            view.hideMapClickMarker();
-        }
+            view.hideMapMarker();
+        }*/
     }
 
     void onMapClicked(LocationCoordinates location) {
@@ -98,24 +110,38 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 isFocusedOnProvidedMarker = false;
                 focusedMarkerLocation = null;
                 view.hideBottomSheet();
-                view.setDefaultMapPadding();
+                view.setMapPadding(
+                        DEFAULT_MAP_PADDING,
+                        SEARCH_BAR_MAP_TOP_PADDING,
+                        DEFAULT_MAP_PADDING,
+                        DEFAULT_MAP_PADDING);
+                showSearchBar();
                 dismissMapTransitionTask();
                 appointMapTransitionTask(lastKnownDeviceLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
             } else {
                 isMapClickMarkerShown = true;
-                focusedMarkerLocation = location;
-                view.showMapClickMarker(location);
+                view.showMapMarker(focusedMarkerLocation = location);
                 view.showBottomSheet();
-                view.setBottomMapPadding();
+                view.setMapPadding(
+                        DEFAULT_MAP_PADDING,
+                        DEFAULT_MAP_PADDING,
+                        DEFAULT_MAP_PADDING,
+                        BOTTOM_SHEET_MAP_PADDING);
+                hideSearchBar();
                 dismissMapTransitionTask();
                 appointMapTransitionTask(focusedMarkerLocation, 0);
             }
         } else {
             isMapClickMarkerShown = false;
             focusedMarkerLocation = null;
-            view.hideMapClickMarker();
+            view.hideMapMarker();
             view.hideBottomSheet();
-            view.setDefaultMapPadding();
+            view.setMapPadding(
+                    DEFAULT_MAP_PADDING,
+                    SEARCH_BAR_MAP_TOP_PADDING,
+                    DEFAULT_MAP_PADDING,
+                    DEFAULT_MAP_PADDING);
+            showSearchBar();
             dismissMapTransitionTask();
             appointMapTransitionTask(lastKnownDeviceLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
         }
@@ -125,7 +151,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         // TODO: 12/04/2017 implement
     }
 
-    void onSearchedPlaceSelected() {
+    void onSearchedPlaceSelected(Place place) {
         // TODO: 12/04/2017 implement
     }
 
@@ -139,6 +165,20 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
     void onMapCameraMove() {
         dismissMapTransitionTask();
+    }
+
+    private void hideSearchBar() {
+        if (isSearchBarShown) {
+            view.hideSearchBar(true);
+            isSearchBarShown = false;
+        }
+    }
+
+    private void showSearchBar() {
+        if (!isSearchBarShown) {
+            view.showSearchBar(true);
+            isSearchBarShown = true;
+        }
     }
 
     private void appointMapTransitionTask(LocationCoordinates location, int delay) {
@@ -155,10 +195,9 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     private void updateCurrentLocation(LocationCoordinates locationCoordinates) {
-        lastKnownDeviceLocation = locationCoordinates;
         if (shouldMapBeInitializedToDeviceLocation) {
             shouldMapBeInitializedToDeviceLocation = false;
-            appointMapTransitionTask(lastKnownDeviceLocation, 100);
+            appointMapTransitionTask(lastKnownDeviceLocation = locationCoordinates, MAP_TRANSITION_DELAY);
             view.showDeviceLocation();
         }
     }

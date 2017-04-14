@@ -13,7 +13,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.FrameLayout;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,7 +33,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PointOfInterest;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -38,6 +40,7 @@ import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implements EventsMapView,
@@ -45,22 +48,22 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         GoogleMap.OnCameraIdleListener,
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnMapClickListener,
-        GoogleMap.OnPoiClickListener,
         GoogleMap.OnMarkerClickListener,
         NavigationView.OnNavigationItemSelectedListener {
 
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
     private static final long PERMISSION_CHECKING_DELAY = 250;
-    public static final int MAP_PADDING_TOP = 172;
-    private static final int BOTTOM_SHEET_MAP_PADDING = 300;
     public static final int FAB_ANIMATION_DURATION = 300;
     public static final int FAB_FULL_SCALE = 1;
 
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.nav_view) NavigationView navigationView;
     @BindView(R.id.bottom_sheet_fab) FloatingActionButton bottomSheetFab;
-    @BindView(R.id.map_bottom_sheet) FrameLayout mapBottomSheet;
+    @BindView(R.id.map_bottom_sheet) LinearLayout mapBottomSheet;
+    @BindView(R.id.place_name_text_view) TextView placeNameTextView;
+    @BindView(R.id.place_address_text_view) TextView placeAddressTextView;
+    @BindView(R.id.map_search_bar) LinearLayout mapSearchBar;
 
     private GoogleMap googleMap;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -89,21 +92,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         checkLocationPermissions();
         initMapBottomSheet();
         initNavigationDrawer();
-
-        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(com.google.android.gms.location.places.Place place) {
-                presenter.onSearchedPlaceSelected();
-            }
-
-            @Override
-            public void onError(Status status) {
-                presenter.onPlaceSearchError();
-            }
-        });
+        initSearchBar();
     }
 
     private void checkLocationPermissions() {
@@ -118,14 +107,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                         // TODO: 14/03/2017 implement user revoke reaction
                     }
                 });
-    }
-
-    private void initNavigationDrawer() {
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
     }
 
     private void initMapBottomSheet() {
@@ -156,6 +137,39 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         });
     }
 
+    private void initNavigationDrawer() {
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
+        navigationView.setNavigationItemSelectedListener(this);
+    }
+
+    private void initSearchBar() {
+        PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(com.google.android.gms.location.places.Place place) {
+                presenter.onSearchedPlaceSelected(new Place(
+                        place.getId(),
+                        place.getName().toString(),
+                        place.getAddress().toString(),
+                        new LocationCoordinates(
+                                place.getLatLng().latitude,
+                                place.getLatLng().longitude
+                        )
+                ));
+            }
+
+            @Override
+            public void onError(Status status) {
+                presenter.onPlaceSearchError();
+            }
+        });
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -166,9 +180,14 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public void showLocationSettingsDialog(StatusWrapper status){
         try {
             status.getStatus().startResolutionForResult(this, 0);
-        } catch (IntentSender.SendIntentException e) {
-            e.printStackTrace();
+        } catch (IntentSender.SendIntentException ex) {
+            ex.printStackTrace();
         }
+    }
+
+    @Override
+    public void setMapPadding(int left, int top, int right, int bottom) {
+        googleMap.setPadding(left, top, right, bottom);
     }
 
     @Override
@@ -182,11 +201,11 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         applyMapSettings();
+        presenter.onMapInitialized();
     }
 
     @SuppressWarnings("MissingPermission")
     private void applyMapSettings() {
-        googleMap.setPadding(0, MAP_PADDING_TOP, 0, 0);
         googleMap.setMinZoomPreference(MIN_MAP_ZOOM);
         googleMap.setOnCameraIdleListener(this);
         googleMap.setOnMapClickListener(this);
@@ -199,12 +218,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     public void onMapClick(LatLng latLng) {
         presenter.onMapClicked(new LocationCoordinates(latLng.latitude, latLng.longitude));
-    }
-
-    @Override
-    public void onPoiClick(PointOfInterest pointOfInterest) {
-        Toast.makeText(this, "Point of interest click", Toast.LENGTH_SHORT).show();
-        // TODO: 23/03/2017 remove debug
     }
 
     @Override
@@ -234,7 +247,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
-    public void showMapClickMarker(LocationCoordinates locationCoordinates) {
+    public void showMapMarker(LocationCoordinates locationCoordinates) {
         mapClickMarker = googleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(locationCoordinates.getLatitude(), locationCoordinates.getLongitude()))
                 .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_VIOLET))
@@ -242,7 +255,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
-    public void hideMapClickMarker() {
+    public void hideMapMarker() {
         mapClickMarker.setVisible(false);
     }
 
@@ -260,16 +273,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
             bottomSheetFab.setVisibility(View.INVISIBLE);
         }
-    }
-
-    @Override
-    public void setBottomMapPadding() {
-        googleMap.setPadding(0, MAP_PADDING_TOP, 0, BOTTOM_SHEET_MAP_PADDING);
-    }
-
-    @Override
-    public void setDefaultMapPadding() {
-        googleMap.setPadding(0, MAP_PADDING_TOP, 0, 0);
     }
 
     @Override
@@ -295,6 +298,25 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                     .title(place.getName())
             );
         }
+    }
+
+    @Override
+    public void hideSearchBar(boolean animate) {
+        Animation hideAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_up);
+        hideAnimation.setAnimationListener(new ViewAnimationListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mapSearchBar.setVisibility(View.INVISIBLE);
+            }
+        });
+        mapSearchBar.startAnimation(hideAnimation);
+    }
+
+    @Override
+    public void showSearchBar(boolean animate) {
+        mapSearchBar.setVisibility(View.VISIBLE);
+        Animation showAnimation = AnimationUtils.loadAnimation(this, R.anim.slide_down);
+        mapSearchBar.startAnimation(showAnimation);
     }
 
     @Override
