@@ -163,12 +163,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        presenter.onViewVisible();
-    }
-
-    @Override
     public void showLocationSettingsDialog(StatusWrapper status){
         try {
             status.getStatus().startResolutionForResult(this, 0);
@@ -188,7 +182,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         applyMapSettings();
-        presenter.onMapViewInitialized();
     }
 
     @SuppressWarnings("MissingPermission")
@@ -290,7 +283,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         return R.layout.activity_navigation;
     }
 
-
     @Override
     public void showPlaces(List<Place> placesList) {
         for (Place place : placesList) {
@@ -304,12 +296,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
             );
         }
     }
-
-    @Override
-    protected void initPresenter() {
-        presenter = new EventsMapPresenter();
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -346,5 +332,10 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void initPresenter() {
+        presenter = new EventsMapPresenter();
     }
 }
