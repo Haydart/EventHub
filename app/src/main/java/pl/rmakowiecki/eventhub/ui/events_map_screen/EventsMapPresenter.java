@@ -11,9 +11,11 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
 class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
     private static final int CAMERA_MOVE_TO_LOCATION_DELAY = 5000;
+    public static final int LOCATION_SAFETY_DELAY = 500;
 
     private Repository<Place> placesRepository;
     private LocationProvider locationProvider;
@@ -33,7 +35,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     @Override
     protected void onViewStarted(EventsMapView view) {
         super.onViewStarted(view);
-        if(!isMapClickMarkerShown) shouldMapBeInitializedToDeviceLocation = true;
+        if (!isMapClickMarkerShown) shouldMapBeInitializedToDeviceLocation = true;
     }
 
     @Override
@@ -44,6 +46,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
     void onViewInitialization() {
         view.initMap();
+        promptForLocalizationSettings();
     }
 
     void onLocationPermissionsGranted() {
@@ -64,7 +67,9 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     void promptForLocalizationSettings() {
-        locationProvider.isLocationTurnedOn()
+        Observable.just(null)
+                .delay(LOCATION_SAFETY_DELAY, TimeUnit.MILLISECONDS)
+                .flatMap(ignored -> locationProvider.isLocationTurnedOn())
                 .filter(response -> response != null)
                 .compose(applySchedulers())
                 .subscribe(status -> {
@@ -72,14 +77,6 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                         view.showLocationSettingsDialog(status);
                     }
                 });
-    }
-
-    void onViewVisible() {
-        promptForLocalizationSettings();
-    }
-
-    void onMapViewInitialized() {
-        //no-op
     }
 
     void onMapMarkerClicked(LocationCoordinates location) {
