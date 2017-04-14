@@ -53,4 +53,15 @@
     <style name="WhiteTextSmall" parent="MainColorTextSmall">
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <style name="ListItemTitle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">@color/gray_dark_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ListItemDetail">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/gray_dark</item>
+    </style>
 </resources>

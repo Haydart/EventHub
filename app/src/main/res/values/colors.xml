@@ -7,4 +7,6 @@
     <color name="white">#FFFFFF</color>
     <color name="failure_red">#D50000</color>
     <color name="success_green">#00C853</color>
+    <color name="gray_dark">#6E7175</color>
+    <color name="gray_dark_text">#3a3b3f</color>
 </resources>
