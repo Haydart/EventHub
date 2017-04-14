@@ -9,7 +9,11 @@
     <dimen name="nav_header_vertical_spacing">16dp</dimen>
     <dimen name="nav_header_height">172dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
+
     <dimen name="standard_margin_large">16dp</dimen>
+    <dimen name="standard_margin_medium">8dp</dimen>
+    <dimen name="standard_margin_small">4dp</dimen>
+
     <dimen name="app_bar_height">220dp</dimen>
     <dimen name="text_margin">16dp</dimen>
     <dimen name="gradient_height">100dp</dimen>
@@ -21,5 +25,7 @@
     <dimen name="preference_child_list_height">44dp</dimen>
     <dimen name="custom_button_corner_radius">2dp</dimen>
     <dimen name="action_button_height">56dp</dimen>
+    <dimen name="search_bar_height">64dp</dimen>
+    <dimen name="navigation_drawer_icon_height">48dp</dimen>
 </resources>
 

@@ -30,7 +30,7 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
     }
 
     protected void onPreferenceImageClick(PreferenceCategory category) {
-        view.displayPreferenceDetails(category);
+        view.launchPreferenceDetailsScreen(category);
     }
 
     @Override
