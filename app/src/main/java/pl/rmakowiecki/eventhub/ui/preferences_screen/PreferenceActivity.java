@@ -20,6 +20,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private PreferenceItemListener itemListener;
+    private List<PreferenceCategory> preferences;
 
     @BindView(R.id.preferences_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
@@ -45,14 +46,9 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     }
 
     @Override
-    public void showPreferences(List<Preference> preferences) {
-        List<PreferenceCategory> categories = new ArrayList<>();
-        PreferenceModelMapper mapper = new PreferenceModelMapper();
-        for (Preference preference : preferences) {
-            categories.add(mapper.map(preference));
-        }
-
-        initPreferences(categories);
+    public void getPreferenceCategoryFromParcel() {
+        preferences = getIntent().getParcelableArrayListExtra(preferenceCategoryString);
+        initPreferences(preferences);
     }
 
     @Override

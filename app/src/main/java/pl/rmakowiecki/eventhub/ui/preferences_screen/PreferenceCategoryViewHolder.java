@@ -2,9 +2,11 @@ package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
@@ -16,6 +18,7 @@ public class PreferenceCategoryViewHolder extends ParentViewHolder {
 
     @BindView(R.id.preference_category_list_item_image_view) ImageView categoryImageView;
     @BindView(R.id.preference_category_list_item_category_name) TextView categoryNameView;
+    @BindView(R.id.preference_category_list_item_progress_bar) ProgressBar categoryProgressBar;
 
     private final String resourceSource = "drawable";
 
@@ -47,8 +50,17 @@ public class PreferenceCategoryViewHolder extends ParentViewHolder {
         Picasso
                 .with(view.getContext())
                 .load(resourceID != 0 ? resourceID : R.drawable.ic_image_placeholder)
-                .placeholder(R.drawable.ic_image_placeholder)
                 .fit()
-                .into(categoryImageView);
+                .into(categoryImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        categoryProgressBar.setVisibility(View.INVISIBLE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        // no-op
+                    }
+                });
     }
 }

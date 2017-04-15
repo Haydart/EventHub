@@ -3,8 +3,6 @@ package pl.rmakowiecki.eventhub.ui.preferences_screen;
 import pl.rmakowiecki.eventhub.model.local.Preference;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class PreferencePresenter extends BasePresenter<PreferenceView> {
 
@@ -15,12 +13,7 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
     }
 
     private void onViewInitialization() {
-        repository
-                .query(new PreferencesSpecification() {})
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(view::showPreferences);
+        view.getPreferenceCategoryFromParcel();
     }
 
     @Override

@@ -19,4 +19,14 @@
         </menu>
     </item>
 
+    <item android:title="Preferences">
+        <menu>
+            <item
+                android:id="@+id/nav_preferences"
+                android:icon="@drawable/ic_menu_manage"
+                android:title="Preferences" />
+
+        </menu>
+    </item>
+
 </menu>
