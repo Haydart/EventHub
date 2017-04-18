@@ -61,6 +61,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
     private static final long PERMISSION_CHECKING_DELAY = 250;
+    private static final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
     public static final int FAB_ANIMATION_DURATION = 300;
     public static final int FAB_FULL_SCALE = 1;
 
@@ -71,7 +72,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @BindView(R.id.place_name_text_view) TextView placeNameTextView;
     @BindView(R.id.place_address_text_view) TextView placeAddressTextView;
     @BindView(R.id.map_search_bar) LinearLayout mapSearchBar;
-    @BindString(R.string.preference_category) String preferenceCategoryParcelKey;
 
     private GoogleMap googleMap;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -106,7 +106,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     private void initPreferences() {
-        preferenceCategories = getIntent().getParcelableArrayListExtra(preferenceCategoryParcelKey);
+        preferenceCategories = getIntent().getParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY);
     }
 
     private void checkLocationPermissions() {
@@ -369,7 +369,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                 break;
             case R.id.nav_preferences:
                 Intent intent = new Intent(this, PreferenceActivity.class);
-                intent.putParcelableArrayListExtra(preferenceCategoryParcelKey, (ArrayList<? extends Parcelable>) preferenceCategories);
+                intent.putParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY, (ArrayList<? extends Parcelable>) preferenceCategories);
                 startActivity(intent);
                 finish();
                 break;
