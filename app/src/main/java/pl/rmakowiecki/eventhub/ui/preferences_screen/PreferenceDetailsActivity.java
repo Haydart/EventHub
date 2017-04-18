@@ -29,11 +29,12 @@ import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PREFERENCES_RE
 
 public class PreferenceDetailsActivity extends BaseActivity implements PreferenceDetailsView {
 
+    private static final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
+
     @BindView(R.id.interests_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.toolbar_image) ImageView toolbarImage;
-    @BindString(R.string.preference_category) String parcelCategoryString;
 
     private PreferenceCategory category;
     private PreferenceInterestAdapter adapter;
@@ -45,7 +46,7 @@ public class PreferenceDetailsActivity extends BaseActivity implements Preferenc
 
     @Override
     public void getPreferenceCategoryFromParcel() {
-        category = getIntent().getParcelableExtra(parcelCategoryString);
+        category = getIntent().getParcelableExtra(PREFERENCE_CATEGORY_PARCEL_KEY);
     }
 
     @Override

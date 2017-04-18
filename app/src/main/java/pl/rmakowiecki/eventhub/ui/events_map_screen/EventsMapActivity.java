@@ -1,8 +1,10 @@
 package pl.rmakowiecki.eventhub.ui.events_map_screen;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
@@ -18,6 +20,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.google.android.gms.common.api.Status;
@@ -34,6 +37,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tbruyelle.rxpermissions.RxPermissions;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.R;
@@ -41,6 +46,8 @@ import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
+import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceActivity;
+import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceCategory;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implements EventsMapView,
@@ -54,6 +61,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
     private static final long PERMISSION_CHECKING_DELAY = 250;
+    private static final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
     public static final int FAB_ANIMATION_DURATION = 300;
     public static final int FAB_FULL_SCALE = 1;
 
@@ -68,6 +76,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private GoogleMap googleMap;
     private BottomSheetBehavior bottomSheetBehavior;
     private Marker mapClickMarker;
+    private List<PreferenceCategory> preferenceCategories;
 
     @OnClick(R.id.navigation_drawer_icon)
     public void onMenuIconClicked() {
@@ -93,6 +102,11 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         initMapBottomSheet();
         initNavigationDrawer();
         initSearchBar();
+        initPreferences();
+    }
+
+    private void initPreferences() {
+        preferenceCategories = getIntent().getParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY);
     }
 
     private void checkLocationPermissions() {
@@ -346,10 +360,19 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            Toast.makeText(getApplicationContext(), "First sample item clicked", Toast.LENGTH_SHORT).show();
-        }else if (id == R.id.nav_share) {
-            Toast.makeText(getApplicationContext(), "Second sample item clicked", Toast.LENGTH_SHORT).show();
+        switch (id) {
+            case R.id.nav_camera:
+                Toast.makeText(getApplicationContext(), "First sample item clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_share:
+                Toast.makeText(getApplicationContext(), "Second sample item clicked", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.nav_preferences:
+                Intent intent = new Intent(this, PreferenceActivity.class);
+                intent.putParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY, (ArrayList<? extends Parcelable>) preferenceCategories);
+                startActivity(intent);
+                finish();
+                break;
         }
 
         drawer.closeDrawer(GravityCompat.START);

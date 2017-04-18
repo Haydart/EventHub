@@ -16,14 +16,15 @@ import pl.rmakowiecki.eventhub.ui.BaseActivity;
 public class PreferenceActivity extends BaseActivity<PreferencePresenter> implements PreferenceView {
 
     private static final int GRID_SPAN_COUNT = 2;
+    private static final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private PreferenceItemListener itemListener;
+    private List<PreferenceCategory> preferences;
 
     @BindView(R.id.preferences_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
-    @BindString(R.string.preference_category) String preferenceCategoryString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,14 +46,9 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     }
 
     @Override
-    public void showPreferences(List<Preference> preferences) {
-        List<PreferenceCategory> categories = new ArrayList<>();
-        PreferenceModelMapper mapper = new PreferenceModelMapper();
-        for (Preference preference : preferences) {
-            categories.add(mapper.map(preference));
-        }
-
-        initPreferences(categories);
+    public void saveParcelData() {
+        preferences = getIntent().getParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY);
+        initPreferences(preferences);
     }
 
     @Override
@@ -66,7 +62,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     public void launchPreferenceDetailsScreen(PreferenceCategory category) {
         Intent intent = new Intent(getBaseContext(), PreferenceDetailsActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(preferenceCategoryString, category);
+        intent.putExtra(PREFERENCE_CATEGORY_PARCEL_KEY, category);
         startActivity(intent);
     }
 }
