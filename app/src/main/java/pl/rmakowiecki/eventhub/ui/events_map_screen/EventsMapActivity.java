@@ -20,7 +20,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -72,7 +71,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @BindView(R.id.place_name_text_view) TextView placeNameTextView;
     @BindView(R.id.place_address_text_view) TextView placeAddressTextView;
     @BindView(R.id.map_search_bar) LinearLayout mapSearchBar;
-    @BindString(R.string.preference_category) String preferenceCategoryString;
+    @BindString(R.string.preference_category) String preferenceCategoryParcelKey;
 
     private GoogleMap googleMap;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -107,7 +106,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     private void initPreferences() {
-        preferenceCategories = getIntent().getParcelableArrayListExtra(preferenceCategoryString);
+        preferenceCategories = getIntent().getParcelableArrayListExtra(preferenceCategoryParcelKey);
     }
 
     private void checkLocationPermissions() {
@@ -361,8 +360,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        switch (id)
-        {
+        switch (id) {
             case R.id.nav_camera:
                 Toast.makeText(getApplicationContext(), "First sample item clicked", Toast.LENGTH_SHORT).show();
                 break;
@@ -371,7 +369,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                 break;
             case R.id.nav_preferences:
                 Intent intent = new Intent(this, PreferenceActivity.class);
-                intent.putParcelableArrayListExtra(preferenceCategoryString, (ArrayList<? extends Parcelable>) preferenceCategories);
+                intent.putParcelableArrayListExtra(preferenceCategoryParcelKey, (ArrayList<? extends Parcelable>) preferenceCategories);
                 startActivity(intent);
                 finish();
                 break;

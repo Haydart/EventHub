@@ -13,7 +13,7 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
     }
 
     private void onViewInitialization() {
-        view.getPreferenceCategoryFromParcel();
+        view.saveParcelData();
     }
 
     @Override

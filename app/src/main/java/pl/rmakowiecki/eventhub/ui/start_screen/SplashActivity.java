@@ -2,7 +2,6 @@ package pl.rmakowiecki.eventhub.ui.start_screen;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Handler;
 import android.os.Bundle;
 import android.os.Parcelable;
 
@@ -20,11 +19,10 @@ import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceModelMapper;
 
 public class SplashActivity extends BaseActivity<SplashPresenter> implements SplashView {
 
-    @BindString(R.string.preference_category) String preferenceCategoryString;
-
-    private final int LOADING_TIME = 5000; // TODO: 14.04.2017 Remove hardcoded value
     private final String SHARED_PREFERENCES_FIRST_LAUNCH_KEY = "is_first_launch"; // TODO: 15.04.2017 Figure out a better key
     private final String SHARED_PREFERENCES_KEY = "shared_preferences"; // TODO: 15.04.2017 Figure out a better key
+
+    @BindString(R.string.preference_category) String preferenceCategoryString;
 
     private boolean firstLaunch = false;
     private List<PreferenceCategory> preferences;
@@ -45,13 +43,11 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     }
 
     @Override
-    public void launchAppDelayed() {
-        new Handler().postDelayed(() -> {
-            Intent intent = new Intent(SplashActivity.this, firstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
-            intent.putParcelableArrayListExtra(preferenceCategoryString, (ArrayList<? extends Parcelable>) preferences);
-            startActivity(intent);
-            finish();
-        }, LOADING_TIME);
+    public void launchApplication() {
+        Intent intent = new Intent(SplashActivity.this, firstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
+        intent.putParcelableArrayListExtra(preferenceCategoryString, (ArrayList<? extends Parcelable>) preferences);
+        startActivity(intent);
+        finish();
     }
 
     @Override

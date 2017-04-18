@@ -4,7 +4,7 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.ui.BaseView;
 
 interface PreferenceView extends BaseView {
-    void getPreferenceCategoryFromParcel();
+    void saveParcelData();
 
     void initPreferences(final List<PreferenceCategory> categories);
 

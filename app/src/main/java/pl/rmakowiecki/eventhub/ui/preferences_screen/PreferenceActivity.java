@@ -46,7 +46,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     }
 
     @Override
-    public void getPreferenceCategoryFromParcel() {
+    public void saveParcelData() {
         preferences = getIntent().getParcelableArrayListExtra(preferenceCategoryString);
         initPreferences(preferences);
     }
