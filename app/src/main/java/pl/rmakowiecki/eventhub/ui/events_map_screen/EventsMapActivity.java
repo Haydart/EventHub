@@ -269,10 +269,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        LatLng markerPosition = marker.getPosition();
-        presenter.onMapMarkerClicked(
-                new LocationCoordinates(markerPosition.latitude, markerPosition.longitude)
-        );
+        presenter.onMapMarkerClicked((Place) marker.getTag());
         return false;
     }
 
@@ -336,7 +333,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     public void showPlaces(List<Place> placesList) {
         for (Place place : placesList) {
-            googleMap.addMarker(new MarkerOptions()
+            Marker marker = googleMap.addMarker(new MarkerOptions()
                     .position(new LatLng(
                             place.getLocationCoordinates().getLatitude(),
                             place.getLocationCoordinates().getLongitude())
@@ -344,6 +341,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                     .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE))
                     .title(place.getName())
             );
+            marker.setTag(place);
         }
     }
 
