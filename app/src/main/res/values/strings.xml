@@ -6,6 +6,7 @@
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
     <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
     <string name="action_settings" translatable="false">Settings</string>
-    <string name="title_preferences">Preferences</string>
     <string name="button_text_save_preferences">Save Preferences</string>
+    <string name="title_preferences">Preferences</string>
+    <string name="bottom_sheet_bar_address_recognition">Recognizing address…</string>
 </resources>

@@ -42,6 +42,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service
+            android:name="pl.rmakowiecki.eventhub.background.FetchAddressIntentService"
+            android:exported="false"></service>
     </application>
 
 </manifest>

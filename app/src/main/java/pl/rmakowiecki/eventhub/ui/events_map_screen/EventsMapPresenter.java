@@ -15,7 +15,8 @@ import rx.subscriptions.Subscriptions;
 
 class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
-    private static final int CAMERA_MOVE_TO_LOCATION_DELAY = 5000;
+    private static final int DEFAULT_CAMERA_TRANSITION_DELAY = 5000;
+    private static final int IMMEDIATE_CAMERA_TRANSITION_DELAY = 0;
     private static final int LOCATION_SAFETY_DELAY = 500;
     private static final int DEFAULT_MAP_PADDING = 0;
     private static final int SEARCH_BAR_MAP_TOP_PADDING = 172;
@@ -103,6 +104,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
             isMapClickMarkerShown = false;
             view.hideMapMarker();
         }*/
+        // TODO: 20/04/2017 remove once unneeded
     }
 
     void onMapClicked(LocationCoordinates location) {
@@ -119,10 +121,11 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                         DEFAULT_MAP_PADDING);
                 showSearchBar();
                 dismissMapTransitionTask();
-                appointMapTransitionTask(lastKnownDeviceLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
+                appointMapTransitionTask(lastKnownDeviceLocation, DEFAULT_CAMERA_TRANSITION_DELAY);
             } else {
                 isMapClickMarkerShown = true;
                 view.showMapMarker(focusedMarkerLocation = location);
+                view.fetchAddressForLocation(focusedMarkerLocation);
                 view.showBottomSheet();
                 view.setMapPadding(
                         DEFAULT_MAP_PADDING,
@@ -145,8 +148,12 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                     DEFAULT_MAP_PADDING);
             showSearchBar();
             dismissMapTransitionTask();
-            appointMapTransitionTask(lastKnownDeviceLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
+            appointMapTransitionTask(lastKnownDeviceLocation, DEFAULT_CAMERA_TRANSITION_DELAY);
         }
+    }
+
+    void onLocationAddressFetched(String addressOutput) {
+        view.setBottomSheetData(addressOutput, focusedMarkerLocation.toString());
     }
 
     void onPlaceSearchError() {
@@ -162,13 +169,15 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         view.showBottomSheet();
         isFocusedOnProvidedMarker = true;
         hideSearchBar();
+        dismissMapTransitionTask();
+        appointMapTransitionTask(focusedMarkerLocation = place.getLocationCoordinates(), IMMEDIATE_CAMERA_TRANSITION_DELAY);
     }
 
     void onMapCameraIdle() {
         if (isMapClickMarkerShown || isFocusedOnProvidedMarker) {
-            appointMapTransitionTask(focusedMarkerLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
+            appointMapTransitionTask(focusedMarkerLocation, DEFAULT_CAMERA_TRANSITION_DELAY);
         } else {
-            appointMapTransitionTask(lastKnownDeviceLocation, CAMERA_MOVE_TO_LOCATION_DELAY);
+            appointMapTransitionTask(lastKnownDeviceLocation, DEFAULT_CAMERA_TRANSITION_DELAY);
         }
     }
 

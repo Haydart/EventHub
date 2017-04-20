@@ -2,6 +2,7 @@
 <resources>
     <string name="hello_world">ąęćśŚĄĘŻŹżź</string>
   <string name="subcategories_msg">Wybierz swoje zainteresowania:</string>
-    <string name="title_preferences">Preferencje</string>
     <string name="button_text_save_preferences">Zapisz preferencje</string>
+    <string name="title_preferences">Preferencje</string>
+    <string name="bottom_sheet_bar_address_recognition">Rozpoznawanie adresu…</string>
 </resources>
