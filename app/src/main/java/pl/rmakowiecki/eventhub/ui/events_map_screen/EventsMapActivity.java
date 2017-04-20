@@ -4,6 +4,7 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
@@ -23,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.google.android.gms.common.api.Status;
@@ -43,6 +45,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.background.AddressResultReceiver;
+import pl.rmakowiecki.eventhub.background.Constants;
+import pl.rmakowiecki.eventhub.background.FetchAddressIntentService;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
@@ -57,7 +62,8 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         GoogleMap.OnCameraMoveListener,
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener,
+        AddressResultReceiver.AddressGeocodingListener {
 
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
@@ -76,10 +82,13 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @BindView(R.id.place_autocomplete_search_button) ImageButton placeAutocompleteSearchButton;
     @BindView(R.id.place_autocomplete_search_input) EditText placeAutocompleteEditText;
 
+    @BindString(R.string.bottom_sheet_bar_address_recognition) String addressRecognitionMessage;
+
     private GoogleMap googleMap;
     private BottomSheetBehavior bottomSheetBehavior;
     private Marker mapClickMarker;
     private List<PreferenceCategory> preferenceCategories;
+    private AddressResultReceiver addressResultReceiver;
 
     @OnClick(R.id.navigation_drawer_icon)
     public void onMenuIconClicked() {
@@ -111,6 +120,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         initNavigationDrawer();
         initSearchBar();
         initPreferences();
+        addressResultReceiver = new AddressResultReceiver(this, new Handler());
     }
 
     private void initPreferences() {
@@ -216,6 +226,15 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public void setBottomSheetData(String name, String address) {
         placeNameTextView.setText(name);
         placeAddressTextView.setText(address);
+    }
+
+    @Override
+    public void fetchAddressForLocation(LocationCoordinates location) {
+        setBottomSheetData(addressRecognitionMessage, location.toString());
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+        intent.putExtra(Constants.RECEIVER, addressResultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
+        startService(intent);
     }
 
     @Override
@@ -395,5 +414,10 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     protected void initPresenter() {
         presenter = new EventsMapPresenter();
+    }
+
+    @Override
+    public void onLocationAddressFetched(String addressOutput) {
+        presenter.onLocationAddressFetched(addressOutput);
     }
 }

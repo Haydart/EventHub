@@ -33,4 +33,6 @@ interface EventsMapView extends BaseView {
     void setMapPadding(int left, int top, int right, int bottom);
 
     void setBottomSheetData(String name, String address);
+
+    void fetchAddressForLocation(LocationCoordinates location);
 }
