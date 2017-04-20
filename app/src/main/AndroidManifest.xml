@@ -46,6 +46,11 @@
         <service
             android:name="pl.rmakowiecki.eventhub.background.FetchAddressIntentService"
             android:exported="false"></service>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.calendar_screen.CalendarActivity"
+            android:parentActivityName=".ui.events_map_screen.EventsMapActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

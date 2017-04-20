@@ -56,6 +56,6 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     protected abstract int getLayoutResId();
 
     protected boolean shouldMoveToBack() {
-        return false;
+        return true;
     }
 }

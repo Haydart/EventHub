@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "205308010410-iujkan49mtkn43mern6f0n6p09mn2pns.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pl.rmakowiecki.eventhub",
+            "certificate_hash": "cc0ffc8e2ad58a7c0b6696c1cab7cb3f45b2c79a"
+          }
+        },
+        {
           "client_id": "205308010410-dtusc72f4op4rhl75d1s25515uppu4jt.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

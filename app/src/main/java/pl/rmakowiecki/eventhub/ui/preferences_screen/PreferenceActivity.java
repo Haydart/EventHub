@@ -18,6 +18,8 @@ import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.events_map_screen.EventsMapActivity;
 
+
+
 public class PreferenceActivity extends BaseActivity<PreferencePresenter> implements PreferenceView {
 
     private static final int GRID_SPAN_COUNT = 2;
