@@ -20,6 +20,7 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
     protected void onViewStarted(PreferenceView view) {
         super.onViewStarted(view);
         onViewInitialization();
+        view.enableHomeButton();
     }
 
     protected void onPreferenceImageClick(PreferenceCategory category) {
