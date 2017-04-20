@@ -34,7 +34,7 @@
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginLeft="48dp"
-        android:layout_marginRight="44dp" />
+        android:layout_marginLeft="@dimen/navigation_drawer_icon_height"
+        android:layout_marginRight="@dimen/navigation_drawer_icon_height" />
 
 </FrameLayout>
