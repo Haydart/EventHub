@@ -11,6 +11,7 @@ import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+import rx.subscriptions.Subscriptions;
 
 class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
@@ -25,7 +26,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     private LocationProvider locationProvider;
     private LocationCoordinates lastKnownDeviceLocation;
     private LocationCoordinates focusedMarkerLocation;
-    private Subscription mapTransitionSubscription;
+    private Subscription mapTransitionSubscription = Subscriptions.unsubscribed();
 
     private boolean isMapClickMarkerShown = false;
     private boolean isFocusedOnProvidedMarker = false;
