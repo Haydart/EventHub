@@ -31,4 +31,6 @@ interface EventsMapView extends BaseView {
     void showLocationSettingsDialog(StatusWrapper sw);
 
     void setMapPadding(int left, int top, int right, int bottom);
+
+    void setBottomSheetData(String name, String address);
 }

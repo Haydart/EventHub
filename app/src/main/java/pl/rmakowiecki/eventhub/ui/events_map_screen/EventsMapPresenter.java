@@ -19,7 +19,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     private static final int DEFAULT_MAP_PADDING = 0;
     private static final int SEARCH_BAR_MAP_TOP_PADDING = 172;
     private static final int BOTTOM_SHEET_MAP_PADDING = 300;
-    public static final int MAP_TRANSITION_DELAY = 100;
+    private static final int MAP_TRANSITION_DELAY = 100;
 
     private Repository<Place> placesRepository;
     private LocationProvider locationProvider;
@@ -110,6 +110,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 isFocusedOnProvidedMarker = false;
                 focusedMarkerLocation = null;
                 view.hideBottomSheet();
+                view.hideMapMarker();
                 view.setMapPadding(
                         DEFAULT_MAP_PADDING,
                         SEARCH_BAR_MAP_TOP_PADDING,
@@ -152,7 +153,12 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     void onSearchedPlaceSelected(Place place) {
-        // TODO: 12/04/2017 implement
+        if (isMapClickMarkerShown) view.hideMapMarker();
+        view.showMapMarker(place.getLocationCoordinates());
+        view.setBottomSheetData(place.getName(), place.getAddress());
+        view.showBottomSheet();
+        isFocusedOnProvidedMarker = true;
+        hideSearchBar();
     }
 
     void onMapCameraIdle() {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/map_search_bar"
     android:layout_width="match_parent"
@@ -8,6 +8,7 @@
     android:elevation="@dimen/default_item_elevation"
     android:orientation="horizontal"
     android:paddingLeft="@dimen/standard_margin_medium"
+    android:paddingRight="@dimen/standard_margin_medium"
     tools:ignore="RtlSymmetry">
 
     <ImageView
@@ -18,9 +19,22 @@
         android:padding="@dimen/standard_margin_medium"
         android:src="@drawable/ic_menu_black_24dp" />
 
+    <ImageButton
+        android:id="@+id/search_button"
+        android:layout_width="@dimen/navigation_drawer_icon_height"
+        android:layout_height="@dimen/navigation_drawer_icon_height"
+        android:padding="@dimen/place_autocomplete_button_padding"
+        android:src="@drawable/places_ic_search"
+        android:background="@null"
+        android:contentDescription="@string/place_autocomplete_search_hint"
+        android:layout_gravity="right|center_vertical" />
+
     <fragment
         android:id="@+id/place_autocomplete_fragment"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-</LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_marginLeft="48dp"
+        android:layout_marginRight="44dp" />
+
+</FrameLayout>
