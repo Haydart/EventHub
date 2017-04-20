@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import butterknife.BindView;
 
@@ -31,6 +32,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     private RecyclerView.LayoutManager layoutManager;
     private PreferenceItemListener itemListener;
     private List<PreferenceCategory> preferences;
+    private SharedPreferences sharedPreferences;
 
     @BindView(R.id.preferences_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
@@ -39,6 +41,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
         layoutManager = new GridLayoutManager(this, GRID_SPAN_COUNT);
         itemListener = category -> presenter.onPreferenceImageClick(category);
         setSupportActionBar(preferencesToolbar);
@@ -75,11 +78,6 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
         startActivity(intent);
     }
 
-    @Override
-    protected boolean shouldMoveToBack() {
-        return true;
-    }
-
     @OnClick (R.id.save_preferences_action_button)
     protected void preferencesButtonClick() {
         presenter.onPreferenceSaveButtonClick();
@@ -88,19 +86,34 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     @Override
     public void savePreferences() {
         if (isFirstLaunch()) {
+            unsetFirstLaunch();
             launchMapActivity();
         }
         finish();
     }
 
-    private boolean isFirstLaunch() {
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-        if (sharedPreferences.getBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, true)) {
-            sharedPreferences.edit().putBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, false).commit();
-            return true;
-        }
+    @Override
+    protected boolean shouldMoveToBack() {
+        return true;
+    }
 
-        return false;
+    @Override
+    public void enableHomeButton() {
+        if (!isFirstLaunch()) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
+    }
+
+    private boolean isFirstLaunch() {
+        return sharedPreferences.getBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, true);
+    }
+
+    private void unsetFirstLaunch() {
+        sharedPreferences
+                .edit()
+                .putBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, false)
+                .commit();
     }
 
     private void launchMapActivity() {

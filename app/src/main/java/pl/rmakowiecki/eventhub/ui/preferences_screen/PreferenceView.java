@@ -11,4 +11,6 @@ interface PreferenceView extends BaseView {
     void launchPreferenceDetailsScreen(PreferenceCategory category);
 
     void savePreferences();
+
+    void enableHomeButton();
 }

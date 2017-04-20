@@ -23,6 +23,7 @@
         </activity>
         <activity
             android:name=".ui.preferences_screen.PreferenceActivity"
+            android:parentActivityName=".ui.events_map_screen.EventsMapActivity"
             android:label="@string/title_preferences"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
