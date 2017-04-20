@@ -9,4 +9,6 @@ interface PreferenceView extends BaseView {
     void initPreferences(final List<PreferenceCategory> categories);
 
     void launchPreferenceDetailsScreen(PreferenceCategory category);
+
+    void savePreferences();
 }

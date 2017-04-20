@@ -30,4 +30,8 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
     public PreferenceView getNoOpView() {
         return null;
     }
+
+    public void onPreferenceSaveButtonClick() {
+        view.savePreferences();
+    }
 }

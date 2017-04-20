@@ -28,6 +28,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.preferences_screen.PreferenceDetailsActivity"
+            android:theme="@style/CategoryDetailsTheme"
             android:parentActivityName=".ui.preferences_screen.PreferenceActivity"
             android:screenOrientation="portrait" />
         <activity
