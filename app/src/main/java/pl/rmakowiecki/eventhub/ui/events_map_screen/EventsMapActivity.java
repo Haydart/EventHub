@@ -17,10 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.google.android.gms.common.api.Status;
@@ -37,7 +39,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.tbruyelle.rxpermissions.RxPermissions;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -45,9 +46,9 @@ import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
-import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
 import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceActivity;
 import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceCategory;
+import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implements EventsMapView,
@@ -71,7 +72,9 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @BindView(R.id.map_bottom_sheet) LinearLayout mapBottomSheet;
     @BindView(R.id.place_name_text_view) TextView placeNameTextView;
     @BindView(R.id.place_address_text_view) TextView placeAddressTextView;
-    @BindView(R.id.map_search_bar) LinearLayout mapSearchBar;
+    @BindView(R.id.map_search_bar) FrameLayout mapSearchBar;
+    @BindView(R.id.place_autocomplete_search_button) ImageButton placeAutocompleteSearchButton;
+    @BindView(R.id.place_autocomplete_search_input) EditText placeAutocompleteEditText;
 
     private GoogleMap googleMap;
     private BottomSheetBehavior bottomSheetBehavior;
@@ -81,6 +84,11 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @OnClick(R.id.navigation_drawer_icon)
     public void onMenuIconClicked() {
         drawer.openDrawer(GravityCompat.START, true);
+    }
+
+    @OnClick(R.id.search_button)
+    public void onSearchButtonClicked() {
+        placeAutocompleteEditText.performClick();
     }
 
     @OnClick(R.id.bottom_sheet_fab)
@@ -162,7 +170,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private void initSearchBar() {
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-
+        placeAutocompleteSearchButton.setVisibility(View.GONE);
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(com.google.android.gms.location.places.Place place) {
@@ -202,6 +210,12 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     public void setMapPadding(int left, int top, int right, int bottom) {
         googleMap.setPadding(left, top, right, bottom);
+    }
+
+    @Override
+    public void setBottomSheetData(String name, String address) {
+        placeNameTextView.setText(name);
+        placeAddressTextView.setText(address);
     }
 
     @Override
