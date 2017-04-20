@@ -89,22 +89,24 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 );
     }
 
-    void onMapMarkerClicked(LocationCoordinates location) {
-        isFocusedOnProvidedMarker = true;
-        view.showBottomSheet();
-        view.setMapPadding(
-                DEFAULT_MAP_PADDING,
-                DEFAULT_MAP_PADDING,
-                DEFAULT_MAP_PADDING,
-                BOTTOM_SHEET_MAP_PADDING);
-        hideSearchBar();
-        dismissMapTransitionTask();
-        appointMapTransitionTask(focusedMarkerLocation = location, 0);
-        /*if (isMapClickMarkerShown) {
-            isMapClickMarkerShown = false;
-            view.hideMapMarker();
-        }*/
-        // TODO: 20/04/2017 remove once unneeded
+    void onMapMarkerClicked(Place place) {
+        if (place != null) {
+            isFocusedOnProvidedMarker = true;
+            view.setBottomSheetData(place.getName(), place.getAddress());
+            view.showBottomSheet();
+            view.setMapPadding(
+                    DEFAULT_MAP_PADDING,
+                    DEFAULT_MAP_PADDING,
+                    DEFAULT_MAP_PADDING,
+                    BOTTOM_SHEET_MAP_PADDING);
+            hideSearchBar();
+            dismissMapTransitionTask();
+            appointMapTransitionTask(focusedMarkerLocation = place.getLocationCoordinates(), 0);
+            if (isMapClickMarkerShown) {
+                isMapClickMarkerShown = false;
+                view.hideMapMarker();
+            }
+        }
     }
 
     void onMapClicked(LocationCoordinates location) {
@@ -113,7 +115,6 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 isFocusedOnProvidedMarker = false;
                 focusedMarkerLocation = null;
                 view.hideBottomSheet();
-                view.hideMapMarker();
                 view.setMapPadding(
                         DEFAULT_MAP_PADDING,
                         SEARCH_BAR_MAP_TOP_PADDING,
