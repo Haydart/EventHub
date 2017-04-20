@@ -63,8 +63,8 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Override
     public void checkIfFirstLaunch() {
-        SharedPreferences preferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
-        if (preferences.getBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, true)) {
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        if (sharedPreferences.getBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, true)) {
             firstLaunch = true;
         }
     }
