@@ -153,7 +153,9 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     void onSearchedPlaceSelected(Place place) {
-        if (isMapClickMarkerShown) view.hideMapMarker();
+        if (isMapClickMarkerShown) {
+            view.hideMapMarker();
+        }
         view.showMapMarker(place.getLocationCoordinates());
         view.setBottomSheetData(place.getName(), place.getAddress());
         view.showBottomSheet();
