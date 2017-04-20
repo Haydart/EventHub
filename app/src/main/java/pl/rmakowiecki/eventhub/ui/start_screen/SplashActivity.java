@@ -19,8 +19,8 @@ import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceModelMapper;
 
 public class SplashActivity extends BaseActivity<SplashPresenter> implements SplashView {
 
-    private final String SHARED_PREFERENCES_FIRST_LAUNCH_KEY = "is_first_launch"; // TODO: 15.04.2017 Figure out a better key
-    private final String SHARED_PREFERENCES_KEY = "shared_preferences"; // TODO: 15.04.2017 Figure out a better key
+    private final String SHARED_PREFERENCES_FIRST_LAUNCH_KEY = "is_first_launch";
+    private final String SHARED_PREFERENCES_KEY = "shared_preferences";
     private final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
 
     private boolean firstLaunch = false;
@@ -43,7 +43,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Override
     public void launchApplication() {
-        Intent intent = new Intent(SplashActivity.this, firstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
+        Intent intent = new Intent(this, firstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
         intent.putParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY, (ArrayList<? extends Parcelable>) preferences);
         startActivity(intent);
         finish();
@@ -58,6 +58,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         }
 
         preferences = categories;
+        launchApplication();
     }
 
     @Override
@@ -65,7 +66,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         SharedPreferences preferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
         if (preferences.getBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, true)) {
             firstLaunch = true;
-            preferences.edit().putBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, false).commit();
         }
     }
 }

@@ -6,6 +6,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import pl.rmakowiecki.eventhub.model.local.Preference;
@@ -17,16 +18,21 @@ import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_IMAGES_R
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_REFERENCE;
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_REFERENCES;
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EN_LOCALE_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.PL_LOCALE_REFERENCE;
 
 @SuppressWarnings("unchecked")
 public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<Preference>> {
 
     @Override
     protected void setDatabaseQueryNode() {
+        String locale = Locale.getDefault().getLanguage();
+        if (!locale.equals(EN_LOCALE_REFERENCE) && !locale.equals(PL_LOCALE_REFERENCE))
+            locale = EN_LOCALE_REFERENCE;
+
         databaseQueryNode = firebaseDatabase
                 .getReference(APP_DATA_REFERENCE)
                 .child(CATEGORIES_REFERENCE)
-                .child(EN_LOCALE_REFERENCE); // TODO: 10.04.2017 Add getting locale from query specification
+                .child(locale);
     }
 
     private List<Preference> parsePreferenceData(DataSnapshot dataSnapshot) {

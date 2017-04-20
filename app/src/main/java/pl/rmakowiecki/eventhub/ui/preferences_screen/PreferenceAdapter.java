@@ -14,13 +14,11 @@ import pl.rmakowiecki.eventhub.R;
 public class PreferenceAdapter extends RecyclerView.Adapter<PreferenceCategoryViewHolder> {
 
     private LayoutInflater layoutInflater;
-    private Context context;
     private List<PreferenceCategory> items;
     private PreferenceItemListener itemListener;
 
     public PreferenceAdapter(Context context, @NonNull List<PreferenceCategory> parentItemList, PreferenceItemListener listener) {
         layoutInflater = LayoutInflater.from(context);
-        this.context = context;
         items = parentItemList;
         itemListener = listener;
     }

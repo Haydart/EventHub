@@ -385,7 +385,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                 Intent intent = new Intent(this, PreferenceActivity.class);
                 intent.putParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY, (ArrayList<? extends Parcelable>) preferenceCategories);
                 startActivity(intent);
-                finish();
                 break;
         }
 
