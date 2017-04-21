@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.calendar_screen;
 
+import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.events_map_screen.EventsSpecification;
@@ -36,6 +37,6 @@ public class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
 
     @Override
     public EventsFragmentView getNoOpView() {
-        return null;
+        return NoOpEventsFragmentView.INSTANCE;
     }
 }

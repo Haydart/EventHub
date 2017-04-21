@@ -15,6 +15,6 @@ public class CalendarPresenter extends BasePresenter<CalendarView> {
 
     @Override
     public CalendarView getNoOpView() {
-        return null;
+        return NoOpCalendarView.INSTANCE;
     }
 }

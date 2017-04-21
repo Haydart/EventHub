@@ -9,28 +9,23 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
 
-/**
- * A fragment representing a list of Items.
- * <p />
- * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
- * interface.
- */
 public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implements EventsFragmentView {
-
-    private int mColumnCount = 1;
-    private OnListFragmentInteractionListener mListener;
-    private RecyclerView.Adapter adapter;
-    View view;
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
+    private int columnCount = 1;
+    private OnListFragmentInteractionListener listener;
+    private RecyclerView.Adapter adapter;
+    private View view;
+    private RecyclerView recyclerView;
+
     public EventsFragment() {
+        //no-op
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static EventsFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
@@ -70,10 +65,10 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
 
     @Override
     public void initEvents(final List<Event> events) {
-        Context context = view.getContext();
-        RecyclerView recyclerView = (RecyclerView) view;
-        adapter = new EventsAdapter(getActivity().getBaseContext(), events, mListener);
-        recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+        Context context = getContext();
+        adapter = new EventsAdapter(context, events, listener);
+        recyclerView = (RecyclerView) view;
+        recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);
     }
 
@@ -81,7 +76,7 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {
-            mListener = (OnListFragmentInteractionListener) context;
+            listener = (OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
@@ -91,11 +86,10 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
+        listener = null;
     }
 
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(Event event);
     }
 }

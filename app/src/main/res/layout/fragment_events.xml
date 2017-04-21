@@ -11,24 +11,24 @@
         android:orientation="vertical">
 
         <TextView
-            android:text="PON"
-            android:id="@+id/day"
+            tools:text="PON"
+            android:id="@+id/dayShortNameTextView"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginTop="@dimen/standard_margin_small"
+            android:layout_marginRight="@dimen/standard_margin_medium"
+            android:layout_marginLeft="@dimen/standard_margin_medium"
 
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             tools:text="17"
-            android:id="@+id/daydate"
+            android:id="@+id/dayOfMonthTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/standard_margin_medium"
             android:textAppearance="?attr/textAppearanceListItem" />
 
 
@@ -41,36 +41,36 @@
 
         <TextView
             tools:text="Klub AA"
-            android:id="@+id/organizer"
+            android:id="@+id/organizerTextView"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/standard_margin_small"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             tools:text="Spotkanie AA"
-            android:id="@+id/name"
+            android:id="@+id/nameTextView"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/standard_margin_small"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             tools:text="22-04-2017"
-            android:id="@+id/date"
+            android:id="@+id/dateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/standard_margin_small"
             android:textAppearance="?attr/textAppearanceListItem" />
 
         <TextView
             tools:text="Bistro Bravo"
-            android:id="@+id/address"
+            android:id="@+id/addressTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="@dimen/standard_margin_small"
             android:textAppearance="?attr/textAppearanceListItem" />
 
     </LinearLayout>

@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.calendar_screen;
 
+import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.GenericTypeIndicator;
@@ -8,14 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import pl.rmakowiecki.eventhub.api.BaseDatabaseInteractor;
+import pl.rmakowiecki.eventhub.model.local.Event;
 import rx.Observable;
 import rx.subjects.PublishSubject;
+
+import static android.content.ContentValues.TAG;
 
 /**
  * Created by m1per on 17.04.2017.
  */
 
 public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
+
+    private static final String DATABASE_PATH = "app_data/events";
 
     private List<Event> parseEventData(DataSnapshot dataSnapshot) {
 
@@ -31,7 +37,7 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>
     @Override
     protected void setDatabaseQueryNode() {
         databaseQueryNode = firebaseDatabase
-                .getReference("app_data/events");
+                .getReference(DATABASE_PATH);
     }
 
     @Override
@@ -48,7 +54,7 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
+                Log.d(TAG,"The read failed: " + databaseError.getCode());
             }
         });
         return publishSubject;
