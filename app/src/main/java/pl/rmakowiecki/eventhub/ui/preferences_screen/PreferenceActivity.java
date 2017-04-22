@@ -7,14 +7,10 @@ import android.os.Parcelable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-
 import butterknife.BindView;
-
+import butterknife.OnClick;
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.OnClick;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.events_map_screen.EventsMapActivity;
@@ -76,7 +72,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
         startActivity(intent);
     }
 
-    @OnClick (R.id.save_preferences_action_button)
+    @OnClick(R.id.save_preferences_action_button)
     protected void preferencesButtonClick() {
         presenter.onPreferenceSaveButtonClick();
     }

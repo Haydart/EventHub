@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            tools:text="PON"
+            android:id="@+id/day_short_name_text_view"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/standard_margin_small"
+            android:layout_marginRight="@dimen/standard_margin_medium"
+            android:layout_marginLeft="@dimen/standard_margin_medium"
+
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            tools:text="17"
+            android:id="@+id/day_of_month_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="@dimen/standard_margin_medium"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            tools:text="Klub AA"
+            android:id="@+id/organizer_text_view"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_small"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            tools:text="Spotkanie AA"
+            android:id="@+id/name_text_view"
+            android:textStyle="bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_small"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            tools:text="22-04-2017"
+            android:id="@+id/date_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_small"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+        <TextView
+            tools:text="Bistro Bravo"
+            android:id="@+id/address_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_small"
+            android:textAppearance="?attr/textAppearanceListItem" />
+
+    </LinearLayout>
+</LinearLayout>

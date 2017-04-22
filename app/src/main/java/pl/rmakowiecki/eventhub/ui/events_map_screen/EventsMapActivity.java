@@ -54,6 +54,7 @@ import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceActivity;
 import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceCategory;
 import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
+import pl.rmakowiecki.eventhub.ui.calendar_screen.CalendarActivity;
 import rx.android.schedulers.AndroidSchedulers;
 
 public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implements EventsMapView,
@@ -391,12 +392,14 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
+
         switch (id) {
             case R.id.nav_camera:
                 Toast.makeText(getApplicationContext(), "First sample item clicked", Toast.LENGTH_SHORT).show();
                 break;
-            case R.id.nav_share:
-                Toast.makeText(getApplicationContext(), "Second sample item clicked", Toast.LENGTH_SHORT).show();
+            case R.id.nav_calendar:
+                Intent myIntent = new Intent(EventsMapActivity.this, CalendarActivity.class);
+                EventsMapActivity.this.startActivity(myIntent);
                 break;
             case R.id.nav_preferences:
                 Intent intent = new Intent(this, PreferenceActivity.class);

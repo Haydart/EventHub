@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="hello_world">ąęćśŚĄĘŻŹżź</string>
+  <string name="hello_world">Ä…Ä™Ä‡Ĺ›ĹšÄ„Ä�Ĺ»ĹąĹĽĹş</string>
   <string name="subcategories_msg">Wybierz swoje zainteresowania:</string>
-    <string name="button_text_save_preferences">Zapisz preferencje</string>
-    <string name="title_preferences">Preferencje</string>
-    <string name="bottom_sheet_bar_address_recognition">Rozpoznawanie adresu…</string>
+  <string name="button_text_save_preferences">Zapisz preferencje</string>
+  <string name="title_preferences">Preferencje</string>
+  <string name="bottom_sheet_bar_address_recognition">Rozpoznawanie adresu…</string>
+  <string name="title_calendar">Kalendarz</string>
+  <string name="title_events">Wydarzenia</string>
+  <string name="tab_title_my_events">Moje wydarzenia</string>
+  <string name="tab_title_all_events">Wszystkie wydarzenia</string>
 </resources>

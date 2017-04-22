@@ -12,21 +12,17 @@
     <item android:title="Sample Group">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Sample2" />
-
-        </menu>
-    </item>
-
-    <item android:title="Preferences">
-        <menu>
-            <item
                 android:id="@+id/nav_preferences"
-                android:icon="@drawable/ic_menu_manage"
-                android:title="Preferences" />
+                android:icon="@drawable/ic_menu_share"
+                android:title="@string/title_preferences" />
+            <item
+                android:id="@+id/nav_calendar"
+                android:icon="@drawable/ic_event_black_24dp"
+                android:title="@string/title_calendar" />
 
         </menu>
     </item>
+
+
 
 </menu>
