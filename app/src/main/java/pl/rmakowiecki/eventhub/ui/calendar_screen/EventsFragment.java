@@ -37,7 +37,7 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        final int mPage = getArguments().getInt(ARG_PAGE);
+        final int page = getArguments().getInt(ARG_PAGE);
     }
 
     @Override

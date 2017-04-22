@@ -18,12 +18,12 @@ import pl.rmakowiecki.eventhub.model.local.Event;
 class EventsViewHolder extends RecyclerView.ViewHolder {
     final View view;
 
-    @BindView(R.id.nameTextView) TextView nameTextView;
-    @BindView(R.id.organizerTextView) TextView organizerTextView;
-    @BindView(R.id.dateTextView) TextView dateTextView;
-    @BindView(R.id.addressTextView) TextView locationTextView;
-    @BindView(R.id.dayOfMonthTextView) TextView dayDateTextView;
-    @BindView(R.id.dayShortNameTextView) TextView dayNameTextView;
+    @BindView(R.id.name_text_view) TextView nameTextView;
+    @BindView(R.id.organizer_text_view) TextView organizerTextView;
+    @BindView(R.id.date_text_view) TextView dateTextView;
+    @BindView(R.id.address_text_view) TextView locationTextView;
+    @BindView(R.id.day_of_month_text_view) TextView dayDateTextView;
+    @BindView(R.id.day_short_name_text_view) TextView dayNameTextView;
 
     EventsViewHolder(View view) {
         super(view);

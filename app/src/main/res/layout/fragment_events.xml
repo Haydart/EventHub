@@ -12,7 +12,7 @@
 
         <TextView
             tools:text="PON"
-            android:id="@+id/dayShortNameTextView"
+            android:id="@+id/day_short_name_text_view"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
 
         <TextView
             tools:text="17"
-            android:id="@+id/dayOfMonthTextView"
+            android:id="@+id/day_of_month_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
@@ -41,7 +41,7 @@
 
         <TextView
             tools:text="Klub AA"
-            android:id="@+id/organizerTextView"
+            android:id="@+id/organizer_text_view"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
 
         <TextView
             tools:text="Spotkanie AA"
-            android:id="@+id/nameTextView"
+            android:id="@+id/name_text_view"
             android:textStyle="bold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
 
         <TextView
             tools:text="22-04-2017"
-            android:id="@+id/dateTextView"
+            android:id="@+id/date_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin_small"
@@ -67,7 +67,7 @@
 
         <TextView
             tools:text="Bistro Bravo"
-            android:id="@+id/addressTextView"
+            android:id="@+id/address_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/standard_margin_small"
