@@ -2,11 +2,15 @@ package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Transition;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -22,6 +26,7 @@ import java.util.Map;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.util.TransitionListenerAdapter;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_DATA_REFERENCE;
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PREFERENCES_REFERENCE;
@@ -32,6 +37,7 @@ public class PreferenceDetailsActivity extends BaseActivity implements Preferenc
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.toolbar_image) ImageView toolbarImage;
+    @BindView(R.id.header_gradient_view) View headerImageGradientView;
 
     private PreferenceCategory category;
     private PreferenceInterestAdapter adapter;
@@ -39,12 +45,30 @@ public class PreferenceDetailsActivity extends BaseActivity implements Preferenc
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSharedElementTransitionExtras();
+        animateHeaderGradient();
+    }
+
+    private void getSharedElementTransitionExtras() {
         Bundle extras = getIntent().getExtras();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             String imageTransitionName = extras.getString(Constants.EXTRA_CATEGORY_IMAGE_TRANSITION_NAME);
             toolbarImage.setTransitionName(imageTransitionName);
         }
+    }
+
+    private void animateHeaderGradient() {
+        Transition sharedElementEnterTransition = getWindow().getSharedElementEnterTransition();
+        sharedElementEnterTransition.addListener(new TransitionListenerAdapter() {
+            @Override
+            public void onTransitionEnd(@NonNull Transition transition) {
+                super.onTransitionEnd(transition);
+                Animation slideUpAnimation = AnimationUtils.loadAnimation(PreferenceDetailsActivity.this, R.anim.slide_from_down);
+                headerImageGradientView.startAnimation(slideUpAnimation);
+                headerImageGradientView.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
     @Override
