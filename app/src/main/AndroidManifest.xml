@@ -17,25 +17,24 @@
             android:value="AIzaSyAGoSHs_fLSza280Wt5FR55jWrH81gnQL4" />
 
         <activity
-            android:name=".ui.start_screen.AuthActivity"
+            android:name=".ui.screen_splash.AuthActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.preferences_screen.PreferenceActivity"
+            android:name=".ui.screen_preference_categories.PreferenceActivity"
             android:label="@string/title_preferences"
             android:launchMode="singleTask"
-            android:parentActivityName=".ui.events_map_screen.EventsMapActivity"
+            android:parentActivityName=".ui.screen_events_map.EventsMapActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.preferences_screen.PreferenceDetailsActivity"
-            android:parentActivityName=".ui.preferences_screen.PreferenceActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CategoryDetailsTheme" />
+            android:name=".ui.screen_preference_subcategories.PreferenceDetailsActivity"
+            android:parentActivityName=".ui.screen_preference_categories.PreferenceActivity"
+            android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.events_map_screen.EventsMapActivity"
+            android:name=".ui.screen_events_map.EventsMapActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.start_screen.SplashActivity">
+        <activity android:name=".ui.screen_splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -43,14 +42,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.calendar_screen.CalendarActivity"
-            android:parentActivityName=".ui.events_map_screen.EventsMapActivity"
+            android:name=".ui.screen_event_calendar.CalendarActivity"
+            android:parentActivityName=".ui.screen_events_map.EventsMapActivity"
             android:screenOrientation="portrait" />
 
         <service
             android:name="pl.rmakowiecki.eventhub.background.FetchAddressIntentService"
             android:exported="false" />
-        android:screenOrientation="portrait" />
 
     </application>
 

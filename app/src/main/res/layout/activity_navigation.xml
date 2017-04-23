@@ -13,7 +13,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="pl.rmakowiecki.eventhub.ui.events_map_screen.EventsMapActivity">
+        tools:context="pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity">
 
         <fragment
             android:id="@+id/events_map_fragment"

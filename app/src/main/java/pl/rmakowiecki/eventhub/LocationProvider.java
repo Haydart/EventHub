@@ -1,7 +1,7 @@
 package pl.rmakowiecki.eventhub;
 
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
-import pl.rmakowiecki.eventhub.ui.events_map_screen.StatusWrapper;
+import pl.rmakowiecki.eventhub.ui.screen_events_map.StatusWrapper;
 import rx.Observable;
 
 public interface LocationProvider {

@@ -1,20 +1,15 @@
 package pl.rmakowiecki.eventhub.api;
 
-
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 import pl.rmakowiecki.eventhub.model.local.Interest;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -68,8 +63,9 @@ public class InterestsDatabaseInteractor extends BaseDatabaseInteractor<List<Int
 
     @Override
     public Observable<List<Interest>> getData() {
-        if (!setUser())
-            return null;
+        if (!setUser()) {
+            return Observable.empty();
+        }
 
         setDatabaseQueryNode();
         publishSubject = PublishSubject.create();

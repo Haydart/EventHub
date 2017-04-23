@@ -9,5 +9,5 @@
     android:layout_marginLeft="@dimen/standard_margin_large"
     android:layout_marginRight="@dimen/standard_margin_large"
     app:layoutManager="LinearLayoutManager"
-    tools:context="pl.rmakowiecki.eventhub.ui.calendar_screen.EventsFragment"
+    tools:context="pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsFragment"
     tools:listitem="@layout/fragment_events" />
