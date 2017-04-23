@@ -19,7 +19,7 @@
         <activity
             android:name=".ui.start_screen.AuthActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.preferences_screen.PreferenceActivity"
             android:label="@string/title_preferences"

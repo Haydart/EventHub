@@ -1,29 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:fitsSystemWindows="true">
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/preferences_toolbar"
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-        xmlns:android="http://schemas.android.com/apk/res/android">
-    </android.support.v7.widget.Toolbar>
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/preferences_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+    </android.support.design.widget.AppBarLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/preferences_recycler_view"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="?attr/actionBarSize"
-        android:layout_marginBottom="@dimen/action_button_height" />
+        android:layout_marginBottom="@dimen/action_button_height"
+        android:scrollbars="vertical"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
         android:id="@+id/save_preferences_action_button"
@@ -33,10 +37,10 @@
         app:button_shape="rectangle"
         app:default_color="@color/colorPrimary"
         app:failure_color="@color/failure_red"
-        app:success_color="@color/success_green"
         app:failure_icon="@drawable/icon_failure_action_button"
-        app:success_icon="@drawable/icon_success_action_button"
         app:inactive_button_alpha="1.0"
+        app:success_color="@color/success_green"
+        app:success_icon="@drawable/icon_success_action_button"
         app:text="@string/button_text_save_preferences"
         app:text_color="@android:color/white" />
-</FrameLayout>
+</android.support.design.widget.CoordinatorLayout>

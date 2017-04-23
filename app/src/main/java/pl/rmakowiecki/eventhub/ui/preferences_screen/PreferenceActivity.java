@@ -1,17 +1,22 @@
 package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import java.util.ArrayList;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.events_map_screen.EventsMapActivity;
 
@@ -30,6 +35,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @BindView(R.id.preferences_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
+    private ImageView sharedTransitionImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +43,10 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
         layoutManager = new GridLayoutManager(this, GRID_SPAN_COUNT);
-        itemListener = category -> presenter.onPreferenceImageClick(category);
+        itemListener = (imageView, category) -> {
+            sharedTransitionImage = (ImageView) imageView;
+            presenter.onPreferenceImageClick(category);
+        };
         setSupportActionBar(preferencesToolbar);
     }
 
@@ -67,9 +76,15 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     @Override
     public void launchPreferenceDetailsScreen(PreferenceCategory category) {
         Intent intent = new Intent(getBaseContext(), PreferenceDetailsActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.putExtra(PREFERENCE_CATEGORY_PARCEL_KEY, category);
-        startActivity(intent);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(Constants.PREFERENCE_CATEGORY_PARCEL_KEY, category);
+        intent.putExtra(Constants.EXTRA_CATEGORY_IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(sharedTransitionImage));
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                this,
+                sharedTransitionImage,
+                ViewCompat.getTransitionName(sharedTransitionImage));
+        startActivity(intent, options.toBundle());
     }
 
     @OnClick(R.id.save_preferences_action_button)
@@ -103,6 +118,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
         return sharedPreferences.getBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, true);
     }
 
+    @SuppressLint("ApplySharedPref")
     private void unsetFirstLaunch() {
         sharedPreferences
                 .edit()
