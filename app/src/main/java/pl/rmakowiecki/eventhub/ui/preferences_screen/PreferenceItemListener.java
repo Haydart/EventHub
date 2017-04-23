@@ -1,5 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
-public interface PreferenceItemListener {
-    void onImageClick(PreferenceCategory category);
+import android.view.View;
+
+interface PreferenceItemListener {
+    void onImageClick(View image, PreferenceCategory category);
 }

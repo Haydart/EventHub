@@ -6,20 +6,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import pl.rmakowiecki.eventhub.R;
 
-
-public class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceInterestViewHolder> {
+class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceInterestViewHolder> {
     private LayoutInflater layoutInflater;
     private List<String> interestList;
     private List<PreferenceInterestViewHolder> holders;
 
-    public PreferenceInterestAdapter(Context context, @NonNull List<String> interestList) {
+    PreferenceInterestAdapter(Context context, @NonNull List<String> interestList) {
         layoutInflater = LayoutInflater.from(context);
         this.interestList = interestList;
         holders = new ArrayList<>();
@@ -42,7 +38,7 @@ public class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceIn
         return interestList.size();
     }
 
-    public List<String> getCheckedSubCategories() {
+    List<String> getCheckedSubCategories() {
         List<String> list = new ArrayList<>();
         for (PreferenceInterestViewHolder holder : holders)
             if (holder.isChecked())
