@@ -11,14 +11,33 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.events_map_screen.EventsMapActivity;
+
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EN_LOCALE_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.PL_LOCALE_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_DATA_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PREFERENCES_REFERENCE;
 
 public class PreferenceActivity extends BaseActivity<PreferencePresenter> implements PreferenceView {
 
@@ -35,6 +54,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @BindView(R.id.preferences_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
+    @BindView(R.id.save_preferences_action_button) ActionButton savePreferencesButton;
     private ImageView sharedTransitionImage;
 
     @Override
@@ -76,7 +96,6 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     @Override
     public void launchPreferenceDetailsScreen(PreferenceCategory category) {
         Intent intent = new Intent(getBaseContext(), PreferenceDetailsActivity.class);
-        //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra(Constants.PREFERENCE_CATEGORY_PARCEL_KEY, category);
         intent.putExtra(Constants.EXTRA_CATEGORY_IMAGE_TRANSITION_NAME, ViewCompat.getTransitionName(sharedTransitionImage));
 
@@ -89,16 +108,47 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @OnClick(R.id.save_preferences_action_button)
     protected void preferencesButtonClick() {
-        presenter.onPreferenceSaveButtonClick();
+        presenter.onPreferenceSaveButtonClick(sharedPreferences, preferences);
+    }
+
+    private String getLocaleString() {
+        String locale = Locale.getDefault().getLanguage();
+        if (!locale.equals(EN_LOCALE_REFERENCE) && !locale.equals(PL_LOCALE_REFERENCE))
+            locale = EN_LOCALE_REFERENCE;
+
+        return locale;
+    }
+
+    private Map<String, List<String>> getUserDataFromSharedPreferences() {
+        Map<String, List<String>> categories = new HashMap<>();
+        for (PreferenceCategory category : preferences)
+        {
+            Set<String> subCategories = sharedPreferences.getStringSet(category.getTitle(), new HashSet<>());
+            List<String> subCategoriesList = new ArrayList<>();
+            subCategoriesList.addAll(subCategories);
+            categories.put(category.getTitle(), subCategoriesList);
+        }
+
+        return categories;
     }
 
     @Override
     public void savePreferences() {
-        if (isFirstLaunch()) {
-            unsetFirstLaunch();
-            launchMapActivity();
+        savePreferencesButton.showProcessing();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            DatabaseReference userPreferencesRef = FirebaseDatabase
+                    .getInstance()
+                    .getReference(USER_DATA_REFERENCE)
+                    .child(user.getUid())
+                    .child(USER_PREFERENCES_REFERENCE)
+                    .child(getLocaleString());
+
+            userPreferencesRef.setValue(getUserDataFromSharedPreferences());
         }
-        finish();
+
+        presenter.onPreferenceSave();
     }
 
     @Override
@@ -112,6 +162,28 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
+    }
+
+    @Override
+    public void showPreferencesSavingSuccess() {
+        savePreferencesButton.showSuccess();
+    }
+
+    @Override
+    public void launchMapAndFinish() {
+        if (isFirstLaunch()) {
+            unsetFirstLaunch();
+            launchMapActivity();
+        }
+
+        finish();
+    }
+
+    @Override
+    public void showNotEnoughPreferencesMessage() {
+        Toast
+                .makeText(this, getResources().getString(R.string.not_enough_preferences_msg), Toast.LENGTH_LONG)
+                .show();
     }
 
     private boolean isFirstLaunch() {

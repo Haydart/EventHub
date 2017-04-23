@@ -13,4 +13,7 @@
   <string name="title_events">Events</string>
   <string name="tab_title_my_events">My events</string>
   <string name="tab_title_all_events">All events</string>
+  <string name="not_enough_preferences_msg">Please select at least three categories.</string>
+  <string name="day_today">Today</string>
+  <string name="day_tomorrow">Tomorrow</string>
 </resources>

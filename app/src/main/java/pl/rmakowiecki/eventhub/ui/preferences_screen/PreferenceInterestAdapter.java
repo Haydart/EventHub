@@ -6,18 +6,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import pl.rmakowiecki.eventhub.R;
 
 class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceInterestViewHolder> {
     private LayoutInflater layoutInflater;
     private List<String> interestList;
     private List<PreferenceInterestViewHolder> holders;
+    private Set<String> currentPreferences;
 
-    PreferenceInterestAdapter(Context context, @NonNull List<String> interestList) {
+    public PreferenceInterestAdapter(Context context, @NonNull List<String> interestList, Set<String> currentPreferences) {
         layoutInflater = LayoutInflater.from(context);
         this.interestList = interestList;
+        this.currentPreferences = currentPreferences;
         holders = new ArrayList<>();
     }
 
@@ -29,7 +34,8 @@ class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceInterestV
 
     @Override
     public void onBindViewHolder(PreferenceInterestViewHolder holder, int position) {
-        holder.bindView(interestList.get(position));
+        String subCategoryName = interestList.get(position);
+        holder.bindView(subCategoryName, currentPreferences.contains(subCategoryName));
         holders.add(holder);
     }
 
