@@ -14,7 +14,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResult;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
-import pl.rmakowiecki.eventhub.ui.events_map_screen.StatusWrapper;
+import pl.rmakowiecki.eventhub.ui.screen_events_map.StatusWrapper;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
