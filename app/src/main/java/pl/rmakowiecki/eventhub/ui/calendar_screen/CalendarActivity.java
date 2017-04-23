@@ -6,6 +6,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import butterknife.BindString;
 import butterknife.BindView;
+import butterknife.ButterKnife;
+import net.danlew.android.joda.JodaTimeAndroid;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
@@ -16,13 +18,17 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter> implements
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     @BindString(R.string.title_events) String calendarScreenTitle;
+    @BindString(R.string.tab_title_all_events) String allEventsTabTitle;
+    @BindString(R.string.tab_title_my_events) String myEventsTabTitle;
+    private String tabTitles[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ButterKnife.bind(this);
+        tabTitles = new String[] { allEventsTabTitle, myEventsTabTitle };
         viewPager.setAdapter(new EventsFragmentAdapter(getSupportFragmentManager(),
-                CalendarActivity.this));
+                CalendarActivity.this, tabTitles));
 
         tabLayout.setupWithViewPager(viewPager);
         calendarToolbar.setTitle(calendarScreenTitle);
@@ -30,6 +36,7 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter> implements
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        JodaTimeAndroid.init(this);
     }
 
     @Override

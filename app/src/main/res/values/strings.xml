@@ -16,4 +16,5 @@
   <string name="not_enough_preferences_msg">Please select at least three categories.</string>
   <string name="day_today">Today</string>
   <string name="day_tomorrow">Tomorrow</string>
+  <string name="preferences_not_selected_toast">Please select at least one category.</string>
 </resources>

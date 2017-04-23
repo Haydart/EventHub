@@ -3,11 +3,14 @@ package pl.rmakowiecki.eventhub.ui.calendar_screen;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
+import java.util.concurrent.TimeUnit;
+import org.joda.time.DateTime;
+import org.joda.time.Days;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 
@@ -24,6 +27,8 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.address_text_view) TextView locationTextView;
     @BindView(R.id.day_of_month_text_view) TextView dayDateTextView;
     @BindView(R.id.day_short_name_text_view) TextView dayNameTextView;
+    @BindString(R.string.day_today) String today;
+    @BindString(R.string.day_tomorrow) String tomorrow;
 
     EventsViewHolder(View view) {
         super(view);
@@ -33,21 +38,44 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
 
     public void bindView(Event event) {
         //TODO: JUST A RARE SAMPLE FO DEVELOPMENT, NEEDS LOTS OF WORK
-        Date d = new Date(event.getTimestamp() * 1000);
-        String days[] = { "PON.", "WT.", "ŚR.", "CZW.", "PT.", "SOB.", "ND." };
+        String dateFull;
+        String time;
+        String dateDay;
+        String dayOfTheWeekShort;
+        String dayOfTheWeekName;
+        String date;
+        int daysToEvent;
 
-        String date = new SimpleDateFormat("dd-MM-yyyy").format(d);
-        String day = new SimpleDateFormat("dd").format(d);
-        Calendar c = Calendar.getInstance();
-        c.setTime(d);
-        int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-        String dayName = days[dayOfWeek - 1];
+        DateTime todayDate = new DateTime();
+        DateTime dateOfEvent = new DateTime(TimeUnit.SECONDS.toMillis(event.getTimestamp()));
+        daysToEvent = Days.daysBetween(todayDate.toLocalDate(), dateOfEvent.toLocalDate()).getDays();
 
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
+        dateFull = dateOfEvent.toString(dtf);
+        dtf = DateTimeFormat.forPattern("HH:mm");
+        time = dateOfEvent.toString(dtf);
+        dtf = DateTimeFormat.forPattern("dd");
+        dateDay = dateOfEvent.toString(dtf);
+        dtf = DateTimeFormat.forPattern("EEE");
+        dayOfTheWeekShort = dateOfEvent.toString(dtf);
+        dayOfTheWeekShort = dayOfTheWeekShort.toUpperCase();
+        dtf = DateTimeFormat.forPattern("EEEE");
+        dayOfTheWeekName = dateOfEvent.toString(dtf);
+
+        if (daysToEvent == 0) {
+            date = today;
+        } else if (daysToEvent == 1) {
+            date = tomorrow;
+        } else if (daysToEvent < 7) {
+            date = dayOfTheWeekName;
+        } else {
+            date = dateFull;
+        }
         nameTextView.setText(event.getName());
         organizerTextView.setText(event.getOrganizer());
-        dateTextView.setText(date);
-        dayDateTextView.setText(day);
-        dayNameTextView.setText(dayName);
+        dateTextView.setText(date + ", " + time);
+        dayDateTextView.setText(dateDay);
+        dayNameTextView.setText(dayOfTheWeekShort);
         locationTextView.setText(event.getLocation());
     }
 }
