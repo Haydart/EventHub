@@ -1,16 +1,17 @@
 package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
-import pl.rmakowiecki.eventhub.model.local.Preference;
-import pl.rmakowiecki.eventhub.repository.Repository;
+import java.util.concurrent.TimeUnit;
+
+import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 
 public class PreferencePresenter extends BasePresenter<PreferenceView> {
 
-    private Repository<Preference> repository;
-
-    PreferencePresenter() {
-        repository = new PreferencesRepository();
-    }
+    private final int SHOW_BUTTON_SUCCESS_DELAY = 2000;
+    private final int LAUNCH_MAP_ACTIVITY_DELAY = 3500;
 
     private void onViewInitialization() {
         view.saveParcelData();
@@ -29,10 +30,39 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
 
     @Override
     public PreferenceView getNoOpView() {
-        return null;
+        return NoOpPreferenceView.INSTANCE;
     }
 
     public void onPreferenceSaveButtonClick() {
         view.savePreferences();
+    }
+
+    public void onPreferenceSave() {
+        delayButtonAnimation();
+        delayMapLaunch();
+    }
+
+    private void delayButtonAnimation() {
+        Observable.just(null)
+                .delay(SHOW_BUTTON_SUCCESS_DELAY, TimeUnit.MILLISECONDS)
+                .compose(applySchedulers())
+                .subscribe(ignored -> {
+                    view.showButtonSuccess();
+                });
+    }
+
+    private void delayMapLaunch() {
+        Observable.just(null)
+                .delay(LAUNCH_MAP_ACTIVITY_DELAY, TimeUnit.MILLISECONDS)
+                .compose(applySchedulers())
+                .subscribe(ignored -> {
+                    view.launchMapAndFinish();
+                });
+    }
+
+    private <T> Observable.Transformer<T, T> applySchedulers() {
+        return observable -> observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

@@ -9,12 +9,4 @@ public final class PreferenceInterest {
         title = interestTitle;
         interested = interest;
     }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public boolean isInterested() {
-        return interested;
-    }
 }

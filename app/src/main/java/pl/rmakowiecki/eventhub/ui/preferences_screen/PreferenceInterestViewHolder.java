@@ -26,8 +26,9 @@ public class PreferenceInterestViewHolder extends ChildViewHolder {
         interestNameTextView.setPadding(0, PREFERENCE_INTEREST_PADDING_TOP, 0, 0);
     }
 
-    public void bindView(String nameText) {
+    public void bindView(String nameText, boolean active) {
         interestNameTextView.setText(nameText);
+        interestInterestedCheckBox.setChecked(active);
     }
 
     public String getCategoryName() {

@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -14,22 +15,14 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.util.TransitionListenerAdapter;
-
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_DATA_REFERENCE;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PREFERENCES_REFERENCE;
 
 public class PreferenceDetailsActivity extends BaseActivity implements PreferenceDetailsView {
 
@@ -41,10 +34,12 @@ public class PreferenceDetailsActivity extends BaseActivity implements Preferenc
 
     private PreferenceCategory category;
     private PreferenceInterestAdapter adapter;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
         getSharedElementTransitionExtras();
         animateHeaderGradient();
     }
@@ -79,7 +74,7 @@ public class PreferenceDetailsActivity extends BaseActivity implements Preferenc
     @Override
     public void displayToolbarImage() {
         int resourceID = getResources()
-                .getIdentifier(category.getImageResourceName(), "drawable", getPackageName());
+                .getIdentifier(category.getImageResourceName(), Constants.DRAWABLE_REFERENCE, getPackageName());
 
         Picasso.with(this)
                 .load(resourceID != 0 ? resourceID : R.drawable.ic_image_placeholder)
@@ -108,7 +103,7 @@ public class PreferenceDetailsActivity extends BaseActivity implements Preferenc
     @Override
     public void loadAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        adapter = new PreferenceInterestAdapter(this, category.getChildList());
+        adapter = new PreferenceInterestAdapter(this, category.getChildList(), sharedPreferences.getStringSet(category.getTitle(), new HashSet<>()));
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -121,22 +116,10 @@ public class PreferenceDetailsActivity extends BaseActivity implements Preferenc
 
     @OnClick(R.id.preference_details_fab)
     public void onFloatingActionButtonClick(View v) {
-        List<String> subCategories = adapter.getCheckedSubCategories();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-
-        if (user != null) {
-            DatabaseReference userPreferencesRef = FirebaseDatabase
-                            .getInstance()
-                            .getReference(USER_DATA_REFERENCE)
-                            .child(user.getUid())
-                            .child(USER_PREFERENCES_REFERENCE);
-
-            Map<String, List<String>> categories = new HashMap<>();
-            categories.put(category.getTitle(), subCategories);
-            userPreferencesRef.setValue(categories);
-        } else {
-            // TODO: 11.04.2017  Handle case when user is not logged in (save preferences temporarily)
-        }
+        Set<String> subCategories = new HashSet<>();
+        subCategories.addAll(adapter.getCheckedSubCategories());
+        sharedPreferences.edit().remove(category.getTitle());
+        sharedPreferences.edit().putStringSet(category.getTitle(), subCategories).commit();
 
         finish();
     }

@@ -1,6 +1,8 @@
 package pl.rmakowiecki.eventhub.ui.start_screen;
 
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
+import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceInterestRepository;
+import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceInterestSpecification;
 import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferencesRepository;
 import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferencesSpecification;
 import rx.Observable;
@@ -23,6 +25,7 @@ public class SplashPresenter extends BasePresenter<SplashView> {
     private void onViewInitialization() {
         view.checkIfFirstLaunch();
         queryPreferences();
+        queryInterests();
     }
 
     private void queryPreferences() {
@@ -30,6 +33,13 @@ public class SplashPresenter extends BasePresenter<SplashView> {
                 .query(new PreferencesSpecification() {})
                 .compose(applySchedulers())
                 .subscribe(view::savePreferences);
+    }
+
+    private void queryInterests() {
+        new PreferenceInterestRepository()
+                .query(new PreferenceInterestSpecification() {})
+                .compose(applySchedulers())
+                .subscribe(view::saveInterests);
     }
 
     private <T> Observable.Transformer<T, T> applySchedulers() {

@@ -20,6 +20,6 @@ public class PreferenceDetailsPresenter extends BasePresenter<PreferenceDetailsV
 
     @Override
     public PreferenceDetailsView getNoOpView() {
-        return null;
+        return NoOpPreferenceDetailsView.INSTANCE;
     }
 }

@@ -9,4 +9,7 @@
   <string name="title_events">Wydarzenia</string>
   <string name="tab_title_my_events">Moje wydarzenia</string>
   <string name="tab_title_all_events">Wszystkie wydarzenia</string>
+  <string name="not_enough_preferences_msg">Musisz wybrac przynajmniej trzy kategorie.</string>
+  <string name="day_today">Dzisiaj</string>
+  <string name="day_tomorrow">Jutro</string>
 </resources>
