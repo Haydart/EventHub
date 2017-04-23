@@ -12,4 +12,5 @@
   <string name="not_enough_preferences_msg">Musisz wybrac przynajmniej trzy kategorie.</string>
   <string name="day_today">Dzisiaj</string>
   <string name="day_tomorrow">Jutro</string>
+  <string name="preferences_not_selected_toast">Musisz wybrac przynajmniej jedna kategorie.</string>
 </resources>
