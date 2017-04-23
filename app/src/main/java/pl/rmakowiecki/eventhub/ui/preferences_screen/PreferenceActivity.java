@@ -42,7 +42,6 @@ import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PREFERENCES_RE
 public class PreferenceActivity extends BaseActivity<PreferencePresenter> implements PreferenceView {
 
     private static final int GRID_SPAN_COUNT = 2;
-    private static final int REQUIRED_PREFERENCES_COUNT = 3;
     private static final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
     private static final String SHARED_PREFERENCES_FIRST_LAUNCH_KEY = "is_first_launch";
     private static final String SHARED_PREFERENCES_KEY = "shared_preferences";
@@ -109,7 +108,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @OnClick(R.id.save_preferences_action_button)
     protected void preferencesButtonClick() {
-        presenter.onPreferenceSaveButtonClick();
+        presenter.onPreferenceSaveButtonClick(sharedPreferences, preferences);
     }
 
     private String getLocaleString() {
@@ -118,20 +117,6 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
             locale = EN_LOCALE_REFERENCE;
 
         return locale;
-    }
-
-    private boolean hasSelectedEnough() {
-        int selectedCategoriesCount = 0;
-        for (PreferenceCategory category : preferences) {
-            Set<String> subCategories = sharedPreferences.getStringSet(category.getTitle(), new HashSet<>());
-            if (!subCategories.isEmpty())
-                ++selectedCategoriesCount;
-
-            if (selectedCategoriesCount >= REQUIRED_PREFERENCES_COUNT)
-                return true;
-        }
-
-        return false;
     }
 
     private Map<String, List<String>> getUserDataFromSharedPreferences() {
@@ -149,14 +134,6 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @Override
     public void savePreferences() {
-
-        if (!hasSelectedEnough()) {
-            Toast
-                    .makeText(this, getResources().getString(R.string.not_enough_preferences_msg), Toast.LENGTH_LONG)
-                    .show();
-            return;
-        }
-
         savePreferencesButton.showProcessing();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -188,7 +165,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     }
 
     @Override
-    public void showButtonSuccess() {
+    public void showPreferencesSavingSuccess() {
         savePreferencesButton.showSuccess();
     }
 
@@ -200,6 +177,13 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
         }
 
         finish();
+    }
+
+    @Override
+    public void showNotEnoughPreferencesMessage() {
+        Toast
+                .makeText(this, getResources().getString(R.string.not_enough_preferences_msg), Toast.LENGTH_LONG)
+                .show();
     }
 
     private boolean isFirstLaunch() {

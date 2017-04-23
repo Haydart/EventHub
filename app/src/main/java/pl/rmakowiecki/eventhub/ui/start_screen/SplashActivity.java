@@ -25,9 +25,9 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     private final String SHARED_PREFERENCES_FIRST_LAUNCH_KEY = "is_first_launch";
     private final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
 
-    private boolean firstLaunch = false;
-    private boolean loadedPreferences = false;
-    private boolean loadedInterests = false;
+    private boolean isFirstLaunch = false;
+    private boolean hasLoadedPreferences = false;
+    private boolean hasLoadedInterests = false;
     private List<PreferenceCategory> preferences;
 
     @Override
@@ -47,7 +47,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Override
     public void launchApplication() {
-        Intent intent = new Intent(this, firstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
+        Intent intent = new Intent(this, isFirstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
         intent.putParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY, (ArrayList<? extends Parcelable>) preferences);
         startActivity(intent);
         finish();
@@ -62,14 +62,14 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         }
 
         preferences = categories;
-        loadedPreferences = true;
-        if (loadedInterests)
+        hasLoadedPreferences = true;
+        if (hasLoadedInterests)
             launchApplication();
     }
 
     @Override
     public void saveInterests(List<Interest> interests) {
-        loadedInterests = true;
+        hasLoadedInterests = true;
 
         if (!interests.isEmpty()) {
             SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
@@ -83,7 +83,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
             }
         }
 
-        if (loadedPreferences)
+        if (hasLoadedPreferences)
             launchApplication();
     }
 
@@ -91,7 +91,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     public void checkIfFirstLaunch() {
         SharedPreferences sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
         if (sharedPreferences.getBoolean(SHARED_PREFERENCES_FIRST_LAUNCH_KEY, true)) {
-            firstLaunch = true;
+            isFirstLaunch = true;
         }
     }
 }

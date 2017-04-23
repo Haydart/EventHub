@@ -9,8 +9,6 @@ import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import rx.Observable;
 import rx.Subscription;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 import rx.subscriptions.Subscriptions;
 
 class EventsMapPresenter extends BasePresenter<EventsMapView> {
@@ -219,12 +217,6 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
             appointMapTransitionTask(lastKnownDeviceLocation = locationCoordinates, MAP_TRANSITION_DELAY);
             view.showDeviceLocation();
         }
-    }
-
-    private <T> Observable.Transformer<T, T> applySchedulers() {
-        return observable -> observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override

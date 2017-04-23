@@ -5,9 +5,6 @@ import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceInterestRepositor
 import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceInterestSpecification;
 import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferencesRepository;
 import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferencesSpecification;
-import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class SplashPresenter extends BasePresenter<SplashView> {
 
@@ -40,11 +37,5 @@ public class SplashPresenter extends BasePresenter<SplashView> {
                 .query(new PreferenceInterestSpecification() {})
                 .compose(applySchedulers())
                 .subscribe(view::saveInterests);
-    }
-
-    private <T> Observable.Transformer<T, T> applySchedulers() {
-        return observable -> observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
     }
 }

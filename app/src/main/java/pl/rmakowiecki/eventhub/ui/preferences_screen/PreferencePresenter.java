@@ -1,17 +1,23 @@
 package pl.rmakowiecki.eventhub.ui.preferences_screen;
 
+import android.content.SharedPreferences;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 
 public class PreferencePresenter extends BasePresenter<PreferenceView> {
 
+    private static final int REQUIRED_PREFERENCES_COUNT = 3;
     private final int SHOW_BUTTON_SUCCESS_DELAY = 2000;
     private final int LAUNCH_MAP_ACTIVITY_DELAY = 3500;
+
+    private boolean isSaveButtonClicked = false;
 
     private void onViewInitialization() {
         view.saveParcelData();
@@ -33,8 +39,29 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
         return NoOpPreferenceView.INSTANCE;
     }
 
-    public void onPreferenceSaveButtonClick() {
-        view.savePreferences();
+    public void onPreferenceSaveButtonClick(SharedPreferences sharedPreferences, List<PreferenceCategory> preferences) {
+        if (!isSaveButtonClicked) {
+            if (hasSelectedEnough(sharedPreferences, preferences)) {
+                isSaveButtonClicked = true;
+                view.savePreferences();
+            }
+            else
+                view.showNotEnoughPreferencesMessage();
+        }
+    }
+
+    private boolean hasSelectedEnough(SharedPreferences sharedPreferences, List<PreferenceCategory> preferences) {
+        int selectedCategoriesCount = 0;
+        for (PreferenceCategory category : preferences) {
+            Set<String> subCategories = sharedPreferences.getStringSet(category.getTitle(), new HashSet<>());
+            if (!subCategories.isEmpty())
+                ++selectedCategoriesCount;
+
+            if (selectedCategoriesCount >= REQUIRED_PREFERENCES_COUNT)
+                return true;
+        }
+
+        return false;
     }
 
     public void onPreferenceSave() {
@@ -43,26 +70,18 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
     }
 
     private void delayButtonAnimation() {
-        Observable.just(null)
-                .delay(SHOW_BUTTON_SUCCESS_DELAY, TimeUnit.MILLISECONDS)
+        Observable.timer(SHOW_BUTTON_SUCCESS_DELAY, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
                 .subscribe(ignored -> {
-                    view.showButtonSuccess();
+                    view.showPreferencesSavingSuccess();
                 });
     }
 
     private void delayMapLaunch() {
-        Observable.just(null)
-                .delay(LAUNCH_MAP_ACTIVITY_DELAY, TimeUnit.MILLISECONDS)
+        Observable.timer(LAUNCH_MAP_ACTIVITY_DELAY, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
                 .subscribe(ignored -> {
                     view.launchMapAndFinish();
                 });
-    }
-
-    private <T> Observable.Transformer<T, T> applySchedulers() {
-        return observable -> observable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
     }
 }

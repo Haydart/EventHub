@@ -17,7 +17,9 @@ interface PreferenceView extends BaseView {
 
     void enableHomeButton();
 
-    void showButtonSuccess();
+    void showPreferencesSavingSuccess();
 
     void launchMapAndFinish();
+
+    void showNotEnoughPreferencesMessage();
 }
