@@ -45,11 +45,14 @@
             android:name=".ui.screen_event_calendar.CalendarActivity"
             android:parentActivityName=".ui.screen_events_map.EventsMapActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.screen_create_event.EventCreationActivity"
+            android:parentActivityName=".ui.screen_events_map.EventsMapActivity"
+            android:screenOrientation="portrait" />
 
         <service
-            android:name="pl.rmakowiecki.eventhub.background.FetchAddressIntentService"
+            android:name=".background.FetchAddressIntentService"
             android:exported="false" />
-
     </application>
 
 </manifest>

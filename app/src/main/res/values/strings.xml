@@ -16,6 +16,7 @@
   <string name="not_enough_preferences_msg">Please select at least three categories.</string>
   <string name="day_today">Today</string>
   <string name="day_tomorrow">Tomorrow</string>
-    <string name="reverse_geocoding_no_address_found_error">No address found</string>
-    <string name="reverse_geocoding_service_unavailable">Service unavailable, please try again</string>
+  <string name="reverse_geocoding_no_address_found_error">No address found</string>
+  <string name="reverse_geocoding_service_unavailable">Service unavailable, please try again</string>
+  <string name="title_event_creation">Create event</string>
 </resources>

@@ -27,6 +27,7 @@ import android.widget.Toast;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.github.fabtransitionactivity.SheetLayout;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
@@ -51,6 +52,7 @@ import pl.rmakowiecki.eventhub.background.FetchAddressIntentService;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.ui.screen_create_event.EventCreationActivity;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.CalendarActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
@@ -64,7 +66,8 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         GoogleMap.OnMapClickListener,
         GoogleMap.OnMarkerClickListener,
         NavigationView.OnNavigationItemSelectedListener,
-        AddressResultReceiver.AddressGeocodingListener {
+        AddressResultReceiver.AddressGeocodingListener,
+        SheetLayout.OnFabAnimationEndListener {
 
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
@@ -72,6 +75,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private static final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
     public static final int FAB_ANIMATION_DURATION = 300;
     public static final int FAB_FULL_SCALE = 1;
+    private static final int EVENT_CREATION_REQUEST_CODE = 1;
 
     @BindView(R.id.drawer_layout) DrawerLayout drawer;
     @BindView(R.id.nav_view) NavigationView navigationView;
@@ -82,6 +86,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @BindView(R.id.map_search_bar) FrameLayout mapSearchBar;
     @BindView(R.id.place_autocomplete_search_button) ImageButton placeAutocompleteSearchButton;
     @BindView(R.id.place_autocomplete_search_input) EditText placeAutocompleteEditText;
+    @BindView(R.id.reveal_sheet_layout) SheetLayout revealSheetLayout;
 
     @BindString(R.string.bottom_sheet_bar_address_recognition) String addressRecognitionMessage;
 
@@ -103,8 +108,8 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     @OnClick(R.id.bottom_sheet_fab)
     public void onBottomSheetFabClicked() {
-        // TODO: 23/03/2017 remove debug
-        Toast.makeText(this, "Fab click", Toast.LENGTH_SHORT).show();
+        revealSheetLayout.setVisibility(View.VISIBLE);
+        revealSheetLayout.expandFab();
     }
 
     @OnClick(R.id.map_bottom_sheet)
@@ -121,11 +126,8 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         initNavigationDrawer();
         initSearchBar();
         initPreferences();
+        initRevealSheetLayout();
         addressResultReceiver = new AddressResultReceiver(this, new Handler());
-    }
-
-    private void initPreferences() {
-        preferenceCategories = getIntent().getParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY);
     }
 
     private void checkLocationPermissions() {
@@ -201,6 +203,15 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                 presenter.onPlaceSearchError();
             }
         });
+    }
+
+    private void initPreferences() {
+        preferenceCategories = getIntent().getParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY);
+    }
+
+    private void initRevealSheetLayout() {
+        revealSheetLayout.setFab(bottomSheetFab);
+        revealSheetLayout.setFabAnimationEndListener(this);
     }
 
     @Override
@@ -389,9 +400,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        switch (id) {
+        switch (item.getItemId()) {
             case R.id.nav_camera:
                 Toast.makeText(getApplicationContext(), "First sample item clicked", Toast.LENGTH_SHORT).show();
                 break;
@@ -418,5 +427,22 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     public void onLocationAddressFetched(String addressOutput) {
         presenter.onLocationAddressFetched(addressOutput);
+    }
+
+    @Override
+    public void onFabAnimationEnd() {
+        Intent intent = new Intent(this, EventCreationActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, EVENT_CREATION_REQUEST_CODE);
+        getWindow().setBackgroundDrawableResource(R.drawable.ic_image_placeholder);
+        overridePendingTransition(0, 0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EVENT_CREATION_REQUEST_CODE) {
+            revealSheetLayout.contractFab();
+        }
     }
 }

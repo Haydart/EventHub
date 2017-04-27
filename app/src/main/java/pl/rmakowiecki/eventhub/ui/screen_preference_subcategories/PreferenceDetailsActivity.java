@@ -76,7 +76,7 @@ public class PreferenceDetailsActivity extends BaseActivity<PreferenceDetailsPre
     }
 
     private void showAnimateHeaderGradient() {
-        Animation slideUpAnimation = AnimationUtils.loadAnimation(PreferenceDetailsActivity.this, R.anim.slide_from_down);
+        Animation slideUpAnimation = AnimationUtils.loadAnimation(PreferenceDetailsActivity.this, R.anim.slide_from_down_with_alpha);
         headerImageGradientView.startAnimation(slideUpAnimation);
         headerImageGradientView.setVisibility(View.VISIBLE);
     }
