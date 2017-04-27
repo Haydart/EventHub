@@ -12,5 +12,6 @@
   <string name="not_enough_preferences_msg">Musisz wybrac przynajmniej trzy kategorie.</string>
   <string name="day_today">Dzisiaj</string>
   <string name="day_tomorrow">Jutro</string>
-  <string name="preferences_not_selected_toast">Musisz wybrac przynajmniej jedna kategorie.</string>
+    <string name="reverse_geocoding_no_address_found_error">Nie znaleziono adresu</string>
+    <string name="reverse_geocoding_service_unavailable">Usługa niedostępna, spróbuj ponownie</string>
 </resources>

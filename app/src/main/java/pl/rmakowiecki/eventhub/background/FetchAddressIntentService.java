@@ -7,11 +7,10 @@ import android.location.Geocoder;
 import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 
 public class FetchAddressIntentService extends IntentService {
@@ -37,24 +36,19 @@ public class FetchAddressIntentService extends IntentService {
         try {
             addressList = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
         } catch (IOException ioException) {
-            errorMessage = "Service not available";
+            errorMessage = getApplicationContext().getString(R.string.reverse_geocoding_service_unavailable);
         } catch (IllegalArgumentException illegalArgumentException) {
             errorMessage = "Invalid location";
         }
 
         if (addressList == null || addressList.size() == 0) {
             if (errorMessage.isEmpty()) {
-                errorMessage = "No address found";
+                errorMessage = getApplicationContext().getString(R.string.reverse_geocoding_no_address_found_error);
             }
             deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
         } else {
             Address address = addressList.get(0);
-            List<String> addressFragments = new ArrayList<>();
-
-            for (int i = 0; i <= address.getMaxAddressLineIndex(); i++) {
-                addressFragments.add(address.getAddressLine(i));
-            }
-            deliverResultToReceiver(Constants.SUCCESS_RESULT, TextUtils.join(System.getProperty("line.separator"), addressFragments));
+            deliverResultToReceiver(Constants.SUCCESS_RESULT, address.getAddressLine(0));
         }
     }
 

@@ -163,10 +163,10 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         if (isMapClickMarkerShown) {
             view.hideMapMarker();
         }
+        isMapClickMarkerShown = true;
         view.showMapMarker(place.getLocationCoordinates());
         view.setBottomSheetData(place.getName(), place.getAddress());
         view.showBottomSheet();
-        isFocusedOnProvidedMarker = true;
         hideSearchBar();
         dismissMapTransitionTask();
         appointMapTransitionTask(focusedMarkerLocation = place.getLocationCoordinates(), IMMEDIATE_CAMERA_TRANSITION_DELAY);
