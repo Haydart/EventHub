@@ -210,7 +210,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
-    public void showLocationSettingsDialog(StatusWrapper status){
+    public void showLocationSettingsDialog(StatusWrapper status) {
         try {
             status.getStatus().startResolutionForResult(this, 0);
         } catch (IntentSender.SendIntentException ex) {
@@ -386,12 +386,10 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         return id == R.id.action_settings || super.onOptionsItemSelected(item);
     }
 
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-
 
         switch (id) {
             case R.id.nav_camera:
