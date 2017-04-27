@@ -2,6 +2,8 @@ package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
 
 import android.support.v4.view.ViewCompat;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -15,10 +17,12 @@ import pl.rmakowiecki.eventhub.R;
 
 class PreferenceCategoryViewHolder extends ParentViewHolder {
 
-    private static final int IGNORED_TARGET_SIZE = 512;
+    public static final int ANIMATION_START_OFFSET = 200;
     @BindView(R.id.preference_category_list_item_image_view) ImageView categoryImageView;
+    @BindView(R.id.preference_category_list_checked_image_view) ImageView checkImageView;
     @BindView(R.id.preference_category_list_item_category_name) TextView categoryNameView;
     @BindView(R.id.preference_category_list_item_progress_bar) ProgressBar categoryProgressBar;
+    @BindView(R.id.preference_category_list_item_dark_view) View darkView;
 
     private final String resourceSource = "drawable";
 
@@ -38,7 +42,29 @@ class PreferenceCategoryViewHolder extends ParentViewHolder {
         itemListener.onImageClick(image, category);
     }
 
-    void bindView(PreferenceCategory category) {
+    void loadCheck() {
+        Picasso.with(view.getContext())
+                .load(R.drawable.ic_check_circle_white_48dp)
+                .fit()
+                .into(checkImageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        checkImageView.setVisibility(View.VISIBLE);
+                        Animation scaleUpFadeInAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.scale_up_fade_in);
+                        scaleUpFadeInAnimation.setStartOffset(ANIMATION_START_OFFSET);
+                        checkImageView.startAnimation(scaleUpFadeInAnimation);
+                    }
+
+                    @Override
+                    public void onError() {
+                        // TODO: 2017-04-27
+                    }
+                });
+    }
+
+    void bindView(PreferenceCategory category, boolean isSelected) {
+        darkView.setVisibility(View.INVISIBLE);
+        checkImageView.setVisibility(View.INVISIBLE);
         this.category = category;
         categoryNameView.setText(category.getTitle());
 
@@ -46,22 +72,27 @@ class PreferenceCategoryViewHolder extends ParentViewHolder {
                 .getResources()
                 .getIdentifier(category.getImageResourceName(), resourceSource, view.getContext().getPackageName());
 
-        Picasso.with(view.getContext())
-                .load(resourceID != 0 ? resourceID : R.drawable.ic_image_placeholder)
-                .placeholder(R.drawable.ic_image_placeholder)
-                .error(R.drawable.ic_image_placeholder)
-                .fit()
-                .into(categoryImageView, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        categoryProgressBar.setVisibility(View.INVISIBLE);
-                    }
+        if (resourceID != 0) {
+            Picasso.with(view.getContext())
+                    .load(resourceID)
+                    .fit()
+                    .into(categoryImageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            if (isSelected) {
+                                darkView.setVisibility(View.VISIBLE);
+                                loadCheck();
+                            }
 
-                    @Override
-                    public void onError() {
-                        // TODO: 23/04/2017 display some error image
-                    }
-                });
+                            categoryProgressBar.setVisibility(View.INVISIBLE);
+                        }
+
+                        @Override
+                        public void onError() {
+                            // TODO: 23/04/2017 display some error image
+                        }
+                    });
+        }
 
         ViewCompat.setTransitionName(categoryImageView, String.valueOf(category.getTitle()));
     }
