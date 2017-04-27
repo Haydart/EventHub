@@ -109,7 +109,10 @@ dependencies {
 	//Joda-Time
 	compile 'net.danlew:android.joda:2.9.9'
 
-    testCompile 'junit:junit:4.12'
+	//Fab Reveal Transition
+	compile 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
+
+	testCompile 'junit:junit:4.12'
 }
 
 apply plugin: 'com.google.gms.google-services'

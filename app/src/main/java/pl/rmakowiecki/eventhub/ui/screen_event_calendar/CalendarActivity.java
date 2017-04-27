@@ -14,7 +14,7 @@ import pl.rmakowiecki.eventhub.ui.BaseActivity;
 
 public class CalendarActivity extends BaseActivity<CalendarPresenter> implements CalendarView, EventsFragment.OnListFragmentInteractionListener {
 
-    @BindView(R.id.calendar_toolbar) Toolbar calendarToolbar;
+    @BindView(R.id.toolbar) Toolbar calendarToolbar;
     @BindView(R.id.viewpager) ViewPager viewPager;
     @BindView(R.id.tab_layout) TabLayout tabLayout;
     @BindString(R.string.title_events) String calendarScreenTitle;
