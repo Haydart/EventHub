@@ -5,6 +5,6 @@ import pl.rmakowiecki.eventhub.ui.BasePresenter;
 class EventCreationPresenter extends BasePresenter<EventCreationView> {
     @Override
     public EventCreationView getNoOpView() {
-        return null;
+        return NoOpEventCreationView.INSTANCE;
     }
 }
