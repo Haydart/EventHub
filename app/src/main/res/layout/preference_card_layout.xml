@@ -15,26 +15,39 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <RelativeLayout
+        <FrameLayout
             android:id="@+id/relative_container"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/preference_category_list_item_image_view"
                 android:layout_width="match_parent"
+                android:layout_height="@dimen/card_image_view_height"/>
+
+            <View
+                android:id="@+id/preference_category_list_item_dark_view"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/card_image_view_height"
-                android:textStyle="bold"
-                card_view:srcCompat="@drawable/ic_image_placeholder" />
+                android:background="@color/colorDark"
+                android:alpha="0.5"
+                android:visibility="invisible"/>
+
+            <ImageView
+                android:id="@+id/preference_category_list_checked_image_view"
+                android:layout_width="@dimen/preferences_card_check_height"
+                android:layout_height="@dimen/preferences_card_check_height"
+                android:layout_gravity="center"
+                android:visibility="invisible" />
 
             <ProgressBar
                 android:id="@+id/preference_category_list_item_progress_bar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:visibility="visible" />
 
-        </RelativeLayout>
+        </FrameLayout>
         <TextView
             android:id="@+id/preference_category_list_item_category_name"
             android:layout_width="match_parent"

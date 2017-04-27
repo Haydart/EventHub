@@ -85,7 +85,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @Override
     public void initPreferences(final List<PreferenceCategory> categories) {
-        adapter = new PreferenceAdapter(getBaseContext(), categories, itemListener);
+        adapter = new PreferenceAdapter(getBaseContext(), categories, itemListener, sharedPreferences);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
