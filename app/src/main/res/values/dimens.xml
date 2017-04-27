@@ -31,6 +31,6 @@
     <dimen name="map_bottom_sheet_place_detail_height">18dp</dimen>
     <dimen name="map_bottom_sheet_palce_name_height">24dp</dimen>
     <dimen name="calendar_list_item_height">140dp</dimen>
-    <dimen name="card_check_height">64dp</dimen>
+    <dimen name="preferences_card_check_height">64dp</dimen>
 </resources>
 

@@ -35,8 +35,8 @@
 
             <ImageView
                 android:id="@+id/preference_category_list_checked_image_view"
-                android:layout_width="@dimen/card_check_height"
-                android:layout_height="@dimen/card_check_height"
+                android:layout_width="@dimen/preferences_card_check_height"
+                android:layout_height="@dimen/preferences_card_check_height"
                 android:layout_gravity="center"
                 android:visibility="invisible" />
 

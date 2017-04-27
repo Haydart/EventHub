@@ -42,7 +42,7 @@ class PreferenceCategoryViewHolder extends ParentViewHolder {
         itemListener.onImageClick(image, category);
     }
 
-    void loadCheck() {
+    private void loadCheck() {
         Picasso.with(view.getContext())
                 .load(R.drawable.ic_check_circle_white_48dp)
                 .fit()
@@ -50,9 +50,7 @@ class PreferenceCategoryViewHolder extends ParentViewHolder {
                     @Override
                     public void onSuccess() {
                         checkImageView.setVisibility(View.VISIBLE);
-                        Animation scaleUpFadeInAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.scale_up_fade_in);
-                        scaleUpFadeInAnimation.setStartOffset(ANIMATION_START_OFFSET);
-                        checkImageView.startAnimation(scaleUpFadeInAnimation);
+                        animateCheckImage();
                     }
 
                     @Override
@@ -60,6 +58,12 @@ class PreferenceCategoryViewHolder extends ParentViewHolder {
                         // TODO: 2017-04-27
                     }
                 });
+    }
+
+    private void animateCheckImage() {
+        Animation scaleUpFadeInAnimation = AnimationUtils.loadAnimation(view.getContext(), R.anim.scale_up_fade_in);
+        scaleUpFadeInAnimation.setStartOffset(ANIMATION_START_OFFSET);
+        checkImageView.startAnimation(scaleUpFadeInAnimation);
     }
 
     void bindView(PreferenceCategory category, boolean isSelected) {
