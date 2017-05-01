@@ -57,6 +57,7 @@ import pl.rmakowiecki.eventhub.ui.screen_create_event.EventCreationActivity;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.CalendarActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
+import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileActivity;
 import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -270,6 +271,12 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
+    public void launchUserProfileScreen() {
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public void initMap() {
         final MapFragment googleMapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.events_map_fragment);
@@ -432,6 +439,9 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                 break;
             case R.id.nav_sign_in:
                 presenter.onSignInMenuOptionClicked();
+                break;
+            case R.id.nav_user_profile:
+                presenter.onUserProfileMenuOptionClicked();
                 break;
         }
 

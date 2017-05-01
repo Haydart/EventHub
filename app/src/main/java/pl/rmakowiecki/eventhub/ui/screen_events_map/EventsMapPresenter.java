@@ -235,4 +235,8 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     public EventsMapView getNoOpView() {
         return NoOpEventsMapView.INSTANCE;
     }
+
+    public void onUserProfileMenuOptionClicked() {
+        view.launchUserProfileScreen();
+    }
 }

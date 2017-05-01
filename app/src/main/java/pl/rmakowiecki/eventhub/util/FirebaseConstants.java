@@ -9,4 +9,5 @@ public class FirebaseConstants {
     public static final String CATEGORIES_REFERENCES = "categories";
     public static final String USER_DATA_REFERENCE = "user_data";
     public static final String USER_PREFERENCES_REFERENCE = "preferences";
+    public static final String USER_PROFILE_IMAGE_REFERENCE = "user_images";
 }

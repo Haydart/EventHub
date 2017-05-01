@@ -38,7 +38,7 @@
                 android:id="@+id/place_name_text_view"
                 style="@style/ListItemTitle"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/map_bottom_sheet_palce_name_height"
+                android:layout_height="@dimen/map_bottom_sheet_place_name_height"
                 android:ellipsize="end"
                 android:maxLines="1"
                 tools:text="Place Name" />
