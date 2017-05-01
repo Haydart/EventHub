@@ -22,7 +22,7 @@
     <dimen name="card_image_view_height">124dp</dimen>
     <dimen name="card_text_margin">2dp</dimen>
     <dimen name="preference_child_list_height">44dp</dimen>
-    <dimen name="custom_button_corner_radius">2dp</dimen>
+    <dimen name="custom_button_corner_radius">100dp</dimen>
     <dimen name="action_button_height">56dp</dimen>
     <dimen name="search_bar_height">64dp</dimen>
     <dimen name="navigation_drawer_icon_height">48dp</dimen>
@@ -32,5 +32,9 @@
     <dimen name="map_bottom_sheet_palce_name_height">24dp</dimen>
     <dimen name="calendar_list_item_height">140dp</dimen>
     <dimen name="preferences_card_check_height">64dp</dimen>
+    <dimen name="layout_arc_height">32dp</dimen>
+    <dimen name="slider_indicator_selected_knob_size">8dp</dimen>
+    <dimen name="slider_indicator_unselected_knob_size">6dp</dimen>
+    <dimen name="slider_indicator_margin_bottom">56dp</dimen>
 </resources>
 

@@ -112,6 +112,13 @@ dependencies {
 	//Fab Reveal Transition
 	compile 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
 
+	//Arc Layout
+	compile 'com.github.florent37:arclayout:1.0.2'
+
+	//Slider View
+	compile 'com.nineoldandroids:library:2.4.0'
+	compile 'com.daimajia.slider:library:1.1.5@aar'
+
 	testCompile 'junit:junit:4.12'
 }
 

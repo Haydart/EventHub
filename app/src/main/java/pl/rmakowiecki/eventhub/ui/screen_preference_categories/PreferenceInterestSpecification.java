@@ -1,4 +1,4 @@
-package pl.rmakowiecki.eventhub.ui.preferences_screen;
+package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
 
 import pl.rmakowiecki.eventhub.repository.Specification;
 

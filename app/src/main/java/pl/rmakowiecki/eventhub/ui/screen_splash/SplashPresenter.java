@@ -1,8 +1,8 @@
 package pl.rmakowiecki.eventhub.ui.screen_splash;
 
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
-import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceInterestRepository;
-import pl.rmakowiecki.eventhub.ui.preferences_screen.PreferenceInterestSpecification;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestRepository;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestSpecification;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesSpecification;
 

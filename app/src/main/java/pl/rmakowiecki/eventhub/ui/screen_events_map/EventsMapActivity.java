@@ -52,6 +52,7 @@ import pl.rmakowiecki.eventhub.background.FetchAddressIntentService;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.ui.screen_app_features.AppFeaturesActivity;
 import pl.rmakowiecki.eventhub.ui.screen_create_event.EventCreationActivity;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.CalendarActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceActivity;
@@ -250,6 +251,25 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
+    public void launchSignInScreen() {
+        Intent intent = new Intent(this, AppFeaturesActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void launchPreferencesScreen() {
+        Intent intent = new Intent(this, PreferenceActivity.class);
+        intent.putParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY, (ArrayList<? extends Parcelable>) preferenceCategories);
+        startActivity(intent);
+    }
+
+    @Override
+    public void launchCalendarScreen() {
+        Intent intent = new Intent(this, CalendarActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     public void initMap() {
         final MapFragment googleMapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.events_map_fragment);
@@ -405,13 +425,13 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                 Toast.makeText(getApplicationContext(), "First sample item clicked", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.nav_calendar:
-                Intent myIntent = new Intent(EventsMapActivity.this, CalendarActivity.class);
-                EventsMapActivity.this.startActivity(myIntent);
+                presenter.onCalendarMenuOptionClicked();
                 break;
             case R.id.nav_preferences:
-                Intent intent = new Intent(this, PreferenceActivity.class);
-                intent.putParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY, (ArrayList<? extends Parcelable>) preferenceCategories);
-                startActivity(intent);
+                presenter.onPreferencesScreenMenuOptionClicked();
+                break;
+            case R.id.nav_sign_in:
+                presenter.onSignInMenuOptionClicked();
                 break;
         }
 

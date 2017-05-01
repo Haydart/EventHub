@@ -3,6 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pl.rmakowiecki.eventhub.ui.screen_splash.AuthActivity">
+    tools:context="pl.rmakowiecki.eventhub.ui.screen_app_features.AppFeaturesActivity">
 
 </android.support.constraint.ConstraintLayout>
