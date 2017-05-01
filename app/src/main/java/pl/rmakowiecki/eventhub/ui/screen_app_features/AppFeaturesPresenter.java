@@ -6,7 +6,7 @@ import rx.Observable;
 
 class AppFeaturesPresenter extends BasePresenter<AppFeaturesView> {
 
-    public static final int SCREEN_TRANSITION_DURATION = 600;
+    private static final int SCREEN_TRANSITION_DURATION = 600;
 
     void onPageSelected(int position) {
         view.changePageDescription(position);
@@ -19,12 +19,12 @@ class AppFeaturesPresenter extends BasePresenter<AppFeaturesView> {
                 .subscribe(ignored -> view.launchAuthScreen());
     }
 
-    @Override
-    public AppFeaturesView getNoOpView() {
-        return null;
-    }
-
     void onViewResumed() {
         view.makeViewsVisible();
+    }
+
+    @Override
+    public AppFeaturesView getNoOpView() {
+        return NoOpAppFeaturesView.INSTANCE;
     }
 }

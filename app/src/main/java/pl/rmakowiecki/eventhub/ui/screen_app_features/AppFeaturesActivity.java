@@ -65,7 +65,6 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
 
     private void initImageSlider() {
         for (int resId : featuresRedIds) {
-            ;
             DefaultSliderView imageView = new DefaultSliderView(this);
             imageView
                     .image(resId)
