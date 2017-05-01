@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="pl.rmakowiecki.eventhub.ui.screen_app_features.AppFeaturesActivity">
+
+    <com.github.florent37.arclayout.ArcLayout
+        android:id="@+id/arc_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        app:arc_cropDirection="cropInside"
+        app:arc_height="@dimen/layout_arc_height">
+
+        <com.daimajia.slider.library.SliderLayout
+            android:id="@+id/features_image_slider"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="matrix"
+            custom:auto_cycle="false"
+            custom:indicator_visibility="visible"
+            custom:pager_animation="ZoomOut" />
+
+        <com.daimajia.slider.library.Indicators.PagerIndicator
+            android:id="@+id/custom_indicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="@dimen/slider_indicator_margin_bottom"
+            android:gravity="center"
+            custom:selected_color="#FFFFFF"
+            custom:selected_height="@dimen/slider_indicator_selected_knob_size"
+            custom:selected_padding_left="@dimen/standard_margin_small"
+            custom:selected_padding_right="@dimen/standard_margin_small"
+            custom:selected_width="@dimen/slider_indicator_selected_knob_size"
+            custom:shape="oval"
+            custom:unselected_color="#88777777"
+            custom:unselected_height="@dimen/slider_indicator_unselected_knob_size"
+            custom:unselected_padding_left="@dimen/standard_margin_small"
+            custom:unselected_padding_right="@dimen/standard_margin_small"
+            custom:unselected_width="@dimen/slider_indicator_unselected_knob_size" />
+
+    </com.github.florent37.arclayout.ArcLayout>
+
+    <LinearLayout
+        android:id="@+id/content_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/feature_description_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="@dimen/standard_margin_large"
+            android:gravity="center_horizontal"
+            android:text="Nasza apka jest dobra dla starych ludzi."
+            android:textSize="16sp" />
+
+        <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
+            android:id="@+id/sign_up_action_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_button_height"
+            android:layout_gravity="bottom"
+            android:layout_margin="@dimen/standard_margin_large"
+            app:button_shape="pill"
+            app:default_color="@color/colorPrimary"
+            app:failure_color="@color/failure_red"
+            app:failure_icon="@drawable/icon_failure_action_button"
+            app:inactive_button_alpha="1.0"
+            app:success_color="@color/success_green"
+            app:success_icon="@drawable/icon_success_action_button"
+            app:text="@string/button_text_sign_in"
+            app:text_color="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>

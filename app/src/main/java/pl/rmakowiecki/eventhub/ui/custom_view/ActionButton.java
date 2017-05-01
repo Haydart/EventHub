@@ -110,7 +110,7 @@ public class ActionButton extends FrameLayout {
     private void initAfterViewBinding() {
         setEnabled(true);
         setBackgroundDependingOnButtonShape(this);
-        getBackground().setTint(defaultColor);
+        getBackground().setColorFilter(defaultColor, PorterDuff.Mode.ADD);
         buttonActionDescriptionTextView.setText(buttonActionDescription);
         buttonActionDescriptionTextView.setTextColor(textColor);
         successFrameLayout.getBackground().setColorFilter(successColor, PorterDuff.Mode.SRC_ATOP);

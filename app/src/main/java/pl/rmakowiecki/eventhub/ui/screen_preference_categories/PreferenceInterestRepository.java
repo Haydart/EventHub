@@ -1,7 +1,6 @@
-package pl.rmakowiecki.eventhub.ui.preferences_screen;
+package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
 
 import java.util.List;
-
 import pl.rmakowiecki.eventhub.api.InterestsDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Interest;
 import pl.rmakowiecki.eventhub.repository.Repository;

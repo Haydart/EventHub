@@ -219,6 +219,18 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         }
     }
 
+    void onCalendarMenuOptionClicked() {
+        view.launchCalendarScreen();
+    }
+
+    void onPreferencesScreenMenuOptionClicked() {
+        view.launchPreferencesScreen();
+    }
+
+    void onSignInMenuOptionClicked() {
+        view.launchSignInScreen();
+    }
+
     @Override
     public EventsMapView getNoOpView() {
         return NoOpEventsMapView.INSTANCE;

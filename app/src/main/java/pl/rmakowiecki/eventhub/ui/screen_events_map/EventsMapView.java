@@ -35,4 +35,10 @@ interface EventsMapView extends BaseView {
     void setBottomSheetData(String name, String address);
 
     void fetchAddressForLocation(LocationCoordinates location);
+
+    void launchSignInScreen();
+
+    void launchPreferencesScreen();
+
+    void launchCalendarScreen();
 }

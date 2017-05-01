@@ -15,4 +15,6 @@
     <string name="reverse_geocoding_no_address_found_error">Nie znaleziono adresu</string>
     <string name="reverse_geocoding_service_unavailable">Usługa niedostępna, spróbuj ponownie</string>
     <string name="title_event_creation">Utwórz wydarzenie</string>
+    <string name="title_sign_in">Zaloguj się</string>
+    <string name="button_text_sign_in">Dołącz!</string>
 </resources>
