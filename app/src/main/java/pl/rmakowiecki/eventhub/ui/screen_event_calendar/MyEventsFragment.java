@@ -12,7 +12,7 @@ import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
 
-public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implements EventsFragmentView {
+public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> implements MyEventsFragmentView {
 
     public static final String ARG_PAGE = "ARG_PAGE";
 
@@ -21,16 +21,16 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     private RecyclerView.Adapter adapter;
     private View view;
     private RecyclerView recyclerView;
-    private int page;
+    private static int page = 1;
 
-    public EventsFragment() {
+    public MyEventsFragment() {
         //no-op
     }
 
-    public static EventsFragment newInstance(int page) {
+    public static MyEventsFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
-        EventsFragment fragment = new EventsFragment();
+        MyEventsFragment fragment = new MyEventsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -44,7 +44,7 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_events_list, container, false);
+        view = inflater.inflate(R.layout.fragment_my_events_list, container, false);
 
         return view;
     }
@@ -56,7 +56,7 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
 
     @Override
     protected void initPresenter() {
-        presenter = new EventsFragmentPresenter(page);
+        presenter = new MyEventsFragmentPresenter(page);
     }
 
     @Override
@@ -67,7 +67,7 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public void initEvents(final List<Event> events) {
         Context context = getContext();
-        adapter = new EventsAdapter(context, events, listener);
+        adapter = new MyEventsAdapter(context, events, listener);
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);

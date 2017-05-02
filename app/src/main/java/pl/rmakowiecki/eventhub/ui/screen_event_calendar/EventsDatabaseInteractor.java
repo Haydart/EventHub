@@ -3,7 +3,6 @@ package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +22,36 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>
 
     private static final String DATABASE_PATH = "app_data/events";
 
-    private List<Event> parseEventData(DataSnapshot dataSnapshot) {
+    private List<Event> parseEventData(DataSnapshot dataSnapshot, int position) {
 
-        List<Event> events;
+        List<Event> events = new ArrayList<>();
+        Event event;
+        Map<String, Boolean> usersMap;
 
-        GenericTypeIndicator<Map<String, Event>> t = new GenericTypeIndicator<Map<String, Event>>() {
-        };
-        Map<String, Event> map = dataSnapshot.getValue(t);
-        events = new ArrayList<>(map.values());
+        for (DataSnapshot child : dataSnapshot.getChildren()) {
+            event = child.getValue(Event.class);
+            events.add(event);
+        }
+        //TODO: more cases when filtering more advanced
+        switch (position) {
+            case 1:
+                events = filterForMyEvents((ArrayList<Event>) events);
+                break;
+        }
+
         return events;
+    }
+
+    public ArrayList<Event> filterForMyEvents(ArrayList<Event> events) {
+        ArrayList<Event> filteredList = new ArrayList<>();
+        for (Event event : events) {
+
+            if (event.getUsers().containsKey("abcd")) //should be imported from users database but there's none
+            {
+                filteredList.add(event);
+            }
+        }
+        return filteredList;
     }
 
     @Override
@@ -42,19 +62,23 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>
 
     @Override
     public Observable<List<Event>> getData() {
+        return null;
+    }
+
+    public Observable<List<Event>> getData(int position) {
 
         setDatabaseQueryNode();
         publishSubject = PublishSubject.create();
         databaseQueryNode.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                publishSubject.onNext(parseEventData(dataSnapshot));
+                publishSubject.onNext(parseEventData(dataSnapshot, position));
                 publishSubject.onCompleted();
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG,"The read failed: " + databaseError.getCode());
+                Log.d(TAG, "The read failed: " + databaseError.getCode());
             }
         });
         return publishSubject;
