@@ -12,7 +12,8 @@ import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 
-public class CalendarActivity extends BaseActivity<CalendarPresenter> implements CalendarView, EventsFragment.OnListFragmentInteractionListener {
+public class CalendarActivity extends BaseActivity<CalendarPresenter>
+        implements CalendarView, EventsFragment.OnListFragmentInteractionListener, MyEventsFragment.OnListFragmentInteractionListener {
 
     @BindView(R.id.toolbar) Toolbar calendarToolbar;
     @BindView(R.id.viewpager) ViewPager viewPager;
@@ -31,6 +32,7 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter> implements
                 CalendarActivity.this, tabTitles));
 
         tabLayout.setupWithViewPager(viewPager);
+
         calendarToolbar.setTitle(calendarScreenTitle);
         setSupportActionBar(calendarToolbar);
 

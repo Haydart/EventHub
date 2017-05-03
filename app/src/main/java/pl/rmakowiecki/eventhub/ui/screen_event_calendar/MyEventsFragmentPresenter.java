@@ -10,12 +10,12 @@ import rx.schedulers.Schedulers;
  * Created by m1per on 18.04.2017.
  */
 
-public class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
+public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
 
     private Repository<Event> repository;
     private int position;
 
-    EventsFragmentPresenter(int position) {
+    MyEventsFragmentPresenter(int position) {
         repository = new EventsRepository();
         this.position = position;
     }
@@ -29,13 +29,13 @@ public class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     }
 
     @Override
-    protected void onViewStarted(EventsFragmentView view) {
+    protected void onViewStarted(MyEventsFragmentView view) {
         super.onViewStarted(view);
         onViewInitialization();
     }
 
     @Override
-    public EventsFragmentView getNoOpView() {
-        return NoOpEventsFragmentView.INSTANCE;
+    public MyEventsFragmentView getNoOpView() {
+        return NoOpMyEventsFragmentView.INSTANCE;
     }
 }

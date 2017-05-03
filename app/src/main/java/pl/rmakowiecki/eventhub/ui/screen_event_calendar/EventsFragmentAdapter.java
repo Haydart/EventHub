@@ -26,7 +26,14 @@ public class EventsFragmentAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return EventsFragment.newInstance(position);
+        switch (position) {
+            case 0:
+                return EventsFragment.newInstance(position);
+            case 1:
+                return MyEventsFragment.newInstance(position);
+            default:
+                return EventsFragment.newInstance(position);
+        }
     }
 
     @Override

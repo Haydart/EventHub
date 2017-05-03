@@ -33,6 +33,7 @@ class EventsRepository implements Repository<Event> {
 
     @Override
     public Observable<List<Event>> query(Specification specification) {
-        return new EventsDatabaseInteractor().getData();
+        MyEventsSpecifications spec = (MyEventsSpecifications) specification;
+        return new EventsDatabaseInteractor().getData(spec.getTabPosition());
     }
 }
