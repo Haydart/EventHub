@@ -9,8 +9,7 @@ import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsSpecification;
 public class MyEventsSpecifications implements EventsSpecification {
     private int tabPosition;
 
-    public MyEventsSpecifications(int position)
-    {
+    public MyEventsSpecifications(int position) {
         tabPosition = position;
     }
 

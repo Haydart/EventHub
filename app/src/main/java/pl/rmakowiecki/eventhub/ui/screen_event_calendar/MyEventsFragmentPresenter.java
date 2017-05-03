@@ -24,9 +24,7 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
         repository
                 .query(new MyEventsSpecifications(position) {
                 })
-                .subscribeOn(Schedulers.io())
-                .observeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                .compose(applySchedulers())
                 .subscribe(view::showEvents);
     }
 

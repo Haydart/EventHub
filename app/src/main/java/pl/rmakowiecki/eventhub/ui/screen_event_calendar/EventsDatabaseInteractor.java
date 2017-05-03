@@ -62,7 +62,7 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>
 
     @Override
     public Observable<List<Event>> getData() {
-        return null;
+        return Observable.empty();
     }
 
     public Observable<List<Event>> getData(int position) {

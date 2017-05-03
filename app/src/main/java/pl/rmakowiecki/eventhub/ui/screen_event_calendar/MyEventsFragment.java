@@ -15,13 +15,14 @@ import pl.rmakowiecki.eventhub.ui.BaseFragment;
 public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> implements MyEventsFragmentView {
 
     public static final String ARG_PAGE = "ARG_PAGE";
+    private static final int PAGE = 1;
 
     private int columnCount = 1;
     private OnListFragmentInteractionListener listener;
     private RecyclerView.Adapter adapter;
     private View view;
     private RecyclerView recyclerView;
-    private static int page = 1;
+
 
     public MyEventsFragment() {
         //no-op
@@ -38,7 +39,6 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt(ARG_PAGE);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
 
     @Override
     protected void initPresenter() {
-        presenter = new MyEventsFragmentPresenter(page);
+        presenter = new MyEventsFragmentPresenter(PAGE);
     }
 
     @Override
