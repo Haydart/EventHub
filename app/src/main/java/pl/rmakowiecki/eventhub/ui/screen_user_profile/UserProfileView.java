@@ -9,8 +9,6 @@ public interface UserProfileView extends BaseView {
 
     void enableHomeButton();
 
-    void initStorageReference();
-
     void saveProfile();
 
     void launchCameraAppIntent();
@@ -24,4 +22,8 @@ public interface UserProfileView extends BaseView {
     void launchMapAndFinish();
 
     void showPictureSelectFragment();
+
+    void initRepository();
+
+    void showButtonProcessing();
 }

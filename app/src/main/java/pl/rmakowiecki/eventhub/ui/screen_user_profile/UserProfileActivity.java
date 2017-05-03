@@ -11,7 +11,6 @@ import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -20,12 +19,11 @@ import java.io.ByteArrayOutputStream;
 import butterknife.BindView;
 import butterknife.OnClick;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.model.local.UserProfile;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
-
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PROFILE_IMAGE_REFERENCE;
 
 public class UserProfileActivity extends BaseActivity<UserProfilePresenter> implements UserProfileView {
 
@@ -40,7 +38,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @BindView(R.id.user_profile_image_view) ImageView imageView;
     @BindView(R.id.save_user_profile_action_button) ActionButton saveProfileButton;
 
-    private StorageReference firebaseStorageRef;
+    private UserProfileRepository repository;
     private Bitmap pictureBitmap;
     private DialogFragment fragment;
     private boolean buttonClicked;
@@ -50,6 +48,12 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         super.onCreate(savedInstanceState);
         setSupportActionBar(profileToolbar);
         buttonClicked = false;
+    }
+
+    @Override
+    public void initRepository() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        repository = new UserProfileRepository(presenter, user);
     }
 
     @Override
@@ -137,16 +141,6 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         getSupportActionBar().setHomeButtonEnabled(true);
     }
 
-    @Override
-    public void initStorageReference() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            firebaseStorageRef = FirebaseStorage.getInstance().getReference()
-                    .child(USER_PROFILE_IMAGE_REFERENCE)
-                    .child(user.getUid());
-        }
-    }
-
     @OnClick(R.id.save_user_profile_action_button)
     protected void saveProfileButtonClick() {
         presenter.onProfileSaveButtonClick();
@@ -157,6 +151,17 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         saveProfileButton.showFailure(getString(R.string.save_user_profile_failure_text));
     }
 
+    @Override
+    public void showButtonProcessing() {
+        saveProfileButton.showProcessing();
+    }
+
+    private byte[] getBytesFromBitmap(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        return outputStream.toByteArray();
+    }
+
     // TODO: 01.05.2017 Rework this method when more save-able options are implemented
     public void saveProfile() {
         if (pictureBitmap == null) {
@@ -164,24 +169,10 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
             presenter.onProfileSaveSuccess();
             return;
         }
-        
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        pictureBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] data = outputStream.toByteArray();
 
-        if (firebaseStorageRef == null) {
-            presenter.onProfileSaveFailure();
-        }
-        else {
-            saveProfileButton.showProcessing();
-
-            UploadTask uploadTask = firebaseStorageRef.putBytes(data);
-            uploadTask.addOnFailureListener(exception -> {
-                presenter.onProfileSaveFailure();
-            }).addOnSuccessListener(taskSnapshot -> {
-                presenter.onProfileSaveSuccess();
-            });
-        }
+        byte[] data = getBytesFromBitmap(pictureBitmap);
+        UserProfile profile = new UserProfile(data);
+        repository.add(profile);
     }
 
     @Override

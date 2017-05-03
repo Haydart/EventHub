@@ -19,7 +19,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
     protected void onViewStarted(UserProfileView view) {
         super.onViewStarted(view);
         view.enableHomeButton();
-        view.initStorageReference();
+        view.initRepository();
         wasButtonClicked = false;
     }
 
@@ -77,6 +77,10 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
                 .subscribe(ignored -> {
                     view.launchMapAndFinish();
                 });
+    }
+
+    public void onProfileSaveProcessing() {
+        view.showButtonProcessing();
     }
 
     public void onChooseImageButtonClicked() {
