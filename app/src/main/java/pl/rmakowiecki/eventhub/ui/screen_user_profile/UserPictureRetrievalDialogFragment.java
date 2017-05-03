@@ -21,13 +21,13 @@ public class UserPictureRetrievalDialogFragment extends DialogFragment {
 
     private Unbinder unbinder;
 
-    @OnClick(R.id.cameraOptionTextView)
+    @OnClick(R.id.camera_option_text_view)
     public void OnCameraOptionClicked() {
         ((UserProfileActivity)
                 getActivity()).onDialogFragmentButtonClick(PHOTO_SOURCE_CAMERA);
     }
 
-    @OnClick(R.id.galleryOptionTextView)
+    @OnClick(R.id.gallery_option_text_view)
     public void OnGalleryOptionClicked() {
         ((UserProfileActivity)
                 getActivity()).onDialogFragmentButtonClick(PHOTO_SOURCE_GALLERY);

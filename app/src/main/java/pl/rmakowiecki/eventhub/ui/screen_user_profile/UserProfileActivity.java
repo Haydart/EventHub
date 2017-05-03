@@ -62,10 +62,9 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         return R.layout.user_profile_activity;
     }
 
-    @OnClick(R.id.addImageButton)
+    @OnClick(R.id.add_image_button)
     public void onChooseImageButtonClicked() {
-        fragment = new UserPictureRetrievalDialogFragment();
-        fragment.show(getSupportFragmentManager(), DIALOG_FRAGMENT_TAG);
+        presenter.onChooseImageButtonClicked();
     }
 
     public void onDialogFragmentButtonClick(int photoSource) {
@@ -133,11 +132,6 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     }
 
     @Override
-    protected boolean shouldMoveToBack() {
-        return true;
-    }
-
-    @Override
     public void enableHomeButton() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -155,15 +149,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
 
     @OnClick(R.id.save_user_profile_action_button)
     protected void saveProfileButtonClick() {
-        if (!buttonClicked) {
-            buttonClicked = true;
-            presenter.onProfileSaveButtonClick();
-        }
-    }
-
-    @Override
-    public void enableSaveButton() {
-        buttonClicked = false;
+        presenter.onProfileSaveButtonClick();
     }
 
     @Override
@@ -202,6 +188,12 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     public void launchMapAndFinish() {
         launchMapActivity();
         finish();
+    }
+
+    @Override
+    public void showPictureSelectFragment() {
+        fragment = new UserPictureRetrievalDialogFragment();
+        fragment.show(getSupportFragmentManager(), DIALOG_FRAGMENT_TAG);
     }
 
     private void launchMapActivity() {

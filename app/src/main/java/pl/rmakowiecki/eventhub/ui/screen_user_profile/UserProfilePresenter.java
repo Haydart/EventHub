@@ -13,20 +13,21 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
     private static final int LAUNCH_MAP_ACTIVITY_DELAY = 3500;
     private static final int BUTTON_ENABLE_DELAY = 5000;
 
-    @Override
-    public UserProfileView getNoOpView() {
-        return NoOpUserProfileView.INSTANCE;
-    }
+    private boolean wasButtonClicked;
 
     @Override
     protected void onViewStarted(UserProfileView view) {
         super.onViewStarted(view);
         view.enableHomeButton();
         view.initStorageReference();
+        wasButtonClicked = false;
     }
 
     public void onProfileSaveButtonClick() {
-        view.saveProfile();
+        if (!wasButtonClicked) {
+            wasButtonClicked = true;
+            view.saveProfile();
+        }
     }
 
     public void onPhotoOptionSelected(int photoSource) {
@@ -53,7 +54,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
         Observable.timer(BUTTON_ENABLE_DELAY, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
                 .subscribe(ignored -> {
-                    view.enableSaveButton();
+                    wasButtonClicked = false;
                 });
     }
 
@@ -76,5 +77,14 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
                 .subscribe(ignored -> {
                     view.launchMapAndFinish();
                 });
+    }
+
+    public void onChooseImageButtonClicked() {
+        view.showPictureSelectFragment();
+    }
+
+    @Override
+    public UserProfileView getNoOpView() {
+        return NoOpUserProfileView.INSTANCE;
     }
 }

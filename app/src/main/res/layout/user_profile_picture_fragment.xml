@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
-    android:weightSum="1">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/cameraOptionTextView"
+        android:id="@+id/camera_option_text_view"
         android:layout_margin="@dimen/standard_margin_small"
         android:layout_width="match_parent"
         android:layout_height="@dimen/photo_source_select_option_height"
@@ -16,7 +15,7 @@
         android:text="@string/camera_option_text"/>
 
     <TextView
-        android:id="@+id/galleryOptionTextView"
+        android:id="@+id/gallery_option_text_view"
         android:layout_margin="@dimen/standard_margin_small"
         android:layout_width="match_parent"
         android:layout_height="@dimen/photo_source_select_option_height"

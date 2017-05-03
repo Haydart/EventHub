@@ -17,11 +17,11 @@ public interface UserProfileView extends BaseView {
 
     void launchGalleryAppIntent();
 
-    void enableSaveButton();
-
     void showFailureMessage();
 
     void showProfileSaveSuccess();
 
     void launchMapAndFinish();
+
+    void showPictureSelectFragment();
 }
