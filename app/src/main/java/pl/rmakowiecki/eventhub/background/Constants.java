@@ -11,4 +11,7 @@ public class Constants {
     public static final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_model";
     public static final String DRAWABLE_REFERENCE = "drawable";
     public static final String SHARED_PREFERENCES_KEY = "shared_preferences";
+    public static final String PROFILE_PIC_BUNDLE_NAME = "profile_pic_bundle";
+    public static final int PROFILE_PIC_BITMAP_WIDTH = 256;
+    public static final int PROFILE_PIC_BITMAP_HEIGHT = 256;
 }

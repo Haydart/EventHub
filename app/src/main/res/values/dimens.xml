@@ -29,12 +29,25 @@
     <dimen name="list_item_thumbnail_size">40dp</dimen>
     <dimen name="bottom_sheet_header_height">72dp</dimen>
     <dimen name="map_bottom_sheet_place_detail_height">18dp</dimen>
-    <dimen name="map_bottom_sheet_palce_name_height">24dp</dimen>
+    <dimen name="map_bottom_sheet_place_name_height">24dp</dimen>
     <dimen name="calendar_list_item_height">140dp</dimen>
     <dimen name="preferences_card_check_height">64dp</dimen>
     <dimen name="layout_arc_height">32dp</dimen>
     <dimen name="slider_indicator_selected_knob_size">8dp</dimen>
     <dimen name="slider_indicator_unselected_knob_size">6dp</dimen>
     <dimen name="slider_indicator_margin_bottom">56dp</dimen>
+    <dimen name="photo_source_select_option_height">64dp</dimen>
+    <dimen name="layout_arc_border_width">2dp</dimen>
+    <dimen name="layout_arc_layout_height">256dp</dimen>
+    <dimen name="layout_frame_user_profile_image_margin">72dp</dimen>
+    <dimen name="layout_frame_user_profile_image_height">200dp</dimen>
+    <dimen name="user_profile_image_border_width">4dp</dimen>
+    <dimen name="user_profile_image_margin">8dp</dimen>
+    <dimen name="user_profile_image_height">180dp</dimen>
+    <dimen name="user_add_profile_image_size">64dp</dimen>
+    <dimen name="user_add_profile_image_margin_top">4dp</dimen>
+    <dimen name="user_add_profile_image_margin_right">88dp</dimen>
+    <dimen name="user_profile_user_name_margin">280dp</dimen>
+    <dimen name="user_profile_user_text_size">32dp</dimen>
 </resources>
 

@@ -12,9 +12,15 @@
   <string name="not_enough_preferences_msg">Musisz wybrac przynajmniej trzy kategorie.</string>
   <string name="day_today">Dzisiaj</string>
   <string name="day_tomorrow">Jutro</string>
-    <string name="reverse_geocoding_no_address_found_error">Nie znaleziono adresu</string>
-    <string name="reverse_geocoding_service_unavailable">Usługa niedostępna, spróbuj ponownie</string>
-    <string name="title_event_creation">Utwórz wydarzenie</string>
-    <string name="title_sign_in">Zaloguj się</string>
-    <string name="button_text_sign_in">Dołącz!</string>
+  <string name="reverse_geocoding_no_address_found_error">Nie znaleziono adresu</string>
+  <string name="reverse_geocoding_service_unavailable">UsĹ‚uga niedostÄ™pna, sprĂłbuj ponownie</string>
+  <string name="title_event_creation">UtwĂłrz wydarzenie</string>
+  <string name="title_sign_in">Zaloguj siÄ™</string>
+  <string name="button_text_sign_in">DoĹ‚Ä…cz!</string>
+  <string name="camera_option_text">Zrob nowe zdjecie</string>
+  <string name="gallery_option_text">Wybierz zdjecie z galerii</string>
+  <string name="gallery_option_window_text">Wybierz swoje zdjecie:</string>
+  <string name="button_text_save_user_profile">Zapisz profil</string>
+  <string name="save_user_profile_failure_text">Nie mozna polaczyc z serwerem.</string>
+  <string name="title_user_profile">Profil Uzytkownika</string>
 </resources>

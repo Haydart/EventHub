@@ -41,4 +41,6 @@ interface EventsMapView extends BaseView {
     void launchPreferencesScreen();
 
     void launchCalendarScreen();
+
+    void launchUserProfileScreen();
 }
