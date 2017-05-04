@@ -1,5 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_events_map;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.LocationProvider;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
@@ -238,5 +240,13 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
 
     public void onUserProfileMenuOptionClicked() {
         view.launchUserProfileScreen();
+    }
+
+    public void onFirebaseDebugLogin() {
+        view.debugLogin();
+    }
+
+    public void onFirebaseDebugLogout() {
+        view.debugLogout();
     }
 }
