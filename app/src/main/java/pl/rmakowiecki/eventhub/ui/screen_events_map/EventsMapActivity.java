@@ -41,6 +41,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import java.util.ArrayList;
 import java.util.List;
@@ -277,6 +278,27 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
+    public void debugLogin() {
+        String email = "example@gmail.com";
+        String password = "firebasepassword";
+        FirebaseAuth.getInstance()
+                .signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
+                    }
+                    else
+                        Toast.makeText(this, "Could not log in", Toast.LENGTH_SHORT).show();
+                });
+    }
+
+    @Override
+    public void debugLogout() {
+        FirebaseAuth.getInstance().signOut();
+        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void initMap() {
         final MapFragment googleMapFragment = (MapFragment) getFragmentManager()
                 .findFragmentById(R.id.events_map_fragment);
@@ -442,6 +464,12 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                 break;
             case R.id.nav_user_profile:
                 presenter.onUserProfileMenuOptionClicked();
+                break;
+            case R.id.nav_debug_login:
+                presenter.onFirebaseDebugLogin();
+                break;
+            case R.id.nav_debug_logout:
+                presenter.onFirebaseDebugLogout();
                 break;
         }
 
