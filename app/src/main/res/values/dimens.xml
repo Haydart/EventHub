@@ -52,5 +52,9 @@
     <dimen name="user_profile_arc_height">180dp</dimen>
     <dimen name="back_arrow_size">25dp</dimen>
     <dimen name="back_arrow_margin">15dp</dimen>
+    <dimen name="text_input_side_margin">32dp</dimen>
+    <dimen name="text_input_height">64dp</dimen>
+    <dimen name="first_text_input_margin_top">24dp</dimen>
+    <dimen name="login_image_view_size">40dp</dimen>
 </resources>
 

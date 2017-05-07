@@ -27,4 +27,17 @@
   <string name="button_text_save_user_profile">Save profile</string>
   <string name="save_user_profile_failure_text">Couldn\'t connect to the server.</string>
   <string name="title_user_profile">User Profile</string>
+    <string name="text_input_hint_email">Email address</string>
+    <string name="text_input_hint_password">Password</string>
+    <string name="text_input_hint_repeat_password">Repeat password</string>
+    <string name="text_forgot_password">Forgot password</string>
+    <string name="text_register_email">Sign up with email</string>
+    <string name="invalid_email_prompt">Invalid e-mail address</string>
+    <string name="invalid_password_prompt">The password is too weak</string>
+    <string name="invalid_password_matching">The passwords entered do not match</string>
+    <string name="button_failure_invalid_credentials">Invalid credentials</string>
+    <string name="button_failure_network_connection">Network connection lost</string>
+    <string name="button_failure_email_taken">Email already taken</string>
+    <string name="button_failure_credentials_discarded">Credentials discarded</string>
+    <string name="button_failure_unknown_error">Unknown server error</string>
 </resources>
