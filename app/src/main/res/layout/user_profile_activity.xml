@@ -12,7 +12,7 @@
         android:layout_height="@dimen/user_profile_appbar_height"
         android:fitsSystemWindows="false"
         android:background="@color/android_background_grey"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:theme="@style/AppBarUserProfile"
         android:windowTranslucentStatus="false">
 
         <android.support.design.widget.CollapsingToolbarLayout
@@ -89,20 +89,6 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
-
-    <android.support.v4.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:textSize="@dimen/user_profile_user_text_size"
-            android:text="Imie Nazwisko"/>
-
-    </android.support.v4.widget.NestedScrollView>
 
     <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
         android:id="@+id/save_user_profile_action_button"
