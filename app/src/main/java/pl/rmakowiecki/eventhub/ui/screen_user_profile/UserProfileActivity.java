@@ -56,7 +56,6 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         super.onCreate(savedInstanceState);
         setSupportActionBar(profileToolbar);
         buttonClicked = false;
-        changeToolbarTitles();
     }
 
     @Override
@@ -68,7 +67,10 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @Override
     public void changeToolbarTitles() {
         profileToolbar.setTitle("");
-        collapsingToolbarLayout.setTitle("Imie Nazwisko"); // TODO: 2017-05-07 Load user name 
+        collapsingToolbarLayout.setTitle("Imie Nazwisko");
+
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     @Override

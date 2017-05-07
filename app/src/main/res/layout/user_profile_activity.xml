@@ -32,14 +32,6 @@
                 android:scaleType="centerCrop"
                 app:layout_collapseMode="pin" />
 
-            <View
-                android:id="@+id/header_gradient_view"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/gradient_height"
-                android:layout_gravity="bottom"
-                android:background="@drawable/image_gradient"
-                android:visibility="invisible" />
-
             <android.support.v7.widget.Toolbar
                 android:id="@+id/user_profile_toolbar"
                 android:layout_width="match_parent"
