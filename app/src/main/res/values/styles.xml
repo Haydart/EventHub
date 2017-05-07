@@ -72,4 +72,10 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:indeterminate">true</item>
     </style>
+
+
+    <style name="InputEditText" parent="Widget.AppCompat.EditText">
+        <item name="android:textColor">@color/gray_dark</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

@@ -43,7 +43,6 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
             "Nasza apka jest dobra dla murzynów.",
             "Nasza apka jest dobra dla wielbłądów."
     };
-    ;
 
     @OnClick(R.id.sign_up_action_button)
     public void onSignUpButtonClicked() {
