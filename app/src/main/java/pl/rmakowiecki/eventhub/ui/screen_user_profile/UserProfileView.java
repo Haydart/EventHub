@@ -26,4 +26,6 @@ public interface UserProfileView extends BaseView {
     void initRepository();
 
     void showButtonProcessing();
+
+    void changeToolbarTitles();
 }

@@ -3,10 +3,16 @@ package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -34,7 +40,9 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     private static final int PHOTO_SOURCE_CAMERA = 1;
     private static final int PHOTO_SOURCE_GALLERY = 2;
 
-    @BindView(R.id.profile_toolbar) Toolbar profileToolbar;
+    @BindView(R.id.user_profile_appbar_layout) AppBarLayout appBarLayout;
+    @BindView(R.id.user_profile_toolbar) Toolbar profileToolbar;
+    @BindView(R.id.user_profile_toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.user_profile_image_view) ImageView imageView;
     @BindView(R.id.save_user_profile_action_button) ActionButton saveProfileButton;
 
@@ -48,12 +56,22 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         super.onCreate(savedInstanceState);
         setSupportActionBar(profileToolbar);
         buttonClicked = false;
+        changeToolbarTitles();
     }
 
     @Override
     public void initRepository() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         repository = new UserProfileRepository(presenter, user);
+    }
+
+    @Override
+    public void changeToolbarTitles() {
+        profileToolbar.setTitle("");
+        collapsingToolbarLayout.setTitle("");
+
+        Window window = getWindow();
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     @Override
