@@ -61,9 +61,6 @@ public final class Event implements Parcelable {
         return users;
     }
 
-    public void setUsers(HashMap<String, Boolean> users) {
-        this.users = users;
-    }
 
     public String getLocation() { return location; }
 

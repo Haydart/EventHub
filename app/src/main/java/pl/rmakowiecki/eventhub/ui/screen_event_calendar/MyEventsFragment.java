@@ -60,14 +60,14 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
     }
 
     @Override
-    public void showEvents(List<Event> events) {
-        initEvents(events);
+    public void showEvents(List<Event> events, List<String> distances) {
+        initEvents(events, distances);
     }
 
     @Override
-    public void initEvents(final List<Event> events) {
+    public void initEvents(final List<Event> events, List<String> distances) {
         Context context = getContext();
-        adapter = new MyEventsAdapter(context, events, listener);
+        adapter = new MyEventsAdapter(context, events, distances, listener);
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);
