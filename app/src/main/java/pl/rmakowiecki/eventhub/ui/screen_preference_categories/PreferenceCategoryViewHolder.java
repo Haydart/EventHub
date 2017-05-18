@@ -13,7 +13,14 @@ import butterknife.OnClick;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
+
+import java.util.Locale;
+
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.util.LocaleUtils;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
+
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.PL_LOCALE_REFERENCE;
 
 class PreferenceCategoryViewHolder extends ParentViewHolder {
 
@@ -70,7 +77,13 @@ class PreferenceCategoryViewHolder extends ParentViewHolder {
         darkView.setVisibility(View.INVISIBLE);
         checkImageView.setVisibility(View.INVISIBLE);
         this.category = category;
-        categoryNameView.setText(category.getTitle());
+
+        String categoryName = category.getTitle();
+        String localeName = new LocaleUtils().getLocaleString();
+        PreferencesManager manager = new PreferencesManager(view.getContext());
+        if (!localeName.isEmpty())
+            categoryName = manager.getNameOrLocaleName(localeName, categoryName, categoryName);
+        categoryNameView.setText(categoryName);
 
         int resourceID = view.getContext()
                 .getResources()

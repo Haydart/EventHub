@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_preference_subcategories;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
@@ -15,6 +16,8 @@ public class PreferenceInterestViewHolder extends ChildViewHolder {
     @BindView(R.id.preference_interest_list_item_text_view) TextView interestNameTextView;
     @BindView(R.id.preference_interest_list_item_checkbox) CheckBox interestInterestedCheckBox;
 
+    private String nameText;
+
     public PreferenceInterestViewHolder(View itemView) {
         super(itemView);
 
@@ -22,13 +25,14 @@ public class PreferenceInterestViewHolder extends ChildViewHolder {
         interestNameTextView.setPadding(0, PREFERENCE_INTEREST_PADDING_TOP, 0, 0);
     }
 
-    public void bindView(String nameText, boolean active) {
-        interestNameTextView.setText(nameText);
+    public void bindView(String nameText, String localeNameText, boolean active) {
+        this.nameText = nameText;
+        interestNameTextView.setText(localeNameText.isEmpty() ? nameText : localeNameText);
         interestInterestedCheckBox.setChecked(active);
     }
 
     public String getCategoryName() {
-        return interestNameTextView.getText().toString();
+        return nameText;
     }
 
     public boolean isChecked() {

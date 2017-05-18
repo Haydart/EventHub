@@ -12,7 +12,7 @@ public class PreferenceCategory implements Parent<PreferenceInterest>, Parcelabl
     private final String imageResourceName;
     private List<String> childrenList;
 
-    PreferenceCategory(String categoryTitle, String imgResourceName, List<String> childList) {
+    public PreferenceCategory(String categoryTitle, String imgResourceName, List<String> childList) {
         childrenList = childList;
         title = categoryTitle;
         imageResourceName = imgResourceName.isEmpty() ? "InvalidName" : imgResourceName;

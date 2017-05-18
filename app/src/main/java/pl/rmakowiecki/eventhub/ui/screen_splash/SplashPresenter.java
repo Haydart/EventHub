@@ -1,10 +1,18 @@
 package pl.rmakowiecki.eventhub.ui.screen_splash;
 
+import java.util.Locale;
+
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestSpecification;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesLocaleRepository;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesLocaleSpecification;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesSpecification;
+import pl.rmakowiecki.eventhub.util.LocaleUtils;
+
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EN_LOCALE_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.PL_LOCALE_REFERENCE;
 
 class SplashPresenter extends BasePresenter<SplashView> {
 
@@ -23,6 +31,12 @@ class SplashPresenter extends BasePresenter<SplashView> {
         view.checkIfFirstLaunch();
         queryPreferences();
         queryInterests();
+        if (shouldLoadLocale())
+            queryLocales();
+    }
+
+    private boolean shouldLoadLocale() {
+        return new LocaleUtils().hasLocale();
     }
 
     private void queryPreferences() {
@@ -37,5 +51,12 @@ class SplashPresenter extends BasePresenter<SplashView> {
                 .query(new PreferenceInterestSpecification() {})
                 .compose(applySchedulers())
                 .subscribe(view::saveInterests);
+    }
+
+    private void queryLocales() {
+        new PreferencesLocaleRepository()
+                .query(new PreferencesLocaleSpecification() {})
+                .compose(applySchedulers())
+                .subscribe(view::saveLocales);
     }
 }

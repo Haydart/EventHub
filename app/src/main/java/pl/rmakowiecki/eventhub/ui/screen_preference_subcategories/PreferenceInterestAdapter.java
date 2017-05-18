@@ -10,17 +10,25 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceInterestViewHolder> {
     private LayoutInflater layoutInflater;
     private List<String> interestList;
     private List<PreferenceInterestViewHolder> holders;
     private Set<String> currentPreferences;
+    private PreferencesManager preferencesManager;
+    private String localeString;
+    private String categoryName;
 
-    public PreferenceInterestAdapter(Context context, @NonNull List<String> interestList, Set<String> currentPreferences) {
+    public PreferenceInterestAdapter(Context context, @NonNull List<String> interestList, Set<String> currentPreferences, PreferencesManager manager,
+                                     String localeString, String categoryName) {
         layoutInflater = LayoutInflater.from(context);
+        preferencesManager = manager;
         this.interestList = interestList;
         this.currentPreferences = currentPreferences;
+        this.localeString = localeString;
+        this.categoryName = categoryName;
         holders = new ArrayList<>();
     }
 
@@ -33,7 +41,11 @@ class PreferenceInterestAdapter extends RecyclerView.Adapter<PreferenceInterestV
     @Override
     public void onBindViewHolder(PreferenceInterestViewHolder holder, int position) {
         String subCategoryName = interestList.get(position);
-        holder.bindView(subCategoryName, currentPreferences.contains(subCategoryName));
+        String localeCategoryName = subCategoryName;
+        if (!localeString.isEmpty()) {
+            localeCategoryName = preferencesManager.getNameOrLocaleName(localeString, categoryName, subCategoryName);
+        }
+        holder.bindView(subCategoryName, localeCategoryName, currentPreferences.contains(subCategoryName));
         holders.add(holder);
     }
 

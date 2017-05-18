@@ -14,15 +14,18 @@ import java.util.List;
 import java.util.Set;
 
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 public class PreferenceAdapter extends RecyclerView.Adapter<PreferenceCategoryViewHolder> {
 
+    private Context context;
     private LayoutInflater layoutInflater;
     private List<PreferenceCategory> items;
     private PreferenceItemListener itemListener;
     private SharedPreferences sharedPreferences;
 
-    public PreferenceAdapter(Context context, @NonNull List<PreferenceCategory> parentItemList, PreferenceItemListener listener, SharedPreferences preferences) {
+    public PreferenceAdapter(Context appContext, @NonNull List<PreferenceCategory> parentItemList, PreferenceItemListener listener, SharedPreferences preferences) {
+        context = appContext;
         layoutInflater = LayoutInflater.from(context);
         items = parentItemList;
         itemListener = listener;
@@ -47,7 +50,7 @@ public class PreferenceAdapter extends RecyclerView.Adapter<PreferenceCategoryVi
     }
 
     private boolean isSelected(PreferenceCategory category) {
-        Set<String> subCategories = sharedPreferences.getStringSet(category.getTitle(), new HashSet<>());
+        Set<String> subCategories = new PreferencesManager(context).getInterests(category.getTitle());
         return !subCategories.isEmpty();
 }
 }

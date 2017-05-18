@@ -8,52 +8,47 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pl.rmakowiecki.eventhub.model.local.Preference;
+import pl.rmakowiecki.eventhub.model.local.PreferenceLocale;
+import pl.rmakowiecki.eventhub.util.LocaleUtils;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.APP_DATA_REFERENCE;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_REFERENCE;
+import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_LOCALE_REFERENCE;
 
 @SuppressWarnings("unchecked")
-public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<Preference>> {
+public class LocaleDatabaseInteractor extends BaseDatabaseInteractor<List<PreferenceLocale>> {
 
+    private LocaleUtils utils;
     @Override
     protected void setDatabaseQueryNode() {
         databaseQueryNode = firebaseDatabase
                 .getReference(APP_DATA_REFERENCE)
-                .child(CATEGORIES_REFERENCE);
+                .child(CATEGORIES_LOCALE_REFERENCE)
+                .child(utils.getLocaleString());
     }
 
-    private List<Preference> parsePreferenceData(DataSnapshot dataSnapshot) {
+    private List<PreferenceLocale> parsePreferenceData(DataSnapshot dataSnapshot) {
         Map<String, Object> map = (HashMap<String, Object>)dataSnapshot.getValue();
         return getPreferenceListFromMap(map);
     }
 
-    private List<Preference> getPreferenceListFromMap(Map<String, Object> categoryMap) {
-        List<Preference> preferenceList = new ArrayList<>();
-        int id = 1;
-        for (Map.Entry<String, Object> entry : categoryMap.entrySet()) {
-            String imageUrl = "";
-            List<String> subCategories = new ArrayList<>();
-            Map<String, Object> subcategoryMap = (Map<String, Object>) entry.getValue();
-            for (Map.Entry<String, Object> subEntry : subcategoryMap.entrySet()) {
-                String key = subEntry.getKey();
-                String value = subEntry.getValue().toString();
-                if (imageUrl.isEmpty() && key.equals("image"))
-                    imageUrl = value;
-                else
-                    subCategories.add(value);
-            }
-
-            preferenceList.add(new Preference(id++, entry.getKey(), subCategories, imageUrl));
+    private List<PreferenceLocale> getPreferenceListFromMap(Map<String, Object> localeMap) {
+        String localeString = utils.getLocaleString();
+        List<PreferenceLocale> preferenceList = new ArrayList<>();
+        for (Map.Entry<String, Object> entry : localeMap.entrySet()) {
+            preferenceList.add(new PreferenceLocale(entry.getKey(), localeString, (Map<String, Object>) entry.getValue()));
         }
 
         return preferenceList;
     }
 
     @Override
-    public Observable<List<Preference>> getData() {
+    public Observable<List<PreferenceLocale>> getData() {
+        utils = new LocaleUtils();
+        if (utils.getLocaleString().isEmpty())
+            return publishSubject;
+
         setDatabaseQueryNode();
         publishSubject = PublishSubject.create();
         databaseQueryNode.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -65,7 +60,7 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                // TODO: 22.03.2017
+                // TODO: 2017-05-18  
             }
         });
 

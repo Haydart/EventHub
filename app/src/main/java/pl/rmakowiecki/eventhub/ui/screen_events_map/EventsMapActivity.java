@@ -59,6 +59,7 @@ import pl.rmakowiecki.eventhub.ui.screen_event_calendar.CalendarActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileActivity;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -75,7 +76,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private static final float DEFAULT_MAP_ZOOM = 17f;
     private static final float MIN_MAP_ZOOM = 9f;
     private static final long PERMISSION_CHECKING_DELAY = 250;
-    private static final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
     public static final int FAB_ANIMATION_DURATION = 300;
     public static final int FAB_FULL_SCALE = 1;
     private static final int EVENT_CREATION_REQUEST_CODE = 1;
@@ -209,7 +209,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     private void initPreferences() {
-        preferenceCategories = getIntent().getParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY);
+        preferenceCategories = new PreferencesManager(this).getPreferenceCategoryList();
     }
 
     private void initRevealSheetLayout() {
@@ -261,7 +261,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     public void launchPreferencesScreen() {
         Intent intent = new Intent(this, PreferenceActivity.class);
-        intent.putParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY, (ArrayList<? extends Parcelable>) preferenceCategories);
         startActivity(intent);
     }
 
