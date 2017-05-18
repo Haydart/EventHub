@@ -7,23 +7,32 @@ import java.util.HashMap;
 import java.util.List;
 
 public final class Event implements Parcelable {
+    public static final Creator<Event> CREATOR = new Creator<Event>() {
+        @Override
+        public Event createFromParcel(Parcel in) {
+            return new Event(in);
+        }
+
+        @Override
+        public Event[] newArray(int size) {
+            return new Event[size];
+        }
+    };
     private final String id;
     private final String name;
     private final String organizer;
     private final long timestamp;
     private final String location;
+    private final String coordinates;
     private HashMap<String, Boolean> users = new HashMap<>();
 
-    public Event(String id, String name, long timestamp, String organizer, String location, HashMap<String, Boolean> users) {
+    public Event(String id, String name, long timestamp, String organizer, String location, String coordinates, HashMap<String, Boolean> users) {
         this.id = id;
         this.name = name;
         this.timestamp = timestamp;
         this.organizer = organizer;
         this.location = location;
-        this.users = users;
-    }
-
-    public void setUsers(HashMap<String, Boolean> users) {
+        this.coordinates = coordinates;
         this.users = users;
     }
 
@@ -36,6 +45,7 @@ public final class Event implements Parcelable {
         organizer = "";
         timestamp = 0;
         location = "";
+        coordinates = "";
     }
 
     protected Event(Parcel in) {
@@ -44,23 +54,13 @@ public final class Event implements Parcelable {
         timestamp = in.readLong();
         organizer = in.readString();
         location = in.readString();
+        coordinates = in.readString();
     }
-
-    public static final Creator<Event> CREATOR = new Creator<Event>() {
-        @Override
-        public Event createFromParcel(Parcel in) {
-            return new Event(in);
-        }
-
-        @Override
-        public Event[] newArray(int size) {
-            return new Event[size];
-        }
-    };
 
     public HashMap<String, Boolean> getUsers() {
         return users;
     }
+
 
     public String getLocation() { return location; }
 
@@ -76,6 +76,10 @@ public final class Event implements Parcelable {
 
     public long getTimestamp() {
         return timestamp;
+    }
+
+    public String getCoordinates() {
+        return coordinates;
     }
 
     @Override

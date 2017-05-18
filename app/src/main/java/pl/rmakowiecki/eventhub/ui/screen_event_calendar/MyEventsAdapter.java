@@ -13,11 +13,13 @@ class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     private MyEventsFragment.OnListFragmentInteractionListener listener;
     private List<Event> items;
+    private List<String> distances;
 
-    public MyEventsAdapter(Context baseContext, List<Event> events, MyEventsFragment.OnListFragmentInteractionListener listener) {
+    public MyEventsAdapter(Context baseContext, List<Event> events, List<String> distances, MyEventsFragment.OnListFragmentInteractionListener listener) {
         final LayoutInflater layoutInflater = LayoutInflater.from(baseContext);
         final Context context = baseContext;
         items = events;
+        this.distances = distances;
         this.listener = listener;
     }
 
@@ -30,7 +32,7 @@ class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     @Override
     public void onBindViewHolder(final EventsViewHolder holder, int position) {
-        holder.bindView(items.get(position));
+        holder.bindView(items.get(position), distances.get(position));
         //TODO: Optimize logic behind list fields content, it's nothing like it should be
 
     }

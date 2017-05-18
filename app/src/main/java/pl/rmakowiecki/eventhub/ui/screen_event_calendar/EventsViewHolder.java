@@ -27,6 +27,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.address_text_view) TextView locationTextView;
     @BindView(R.id.day_of_month_text_view) TextView dayDateTextView;
     @BindView(R.id.day_short_name_text_view) TextView dayNameTextView;
+    @BindView(R.id.distance_text_view) TextView distanceTextView;
     @BindString(R.string.day_today) String today;
     @BindString(R.string.day_tomorrow) String tomorrow;
 
@@ -36,8 +37,10 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         this.view = view;
     }
 
-    public void bindView(Event event) {
+    public void bindView(Event event, String distance) {
+
         //TODO: JUST A RARE SAMPLE FO DEVELOPMENT, NEEDS LOTS OF WORK
+
         String dateFull;
         String time;
         String dateDay;
@@ -77,5 +80,6 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         dayDateTextView.setText(dateDay);
         dayNameTextView.setText(dayOfTheWeekShort);
         locationTextView.setText(event.getLocation());
+        distanceTextView.setText(distance);
     }
 }

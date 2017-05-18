@@ -11,7 +11,7 @@ import pl.rmakowiecki.eventhub.ui.BaseView;
 @NoOp
 public interface EventsFragmentView extends BaseView {
 
-    void showEvents(List<Event> preference);
+    void showEvents(List<Event> preference, List<String> distances);
 
-    void initEvents(final List<Event> events);
+    void initEvents(final List<Event> events, List<String> distances);
 }

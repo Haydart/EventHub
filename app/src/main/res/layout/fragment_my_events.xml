@@ -68,13 +68,31 @@
             android:textAppearance="?attr/textAppearanceListItem"
             tools:text="22-04-2017" />
 
-        <TextView
-            android:id="@+id/address_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="@dimen/standard_margin_small"
-            android:textAppearance="?attr/textAppearanceListItem"
-            tools:text="Bistro Bravo" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
+
+            <TextView
+                android:id="@+id/address_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/standard_margin_small"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="Bistro Bravo" />
+
+            <TextView
+                android:id="@+id/distance_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/standard_margin_small"
+                android:textAppearance="?attr/textAppearanceListItem"
+                tools:text="DALEKo" />
+
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>

@@ -1,10 +1,11 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
+import java.util.ArrayList;
+import java.util.List;
+import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 /**
  * Created by m1per on 18.04.2017.
@@ -12,8 +13,12 @@ import rx.schedulers.Schedulers;
 
 public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
 
+    private RxLocationProvider provider = new RxLocationProvider();
+    private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
     private Repository<Event> repository;
+    private ArrayList<String> distances = new ArrayList<>();
     private int position;
+
 
     MyEventsFragmentPresenter(int position) {
         repository = new EventsRepository();
@@ -21,11 +26,26 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
     }
 
     private void onViewInitialization() {
+        acquireEvents();
+    }
+
+    private void acquireEvents() {
         repository
                 .query(new MyEventsSpecifications(position) {
                 })
                 .compose(applySchedulers())
-                .subscribe(view::showEvents);
+                .subscribe(this::passCompleteData);
+    }
+
+    private void passCompleteData(List<Event> events) {
+        provider.getLocation()
+                .filter(location -> location != null)
+                .compose(applySchedulers())
+                .subscribe(
+                        coordinates -> {
+                            distances = calculator.calculateDistances(coordinates, events);
+                            view.showEvents(events, distances);
+                        });
     }
 
     @Override
