@@ -1,6 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_preference_subcategories;
 
-import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +22,8 @@ import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
+import pl.rmakowiecki.eventhub.util.LocaleUtils;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import pl.rmakowiecki.eventhub.util.TransitionListenerAdapter;
 
 public class PreferenceDetailsActivity extends BaseActivity<PreferenceDetailsPresenter> implements PreferenceDetailsView {
@@ -35,12 +36,14 @@ public class PreferenceDetailsActivity extends BaseActivity<PreferenceDetailsPre
 
     private PreferenceCategory category;
     private PreferenceInterestAdapter adapter;
-    private SharedPreferences sharedPreferences;
+    private PreferencesManager preferencesManager;
+    private LocaleUtils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getSharedPreferences(Constants.SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        preferencesManager = new PreferencesManager(this);
+        utils = new LocaleUtils();
         supportPostponeEnterTransition();
         getPreferenceCategoryFromParcel();
         getSharedElementTransitionExtras();
@@ -48,11 +51,6 @@ public class PreferenceDetailsActivity extends BaseActivity<PreferenceDetailsPre
         changeToolbarTitles();
         enableHomeButton();
         animateHeaderGradient();
-    }
-
-    @Override
-    public void getPreferenceCategoryFromParcel() {
-        category = getIntent().getParcelableExtra(Constants.PREFERENCE_CATEGORY_PARCEL_KEY);
     }
 
     private void getSharedElementTransitionExtras() {
@@ -82,6 +80,11 @@ public class PreferenceDetailsActivity extends BaseActivity<PreferenceDetailsPre
     }
 
     @Override
+    public void getPreferenceCategoryFromParcel() {
+        category = getIntent().getParcelableExtra(Constants.PREFERENCE_CATEGORY_PARCEL_KEY);
+    }
+
+    @Override
     public void displayToolbarImage() {
         int resourceID = getResources()
                 .getIdentifier(category.getImageResourceName(), Constants.DRAWABLE_REFERENCE, getPackageName());
@@ -105,13 +108,17 @@ public class PreferenceDetailsActivity extends BaseActivity<PreferenceDetailsPre
     @Override
     public void changeToolbarTitles() {
         toolbar.setTitle("");
-        collapsingToolbarLayout.setTitle(category.getTitle());
+        String categoryName = category.getTitle();
+        if (utils.hasLocale())
+            categoryName = preferencesManager.getNameOrLocaleName(utils.getLocaleString(), categoryName, categoryName);
+        collapsingToolbarLayout.setTitle(categoryName);
     }
 
     @Override
     public void loadAdapter() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        adapter = new PreferenceInterestAdapter(this, category.getChildList(), sharedPreferences.getStringSet(category.getTitle(), new HashSet<>()));
+        adapter = new PreferenceInterestAdapter(this, category.getChildList(), preferencesManager.getInterests(category.getTitle()), preferencesManager,
+                utils.getLocaleString(), category.getTitle());
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -126,9 +133,7 @@ public class PreferenceDetailsActivity extends BaseActivity<PreferenceDetailsPre
     public void onFloatingActionButtonClick(View v) {
         Set<String> subCategories = new HashSet<>();
         subCategories.addAll(adapter.getCheckedSubCategories());
-        sharedPreferences.edit().remove(category.getTitle());
-        sharedPreferences.edit().putStringSet(category.getTitle(), subCategories).commit();
-
+        preferencesManager.saveSubCategories(category.getTitle(), subCategories);
         finish();
     }
 

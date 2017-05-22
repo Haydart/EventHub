@@ -6,9 +6,7 @@ import pl.rmakowiecki.eventhub.ui.BaseView;
 
 @NoOp
 interface PreferenceView extends BaseView {
-    void saveParcelData();
-
-    void initPreferences(final List<PreferenceCategory> categories);
+    void initPreferences();
 
     void launchPreferenceDetailsScreen(PreferenceCategory category);
 

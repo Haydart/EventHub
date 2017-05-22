@@ -4,12 +4,12 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -31,6 +31,7 @@ import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_subcategories.PreferenceDetailsActivity;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EN_LOCALE_REFERENCE;
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.PL_LOCALE_REFERENCE;
@@ -40,15 +41,15 @@ import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PREFERENCES_RE
 public class PreferenceActivity extends BaseActivity<PreferencePresenter> implements PreferenceView {
 
     private static final int GRID_SPAN_COUNT = 2;
-    private static final String PREFERENCE_CATEGORY_PARCEL_KEY = "preference_category";
     private static final String SHARED_PREFERENCES_FIRST_LAUNCH_KEY = "is_first_launch";
     private static final String SHARED_PREFERENCES_KEY = "shared_preferences";
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private PreferenceItemListener itemListener;
-    private List<PreferenceCategory> preferences;
     private SharedPreferences sharedPreferences;
+    private PreferencesManager preferencesManager;
+    private List<PreferenceCategory> preferences;
 
     @BindView(R.id.preferences_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
@@ -58,7 +59,9 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferences = new ArrayList<>();
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
+        preferencesManager = new PreferencesManager(this);
         layoutManager = new GridLayoutManager(this, GRID_SPAN_COUNT);
         itemListener = (imageView, category) -> {
             sharedTransitionImage = imageView;
@@ -78,16 +81,16 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     }
 
     @Override
-    public void saveParcelData() {
-        preferences = getIntent().getParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY);
-        initPreferences(preferences);
-    }
-
-    @Override
-    public void initPreferences(final List<PreferenceCategory> categories) {
-        adapter = new PreferenceAdapter(getBaseContext(), categories, itemListener, sharedPreferences);
+    public void initPreferences() {
+        List<PreferenceCategory> preferenceCategories = getPreferenceCategories();
+        adapter = new PreferenceAdapter(getBaseContext(), preferenceCategories, itemListener);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
+    }
+
+    private List<PreferenceCategory> getPreferenceCategories() {
+        preferences = preferencesManager.getPreferenceCategoryList();
+        return preferences;
     }
 
     @Override
@@ -105,22 +108,14 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @OnClick(R.id.save_preferences_action_button)
     protected void preferencesButtonClick() {
-        presenter.onPreferenceSaveButtonClick(sharedPreferences, preferences);
-    }
-
-    private String getLocaleString() {
-        String locale = Locale.getDefault().getLanguage();
-        if (!locale.equals(EN_LOCALE_REFERENCE) && !locale.equals(PL_LOCALE_REFERENCE))
-            locale = EN_LOCALE_REFERENCE;
-
-        return locale;
+        presenter.onPreferenceSaveButtonClick(preferencesManager, preferences);
     }
 
     private Map<String, List<String>> getUserDataFromSharedPreferences() {
         Map<String, List<String>> categories = new HashMap<>();
         for (PreferenceCategory category : preferences)
         {
-            Set<String> subCategories = sharedPreferences.getStringSet(category.getTitle(), new HashSet<>());
+            Set<String> subCategories = preferencesManager.getInterests(category.getTitle());
             List<String> subCategoriesList = new ArrayList<>();
             subCategoriesList.addAll(subCategories);
             categories.put(category.getTitle(), subCategoriesList);
@@ -139,8 +134,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
                     .getInstance()
                     .getReference(USER_DATA_REFERENCE)
                     .child(user.getUid())
-                    .child(USER_PREFERENCES_REFERENCE)
-                    .child(getLocaleString());
+                    .child(USER_PREFERENCES_REFERENCE);
 
             userPreferencesRef.setValue(getUserDataFromSharedPreferences());
         }
@@ -194,7 +188,6 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     private void launchMapActivity() {
         Intent intent = new Intent(this, EventsMapActivity.class);
-        intent.putParcelableArrayListExtra(PREFERENCE_CATEGORY_PARCEL_KEY, (ArrayList<? extends Parcelable>) preferences);
         startActivity(intent);
     }
 }

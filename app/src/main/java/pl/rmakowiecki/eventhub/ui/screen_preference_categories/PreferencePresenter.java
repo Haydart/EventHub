@@ -1,11 +1,13 @@
 package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import rx.Observable;
 
 public class PreferencePresenter extends BasePresenter<PreferenceView> {
@@ -17,7 +19,7 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
     private boolean isSaveButtonClicked = false;
 
     private void onViewInitialization() {
-        view.saveParcelData();
+        view.initPreferences();
     }
 
     @Override
@@ -36,9 +38,9 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
         return NoOpPreferenceView.INSTANCE;
     }
 
-    public void onPreferenceSaveButtonClick(SharedPreferences sharedPreferences, List<PreferenceCategory> preferences) {
+    public void onPreferenceSaveButtonClick(PreferencesManager manager, List<PreferenceCategory> preferences) {
         if (!isSaveButtonClicked) {
-            if (hasSelectedEnough(sharedPreferences, preferences)) {
+            if (hasSelectedEnough(manager, preferences)) {
                 isSaveButtonClicked = true;
                 view.savePreferences();
             }
@@ -47,10 +49,10 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
         }
     }
 
-    private boolean hasSelectedEnough(SharedPreferences sharedPreferences, List<PreferenceCategory> preferences) {
+    private boolean hasSelectedEnough(PreferencesManager manager, List<PreferenceCategory> preferences) {
         int selectedCategoriesCount = 0;
         for (PreferenceCategory category : preferences) {
-            Set<String> subCategories = sharedPreferences.getStringSet(category.getTitle(), new HashSet<>());
+            Set<String> subCategories = manager.getInterests(category.getTitle());
             if (!subCategories.isEmpty())
                 ++selectedCategoriesCount;
 

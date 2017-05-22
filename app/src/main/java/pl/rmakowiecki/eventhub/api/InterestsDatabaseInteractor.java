@@ -30,15 +30,10 @@ public class InterestsDatabaseInteractor extends BaseDatabaseInteractor<List<Int
 
     @Override
     protected void setDatabaseQueryNode() {
-        String locale = Locale.getDefault().getLanguage();
-        if (!locale.equals(EN_LOCALE_REFERENCE) && !locale.equals(PL_LOCALE_REFERENCE))
-            locale = EN_LOCALE_REFERENCE;
-
         databaseQueryNode = firebaseDatabase
                 .getReference(USER_DATA_REFERENCE)
                 .child(user.getUid())
-                .child(USER_PREFERENCES_REFERENCE)
-                .child(locale);
+                .child(USER_PREFERENCES_REFERENCE);
     }
 
     private List<Interest> parseInterestData(DataSnapshot dataSnapshot) {
