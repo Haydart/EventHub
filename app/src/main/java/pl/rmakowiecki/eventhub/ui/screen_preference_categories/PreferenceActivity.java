@@ -83,7 +83,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     @Override
     public void initPreferences() {
         List<PreferenceCategory> preferenceCategories = getPreferenceCategories();
-        adapter = new PreferenceAdapter(getBaseContext(), preferenceCategories, itemListener, sharedPreferences);
+        adapter = new PreferenceAdapter(getBaseContext(), preferenceCategories, itemListener);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
@@ -108,7 +108,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     @OnClick(R.id.save_preferences_action_button)
     protected void preferencesButtonClick() {
-        presenter.onPreferenceSaveButtonClick(this, preferences);
+        presenter.onPreferenceSaveButtonClick(preferencesManager, preferences);
     }
 
     private Map<String, List<String>> getUserDataFromSharedPreferences() {

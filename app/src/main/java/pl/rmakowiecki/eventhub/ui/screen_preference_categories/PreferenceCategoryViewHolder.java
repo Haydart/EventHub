@@ -73,16 +73,10 @@ class PreferenceCategoryViewHolder extends ParentViewHolder {
         checkImageView.startAnimation(scaleUpFadeInAnimation);
     }
 
-    void bindView(PreferenceCategory category, boolean isSelected) {
+    void bindView(String categoryName, PreferenceCategory category, boolean isSelected) {
         darkView.setVisibility(View.INVISIBLE);
         checkImageView.setVisibility(View.INVISIBLE);
         this.category = category;
-
-        String categoryName = category.getTitle();
-        String localeName = new LocaleUtils().getLocaleString();
-        PreferencesManager manager = new PreferencesManager(view.getContext());
-        if (!localeName.isEmpty())
-            categoryName = manager.getNameOrLocaleName(localeName, categoryName, categoryName);
         categoryNameView.setText(categoryName);
 
         int resourceID = view.getContext()

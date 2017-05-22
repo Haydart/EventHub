@@ -2,7 +2,7 @@ package pl.rmakowiecki.eventhub.model.local;
 
 import java.util.Map;
 
-public class PreferenceLocale {
+public final class PreferenceLocale {
     private final String originalCategoryName;
     private final String localeString;
     private final Map<String, Object> localeNamesMap;

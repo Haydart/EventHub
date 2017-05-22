@@ -18,6 +18,8 @@ import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_REFERENC
 @SuppressWarnings("unchecked")
 public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<Preference>> {
 
+    public static final String CATEGORY_IMAGE_NAME = "image";
+
     @Override
     protected void setDatabaseQueryNode() {
         databaseQueryNode = firebaseDatabase
@@ -40,7 +42,7 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
             for (Map.Entry<String, Object> subEntry : subcategoryMap.entrySet()) {
                 String key = subEntry.getKey();
                 String value = subEntry.getValue().toString();
-                if (imageUrl.isEmpty() && key.equals("image"))
+                if (imageUrl.isEmpty() && key.equals(CATEGORY_IMAGE_NAME))
                     imageUrl = value;
                 else
                     subCategories.add(value);

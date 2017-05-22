@@ -38,9 +38,9 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
         return NoOpPreferenceView.INSTANCE;
     }
 
-    public void onPreferenceSaveButtonClick(Context context, List<PreferenceCategory> preferences) {
+    public void onPreferenceSaveButtonClick(PreferencesManager manager, List<PreferenceCategory> preferences) {
         if (!isSaveButtonClicked) {
-            if (hasSelectedEnough(context, preferences)) {
+            if (hasSelectedEnough(manager, preferences)) {
                 isSaveButtonClicked = true;
                 view.savePreferences();
             }
@@ -49,10 +49,10 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
         }
     }
 
-    private boolean hasSelectedEnough(Context context, List<PreferenceCategory> preferences) {
+    private boolean hasSelectedEnough(PreferencesManager manager, List<PreferenceCategory> preferences) {
         int selectedCategoriesCount = 0;
         for (PreferenceCategory category : preferences) {
-            Set<String> subCategories = new PreferencesManager(context).getInterests(category.getTitle());
+            Set<String> subCategories = manager.getInterests(category.getTitle());
             if (!subCategories.isEmpty())
                 ++selectedCategoriesCount;
 
