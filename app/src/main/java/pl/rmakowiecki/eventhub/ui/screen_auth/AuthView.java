@@ -14,4 +14,16 @@ interface AuthView extends BaseView {
     void displayLoginTextOnAuthButton();
 
     void displayRegisterTextOnAuthButton();
+
+    void disableAuthButton();
+
+    void enableAuthButton();
+
+    void showInvalidEmailError();
+
+    void showInvalidPasswordError();
+
+    void showPasswordMatchingError();
+
+    void hideAllErrors();
 }
