@@ -10,6 +10,9 @@
   <string name="title_preferences">Preferences</string>
   <string name="bottom_sheet_bar_address_recognition">Recognizing address…</string>
   <string name="title_calendar">Calendar</string>
+    <string name="sorting_option_sooner">Date</string>
+    <string name="sorting_option_closer">Distance</string>
+    <string name="sort_menu_title">Sort</string>
   <string name="title_events">Events</string>
   <string name="tab_title_my_events">My events</string>
   <string name="tab_title_all_events">All events</string>
@@ -20,7 +23,8 @@
   <string name="reverse_geocoding_service_unavailable">Service unavailable, please try again</string>
   <string name="title_event_creation">Create event</string>
   <string name="title_sign_in">Sign In</string>
-  <string name="button_text_sign_in">Join Us!</string>
+    <string name="button_text_sign_up">Join Us!</string>
+    <string name="button_text_sign_in">Sign In</string>
   <string name="camera_option_text">Make a new photo</string>
   <string name="gallery_option_text">Pick a photo from gallery</string>
   <string name="gallery_option_window_text">Select your photo:</string>
