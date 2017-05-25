@@ -8,6 +8,7 @@
         <attr name="default_color" format="color|reference" />
         <attr name="success_icon" format="reference" />
         <attr name="failure_icon" format="reference" />
+        <attr name="enabled" format="boolean" />
         <attr name="inactive_button_alpha" format="float" />
         <attr name="button_shape" format="enum">
             <enum name="pill" value="0" />

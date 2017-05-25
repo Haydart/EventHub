@@ -52,7 +52,7 @@ public class ActionButton extends FrameLayout {
     private Drawable iconFailure;
     private LayoutInflater layoutInflater;
     private Context context;
-    private boolean isEnabled = false;
+    private boolean isEnabledInitially;
     private ButtonShape shape = ButtonShape.PILL;
 
     @BindView(R.id.frame_layout_button_success) FrameLayout successFrameLayout;
@@ -98,6 +98,7 @@ public class ActionButton extends FrameLayout {
         iconSuccess = typedAttrArray.getDrawable(R.styleable.ActionButton_success_icon);
         iconFailure = typedAttrArray.getDrawable(R.styleable.ActionButton_failure_icon);
         inactiveAlpha = typedAttrArray.getFloat(R.styleable.ActionButton_inactive_button_alpha, DEFAULT_INACTIVE_ALPHA);
+        isEnabledInitially = typedAttrArray.getBoolean(R.styleable.ActionButton_enabled, true);
         shape = (typedAttrArray.getInt(R.styleable.ActionButton_button_shape, 1)) == 0 ? ButtonShape.PILL : ButtonShape.RECTANGLE;
         buttonActionDescription = typedAttrArray.getString(R.styleable.ActionButton_text);
         typedAttrArray.recycle();
@@ -108,7 +109,7 @@ public class ActionButton extends FrameLayout {
     }
 
     private void initAfterViewBinding() {
-        setEnabled(true);
+        setEnabled(isEnabledInitially);
         setBackgroundDependingOnButtonShape(this);
         getBackground().setColorFilter(defaultColor, PorterDuff.Mode.ADD);
         buttonActionDescriptionTextView.setText(buttonActionDescription);
@@ -138,9 +139,9 @@ public class ActionButton extends FrameLayout {
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        isEnabled = enabled;
+        isEnabledInitially = enabled;
         setClickable(enabled);
-        setAlpha(isEnabled ? 1f : inactiveAlpha);
+        setAlpha(isEnabledInitially ? 1f : inactiveAlpha);
     }
 
     public void setText(String text) {
@@ -193,7 +194,7 @@ public class ActionButton extends FrameLayout {
                 R.drawable.rectangle_button_background);
         backgroundDrawable.setColorFilter(color, PorterDuff.Mode.SRC_IN);
         setBackground(backgroundDrawable);
-        setEnabled(isEnabled);
+        setEnabled(isEnabledInitially);
     }
 
     private void performSlideInAnimation(View view, int startOffset) {
