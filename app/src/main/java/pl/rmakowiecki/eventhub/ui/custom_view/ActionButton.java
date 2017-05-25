@@ -143,6 +143,10 @@ public class ActionButton extends FrameLayout {
         setAlpha(isEnabled ? 1f : inactiveAlpha);
     }
 
+    public void setText(String text) {
+        buttonActionDescriptionTextView.setText(text);
+    }
+
     public void showSuccess() {
         performSlideOutAnimation(progressView, START_NO_DELAY, () -> {
             progressView.setVisibility(INVISIBLE);

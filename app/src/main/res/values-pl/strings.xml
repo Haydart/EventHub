@@ -6,6 +6,9 @@
   <string name="title_preferences">Preferencje</string>
   <string name="bottom_sheet_bar_address_recognition">Rozpoznawanie adresu…</string>
   <string name="title_calendar">Kalendarz</string>
+    <string name="sorting_option_sooner">Data</string>
+    <string name="sorting_option_closer">Odległość</string>
+    <string name="sort_menu_title">Sortuj</string>
   <string name="title_events">Wydarzenia</string>
   <string name="tab_title_my_events">Moje wydarzenia</string>
   <string name="tab_title_all_events">Wszystkie wydarzenia</string>
@@ -16,7 +19,8 @@
     <string name="reverse_geocoding_service_unavailable">Usługa niedostępna, spróbuj ponownie</string>
     <string name="title_event_creation">Utwórz wydarzenie</string>
     <string name="title_sign_in">Zaloguj się</string>
-    <string name="button_text_sign_in">Dołącz!</string>
+    <string name="button_text_sign_up">Dołącz!</string>
+    <string name="button_text_sign_in">Zaloguj</string>
   <string name="camera_option_text">Zrob nowe zdjecie</string>
   <string name="gallery_option_text">Wybierz zdjecie z galerii</string>
   <string name="gallery_option_window_text">Wybierz swoje zdjecie:</string>
