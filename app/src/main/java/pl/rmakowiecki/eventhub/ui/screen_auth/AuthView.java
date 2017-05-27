@@ -26,4 +26,18 @@ interface AuthView extends BaseView {
     void showPasswordMatchingError();
 
     void hideAllErrors();
+
+    void showSuccess();
+
+    void launchMainScreen();
+
+    void showNetworkConnectionError();
+
+    void showUnknownError();
+
+    void showRegisterUserCollisionError();
+
+    void showRegisterCredentialsDiscardedError();
+
+    void showLoginInvalidCredentialsError();
 }

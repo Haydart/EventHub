@@ -1,24 +1,40 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import java.util.concurrent.TimeUnit;
+import pl.rmakowiecki.eventhub.api.auth.AuthResponseInterceptor;
+import pl.rmakowiecki.eventhub.api.auth.IAuthInteractor;
 import pl.rmakowiecki.eventhub.model.remote.credentials.AuthCredentials;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 
-class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValidator.CredentialsValidationCallback {
+class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValidator.CredentialsValidationCallback,
+        AuthResponseInterceptor {
 
     private AuthPerspective authPerspective = AuthPerspective.LOGIN;
     private CredentialsValidator credentialsValidator;
     private Subscription credentialsChangesSubscription;
+    private IAuthInteractor authInteractor;
 
     AuthPresenter() {
         credentialsValidator = new CredentialsValidator(this);
     }
 
-    void onAuthActionButtonClicked() {
-        // TODO: 25/05/2017 implement
+    void onAuthActionButtonClicked(String email, String password) {
+        if (authPerspective == AuthPerspective.LOGIN) {
+            loginUser(email, password);
+        } else {
+            registerUser(email, password);
+        }
+    }
+
+    private void loginUser(String email, String password) {
+        authInteractor.loginUserWithEmail(email, password);
+    }
+
+    private void registerUser(String email, String password) {
+        authInteractor.registerUserWithEmail(email, password);
     }
 
     void onEmailChanged() {
@@ -85,6 +101,37 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public void onPasswordRepeatInvalid() {
         view.showPasswordMatchingError();
+    }
+
+    @Override
+    public void onSuccess() {
+        view.showSuccess();
+        view.launchMainScreen();
+    }
+
+    @Override
+    public void onNetworkConnectionError() {
+        view.showNetworkConnectionError();
+    }
+
+    @Override
+    public void onUnknownError() {
+        view.showUnknownError();
+    }
+
+    @Override
+    public void onInvalidCredentials() {
+        view.showLoginInvalidCredentialsError();
+    }
+
+    @Override
+    public void onEmailAlreadyTaken() {
+        view.showRegisterUserCollisionError();
+    }
+
+    @Override
+    public void onCredentialsDiscarded() {
+        view.showRegisterCredentialsDiscardedError();
     }
 
     @Override

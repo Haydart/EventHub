@@ -71,13 +71,13 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     }
 
     @OnClick(R.id.registration_form_button)
-    public void onButtonClicked() {
+    public void onRegistrationFormButtonClicked() {
         presenter.onRegistrationFormButtonClicked();
     }
 
     @OnClick(R.id.auth_action_button)
     public void onAuthActionButtonClicked() {
-        presenter.onAuthActionButtonClicked();
+        presenter.onAuthActionButtonClicked(emailEditText.getText().toString(), passwordEditText.getText().toString());
     }
 
     @Override
@@ -145,5 +145,40 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         emailInputLayout.setErrorEnabled(false);
         passwordInputLayout.setErrorEnabled(false);
         passwordRepeatInputLayout.setErrorEnabled(false);
+    }
+
+    @Override
+    public void showSuccess() {
+        // TODO: 27/05/2017 implement
+    }
+
+    @Override
+    public void launchMainScreen() {
+        // TODO: 27/05/2017 implement
+    }
+
+    @Override
+    public void showNetworkConnectionError() {
+        // TODO: 27/05/2017 implement
+    }
+
+    @Override
+    public void showUnknownError() {
+        // TODO: 27/05/2017 implement
+    }
+
+    @Override
+    public void showRegisterUserCollisionError() {
+        // TODO: 27/05/2017 implement
+    }
+
+    @Override
+    public void showRegisterCredentialsDiscardedError() {
+        // TODO: 27/05/2017 implement
+    }
+
+    @Override
+    public void showLoginInvalidCredentialsError() {
+        // TODO: 27/05/2017 implement
     }
 }
