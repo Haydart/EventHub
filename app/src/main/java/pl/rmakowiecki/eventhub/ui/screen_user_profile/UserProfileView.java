@@ -29,7 +29,5 @@ public interface UserProfileView extends BaseView {
 
     void showButtonProcessing();
 
-    void initManagers();
-
     void changeToolbarTitles();
 }

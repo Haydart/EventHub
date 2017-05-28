@@ -61,18 +61,14 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar(profileToolbar);
+        preferencesManager = new PreferencesManager(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
     public void initRepository() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         repository = new UserProfileRepository(presenter, user);
-    }
-
-    @Override
-    public void initManagers() {
-        preferencesManager = new PreferencesManager(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
@@ -84,42 +80,9 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
-    public List<PreferenceCategory> getInterestsList() {
-        List<PreferenceCategory> categoryList = preferencesManager.getPreferenceCategoryList();
-        return buildInterestsDisplayList(categoryList);
-    }
-
-    public List<PreferenceCategory> buildInterestsDisplayList(List<PreferenceCategory> categoryList) {
-        List<PreferenceCategory> displayList = new ArrayList<>();
-
-        for (PreferenceCategory category : categoryList) {
-            String categoryName = category.getTitle();
-            Set<String> interests = preferencesManager.getInterests(categoryName);
-
-            if (!interests.isEmpty()) {
-                LocaleUtils utils = new LocaleUtils();
-                if (utils.hasLocale()) {
-                    categoryName = preferencesManager.getNameOrLocaleName(utils.getLocaleString(), category.getTitle(), category.getTitle());
-                    List<String> translatedSubcategories = new ArrayList<>();
-                    for (String subCategory : interests) {
-                        translatedSubcategories.add(preferencesManager.getNameOrLocaleName(utils.getLocaleString(), category.getTitle(), subCategory));
-                    }
-                    displayList.add(new PreferenceCategory(categoryName, "", translatedSubcategories));
-                }
-                else {
-                    List<String> subcategories = new ArrayList<>();
-                    subcategories.addAll(interests);
-                    displayList.add(new PreferenceCategory(categoryName, "", subcategories));
-                }
-            }
-        }
-
-        return displayList;
-    }
-
     @Override
     public void displayInterestsList() {
-        List<PreferenceCategory> displayList = getInterestsList();
+        List<PreferenceCategory> displayList = preferencesManager.getInterestsDisplayList();
         if (!displayList.isEmpty()) {
             adapter = new UserProfilePreferencesAdapter(getBaseContext(), displayList);
             recyclerView.setAdapter(adapter);
