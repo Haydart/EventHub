@@ -2,6 +2,7 @@ package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.api.auth.AuthResponseInterceptor;
+import pl.rmakowiecki.eventhub.api.auth.FirebaseAuthInteractor;
 import pl.rmakowiecki.eventhub.api.auth.IAuthInteractor;
 import pl.rmakowiecki.eventhub.model.remote.credentials.AuthCredentials;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
@@ -19,9 +20,11 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
 
     AuthPresenter() {
         credentialsValidator = new CredentialsValidator(this);
+        authInteractor = new FirebaseAuthInteractor(this);
     }
 
     void onAuthActionButtonClicked(String email, String password) {
+        view.showButtonProcessing();
         if (authPerspective == AuthPerspective.LOGIN) {
             loginUser(email, password);
         } else {

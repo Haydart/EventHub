@@ -101,6 +101,7 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
     public void launchAuthScreen() {
         startActivity(new Intent(this, AuthActivity.class));
         overridePendingTransition(0, 0);
+        finish();
     }
 
     @Override

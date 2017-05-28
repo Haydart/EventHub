@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 import rx.Observable;
 import rx.Subscription;
@@ -9,6 +10,10 @@ import rx.schedulers.Schedulers;
 public abstract class BasePresenter<V extends BaseView> {
     protected V view;
     protected List<Subscription> subscriptions;
+
+    public BasePresenter() {
+        subscriptions = new ArrayList<>();
+    }
 
     protected void onViewStarted(V view) {
         this.view = view;
@@ -24,7 +29,9 @@ public abstract class BasePresenter<V extends BaseView> {
     }
 
     protected void cancelCallbacks() {
-        subscriptions.forEach(Subscription::unsubscribe);
+        for (Subscription subscription : subscriptions) {
+            subscription.unsubscribe();
+        }
     }
 
     public abstract V getNoOpView();

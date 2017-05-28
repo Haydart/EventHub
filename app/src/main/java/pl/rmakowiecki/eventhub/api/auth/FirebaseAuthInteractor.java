@@ -16,6 +16,7 @@ public class FirebaseAuthInteractor implements IAuthInteractor {
 
     public FirebaseAuthInteractor(AuthResponseInterceptor callback) {
         auth = FirebaseAuth.getInstance();
+        this.callback = callback;
     }
 
     @Override
