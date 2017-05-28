@@ -11,6 +11,8 @@ public interface UserProfileView extends BaseView {
 
     void saveProfile();
 
+    void displayInterestsList();
+
     void launchCameraAppIntent();
 
     void launchGalleryAppIntent();
@@ -26,6 +28,8 @@ public interface UserProfileView extends BaseView {
     void initRepository();
 
     void showButtonProcessing();
+
+    void initManagers();
 
     void changeToolbarTitles();
 }

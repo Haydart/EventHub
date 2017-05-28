@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/preference_child_list_height"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/user_profile_preference_interest_list_item_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/text_margin"
+        android:layout_gravity="center_vertical"/>
+</FrameLayout>

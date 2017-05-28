@@ -3,13 +3,13 @@ package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Window;
 import android.view.WindowManager;
@@ -17,10 +17,11 @@ import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -29,7 +30,10 @@ import pl.rmakowiecki.eventhub.model.local.UserProfile;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
+import pl.rmakowiecki.eventhub.util.LocaleUtils;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 public class UserProfileActivity extends BaseActivity<UserProfilePresenter> implements UserProfileView {
 
@@ -45,17 +49,18 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @BindView(R.id.user_profile_toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.user_profile_image_view) ImageView imageView;
     @BindView(R.id.save_user_profile_action_button) ActionButton saveProfileButton;
+    @BindView(R.id.user_profile_preferences_recycler_view) RecyclerView recyclerView;
 
     private UserProfileRepository repository;
     private Bitmap pictureBitmap;
     private DialogFragment fragment;
-    private boolean buttonClicked;
+    private RecyclerView.Adapter adapter;
+    private PreferencesManager preferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setSupportActionBar(profileToolbar);
-        buttonClicked = false;
     }
 
     @Override
@@ -65,12 +70,60 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     }
 
     @Override
+    public void initManagers() {
+        preferencesManager = new PreferencesManager(this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
     public void changeToolbarTitles() {
         profileToolbar.setTitle("");
         collapsingToolbarLayout.setTitle("Imie Nazwisko");
 
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    }
+
+    public List<PreferenceCategory> getInterestsList() {
+        List<PreferenceCategory> categoryList = preferencesManager.getPreferenceCategoryList();
+        return buildInterestsDisplayList(categoryList);
+    }
+
+    public List<PreferenceCategory> buildInterestsDisplayList(List<PreferenceCategory> categoryList) {
+        List<PreferenceCategory> displayList = new ArrayList<>();
+
+        for (PreferenceCategory category : categoryList) {
+            String categoryName = category.getTitle();
+            Set<String> interests = preferencesManager.getInterests(categoryName);
+
+            if (!interests.isEmpty()) {
+                LocaleUtils utils = new LocaleUtils();
+                if (utils.hasLocale()) {
+                    categoryName = preferencesManager.getNameOrLocaleName(utils.getLocaleString(), category.getTitle(), category.getTitle());
+                    List<String> translatedSubcategories = new ArrayList<>();
+                    for (String subCategory : interests) {
+                        translatedSubcategories.add(preferencesManager.getNameOrLocaleName(utils.getLocaleString(), category.getTitle(), subCategory));
+                    }
+                    displayList.add(new PreferenceCategory(categoryName, "", translatedSubcategories));
+                }
+                else {
+                    List<String> subcategories = new ArrayList<>();
+                    subcategories.addAll(interests);
+                    displayList.add(new PreferenceCategory(categoryName, "", subcategories));
+                }
+            }
+        }
+
+        return displayList;
+    }
+
+    @Override
+    public void displayInterestsList() {
+        List<PreferenceCategory> displayList = getInterestsList();
+        if (!displayList.isEmpty()) {
+            adapter = new UserProfilePreferencesAdapter(getBaseContext(), displayList);
+            recyclerView.setAdapter(adapter);
+        }
     }
 
     @Override
