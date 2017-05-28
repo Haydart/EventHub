@@ -30,6 +30,11 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @BindString(R.string.invalid_password_prompt) String weakPasswordErrorText;
     @BindString(R.string.invalid_password_matching) String passwordsMismatchErrorText;
 
+    @BindString(R.string.button_failure_network_connection) String networkConnectionErrorMessage;
+    @BindString(R.string.button_failure_unknown_error) String unknownErrorMessage;
+    @BindString(R.string.button_failure_invalid_credentials) String invalidCredentialsErrorMessage;
+    @BindString(R.string.button_failure_email_taken) String emailTakenErrorMessage;
+    @BindString(R.string.button_failure_credentials_discarded) String credentialsDiscardedErrorMessage;
 
     @Override
     protected void onStart() {
@@ -148,37 +153,42 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     }
 
     @Override
+    public void showButtonProcessing() {
+        authActionButton.showProcessing();
+    }
+
+    @Override
     public void showSuccess() {
-        // TODO: 27/05/2017 implement
+        authActionButton.showSuccess();
     }
 
     @Override
     public void launchMainScreen() {
-        // TODO: 27/05/2017 implement
+        finish();
     }
 
     @Override
     public void showNetworkConnectionError() {
-        // TODO: 27/05/2017 implement
+        authActionButton.showFailure(networkConnectionErrorMessage);
     }
 
     @Override
     public void showUnknownError() {
-        // TODO: 27/05/2017 implement
+        authActionButton.showFailure(unknownErrorMessage);
     }
 
     @Override
     public void showRegisterUserCollisionError() {
-        // TODO: 27/05/2017 implement
+        authActionButton.showFailure(emailTakenErrorMessage);
     }
 
     @Override
     public void showRegisterCredentialsDiscardedError() {
-        // TODO: 27/05/2017 implement
+        authActionButton.showFailure(credentialsDiscardedErrorMessage);
     }
 
     @Override
     public void showLoginInvalidCredentialsError() {
-        // TODO: 27/05/2017 implement
+        authActionButton.showFailure(invalidCredentialsErrorMessage);
     }
 }

@@ -40,4 +40,6 @@ interface AuthView extends BaseView {
     void showRegisterCredentialsDiscardedError();
 
     void showLoginInvalidCredentialsError();
+
+    void showButtonProcessing();
 }

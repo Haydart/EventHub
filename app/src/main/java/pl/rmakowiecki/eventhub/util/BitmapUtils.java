@@ -13,7 +13,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import pl.rmakowiecki.eventhub.background.Constants;
 
 public final class BitmapUtils {
@@ -113,5 +112,4 @@ public final class BitmapUtils {
     private static boolean isLandscapePicture(Bitmap sourceBitmap) {
         return sourceBitmap.getWidth() >= sourceBitmap.getHeight();
     }
-
 }
