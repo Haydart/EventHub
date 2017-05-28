@@ -82,6 +82,12 @@
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/user_profile_preferences_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
     <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
         android:id="@+id/save_user_profile_action_button"
         android:layout_width="match_parent"

@@ -11,6 +11,8 @@ public interface UserProfileView extends BaseView {
 
     void saveProfile();
 
+    void displayInterestsList();
+
     void launchCameraAppIntent();
 
     void launchGalleryAppIntent();

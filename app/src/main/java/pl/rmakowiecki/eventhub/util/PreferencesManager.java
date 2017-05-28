@@ -101,6 +101,35 @@ public class PreferencesManager {
         }
     }
 
+    public List<PreferenceCategory> getInterestsDisplayList() {
+        List<PreferenceCategory> categoryList = getPreferenceCategoryList();
+        List<PreferenceCategory> displayList = new ArrayList<>();
+
+        for (PreferenceCategory category : categoryList) {
+            String categoryName = category.getTitle();
+            Set<String> interests = getInterests(categoryName);
+
+            if (!interests.isEmpty()) {
+                LocaleUtils utils = new LocaleUtils();
+                if (utils.hasLocale()) {
+                    categoryName = getNameOrLocaleName(utils.getLocaleString(), category.getTitle(), category.getTitle());
+                    List<String> translatedSubcategories = new ArrayList<>();
+                    for (String subCategory : interests) {
+                        translatedSubcategories.add(getNameOrLocaleName(utils.getLocaleString(), category.getTitle(), subCategory));
+                    }
+                    displayList.add(new PreferenceCategory(categoryName, "", translatedSubcategories));
+                }
+                else {
+                    List<String> subcategories = new ArrayList<>();
+                    subcategories.addAll(interests);
+                    displayList.add(new PreferenceCategory(categoryName, "", subcategories));
+                }
+            }
+        }
+
+        return displayList;
+    }
+
     public String getNameOrLocaleName(String localeName, String categoryName, String defaultName) {
         return sharedPreferences.getString(SHARED_PREFERENCES_PREFERENCE_LOCALE_KEY + localeName.toUpperCase() + categoryName.toUpperCase() + defaultName.toUpperCase(), defaultName);
     }

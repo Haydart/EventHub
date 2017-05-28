@@ -21,6 +21,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
         view.enableHomeButton();
         view.initRepository();
         view.changeToolbarTitles();
+        view.displayInterestsList();
         wasButtonClicked = false;
     }
 

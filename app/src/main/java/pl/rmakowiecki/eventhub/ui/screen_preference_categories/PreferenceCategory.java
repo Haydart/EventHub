@@ -7,7 +7,7 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.ui.screen_preference_subcategories.PreferenceInterest;
 
 // TODO: 22.03.2017 Synchronize Preference with PreferenceCategory and PreferenceInterest
-public class PreferenceCategory implements Parent<PreferenceInterest>, Parcelable {
+public class PreferenceCategory implements Parent<String>, Parcelable {
     private final String title;
     private final String imageResourceName;
     private List<String> childrenList;
