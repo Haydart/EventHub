@@ -1,5 +1,11 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
+import com.facebook.AccessToken;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.FacebookAuthProvider;
+import com.google.firebase.auth.FirebaseAuth;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.api.auth.AuthResponseInterceptor;
 import pl.rmakowiecki.eventhub.api.auth.FirebaseAuthInteractor;
@@ -17,6 +23,8 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     private CredentialsValidator credentialsValidator;
     private Subscription credentialsChangesSubscription;
     private IAuthInteractor authInteractor;
+    private List<String> readPermissionsList = Arrays.asList("email", "public_profile", "user_friends");
+    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     AuthPresenter() {
         credentialsValidator = new CredentialsValidator(this);
@@ -74,6 +82,32 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
         authPerspective = AuthPerspective.REGISTER;
         view.openRegistrationForm();
         view.displayRegisterTextOnAuthButton();
+    }
+
+    void onFacebookLoginButtonClicked() {
+        view.loginWithFacebookAuthentication(readPermissionsList);
+    }
+
+    void onFacebookLoginSuccess(AccessToken accessToken) {
+        // TODO: 01/06/2017 extract to interactor
+
+        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        // TODO: 01/06/2017 implement
+                    } else {
+                        // TODO: 01/06/2017 implement
+                    }
+                });
+    }
+
+    void onFacebookLoginCancelled() {
+        // TODO: 01/06/2017 implement
+    }
+
+    void onFacebookLoginFailed() {
+        // TODO: 01/06/2017 implement
     }
 
     void onBackButtonPressed() {

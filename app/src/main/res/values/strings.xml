@@ -1,36 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="app_name" translatable="false">EventHub</string>
-  <string name="hello_world">Hello World</string>
-  <string name="subcategories_msg">Choose your interests:</string>
-  <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
-  <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-  <string name="action_settings" translatable="false">Settings</string>
-  <string name="button_text_save_preferences">Save Preferences</string>
-  <string name="title_preferences">Preferences</string>
-  <string name="bottom_sheet_bar_address_recognition">Recognizing address…</string>
-  <string name="title_calendar">Calendar</string>
+    <string name="fb_app_id" translatable="false">1378206448960637</string>
+    <string name="app_name" translatable="false">EventHub</string>
+    <string name="hello_world">Hello World</string>
+    <string name="subcategories_msg">Choose your interests:</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="button_text_save_preferences">Save Preferences</string>
+    <string name="title_preferences">Preferences</string>
+    <string name="bottom_sheet_bar_address_recognition">Recognizing address…</string>
+    <string name="title_calendar">Calendar</string>
     <string name="sorting_option_sooner">Date</string>
     <string name="sorting_option_closer">Distance</string>
     <string name="sort_menu_title">Sort</string>
-  <string name="title_events">Events</string>
-  <string name="tab_title_my_events">My events</string>
-  <string name="tab_title_all_events">All events</string>
-  <string name="not_enough_preferences_msg">Please select at least three categories.</string>
-  <string name="day_today">Today</string>
-  <string name="day_tomorrow">Tomorrow</string>
-  <string name="reverse_geocoding_no_address_found_error">No address found</string>
-  <string name="reverse_geocoding_service_unavailable">Service unavailable, please try again</string>
-  <string name="title_event_creation">Create event</string>
-  <string name="title_sign_in">Sign In</string>
+    <string name="title_events">Events</string>
+    <string name="tab_title_my_events">My events</string>
+    <string name="tab_title_all_events">All events</string>
+    <string name="not_enough_preferences_msg">Please select at least three categories.</string>
+    <string name="day_today">Today</string>
+    <string name="day_tomorrow">Tomorrow</string>
+    <string name="reverse_geocoding_no_address_found_error">No address found</string>
+    <string name="reverse_geocoding_service_unavailable">Service unavailable, please try again</string>
+    <string name="title_event_creation">Create event</string>
+    <string name="title_sign_in">Sign In</string>
     <string name="button_text_sign_up">Join Us!</string>
     <string name="button_text_sign_in">Sign In</string>
-  <string name="camera_option_text">Make a new photo</string>
-  <string name="gallery_option_text">Pick a photo from gallery</string>
-  <string name="gallery_option_window_text">Select your photo:</string>
-  <string name="button_text_save_user_profile">Save profile</string>
-  <string name="save_user_profile_failure_text">Couldn\'t connect to the server.</string>
-  <string name="title_user_profile">User Profile</string>
+    <string name="camera_option_text">Make a new photo</string>
+    <string name="gallery_option_text">Pick a photo from gallery</string>
+    <string name="gallery_option_window_text">Select your photo:</string>
+    <string name="button_text_save_user_profile">Save profile</string>
+    <string name="save_user_profile_failure_text">Couldn\'t connect to the server.</string>
+    <string name="title_user_profile">User Profile</string>
     <string name="text_input_hint_email">Email address</string>
     <string name="text_input_hint_password">Password</string>
     <string name="text_input_hint_repeat_password">Repeat password</string>

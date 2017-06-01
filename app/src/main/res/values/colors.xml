@@ -12,4 +12,6 @@
     <color name="gray_dark_text">#3a3b3f</color>
     <color name="slider_indicator_inactive">#88777777</color>
     <color name="android_background_grey">#FAFAFA</color>
+    <color name="cardview_dark_background">@null</color>
+    <color name="cardview_light_background">@null</color>
 </resources>
