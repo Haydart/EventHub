@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
+import android.content.Intent;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
@@ -8,7 +9,13 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import butterknife.OnTextChanged;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.jakewharton.rxbinding.widget.RxTextView;
+import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
@@ -36,10 +43,40 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @BindString(R.string.button_failure_email_taken) String emailTakenErrorMessage;
     @BindString(R.string.button_failure_credentials_discarded) String credentialsDiscardedErrorMessage;
 
+    private CallbackManager facebookCallbackManager;
+
     @Override
     protected void onStart() {
         super.onStart();
         registerCredentialsChanges();
+        setupFacebookLoginCallbacks();
+    }
+
+    private void setupFacebookLoginCallbacks() {
+        facebookCallbackManager = CallbackManager.Factory.create();
+        LoginManager.getInstance().registerCallback(facebookCallbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        presenter.onFacebookLoginSuccess(loginResult.getAccessToken());
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        presenter.onFacebookLoginCancelled();
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        presenter.onFacebookLoginFailed();
+                    }
+                });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
@@ -89,6 +126,16 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     public void openRegistrationForm() {
         passwordRepeatInputLayout.setVisibility(View.VISIBLE);
         loginOptionsBottomLayout.setVisibility(View.GONE);
+    }
+
+    @OnClick(R.id.image_view_login_fb)
+    public void onFacebookLoginButtonClicked() {
+        presenter.onFacebookLoginButtonClicked();
+    }
+
+    @Override
+    public void loginWithFacebookAuthentication(List<String> readPermissionsList) {
+        LoginManager.getInstance().logInWithReadPermissions(this, readPermissionsList);
     }
 
     @Override

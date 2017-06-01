@@ -1,6 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import com.jenzz.noop.annotation.NoOp;
+import java.util.List;
 import pl.rmakowiecki.eventhub.ui.BaseView;
 
 @NoOp
@@ -42,4 +43,6 @@ interface AuthView extends BaseView {
     void showLoginInvalidCredentialsError();
 
     void showButtonProcessing();
+
+    void loginWithFacebookAuthentication(List<String> readPermissionsList);
 }
