@@ -1,16 +1,20 @@
 package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
@@ -47,7 +51,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @BindView(R.id.user_profile_appbar_layout) AppBarLayout appBarLayout;
     @BindView(R.id.user_profile_toolbar) Toolbar profileToolbar;
     @BindView(R.id.user_profile_toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
-    @BindView(R.id.user_profile_image_view) ImageView imageView;
+    @BindView(R.id.user_profile_image_view) ImageView userImageView;
     @BindView(R.id.save_user_profile_action_button) ActionButton saveProfileButton;
     @BindView(R.id.user_profile_preferences_recycler_view) RecyclerView recyclerView;
 
@@ -78,6 +82,13 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
 
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+    }
+
+    @Override
+    public void loadUserImage() {
+        Bitmap userImage = preferencesManager.getUserImage();
+        if (userImage != null)
+            userImageView.setImageBitmap(userImage);
     }
 
     @Override
@@ -164,7 +175,8 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         }
 
         if (pictureBitmap != null) {
-            imageView.setImageBitmap(pictureBitmap);
+            userImageView.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_thumb_down_black_24px));
+            userImageView.setImageBitmap(pictureBitmap);
         }
     }
 
@@ -189,12 +201,6 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         saveProfileButton.showProcessing();
     }
 
-    private byte[] getBytesFromBitmap(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        return outputStream.toByteArray();
-    }
-
     // TODO: 01.05.2017 Rework this method when more save-able options are implemented
     public void saveProfile() {
         if (pictureBitmap == null) {
@@ -203,9 +209,10 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
             return;
         }
 
-        byte[] data = getBytesFromBitmap(pictureBitmap);
+        byte[] data = BitmapUtils.getBytesFromBitmap(pictureBitmap);
         UserProfile profile = new UserProfile(data);
         repository.add(profile);
+        preferencesManager.saveUserImage(pictureBitmap);
     }
 
     @Override

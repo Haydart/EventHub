@@ -33,4 +33,9 @@ public class PreferencesRepository implements Repository<Preference> {
     public Observable<List<Preference>> query(Specification specification) {
         return new PreferencesDatabaseInteractor().getData();
     }
+
+    @Override
+    public Observable<Preference> querySingle(Specification specification) {
+        return Observable.empty();
+    }
 }

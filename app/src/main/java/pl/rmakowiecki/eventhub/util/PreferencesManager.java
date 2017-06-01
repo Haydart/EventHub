@@ -2,6 +2,7 @@ package pl.rmakowiecki.eventhub.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -21,6 +22,7 @@ import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_IN
 import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_KEY;
 import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_PREFERENCE_LOCALE_KEY;
 import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_SUBCATEGORIES_KEY;
+import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_USER_IMAGE_KEY;
 
 public class PreferencesManager {
 
@@ -132,5 +134,20 @@ public class PreferencesManager {
 
     public String getNameOrLocaleName(String localeName, String categoryName, String defaultName) {
         return sharedPreferences.getString(SHARED_PREFERENCES_PREFERENCE_LOCALE_KEY + localeName.toUpperCase() + categoryName.toUpperCase() + defaultName.toUpperCase(), defaultName);
+    }
+
+    public void saveUserImage(Bitmap bitmap) {
+        String encodedImage = BitmapUtils.convertBitmapToBase64(bitmap);
+        if (!encodedImage.isEmpty())
+            sharedPreferences.edit().putString(SHARED_PREFERENCES_USER_IMAGE_KEY, encodedImage).commit();
+    }
+
+    public Bitmap getUserImage() {
+        Bitmap bitmap = null;
+        String encodedImage = sharedPreferences.getString(SHARED_PREFERENCES_USER_IMAGE_KEY, "");
+        if (!encodedImage.isEmpty())
+            bitmap = BitmapUtils.convertBase64ToBitmap(encodedImage);
+
+        return bitmap;
     }
 }

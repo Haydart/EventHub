@@ -15,7 +15,9 @@ interface SplashView extends BaseView {
 
     void saveLocales(List<PreferenceLocale> localesList);
 
+    void saveUserImage(byte[] bytes);
+
     void checkIfFirstLaunch();
 
-    void launchApplication();
+    void launchApplicationIfPossible();
 }

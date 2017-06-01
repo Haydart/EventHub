@@ -32,4 +32,9 @@ public class PreferencesLocaleRepository implements Repository<PreferenceLocale>
     public Observable<List<PreferenceLocale>> query(Specification specification) {
         return new LocaleDatabaseInteractor().getData();
     }
+
+    @Override
+    public Observable<PreferenceLocale> querySingle(Specification specification) {
+        return Observable.empty();
+    }
 }

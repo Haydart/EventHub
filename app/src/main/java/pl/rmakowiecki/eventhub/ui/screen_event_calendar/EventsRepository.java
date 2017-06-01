@@ -36,4 +36,9 @@ class EventsRepository implements Repository<Event> {
         MyEventsSpecifications spec = (MyEventsSpecifications) specification;
         return new EventsDatabaseInteractor().getData(spec.getTabPosition());
     }
+
+    @Override
+    public Observable<Event> querySingle(Specification specification) {
+        return Observable.empty();
+    }
 }

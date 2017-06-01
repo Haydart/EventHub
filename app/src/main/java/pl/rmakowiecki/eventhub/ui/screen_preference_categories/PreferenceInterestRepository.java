@@ -32,4 +32,9 @@ public class PreferenceInterestRepository implements Repository<Interest> {
     public Observable<List<Interest>> query(Specification specification) {
         return new InterestsDatabaseInteractor().getData();
     }
+
+    @Override
+    public Observable<Interest> querySingle(Specification specification) {
+        return Observable.empty();
+    }
 }

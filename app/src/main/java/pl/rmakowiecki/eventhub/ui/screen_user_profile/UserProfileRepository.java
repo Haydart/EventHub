@@ -71,4 +71,9 @@ public class UserProfileRepository implements Repository<UserProfile> {
         // TODO: 03.05.2017
         return null;
     }
+
+    @Override
+    public Observable<UserProfile> querySingle(Specification specification) {
+        return Observable.empty();
+    }
 }

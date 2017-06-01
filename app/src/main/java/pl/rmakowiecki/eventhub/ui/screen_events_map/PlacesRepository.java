@@ -53,6 +53,11 @@ public class PlacesRepository implements Repository<Place> {
                 .flatMap(this::convertToLocalModel);
     }
 
+    @Override
+    public Observable<Place> querySingle(Specification specification) {
+        return Observable.empty();
+    }
+
     private Observable<List<Place>> convertToLocalModel(List<GooglePlace> googlePlaces) {
         List<Place> placesList = new ArrayList<>(googlePlaces.size());
         for (GooglePlace googlePlace : googlePlaces) {

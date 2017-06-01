@@ -242,11 +242,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         view.launchUserProfileScreen();
     }
 
-    public void onFirebaseDebugLogin() {
-        view.debugLogin();
-    }
-
-    public void onFirebaseDebugLogout() {
-        view.debugLogout();
+    public void onLogoutMenuOptionClicked() {
+        view.logoutUser();
     }
 }
