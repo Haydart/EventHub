@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 
 /**
@@ -15,10 +16,11 @@ import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 public class EventsDistanceCalculator implements DistanceCalculator {
 
     @Override
-    public ArrayList<String> calculateDistances(LocationCoordinates coordinates, List<Event> events) {
-        ArrayList<String> distances = new ArrayList<>();
+    public ArrayList<EventWDistance> calculateDistances(LocationCoordinates coordinates, List<Event> events) {
+        ArrayList<EventWDistance> distances = new ArrayList<>();
         Location userLocation = new Location("");
         String distance;
+        EventWDistance eventWDistance;
         double distanceInMeters;
         double calculatedDistance;
         String eventCoords[];
@@ -32,16 +34,18 @@ public class EventsDistanceCalculator implements DistanceCalculator {
             eventLocation.setLongitude(Double.parseDouble(eventCoords[1]));
 
             distanceInMeters = (userLocation.distanceTo(eventLocation));
+
             if (distanceInMeters < 1000) {
                 distance = Integer.toString((int) distanceInMeters);
-                distances.add(distance + " m");
+                eventWDistance = new EventWDistance(event, distanceInMeters, distance + " m");
             } else {
                 calculatedDistance = BigDecimal.valueOf(distanceInMeters / 1000)
                         .setScale(1, RoundingMode.HALF_UP)
                         .doubleValue();
                 distance = Double.toString(calculatedDistance);
-                distances.add(distance + " km");
+                eventWDistance = new EventWDistance(event, distanceInMeters, distance + " km");
             }
+            distances.add(eventWDistance);
         }
         return distances;
     }

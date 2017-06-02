@@ -2,11 +2,12 @@ package pl.rmakowiecki.eventhub.model.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public final class Event implements Parcelable {
+public final class Event implements Parcelable, Comparable {
     public static final Creator<Event> CREATOR = new Creator<Event>() {
         @Override
         public Event createFromParcel(Parcel in) {
@@ -92,5 +93,10 @@ public final class Event implements Parcelable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeLong(timestamp);
+    }
+
+    @Override
+    public int compareTo(@NonNull Object o) {
+        return 0;
     }
 }

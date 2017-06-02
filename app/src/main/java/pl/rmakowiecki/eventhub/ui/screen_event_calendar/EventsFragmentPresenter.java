@@ -1,12 +1,19 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.Event;
-import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
+import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
+import pl.rmakowiecki.eventhub.util.SortTypes;
+
+import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DATE_SORT;
+import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DISTANCE_SORT;
+import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.ascending;
+import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.getComparator;
 
 /**
  * Created by m1per on 18.04.2017.
@@ -18,7 +25,7 @@ public class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
     private Repository<Event> repository;
     private int position;
-    private ArrayList<String> distances = new ArrayList<>();
+    private ArrayList<EventWDistance> eventsWithDistances = new ArrayList<>();
 
     EventsFragmentPresenter(int position) {
         repository = new EventsRepository();
@@ -43,8 +50,8 @@ public class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
                 .compose(applySchedulers())
                 .subscribe(
                         coordinates -> {
-                            distances = calculator.calculateDistances(coordinates, events);
-                            view.showEvents(events, distances);
+                            eventsWithDistances = calculator.calculateDistances(coordinates, events);
+                            view.showEvents(eventsWithDistances);
                         });
     }
 
@@ -52,6 +59,18 @@ public class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     protected void onViewStarted(EventsFragmentView view) {
         super.onViewStarted(view);
         onViewInitialization();
+    }
+
+    public void onSortRequested(SortTypes type) {
+        switch (type) {
+            case DISTANCE_SORT:
+                Collections.sort(eventsWithDistances, ascending(getComparator(DISTANCE_SORT)));
+                break;
+            case DATE_SORT:
+                Collections.sort(eventsWithDistances, ascending(getComparator(DATE_SORT)));
+                break;
+        }
+        view.showEvents(eventsWithDistances);
     }
 
     @Override

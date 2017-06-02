@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="hello_world">ąęćśŚĄĘŻŹżź</string>
+    <string name="hello_world">Ä…Ä™Ä‡Ĺ›ĹšÄ„Ä�Ĺ»ĹąĹĽĹş</string>
   <string name="subcategories_msg">Wybierz swoje zainteresowania:</string>
   <string name="button_text_save_preferences">Zapisz preferencje</string>
   <string name="title_preferences">Preferencje</string>
@@ -28,16 +28,16 @@
   <string name="save_user_profile_failure_text">Nie mozna polaczyc z serwerem.</string>
   <string name="title_user_profile">Profil Uzytkownika</string>
     <string name="text_input_hint_email">Adres email</string>
-    <string name="text_input_hint_password">Hasło</string>
-    <string name="text_input_hint_repeat_password">Powtórz hasło</string>
-    <string name="text_forgot_password">Zapomniałem hasła</string>
-    <string name="text_register_email">Stwórz konto</string>
+    <string name="text_input_hint_password">HasĹ‚o</string>
+    <string name="text_input_hint_repeat_password">PowtĂłrz hasĹ‚o</string>
+    <string name="text_forgot_password">ZapomniaĹ‚em hasĹ‚a</string>
+    <string name="text_register_email">StwĂłrz konto</string>
     <string name="invalid_email_prompt">Niepoprawny adres e-mail</string>
-    <string name="invalid_password_prompt">Hasło jest za słabe</string>
-    <string name="invalid_password_matching">Wprowadzone hasła są inne</string>
-    <string name="button_failure_invalid_credentials">Niepoprawny login lub hasło</string>
-    <string name="button_failure_network_connection">Utracono połączenie</string>
-    <string name="button_failure_email_taken">Ten email jest zajęty</string>
-    <string name="button_failure_credentials_discarded">Niewłaściwe dane</string>
-    <string name="button_failure_unknown_error">Nieznany błąd serwera</string>
+    <string name="invalid_password_prompt">HasĹ‚o jest za sĹ‚abe</string>
+    <string name="invalid_password_matching">Wprowadzone hasĹ‚a sÄ… inne</string>
+    <string name="button_failure_invalid_credentials">Niepoprawny login lub hasĹ‚o</string>
+    <string name="button_failure_network_connection">Utracono poĹ‚Ä…czenie</string>
+    <string name="button_failure_email_taken">Ten email jest zajÄ™ty</string>
+    <string name="button_failure_credentials_discarded">NiewĹ‚aĹ›ciwe dane</string>
+    <string name="button_failure_unknown_error">Nieznany bĹ‚Ä…d serwera</string>
 </resources>

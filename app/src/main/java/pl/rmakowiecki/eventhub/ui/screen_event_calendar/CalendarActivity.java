@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -11,6 +14,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.util.SortTypes;
 
 public class CalendarActivity extends BaseActivity<CalendarPresenter>
         implements CalendarView, EventsFragment.OnListFragmentInteractionListener, MyEventsFragment.OnListFragmentInteractionListener {
@@ -42,6 +46,24 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        EventsFragment allEventsFragment = (EventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":0");
+        MyEventsFragment filteredEventsFragment = (MyEventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":1");
+        switch (item.getItemId()) {
+            case R.id.sorting_menu_item_sooner:
+                allEventsFragment.sortEvents(SortTypes.DATE_SORT);
+                filteredEventsFragment.sortEvents(SortTypes.DATE_SORT);
+                return true;
+            case R.id.sorting_menu_item_closer:
+                allEventsFragment.sortEvents(SortTypes.DISTANCE_SORT);
+                filteredEventsFragment.sortEvents(SortTypes.DISTANCE_SORT);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     protected void initPresenter() {
         //no-op
     }
@@ -54,5 +76,11 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
     @Override
     public void onListFragmentInteraction(Event event) {
         //TODO: will be used and named properly during list actions development
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.calendar_menu, menu);
+        return true;
     }
 }
