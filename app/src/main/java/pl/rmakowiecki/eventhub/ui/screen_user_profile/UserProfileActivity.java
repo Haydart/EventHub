@@ -175,8 +175,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         }
 
         if (pictureBitmap != null) {
-            userImageView.setBackground(ContextCompat.getDrawable(this, R.drawable.ic_thumb_down_black_24px));
-            userImageView.setImageBitmap(pictureBitmap);
+            userImageView.setImageBitmap(pictureBitmap); // TODO: 02.06.2017 Fix refreshing imageView when bitmap is already present 
         }
     }
 

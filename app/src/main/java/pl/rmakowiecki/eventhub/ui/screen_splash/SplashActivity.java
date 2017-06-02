@@ -62,14 +62,12 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     @Override
     public void saveInterests(List<Interest> interests) {
         preferencesManager.saveInterests(interests);
-        presenter.onComponentLoaded();
         launchApplicationIfPossible();
     }
 
     @Override
     public void saveLocales(List<PreferenceLocale> localesList) {
         preferencesManager.saveLocales(localesList);
-        presenter.onComponentLoaded();
         launchApplicationIfPossible();
     }
 
@@ -78,7 +76,6 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         Bitmap bitmap = BitmapUtils.getBitmapFromBytes(imageBytes);
         if (bitmap != null)
             preferencesManager.saveUserImage(bitmap);
-        presenter.onComponentLoaded();
         launchApplicationIfPossible();
     }
 

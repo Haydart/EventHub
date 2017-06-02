@@ -16,7 +16,7 @@ import pl.rmakowiecki.eventhub.util.LocaleUtils;
 
 class SplashPresenter extends BasePresenter<SplashView> {
 
-    private int requiredComponentCount;
+    private final int REQUIRED_COMPONENT_COUNT = 1;
     private int currentComponentCount;
 
     @Override
@@ -32,15 +32,13 @@ class SplashPresenter extends BasePresenter<SplashView> {
 
     private void onViewInitialization() {
         currentComponentCount = 0;
-        requiredComponentCount = 3;
         view.checkIfFirstLaunch();
-        queryPreferences();
         queryInterests();
         if (shouldLoadLocale()) {
-            ++requiredComponentCount;
             queryLocales();
         }
         queryUserImage();
+        queryPreferences();
     }
 
     private boolean shouldLoadLocale() {
@@ -48,13 +46,11 @@ class SplashPresenter extends BasePresenter<SplashView> {
     }
 
     protected boolean canLaunchApplication() {
-        Log.d("TAG", "Can launch? Loaded " + currentComponentCount + " components out of " + requiredComponentCount);
-        return currentComponentCount >= requiredComponentCount;
+        return currentComponentCount >= REQUIRED_COMPONENT_COUNT;
     }
 
     protected void onComponentLoaded() {
         ++currentComponentCount;
-        Log.d("TAG", "Loaded " + currentComponentCount + " components out of " + requiredComponentCount);
     }
 
     private void queryPreferences() {
