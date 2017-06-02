@@ -26,6 +26,7 @@ android {
 			enabled true
 		}
 		applicationId "pl.rmakowiecki.eventhub"
+		manifestPlaceholders = [FACEBOOK_APP_ID: "1378206448960637", GOOGLE_API_KEY: "AIzaSyAGoSHs_fLSza280Wt5FR55jWrH81gnQL4", "FB_LOGIN_PROTOCOL_SCHEME": "fb1378206448960637"]
 		minSdkVersion 21
 		targetSdkVersion 25
 		versionCode 1
@@ -122,6 +123,9 @@ dependencies {
 	//Slider View
 	compile 'com.nineoldandroids:library:2.4.0'
 	compile 'com.daimajia.slider:library:1.1.5@aar'
+
+	//Facebook SDK
+	compile 'com.facebook.android:facebook-android-sdk:4.23.0'
 
 	testCompile 'junit:junit:4.12'
 	compile 'com.android.support:support-v4:25.3.1'
