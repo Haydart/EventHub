@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="hello_world">Ä…Ä™Ä‡Ĺ›ĹšÄ„Ä�Ĺ»ĹąĹĽĹş</string>
   <string name="subcategories_msg">Wybierz swoje zainteresowania:</string>
   <string name="button_text_save_preferences">Zapisz preferencje</string>
   <string name="title_preferences">Preferencje</string>
