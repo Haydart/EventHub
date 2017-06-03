@@ -8,19 +8,18 @@ import android.view.ViewGroup;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsFragment.OnListFragmentInteractionListener;
 
 class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     private OnListFragmentInteractionListener listener;
-    private List<Event> items;
-    private List<String> distances;
+    private List<EventWDistance> items;
 
-    public EventsAdapter(Context baseContext, List<Event> events, List<String> distances, OnListFragmentInteractionListener listener) {
+    public EventsAdapter(Context baseContext, List<EventWDistance> events, OnListFragmentInteractionListener listener) {
         final LayoutInflater layoutInflater = LayoutInflater.from(baseContext);
         final Context context = baseContext;
         items = events;
-        this.distances = distances;
         this.listener = listener;
     }
 
@@ -33,7 +32,7 @@ class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     @Override
     public void onBindViewHolder(final EventsViewHolder holder, int position) {
-        holder.bindView(items.get(position), distances.get(position));
+        holder.bindView(items.get(position));
     }
 
     @Override

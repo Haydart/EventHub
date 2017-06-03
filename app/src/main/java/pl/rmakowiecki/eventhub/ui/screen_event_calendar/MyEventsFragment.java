@@ -10,7 +10,9 @@ import android.view.ViewGroup;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
+import pl.rmakowiecki.eventhub.util.SortTypes;
 
 public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> implements MyEventsFragmentView {
 
@@ -60,14 +62,14 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
     }
 
     @Override
-    public void showEvents(List<Event> events, List<String> distances) {
-        initEvents(events, distances);
+    public void showEvents(List<EventWDistance> ewd) {
+        initEvents(ewd);
     }
 
     @Override
-    public void initEvents(final List<Event> events, List<String> distances) {
+    public void initEvents(List<EventWDistance> ewd) {
         Context context = getContext();
-        adapter = new MyEventsAdapter(context, events, distances, listener);
+        adapter = new MyEventsAdapter(context, ewd, listener);
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);
@@ -88,6 +90,10 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+    public void sortEvents(SortTypes type) {
+        presenter.onSortRequested(type);
     }
 
     public interface OnListFragmentInteractionListener {
