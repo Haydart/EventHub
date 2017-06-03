@@ -8,12 +8,10 @@
             <item
                 android:id="@+id/sorting_menu_item_sooner"
                 android:title="@string/sorting_option_sooner"
-
                 />
             <item
                 android:id="@+id/sorting_menu_item_closer"
                 android:title="@string/sorting_option_closer" />
-
         </menu>
     </item>
 

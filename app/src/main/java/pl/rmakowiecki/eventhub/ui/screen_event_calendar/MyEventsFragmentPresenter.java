@@ -13,7 +13,7 @@ import pl.rmakowiecki.eventhub.util.SortTypes;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DATE_SORT;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DISTANCE_SORT;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.ascending;
-import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.decending;
+import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.descending;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.getComparator;
 
 /**
@@ -26,7 +26,7 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
     private Repository<Event> repository;
     private int position;
-    private ArrayList<EventWDistance> eventsWithDistances = new ArrayList<>();
+    private List eventsWithDistances = new ArrayList<>();
 
 
 

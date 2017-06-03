@@ -16,7 +16,7 @@ import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 public class EventsDistanceCalculator implements DistanceCalculator {
 
     @Override
-    public ArrayList<EventWDistance> calculateDistances(LocationCoordinates coordinates, List<Event> events) {
+    public List calculateDistances(LocationCoordinates coordinates, List<Event> events) {
         ArrayList<EventWDistance> distances = new ArrayList<>();
         Location userLocation = new Location("");
         String distance;

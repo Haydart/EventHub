@@ -2,12 +2,9 @@ package pl.rmakowiecki.eventhub.model.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public final class Event implements Parcelable, Comparable {
+public final class Event implements Parcelable {
     public static final Creator<Event> CREATOR = new Creator<Event>() {
         @Override
         public Event createFromParcel(Parcel in) {
@@ -37,10 +34,7 @@ public final class Event implements Parcelable, Comparable {
         this.users = users;
     }
 
-
-
-    public Event()
-    {
+    public Event() {
         id = "";
         name = "";
         organizer = "";
@@ -62,10 +56,13 @@ public final class Event implements Parcelable, Comparable {
         return users;
     }
 
+    public String getLocation() {
+        return location;
+    }
 
-    public String getLocation() { return location; }
-
-    public String getOrganizer(){ return organizer; }
+    public String getOrganizer() {
+        return organizer;
+    }
 
     public String getId() {
         return id;
@@ -93,10 +90,5 @@ public final class Event implements Parcelable, Comparable {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeLong(timestamp);
-    }
-
-    @Override
-    public int compareTo(@NonNull Object o) {
-        return 0;
     }
 }

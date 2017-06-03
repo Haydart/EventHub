@@ -20,7 +20,7 @@ enum EventComparator implements Comparator<EventWDistance> {
         }
     };
 
-    public static Comparator<EventWDistance> decending(final Comparator<EventWDistance> other) {
+    public static Comparator<EventWDistance> descending(final Comparator<EventWDistance> other) {
         return new Comparator<EventWDistance>() {
             public int compare(EventWDistance e1, EventWDistance e2) {
                 return -1 * other.compare(e1, e2);

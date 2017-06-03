@@ -46,16 +46,14 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        EventsFragment allEventsFragment = (EventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":0");
-        MyEventsFragment filteredEventsFragment = (MyEventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":1");
+
+        presenter.chooseSortOption(item.getItemId());
         switch (item.getItemId()) {
             case R.id.sorting_menu_item_sooner:
-                allEventsFragment.sortEvents(SortTypes.DATE_SORT);
-                filteredEventsFragment.sortEvents(SortTypes.DATE_SORT);
+                presenter.onSortOptionSelected(SortTypes.DATE_SORT);
                 return true;
             case R.id.sorting_menu_item_closer:
-                allEventsFragment.sortEvents(SortTypes.DISTANCE_SORT);
-                filteredEventsFragment.sortEvents(SortTypes.DISTANCE_SORT);
+                presenter.onSortOptionSelected(SortTypes.DISTANCE_SORT);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -81,5 +79,13 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.calendar_menu, menu);
         return true;
+    }
+
+    @Override
+    public void sortEvents(SortTypes sortType) {
+        EventsFragment allEventsFragment = (EventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":0");
+        MyEventsFragment filteredEventsFragment = (MyEventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":1");
+        allEventsFragment.sortEvents(sortType);
+        filteredEventsFragment.sortEvents(sortType);
     }
 }

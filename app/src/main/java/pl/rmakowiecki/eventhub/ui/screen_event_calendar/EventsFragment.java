@@ -79,22 +79,6 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sorting_menu_item_sooner:
-                Toast toast = Toast.makeText(getContext(), "Data", Toast.LENGTH_SHORT);
-                toast.show();
-                return true;
-            case R.id.sorting_menu_item_closer:
-                Toast toast2 = Toast.makeText(getContext(), "Odległość", Toast.LENGTH_SHORT);
-                toast2.show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof OnListFragmentInteractionListener) {

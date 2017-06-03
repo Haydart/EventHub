@@ -12,5 +12,5 @@ import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 
 public interface DistanceCalculator {
 
-    public ArrayList<EventWDistance> calculateDistances(LocationCoordinates coordinates, List<Event> events);
+    public List calculateDistances(LocationCoordinates coordinates, List<Event> events);
 }
