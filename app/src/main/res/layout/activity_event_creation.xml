@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/coordinator_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="pl.rmakowiecki.eventhub.ui.screen_create_event.EventCreationActivity"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    tools:context="pl.rmakowiecki.eventhub.ui.screen_create_event.EventCreationActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
@@ -27,12 +27,43 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="100sp"
-            android:text="liuadfvoiahbdfvulhadfvoiuadfvoiubadfviunadfv" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
+            <EditText
+                android:id="@+id/event_name_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Set event name" />
+
+            <Button
+                android:id="@+id/date_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick date" />
+
+            <Button
+                android:id="@+id/time_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick time" />
+
+            <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
+                android:id="@+id/save_preferences_action_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/action_button_height"
+                android:layout_gravity="bottom"
+                app:button_shape="rectangle"
+                app:default_color="@color/colorAccent"
+                app:failure_color="@color/failure_red"
+                app:failure_icon="@drawable/icon_failure_action_button"
+                app:inactive_button_alpha="1.0"
+                app:success_color="@color/success_green"
+                app:success_icon="@drawable/icon_success_action_button"
+                app:text="@string/button_text_save_preferences"
+                app:text_color="@android:color/white" />
+        </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
-
 </android.support.design.widget.CoordinatorLayout>
