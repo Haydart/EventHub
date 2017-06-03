@@ -1,9 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
-import java.util.ArrayList;
 import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.Event;
-import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 
 /**

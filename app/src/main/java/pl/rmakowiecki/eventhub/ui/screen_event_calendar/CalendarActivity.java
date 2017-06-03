@@ -46,8 +46,6 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-        presenter.chooseSortOption(item.getItemId());
         switch (item.getItemId()) {
             case R.id.sorting_menu_item_sooner:
                 presenter.onSortOptionSelected(SortTypes.DATE_SORT);
@@ -62,7 +60,7 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
 
     @Override
     protected void initPresenter() {
-        //no-op
+        presenter = new CalendarPresenter();
     }
 
     @Override
