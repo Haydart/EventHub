@@ -7,19 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
-import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 
 class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     private MyEventsFragment.OnListFragmentInteractionListener listener;
-    private List<Event> items;
-    private List<String> distances;
+    private List<EventWDistance> items;
 
-    public MyEventsAdapter(Context baseContext, List<Event> events, List<String> distances, MyEventsFragment.OnListFragmentInteractionListener listener) {
+    public MyEventsAdapter(Context baseContext, List<EventWDistance> events, MyEventsFragment.OnListFragmentInteractionListener listener) {
         final LayoutInflater layoutInflater = LayoutInflater.from(baseContext);
         final Context context = baseContext;
         items = events;
-        this.distances = distances;
         this.listener = listener;
     }
 
@@ -32,9 +30,7 @@ class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     @Override
     public void onBindViewHolder(final EventsViewHolder holder, int position) {
-        holder.bindView(items.get(position), distances.get(position));
-        //TODO: Optimize logic behind list fields content, it's nothing like it should be
-
+        holder.bindView(items.get(position));
     }
 
     @Override

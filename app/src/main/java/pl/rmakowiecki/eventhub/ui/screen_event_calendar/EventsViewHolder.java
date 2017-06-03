@@ -13,6 +13,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 
 /**
  * Created by m1per on 20.04.2017.
@@ -37,7 +38,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         this.view = view;
     }
 
-    public void bindView(Event event, String distance) {
+    public void bindView(EventWDistance ewd) {
 
         //TODO: JUST A RARE SAMPLE FO DEVELOPMENT, NEEDS LOTS OF WORK
 
@@ -50,7 +51,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         int daysToEvent;
 
         DateTime todayDate = new DateTime();
-        DateTime dateOfEvent = new DateTime(TimeUnit.SECONDS.toMillis(event.getTimestamp()));
+        DateTime dateOfEvent = new DateTime(TimeUnit.SECONDS.toMillis(ewd.getEvent().getTimestamp()));
         daysToEvent = Days.daysBetween(todayDate.toLocalDate(), dateOfEvent.toLocalDate()).getDays();
 
         DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
@@ -74,12 +75,12 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         } else {
             date = dateFull;
         }
-        nameTextView.setText(event.getName());
-        organizerTextView.setText(event.getOrganizer());
+        nameTextView.setText(ewd.getEvent().getName());
+        organizerTextView.setText(ewd.getEvent().getOrganizer());
         dateTextView.setText(date + ", " + time);
         dayDateTextView.setText(dateDay);
         dayNameTextView.setText(dayOfTheWeekShort);
-        locationTextView.setText(event.getLocation());
-        distanceTextView.setText(distance);
+        locationTextView.setText(ewd.getEvent().getLocation());
+        distanceTextView.setText(ewd.getDistanceDisplayable());
     }
 }

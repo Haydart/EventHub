@@ -5,12 +5,16 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
+import pl.rmakowiecki.eventhub.util.SortTypes;
 
 public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implements EventsFragmentView {
 
@@ -39,6 +43,7 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         page = getArguments().getInt(ARG_PAGE);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -60,14 +65,14 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     }
 
     @Override
-    public void showEvents(List<Event> events, List<String> distances) {
-        initEvents(events, distances);
+    public void showEvents(List<EventWDistance> ewd) {
+        initEvents(ewd);
     }
 
     @Override
-    public void initEvents(final List<Event> events, List<String> distances) {
+    public void initEvents(List<EventWDistance> ewd) {
         Context context = getContext();
-        adapter = new EventsAdapter(context, events, distances, listener);
+        adapter = new EventsAdapter(context, ewd, listener);
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);
@@ -88,6 +93,10 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     public void onDetach() {
         super.onDetach();
         listener = null;
+    }
+
+    public void sortEvents(SortTypes type) {
+        presenter.onSortRequested(type);
     }
 
     public interface OnListFragmentInteractionListener {

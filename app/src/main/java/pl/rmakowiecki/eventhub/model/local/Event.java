@@ -2,9 +2,7 @@ package pl.rmakowiecki.eventhub.model.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public final class Event implements Parcelable {
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -36,10 +34,7 @@ public final class Event implements Parcelable {
         this.users = users;
     }
 
-
-
-    public Event()
-    {
+    public Event() {
         id = "";
         name = "";
         organizer = "";
@@ -61,10 +56,13 @@ public final class Event implements Parcelable {
         return users;
     }
 
+    public String getLocation() {
+        return location;
+    }
 
-    public String getLocation() { return location; }
-
-    public String getOrganizer(){ return organizer; }
+    public String getOrganizer() {
+        return organizer;
+    }
 
     public String getId() {
         return id;

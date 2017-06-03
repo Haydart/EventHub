@@ -56,6 +56,9 @@ dependencies {
 	compile "com.android.support:support-v4:${build_version}"
 	compile "com.android.support:design:${build_version}"
 	compile "com.android.support:support-fragment:${build_version}"
+	compile 'com.android.support:support-v4:25.3.1'
+	compile 'com.android.support:recyclerview-v7:25.3.1'
+
 
 	//Google APIs
 	compile "com.google.android.gms:play-services-maps:${gms_components_version}"
@@ -76,7 +79,6 @@ dependencies {
 	compile 'com.jakewharton.rxbinding:rxbinding:1.0.1'
 
 	//Retrofit
-	compile 'com.google.code.gson:gson:2.8.0'
 	compile 'com.squareup.retrofit2:retrofit:2.2.0'
 	compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
 	compile 'com.squareup.retrofit2:converter-gson:2.2.0'
@@ -95,24 +97,27 @@ dependencies {
 	//ExpandableRecyclerView
 	compile 'com.bignerdranch.android:expandablerecyclerview:3.0.0-RC1'
 
+
 	//Picasso
 	compile 'com.squareup.picasso:picasso:2.5.2'
 
 	//CardView
 	compile 'com.android.support:cardview-v7:25.3.1'
-	compile 'com.android.support:recyclerview-v7:25.3.1'
 
 	//Loading view
 	compile 'com.wang.avi:library:2.1.3'
 
 	//Circle image view
 	compile 'de.hdodenhof:circleimageview:2.1.0'
+	compile 'com.nineoldandroids:library:2.4.0'
 
 	//Joda-Time
 	compile 'net.danlew:android.joda:2.9.9'
 
+
 	//Fab Reveal Transition
 	compile 'com.github.coyarzun89:fabtransitionactivity:0.2.0'
+
 
 	//Arc Layout
 	compile 'com.github.florent37:arclayout:1.0.2'
@@ -121,18 +126,17 @@ dependencies {
 	compile 'com.flaviofaria:kenburnsview:1.0.7'
 
 	//Slider View
-	compile 'com.nineoldandroids:library:2.4.0'
 	compile 'com.daimajia.slider:library:1.1.5@aar'
+
+
+	//Retrofit
+	compile 'com.google.code.gson:gson:2.8.0'
+
 
 	//Facebook SDK
 	compile 'com.facebook.android:facebook-android-sdk:4.23.0'
 
 	testCompile 'junit:junit:4.12'
-	compile 'com.android.support:support-v4:25.3.1'
-	testCompile 'junit:junit:4.12'
-	annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-	annotationProcessor 'com.jenzz.noop:processor:1.2.0'
-	provided 'com.jenzz.noop:annotation:1.2.0'
 }
 
 apply plugin: 'com.google.gms.google-services'
