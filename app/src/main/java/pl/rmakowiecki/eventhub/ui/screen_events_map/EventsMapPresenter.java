@@ -9,6 +9,7 @@ import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
+import pl.rmakowiecki.eventhub.util.UserAuthManager;
 import rx.Observable;
 import rx.Subscription;
 import rx.subscriptions.Subscriptions;
@@ -23,11 +24,12 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     private static final int BOTTOM_SHEET_MAP_PADDING = 300;
     private static final int MAP_TRANSITION_DELAY = 100;
 
-    private Repository<Place> placesRepository;
+    private PlacesRepository placesRepository;
     private LocationProvider locationProvider;
     private LocationCoordinates lastKnownDeviceLocation;
     private LocationCoordinates focusedMarkerLocation;
     private Subscription mapTransitionSubscription = Subscriptions.unsubscribed();
+    private UserAuthManager authManager;
 
     private boolean isMapClickMarkerShown = false;
     private boolean isFocusedOnProvidedMarker = false;
@@ -37,6 +39,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     EventsMapPresenter() {
         placesRepository = new PlacesRepository();
         locationProvider = new RxLocationProvider();
+        authManager = new UserAuthManager();
     }
 
     @Override
@@ -243,6 +246,15 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     public void onLogoutMenuOptionClicked() {
-        view.logoutUser();
+        logoutUser();
+    }
+
+    private void logoutUser() {
+        FirebaseAuth.getInstance().signOut();
+        view.updateNavigationDrawer(false);
+    }
+
+    public void onActivityResume() {
+        view.updateNavigationDrawer(authManager.isUserAuthorized());
     }
 }

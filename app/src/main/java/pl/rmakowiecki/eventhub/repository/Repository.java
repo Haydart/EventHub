@@ -11,8 +11,4 @@ public interface Repository<T> {
     void update(T item);
 
     void remove(T item);
-
-    Observable<List<T>> query(Specification specification);
-
-    Observable<T> querySingle(Specification specification);
 }

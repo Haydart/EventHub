@@ -44,5 +44,5 @@ interface EventsMapView extends BaseView {
 
     void launchUserProfileScreen();
 
-    void logoutUser();
+    void updateNavigationDrawer(boolean loggedIn);
 }

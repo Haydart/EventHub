@@ -44,12 +44,11 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
 
     @Override
     public void launchApplicationIfPossible() {
-        if (!presenter.canLaunchApplication())
-            return;
-
-        Intent intent = new Intent(this, isFirstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
-        startActivity(intent);
-        finish();
+        if (presenter.canLaunchApplication()) {
+            Intent intent = new Intent(this, isFirstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
+            startActivity(intent);
+            finish();
+        }
     }
 
     @Override

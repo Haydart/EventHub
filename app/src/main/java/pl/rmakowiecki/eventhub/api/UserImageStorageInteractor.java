@@ -1,9 +1,5 @@
 package pl.rmakowiecki.eventhub.api;
 
-import android.support.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
@@ -15,6 +11,7 @@ import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PROFILE_IMAGE_
 
 public class UserImageStorageInteractor extends BaseStorageInteractor<byte[]> {
 
+    private final long FIVE_MEGABYTES = 5 * 1024 * 1024;
     private FirebaseUser user;
 
     private boolean setUser() {
@@ -37,7 +34,6 @@ public class UserImageStorageInteractor extends BaseStorageInteractor<byte[]> {
 
         setStorageQueryNode();
         publishSubject = PublishSubject.create();
-        final long FIVE_MEGABYTES = 5 * 1024 * 1024;
         storageQueryNode.getBytes(FIVE_MEGABYTES).addOnSuccessListener(bytes -> publishSubject.onNext(bytes));
 
         return publishSubject;

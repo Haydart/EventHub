@@ -184,11 +184,11 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     public void onResume(){
         super.onResume();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        updateNavigationDrawer(user != null);
+        presenter.onActivityResume();
     }
 
-    private void updateNavigationDrawer(boolean loggedIn) {
+    @Override
+    public void updateNavigationDrawer(boolean loggedIn) {
         navigationView.getMenu().findItem(R.id.nav_sign_in).setVisible(!loggedIn);
         navigationView.getMenu().findItem(R.id.nav_logout).setVisible(loggedIn);
         navigationView.getMenu().findItem(R.id.nav_user_profile).setVisible(loggedIn);
@@ -301,12 +301,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public void launchUserProfileScreen() {
         Intent intent = new Intent(this, UserProfileActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void logoutUser() {
-        FirebaseAuth.getInstance().signOut();
-        updateNavigationDrawer(false);
     }
 
     @Override

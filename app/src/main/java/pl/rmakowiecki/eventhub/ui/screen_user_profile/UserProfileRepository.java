@@ -10,13 +10,14 @@ import java.util.Collections;
 import java.util.List;
 
 import pl.rmakowiecki.eventhub.model.local.UserProfile;
+import pl.rmakowiecki.eventhub.repository.QueryList;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PROFILE_IMAGE_REFERENCE;
 
-public class UserProfileRepository implements Repository<UserProfile> {
+public class UserProfileRepository implements Repository<UserProfile>, QueryList<UserProfile> {
 
     UserProfilePresenter presenter;
     private StorageReference storageReference;
@@ -70,10 +71,5 @@ public class UserProfileRepository implements Repository<UserProfile> {
     public Observable<List<UserProfile>> query(Specification specification) {
         // TODO: 03.05.2017
         return null;
-    }
-
-    @Override
-    public Observable<UserProfile> querySingle(Specification specification) {
-        return Observable.empty();
     }
 }

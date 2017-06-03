@@ -3,11 +3,12 @@ package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
 import java.util.List;
 import pl.rmakowiecki.eventhub.api.InterestsDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Interest;
+import pl.rmakowiecki.eventhub.repository.QueryList;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
-public class PreferenceInterestRepository implements Repository<Interest> {
+public class PreferenceInterestRepository implements Repository<Interest>, QueryList<Interest> {
     @Override
     public void add(Interest item) {
         // TODO: 2017-04-23  
@@ -31,10 +32,5 @@ public class PreferenceInterestRepository implements Repository<Interest> {
     @Override
     public Observable<List<Interest>> query(Specification specification) {
         return new InterestsDatabaseInteractor().getData();
-    }
-
-    @Override
-    public Observable<Interest> querySingle(Specification specification) {
-        return Observable.empty();
     }
 }
