@@ -1,6 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
-
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -8,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
-
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
@@ -45,9 +43,9 @@ public class UserPictureRetrievalDialogFragment extends DialogFragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         if (unbinder != null) {
             unbinder.unbind();
         }
+        super.onDestroyView();
     }
 }

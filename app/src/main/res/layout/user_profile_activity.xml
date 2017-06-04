@@ -50,7 +50,6 @@
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
                     android:background="@color/colorPrimary" />
-
             </com.github.florent37.arclayout.ArcLayout>
 
             <FrameLayout
@@ -67,7 +66,7 @@
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_photo_placeholder"
                     app:civ_border_width="@dimen/user_profile_image_border_width"
-                    app:civ_border_color="@color/colorAccent"/>
+                    app:civ_border_color="@android:color/white" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/add_image_button"
@@ -78,7 +77,6 @@
                     android:layout_height="@dimen/user_add_profile_image_size"
                     android:background="@drawable/ic_add_a_photo_white_18px" />
             </FrameLayout>
-
         </android.support.design.widget.CollapsingToolbarLayout>
     </android.support.design.widget.AppBarLayout>
 
@@ -109,5 +107,4 @@
         android:src="@drawable/ic_arrow_back_white_24px"
         android:layout_marginTop="@dimen/back_arrow_margin"
         android:layout_marginLeft="@dimen/back_arrow_margin"/>
-
 </android.support.design.widget.CoordinatorLayout>
