@@ -8,4 +8,6 @@ interface EventCreationView extends BaseView {
     void showDatePickerView();
 
     void showTimePickerView();
+
+    void showEventPlaceAddress();
 }

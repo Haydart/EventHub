@@ -13,6 +13,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import java.util.Calendar;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.util.UnitConversionUtils;
 
@@ -25,6 +26,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     @BindView(R.id.app_bar) AppBarLayout appBarLayout;
     @BindView(R.id.picked_time_text_view) TextView timeTextView;
     @BindView(R.id.picked_date_text_view) TextView dateTextView;
+    @BindView(R.id.event_address_text_view) TextView eventAddressTextView;
 
     @OnClick(R.id.date_button)
     public void onDatePickerButtonClicked() {
@@ -78,6 +80,12 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         Configuration configuration = getResources().getConfiguration();
         int screenHeightDp = configuration.screenHeightDp;
         return (int) UnitConversionUtils.convertDpToPixel(this, screenHeightDp);
+    }
+
+    @Override
+    public void showEventPlaceAddress() {
+        String placeAddress = (String) getIntent().getExtras().get(Constants.PLACE_ADDRESS_EXTRA);
+        eventAddressTextView.setText(placeAddress != null ? placeAddress : "");
     }
 
     @Override

@@ -27,8 +27,8 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     private LocationCoordinates focusedMarkerLocation;
     private Subscription mapTransitionSubscription = Subscriptions.unsubscribed();
     private UserAuthManager authManager;
+    
     private String clickedMarkerAddress;
-
     private boolean isMapClickMarkerShown = false;
     private boolean isFocusedOnProvidedMarker = false;
     private boolean isSearchBarShown = true;
@@ -58,8 +58,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     private void promptForLocalizationSettings() {
-        Observable.just(null)
-                .delay(LOCATION_SAFETY_DELAY, TimeUnit.MILLISECONDS)
+        Observable.timer(LOCATION_SAFETY_DELAY, TimeUnit.MILLISECONDS)
                 .flatMap(ignored -> locationProvider.isLocationTurnedOn())
                 .filter(response -> response != null)
                 .compose(applySchedulers())
