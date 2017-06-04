@@ -41,13 +41,15 @@ class SplashPresenter extends BasePresenter<SplashView> {
         return new LocaleUtils().hasLocale();
     }
 
-    protected boolean canLaunchApplication() {
+    private boolean canLaunchApplication() {
         return currentComponentCount >= REQUIRED_COMPONENT_COUNT;
     }
 
     protected void onComponentLoaded() {
         ++currentComponentCount;
-        launchApplicationIfPossible();
+        if (canLaunchApplication()) {
+            view.launchApplication();
+        }
     }
 
     private void queryPreferences() {
@@ -76,11 +78,5 @@ class SplashPresenter extends BasePresenter<SplashView> {
                 .querySingle(new PreferencesLocaleSpecification() {})
                 .compose(applySchedulers())
                 .subscribe(view::saveUserImage);
-    }
-
-    public void launchApplicationIfPossible() {
-        if (canLaunchApplication()) {
-            view.launchApplication();
-        }
     }
 }
