@@ -1,9 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_splash;
 
-import android.util.Log;
-
-import java.util.Locale;
-
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestSpecification;
@@ -51,6 +47,7 @@ class SplashPresenter extends BasePresenter<SplashView> {
 
     protected void onComponentLoaded() {
         ++currentComponentCount;
+        launchApplicationIfPossible();
     }
 
     private void queryPreferences() {
@@ -79,5 +76,11 @@ class SplashPresenter extends BasePresenter<SplashView> {
                 .querySingle(new PreferencesLocaleSpecification() {})
                 .compose(applySchedulers())
                 .subscribe(view::saveUserImage);
+    }
+
+    public void launchApplicationIfPossible() {
+        if (canLaunchApplication()) {
+            view.launchApplication();
+        }
     }
 }

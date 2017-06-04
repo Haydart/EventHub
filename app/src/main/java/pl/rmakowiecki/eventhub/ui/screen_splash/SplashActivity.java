@@ -43,31 +43,28 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     }
 
     @Override
-    public void launchApplicationIfPossible() {
-        if (presenter.canLaunchApplication()) {
-            Intent intent = new Intent(this, isFirstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
-            startActivity(intent);
-            finish();
-        }
+    public void launchApplication() {
+        Intent intent = new Intent(this, isFirstLaunch ? PreferenceActivity.class : EventsMapActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
     public void savePreferences(List<Preference> preferenceList) {
         preferencesManager.saveCategories(preferenceList);
         presenter.onComponentLoaded();
-        launchApplicationIfPossible();
     }
 
     @Override
     public void saveInterests(List<Interest> interests) {
         preferencesManager.saveInterests(interests);
-        launchApplicationIfPossible();
+        presenter.launchApplicationIfPossible();
     }
 
     @Override
     public void saveLocales(List<PreferenceLocale> localesList) {
         preferencesManager.saveLocales(localesList);
-        launchApplicationIfPossible();
+        presenter.launchApplicationIfPossible();
     }
 
     @Override
@@ -75,7 +72,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
         Bitmap bitmap = BitmapUtils.getBitmapFromBytes(imageBytes);
         if (bitmap != null)
             preferencesManager.saveUserImage(bitmap);
-        launchApplicationIfPossible();
+        presenter.launchApplicationIfPossible();
     }
 
     @Override

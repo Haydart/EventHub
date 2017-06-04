@@ -7,4 +7,9 @@ public class UserAuthManager implements UserProvider {
     public boolean isUserAuthorized() {
         return FirebaseAuth.getInstance().getCurrentUser() != null;
     }
+
+    @Override
+    public void logoutUser() {
+        FirebaseAuth.getInstance().signOut();
+    }
 }

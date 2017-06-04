@@ -250,7 +250,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     private void logoutUser() {
-        FirebaseAuth.getInstance().signOut();
+        authManager.logoutUser();
         view.updateNavigationDrawer(false);
     }
 
