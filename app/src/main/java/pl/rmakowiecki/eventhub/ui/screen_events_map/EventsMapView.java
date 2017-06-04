@@ -45,4 +45,8 @@ interface EventsMapView extends BaseView {
     void launchUserProfileScreen();
 
     void updateNavigationDrawer(boolean loggedIn);
+
+    void showBottomSheetFab();
+
+    void launchEventCreationScreen(String clickedMarkerAddress);
 }
