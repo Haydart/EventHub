@@ -20,4 +20,5 @@ public class Constants {
     public static final String PROFILE_PIC_BUNDLE_NAME = "profile_pic_bundle";
     public static final int PROFILE_PIC_BITMAP_WIDTH = 256;
     public static final int PROFILE_PIC_BITMAP_HEIGHT = 256;
+    public static final String PLACE_ADDRESS_EXTRA = "place_address";
 }

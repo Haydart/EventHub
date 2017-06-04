@@ -4,10 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
@@ -15,7 +13,6 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -45,11 +42,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.squareup.picasso.Picasso;
 import com.tbruyelle.rxpermissions.RxPermissions;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.R;
@@ -63,7 +56,6 @@ import pl.rmakowiecki.eventhub.ui.screen_app_features.AppFeaturesActivity;
 import pl.rmakowiecki.eventhub.ui.screen_create_event.EventCreationActivity;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.CalendarActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceActivity;
-import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileActivity;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
@@ -119,12 +111,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public void onBottomSheetFabClicked() {
         revealSheetLayout.setVisibility(View.VISIBLE);
         revealSheetLayout.expandFab();
-    }
-
-    @OnClick(R.id.map_bottom_sheet)
-    public void onBottomSheetClicked() {
-        // TODO: 23/03/2017 remove debug
-        Toast.makeText(this, "Bottom sheet click", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -206,6 +192,12 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         headerImageView.setVisibility(visibility);
     }
 
+    @Override
+    public void showBottomSheetFab() {
+        bottomSheetFab.setVisibility(View.VISIBLE);
+        bottomSheetFab.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_up_fade_in));
+    }
+
     private void initNavigationDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -280,27 +272,43 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
+    public void onLocationAddressFetched(String addressOutput) {
+        presenter.onLocationAddressFetched(addressOutput);
+    }
+
+    @Override
+    public void onFabAnimationEnd() {
+        presenter.onFabAnimationComplete();
+    }
+
+    @Override
+    public void launchEventCreationScreen(String placeAddress) {
+        Intent intent = new Intent(this, EventCreationActivity.class);
+        intent.putExtra(Constants.PLACE_ADDRESS_EXTRA, placeAddress);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, EVENT_CREATION_REQUEST_CODE);
+        getWindow().setBackgroundDrawableResource(R.drawable.ic_image_placeholder);
+        overridePendingTransition(0, 0);
+    }
+
+    @Override
     public void launchSignInScreen() {
-        Intent intent = new Intent(this, AppFeaturesActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, AppFeaturesActivity.class));
     }
 
     @Override
     public void launchPreferencesScreen() {
-        Intent intent = new Intent(this, PreferenceActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, PreferenceActivity.class));
     }
 
     @Override
     public void launchCalendarScreen() {
-        Intent intent = new Intent(this, CalendarActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, CalendarActivity.class));
     }
 
     @Override
     public void launchUserProfileScreen() {
-        Intent intent = new Intent(this, UserProfileActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, UserProfileActivity.class));
     }
 
     @Override
@@ -373,7 +381,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public void showBottomSheet() {
         if (bottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
             bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
-            bottomSheetFab.setVisibility(View.VISIBLE);
         }
     }
 
@@ -482,20 +489,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     @Override
     protected void initPresenter() {
         presenter = new EventsMapPresenter();
-    }
-
-    @Override
-    public void onLocationAddressFetched(String addressOutput) {
-        presenter.onLocationAddressFetched(addressOutput);
-    }
-
-    @Override
-    public void onFabAnimationEnd() {
-        Intent intent = new Intent(this, EventCreationActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivityForResult(intent, EVENT_CREATION_REQUEST_CODE);
-        getWindow().setBackgroundDrawableResource(R.drawable.ic_image_placeholder);
-        overridePendingTransition(0, 0);
     }
 
     @Override

@@ -1,13 +1,10 @@
 package pl.rmakowiecki.eventhub.ui.screen_events_map;
 
-import com.google.firebase.auth.FirebaseAuth;
-
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.LocationProvider;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
-import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
 import rx.Observable;
@@ -30,7 +27,8 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     private LocationCoordinates focusedMarkerLocation;
     private Subscription mapTransitionSubscription = Subscriptions.unsubscribed();
     private UserAuthManager authManager;
-
+    
+    private String clickedMarkerAddress;
     private boolean isMapClickMarkerShown = false;
     private boolean isFocusedOnProvidedMarker = false;
     private boolean isSearchBarShown = true;
@@ -59,9 +57,8 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         promptForLocalizationSettings();
     }
 
-    void promptForLocalizationSettings() {
-        Observable.just(null)
-                .delay(LOCATION_SAFETY_DELAY, TimeUnit.MILLISECONDS)
+    private void promptForLocalizationSettings() {
+        Observable.timer(LOCATION_SAFETY_DELAY, TimeUnit.MILLISECONDS)
                 .flatMap(ignored -> locationProvider.isLocationTurnedOn())
                 .filter(response -> response != null)
                 .compose(applySchedulers())
@@ -157,7 +154,9 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     void onLocationAddressFetched(String addressOutput) {
+        clickedMarkerAddress = addressOutput;
         view.setBottomSheetData(addressOutput, focusedMarkerLocation.toString());
+        view.showBottomSheetFab();
     }
 
     void onPlaceSearchError() {
@@ -212,6 +211,39 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 .subscribe(view::moveMapCamera);
     }
 
+    void onCalendarMenuOptionClicked() {
+        view.launchCalendarScreen();
+    }
+
+    void onPreferencesScreenMenuOptionClicked() {
+        view.launchPreferencesScreen();
+    }
+
+    void onFabAnimationComplete() {
+        view.launchEventCreationScreen(clickedMarkerAddress);
+    }
+
+    void onSignInMenuOptionClicked() {
+        view.launchSignInScreen();
+    }
+
+    void onUserProfileMenuOptionClicked() {
+        view.launchUserProfileScreen();
+    }
+
+    void onLogoutMenuOptionClicked() {
+        logoutUser();
+    }
+
+    private void logoutUser() {
+        authManager.logoutUser();
+        view.updateNavigationDrawer(false);
+    }
+
+    void onActivityResume() {
+        view.updateNavigationDrawer(authManager.isUserAuthorized());
+    }
+
     private void dismissMapTransitionTask() {
         mapTransitionSubscription.unsubscribe();
     }
@@ -224,37 +256,8 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         }
     }
 
-    void onCalendarMenuOptionClicked() {
-        view.launchCalendarScreen();
-    }
-
-    void onPreferencesScreenMenuOptionClicked() {
-        view.launchPreferencesScreen();
-    }
-
-    void onSignInMenuOptionClicked() {
-        view.launchSignInScreen();
-    }
-
     @Override
     public EventsMapView getNoOpView() {
         return NoOpEventsMapView.INSTANCE;
-    }
-
-    public void onUserProfileMenuOptionClicked() {
-        view.launchUserProfileScreen();
-    }
-
-    public void onLogoutMenuOptionClicked() {
-        logoutUser();
-    }
-
-    private void logoutUser() {
-        authManager.logoutUser();
-        view.updateNavigationDrawer(false);
-    }
-
-    public void onActivityResume() {
-        view.updateNavigationDrawer(authManager.isUserAuthorized());
     }
 }
