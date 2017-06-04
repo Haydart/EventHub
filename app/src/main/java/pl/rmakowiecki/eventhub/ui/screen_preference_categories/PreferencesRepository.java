@@ -3,11 +3,12 @@ package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
 import java.util.List;
 import pl.rmakowiecki.eventhub.api.PreferencesDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Preference;
+import pl.rmakowiecki.eventhub.repository.QueryList;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
-public class PreferencesRepository implements Repository<Preference> {
+public class PreferencesRepository implements Repository<Preference>, QueryList<Preference> {
 
     @Override
     public void add(Preference item) {

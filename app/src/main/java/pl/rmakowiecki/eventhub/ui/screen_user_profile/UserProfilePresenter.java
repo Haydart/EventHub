@@ -22,6 +22,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
         view.initRepository();
         view.changeToolbarTitles();
         view.displayInterestsList();
+        view.loadUserImage();
         wasButtonClicked = false;
     }
 

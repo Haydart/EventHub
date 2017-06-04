@@ -7,12 +7,13 @@ import pl.rmakowiecki.eventhub.api.NearbyPlacesListApiInteractor;
 import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.model.remote.google.GooglePlace;
 import pl.rmakowiecki.eventhub.repository.ModelMapper;
+import pl.rmakowiecki.eventhub.repository.QueryList;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import pl.rmakowiecki.eventhub.util.GoogleApiUtil;
 import rx.Observable;
 
-public class PlacesRepository implements Repository<Place> {
+public class PlacesRepository implements Repository<Place>, QueryList<Place> {
 
     private INearbyPlacesListApiInteractor nearbyPlacesInteractor;
     private ModelMapper<GooglePlace, Place> googlePlaceModelMapper;
