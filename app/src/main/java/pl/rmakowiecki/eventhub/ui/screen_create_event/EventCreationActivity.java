@@ -1,12 +1,17 @@
 package pl.rmakowiecki.eventhub.ui.screen_create_event;
 
 import android.animation.ValueAnimator;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
+import android.widget.TextView;
 import butterknife.BindView;
+import butterknife.OnClick;
+import java.util.Calendar;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.util.UnitConversionUtils;
@@ -18,6 +23,35 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.app_bar) AppBarLayout appBarLayout;
+    @BindView(R.id.picked_time_text_view) TextView timeTextView;
+    @BindView(R.id.picked_date_text_view) TextView dateTextView;
+
+    @OnClick(R.id.date_button)
+    public void onDatePickerButtonClicked() {
+        presenter.onDatePickerButtonClicked();
+    }
+
+    @Override
+    public void showDatePickerView() {
+        Calendar calendar = Calendar.getInstance();
+        DatePickerDialog datePickerDialog = new DatePickerDialog(this,
+                (view, year, monthOfYear, dayOfMonth) -> dateTextView.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year), calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_YEAR));
+        datePickerDialog.show();
+    }
+
+    @OnClick(R.id.time_button)
+    public void onTimePickerButtonClicked() {
+        presenter.onTimePickerButtonClicked();
+    }
+
+    @Override
+    public void showTimePickerView() {
+        Calendar calendar = Calendar.getInstance();
+        TimePickerDialog timePickerDialog = new TimePickerDialog(this,
+                (view, hourOfDay, minute) -> timeTextView.setText(hourOfDay + ":" + minute), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+        timePickerDialog.show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

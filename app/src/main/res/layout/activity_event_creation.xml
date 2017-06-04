@@ -44,11 +44,21 @@
                 android:layout_height="wrap_content"
                 android:text="Pick date" />
 
+            <TextView
+                android:id="@+id/picked_date_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
             <Button
                 android:id="@+id/time_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Pick time" />
+
+            <TextView
+                android:id="@+id/picked_time_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
 
             <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
                 android:id="@+id/save_preferences_action_button"

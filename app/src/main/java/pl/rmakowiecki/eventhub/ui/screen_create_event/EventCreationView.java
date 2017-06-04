@@ -4,6 +4,8 @@ import com.jenzz.noop.annotation.NoOp;
 import pl.rmakowiecki.eventhub.ui.BaseView;
 
 @NoOp
-public interface EventCreationView extends BaseView {
-    // no-op
+interface EventCreationView extends BaseView {
+    void showDatePickerView();
+
+    void showTimePickerView();
 }

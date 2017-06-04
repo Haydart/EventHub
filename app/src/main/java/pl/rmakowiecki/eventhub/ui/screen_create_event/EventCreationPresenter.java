@@ -7,4 +7,12 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
     public EventCreationView getNoOpView() {
         return NoOpEventCreationView.INSTANCE;
     }
+
+    void onDatePickerButtonClicked() {
+        view.showDatePickerView();
+    }
+
+    void onTimePickerButtonClicked() {
+        view.showTimePickerView();
+    }
 }
