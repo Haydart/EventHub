@@ -8,6 +8,7 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/standard_margin_large"
     android:layout_marginRight="@dimen/standard_margin_large"
+    android:tag="calendar_events_list"
     app:layoutManager="LinearLayoutManager"
     tools:context="pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsFragment"
     tools:listitem="@layout/fragment_events" />

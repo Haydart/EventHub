@@ -40,4 +40,17 @@
   <string name="button_failure_credentials_discarded">NiewĹ‚aĹ›ciwe dane</string>
   <string name="button_failure_unknown_error">Nieznany bĹ‚Ä…d serwera</string>
   <string name="title_user_profile">Profil Uzytkownika</string>
+  <string name="text_input_hint_email">Adres email</string>
+    <string name="text_input_hint_password">HasĹ‚o</string>
+    <string name="text_input_hint_repeat_password">PowtĂłrz hasĹ‚o</string>
+    <string name="text_forgot_password">ZapomniaĹ‚em hasĹ‚a</string>
+    <string name="text_register_email">StwĂłrz konto</string>
+    <string name="invalid_email_prompt">Niepoprawny adres e-mail</string>
+    <string name="invalid_password_prompt">HasĹ‚o jest za sĹ‚abe</string>
+    <string name="invalid_password_matching">Wprowadzone hasĹ‚a sÄ… inne</string>
+    <string name="button_failure_invalid_credentials">Niepoprawny login lub hasĹ‚o</string>
+    <string name="button_failure_network_connection">Utracono poĹ‚Ä…czenie</string>
+    <string name="button_failure_email_taken">Ten email jest zajÄ™ty</string>
+    <string name="button_failure_credentials_discarded">NiewĹ‚aĹ›ciwe dane</string>
+    <string name="button_failure_unknown_error">Nieznany bĹ‚Ä…d serwera</string>
 </resources>
