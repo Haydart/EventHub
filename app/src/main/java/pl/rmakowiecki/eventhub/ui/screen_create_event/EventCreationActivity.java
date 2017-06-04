@@ -37,8 +37,8 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     public void showDatePickerView() {
         Calendar calendar = Calendar.getInstance();
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
-                (view, year, monthOfYear, dayOfMonth) -> dateTextView.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year), calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_YEAR));
+                (view, year, monthOfYear, dayOfMonth) -> presenter.onEventDatePicked(year, monthOfYear, dayOfMonth),
+                calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_YEAR));
         datePickerDialog.show();
     }
 
@@ -51,7 +51,8 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     public void showTimePickerView() {
         Calendar calendar = Calendar.getInstance();
         TimePickerDialog timePickerDialog = new TimePickerDialog(this,
-                (view, hourOfDay, minute) -> timeTextView.setText(hourOfDay + ":" + minute), calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
+                (view, hourOfDay, minute) -> presenter.onEventTimePicked(hourOfDay, minute),
+                calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false);
         timePickerDialog.show();
     }
 

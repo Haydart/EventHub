@@ -17,8 +17,8 @@ public class Constants {
     public static final String SHARED_PREFERENCES_CATEGORY_IMAGE_KEY = "shared_preferences_image_";
     public static final String SHARED_PREFERENCES_PREFERENCE_LOCALE_KEY = "shared_preferences_locale_";
     public static final String SHARED_PREFERENCES_USER_IMAGE_KEY = "shared_preferences_user_image";
-    public static final String PROFILE_PIC_BUNDLE_NAME = "profile_pic_bundle";
-    public static final int PROFILE_PIC_BITMAP_WIDTH = 256;
-    public static final int PROFILE_PIC_BITMAP_HEIGHT = 256;
+    public static final String PROFILE_PIC_BUNDLE_NAME = "data";
+    public static final int PROFILE_PIC_BITMAP_WIDTH = 512;
+    public static final int PROFILE_PIC_BITMAP_HEIGHT = 512;
     public static final String PLACE_ADDRESS_EXTRA = "place_address";
 }

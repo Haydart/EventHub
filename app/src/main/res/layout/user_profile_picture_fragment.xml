@@ -6,7 +6,8 @@
 
     <TextView
         android:id="@+id/camera_option_text_view"
-        android:layout_margin="@dimen/standard_margin_small"
+        android:layout_marginLeft="@dimen/standard_margin_medium"
+        android:layout_marginTop="@dimen/standard_margin_medium"
         android:layout_width="match_parent"
         android:layout_height="@dimen/photo_source_select_option_height"
         android:drawableLeft="@drawable/ic_photo_camera_black_36dp"
@@ -16,7 +17,8 @@
 
     <TextView
         android:id="@+id/gallery_option_text_view"
-        android:layout_margin="@dimen/standard_margin_small"
+        android:layout_marginLeft="@dimen/standard_margin_medium"
+        android:layout_marginBottom="@dimen/standard_margin_medium"
         android:layout_width="match_parent"
         android:layout_height="@dimen/photo_source_select_option_height"
         android:drawableLeft="@drawable/ic_photo_library_black_36dp"
