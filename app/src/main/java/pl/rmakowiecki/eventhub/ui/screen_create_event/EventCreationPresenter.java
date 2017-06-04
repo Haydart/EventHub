@@ -23,10 +23,13 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
 
     void onEventDatePicked(int year, int monthOfYear, int dayOfMonth) {
         eventTime.set(Calendar.YEAR, year);
+        eventTime.set(Calendar.MONTH, monthOfYear);
+        eventTime.set(Calendar.DAY_OF_MONTH, dayOfMonth);
     }
 
     void onEventTimePicked(int hourOfDay, int minute) {
-
+        eventTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        eventTime.set(Calendar.MINUTE, minute);
     }
 
     @Override
