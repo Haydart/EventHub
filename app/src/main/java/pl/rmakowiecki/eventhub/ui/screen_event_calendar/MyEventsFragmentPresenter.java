@@ -24,7 +24,8 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
 
     private RxLocationProvider provider = new RxLocationProvider();
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
-    private Repository<Event> repository;
+    private EventsRepository repository;
+    private ArrayList<String> distances = new ArrayList<>();
     private int position;
     private List<EventWDistance> eventsWithDistances = new ArrayList<>();
 

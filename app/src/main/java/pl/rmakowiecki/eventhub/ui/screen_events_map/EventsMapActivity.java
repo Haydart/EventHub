@@ -3,6 +3,8 @@ package pl.rmakowiecki.eventhub.ui.screen_events_map;
 import android.Manifest;
 import android.content.Intent;
 import android.content.IntentSender;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -13,6 +15,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,6 +24,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,6 +46,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.squareup.picasso.Picasso;
 import com.tbruyelle.rxpermissions.RxPermissions;
 import java.util.ArrayList;
 import java.util.List;
@@ -96,8 +102,8 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private GoogleMap googleMap;
     private BottomSheetBehavior bottomSheetBehavior;
     private Marker mapClickMarker;
-    private List<PreferenceCategory> preferenceCategories;
     private AddressResultReceiver addressResultReceiver;
+    private PreferencesManager preferencesManager;
 
     @OnClick(R.id.navigation_drawer_icon)
     public void onMenuIconClicked() {
@@ -128,9 +134,9 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         initMapBottomSheet();
         initNavigationDrawer();
         initSearchBar();
-        initPreferences();
         initRevealSheetLayout();
         addressResultReceiver = new AddressResultReceiver(this, new Handler());
+        preferencesManager = new PreferencesManager(this);
     }
 
     private void checkLocationPermissions() {
@@ -175,6 +181,31 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+        presenter.onActivityResume();
+    }
+
+    @Override
+    public void updateNavigationDrawer(boolean loggedIn) {
+        navigationView.getMenu().findItem(R.id.nav_sign_in).setVisible(!loggedIn);
+        navigationView.getMenu().findItem(R.id.nav_logout).setVisible(loggedIn);
+        navigationView.getMenu().findItem(R.id.nav_user_profile).setVisible(loggedIn);
+        ImageView headerImageView = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.navbar_header_image_view);
+
+        int visibility = View.INVISIBLE;
+        if (loggedIn) {
+            Bitmap image = preferencesManager.getUserImage();
+            if (image != null) {
+                headerImageView.setImageBitmap(image);
+                visibility = View.VISIBLE;
+            }
+        }
+
+        headerImageView.setVisibility(visibility);
+    }
+
     private void initNavigationDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -206,10 +237,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
                 presenter.onPlaceSearchError();
             }
         });
-    }
-
-    private void initPreferences() {
-        preferenceCategories = new PreferencesManager(this).getPreferenceCategoryList();
     }
 
     private void initRevealSheetLayout() {
@@ -274,27 +301,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     public void launchUserProfileScreen() {
         Intent intent = new Intent(this, UserProfileActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void debugLogin() {
-        String email = "example@gmail.com";
-        String password = "firebasepassword";
-        FirebaseAuth.getInstance()
-                .signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(this, "Logged in", Toast.LENGTH_SHORT).show();
-                    }
-                    else
-                        Toast.makeText(this, "Could not log in", Toast.LENGTH_SHORT).show();
-                });
-    }
-
-    @Override
-    public void debugLogout() {
-        FirebaseAuth.getInstance().signOut();
-        Toast.makeText(this, "Logged out", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -464,11 +470,8 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
             case R.id.nav_user_profile:
                 presenter.onUserProfileMenuOptionClicked();
                 break;
-            case R.id.nav_debug_login:
-                presenter.onFirebaseDebugLogin();
-                break;
-            case R.id.nav_debug_logout:
-                presenter.onFirebaseDebugLogout();
+            case R.id.nav_logout:
+                presenter.onLogoutMenuOptionClicked();
                 break;
         }
 

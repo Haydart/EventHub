@@ -2,6 +2,7 @@ package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
 import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.repository.QueryList;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
@@ -10,7 +11,7 @@ import rx.Observable;
  * Created by m1per on 17.04.2017.
  */
 
-class EventsRepository implements Repository<Event> {
+class EventsRepository implements Repository<Event>, QueryList<Event> {
     @Override
     public void add(Event item) {
         //no-op

@@ -30,4 +30,6 @@ public interface UserProfileView extends BaseView {
     void showButtonProcessing();
 
     void changeToolbarTitles();
+
+    void loadUserImage();
 }
