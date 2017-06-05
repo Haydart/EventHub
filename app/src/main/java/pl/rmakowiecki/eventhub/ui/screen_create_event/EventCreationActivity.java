@@ -8,12 +8,14 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.widget.Toolbar;
+import android.widget.EditText;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import java.util.Calendar;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
+import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.util.UnitConversionUtils;
 
@@ -27,6 +29,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     @BindView(R.id.picked_time_text_view) TextView timeTextView;
     @BindView(R.id.picked_date_text_view) TextView dateTextView;
     @BindView(R.id.event_address_text_view) TextView eventAddressTextView;
+    @BindView(R.id.event_name_edit_text) EditText eventNameEditText;
 
     @OnClick(R.id.date_button)
     public void onDatePickerButtonClicked() {
@@ -87,6 +90,25 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     public void showEventPlaceAddress() {
         String placeAddress = (String) getIntent().getExtras().get(Constants.PLACE_ADDRESS_EXTRA);
         eventAddressTextView.setText(placeAddress != null ? placeAddress : "");
+    }
+
+    @Override
+    public void showPickedDate(String date) {
+        dateTextView.setText(date);
+    }
+
+    @Override
+    public void showPickedTime(String time) {
+        timeTextView.setText(time);
+    }
+
+    @OnClick(R.id.create_event_action_button)
+    public void onButtonClicked() {
+        presenter.onEventCreationButtonClicked(getEventCoordinates(), eventNameEditText.getText().toString(), eventAddressTextView.getText().toString());
+    }
+
+    private LocationCoordinates getEventCoordinates() {
+        return (LocationCoordinates) getIntent().getExtras().get(Constants.LOCATION_DATA_EXTRA);
     }
 
     @Override

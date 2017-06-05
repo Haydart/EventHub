@@ -2,6 +2,8 @@ package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
 import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
+import pl.rmakowiecki.eventhub.repository.ModelMapper;
 import pl.rmakowiecki.eventhub.repository.QueryList;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.repository.Specification;
@@ -11,10 +13,18 @@ import rx.Observable;
  * Created by m1per on 17.04.2017.
  */
 
-class EventsRepository implements Repository<Event>, QueryList<Event> {
+public class EventsRepository implements Repository<Event>, QueryList<Event> {
+
+    private EventsDatabaseInteractor databaseInteractor;
+    private ModelMapper<Event, RemoteEvent> eventMapper = new EventMapper();
+
+    public EventsRepository() {
+        databaseInteractor = new EventsDatabaseInteractor();
+    }
+
     @Override
     public void add(Event item) {
-        //no-op
+        databaseInteractor.addEvent(eventMapper.map(item));
     }
 
     @Override
@@ -35,6 +45,6 @@ class EventsRepository implements Repository<Event>, QueryList<Event> {
     @Override
     public Observable<List<Event>> query(Specification specification) {
         MyEventsSpecifications spec = (MyEventsSpecifications) specification;
-        return new EventsDatabaseInteractor().getData(spec.getTabPosition());
+        return databaseInteractor.getData(spec.getTabPosition());
     }
 }
