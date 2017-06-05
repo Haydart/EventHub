@@ -12,7 +12,6 @@ import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import pl.rmakowiecki.eventhub.R;
-import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 
 /**
@@ -25,7 +24,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.name_text_view) TextView nameTextView;
     @BindView(R.id.organizer_text_view) TextView organizerTextView;
     @BindView(R.id.date_text_view) TextView dateTextView;
-    @BindView(R.id.address_text_view) TextView locationTextView;
+    @BindView(R.id.address_text_view) TextView addressTextView;
     @BindView(R.id.day_of_month_text_view) TextView dayDateTextView;
     @BindView(R.id.day_short_name_text_view) TextView dayNameTextView;
     @BindView(R.id.distance_text_view) TextView distanceTextView;
@@ -38,7 +37,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         this.view = view;
     }
 
-    public void bindView(EventWDistance ewd) {
+    void bindView(EventWDistance eventWDistance) {
 
         //TODO: JUST A RARE SAMPLE FO DEVELOPMENT, NEEDS LOTS OF WORK
 
@@ -51,7 +50,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         int daysToEvent;
 
         DateTime todayDate = new DateTime();
-        DateTime dateOfEvent = new DateTime(TimeUnit.SECONDS.toMillis(ewd.getEvent().getTimestamp()));
+        DateTime dateOfEvent = new DateTime(TimeUnit.SECONDS.toMillis(eventWDistance.getEvent().getTimestamp()));
         daysToEvent = Days.daysBetween(todayDate.toLocalDate(), dateOfEvent.toLocalDate()).getDays();
 
         DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
@@ -75,12 +74,12 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         } else {
             date = dateFull;
         }
-        nameTextView.setText(ewd.getEvent().getName());
-        organizerTextView.setText(ewd.getEvent().getOrganizer());
+        nameTextView.setText(eventWDistance.getEvent().getName());
+        organizerTextView.setText(eventWDistance.getEvent().getOrganizer());
         dateTextView.setText(date + ", " + time);
         dayDateTextView.setText(dateDay);
         dayNameTextView.setText(dayOfTheWeekShort);
-        locationTextView.setText(ewd.getEvent().getLocation());
-        distanceTextView.setText(ewd.getDistanceDisplayable());
+        addressTextView.setText(eventWDistance.getEvent().getAddress());
+        distanceTextView.setText(eventWDistance.getDistanceDisplayable());
     }
 }

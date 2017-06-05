@@ -48,5 +48,5 @@ interface EventsMapView extends BaseView {
 
     void showBottomSheetFab();
 
-    void launchEventCreationScreen(String clickedMarkerAddress);
+    void launchEventCreationScreen(String markerAddress, LocationCoordinates clickedMarkerAddress);
 }
