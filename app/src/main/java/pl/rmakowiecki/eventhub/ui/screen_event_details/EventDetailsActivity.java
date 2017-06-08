@@ -8,6 +8,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -26,6 +27,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @BindView(R.id.event_details_toolbar) Toolbar eventToolbar;
     @BindView(R.id.event_details_attendees_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.event_details_static_map) ImageView staticMapImageView;
+    @BindView(R.id.event_details_exp_text_view) ExpandableTextView expandableTextView;
 
     @Override
     protected void initPresenter() {
@@ -37,6 +39,23 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         super.onCreate(savedInstanceState);
         setSupportActionBar(eventToolbar);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        initEventDescription();
+    }
+
+    private void initEventDescription() {
+        expandableTextView.setText("Wacken Open Air (W:O:A) is a summer open-air heavy metal music festival. It takes place annually in the village of Wacken in Schleswig-Holstein, " +
+                "northern Germany, 80 kilometres (50 mi) northwest of Hamburg.\n" +
+                "\n" +
+                "The festival was first held in 1990 as a small event for local German bands. W:O:A is usually held at the beginning of August and lasts four days. " +
+                "It is currently considered the biggest heavy-metal festival in the world.[2] " +
+                "In 2011, the festival attracted 80,000 festival visitors and 6,000 personnel for a total of roughly 86,000 attendees.[3]\n" +
+                "\n" +
+                "The festival traditionally ends on the first Sunday in August, and at midnight the following Monday tickets go on sale for the next year. " +
+                "Remarkably, all 75,000 tickets were sold out within 43 hours for 2014, 12 hours for 2015, and 23 hours for 2016, despite the fact that the lineup " +
+                "(with the exception of rumors or headliners) had not been announced. The non-optional basic ticket price for all four days, including camping, " +
+                "was €180 in 2016. In 2015, 158 bands were playing on eight stages.[4] The international significance of the festival is shown by the attendees " +
+                "in recent years being 30% foreigners, with up to 10% non-Europeans, from about 30-40 different countries all around the world. Many metal fans " +
+                "travel from half a world away just to stand in cow meadows before stages set in the middle of nowhere.");
     }
 
     @Override
@@ -80,10 +99,10 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
 
     @Override
     public void loadStaticMap() {
-        String latEiffelTower = "51.053945380663215";
-        String lngEiffelTower = "17.060225307941437";
-        String marker = "&markers=color:purple|" + latEiffelTower + "," + lngEiffelTower + "&";
-        String url = "http://maps.google.com/maps/api/staticmap?center=" + latEiffelTower + "," + lngEiffelTower + "&zoom=15&size=800x400&sensor=false" + marker;
+        String latitude = "51.053945380663215";
+        String longitude = "17.060225307941437";
+        String marker = "&markers=color:purple|" + latitude + "," + longitude + "&";
+        String url = "http://maps.google.com/maps/api/staticmap?center=" + latitude + "," + longitude + "&zoom=15&size=800x400&sensor=false" + marker;
         Picasso.with(this).load(url).into(staticMapImageView);
     }
 }
