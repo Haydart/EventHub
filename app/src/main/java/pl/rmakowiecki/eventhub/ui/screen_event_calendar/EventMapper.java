@@ -1,6 +1,10 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import pl.rmakowiecki.eventhub.repository.ModelMapper;
 
@@ -14,7 +18,15 @@ class EventMapper implements ModelMapper<Event, RemoteEvent> {
                 model.getOrganizer(),
                 model.getAddress(),
                 model.getLocationCoordinates(),
-                model.getUsers()
+                convertToMapRepresentation(model.getUsers())
         );
+    }
+
+    private Map<String, Boolean> convertToMapRepresentation(List<User> userList) {
+        Map<String, Boolean> result = new HashMap<>(userList.size());
+        for (User user : userList) {
+            result.put(user.getId(), true);
+        }
+        return result;
     }
 }

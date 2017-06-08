@@ -194,7 +194,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         }
 
         byte[] data = BitmapUtils.getBytesFromBitmap(pictureBitmap);
-        User profile = new User("Moje imie nazwisko", data);
+        User profile = new User("Moje ID", "Moje imie nazwisko", data);
         repository.add(profile);
         preferencesManager.saveUserImage(pictureBitmap);
     }

@@ -5,19 +5,17 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.List;
-
 import pl.rmakowiecki.eventhub.R;
-import pl.rmakowiecki.eventhub.model.local.UserProfile;
+import pl.rmakowiecki.eventhub.model.local.User;
 
 public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDetailsAttendeesViewHolder> {
 
     private Context context;
     private LayoutInflater layoutInflater;
-    private List<UserProfile> attendees;
+    private List<User> attendees;
 
-    public EventDetailsAttendeesAdapter(Context appContext, List<UserProfile> attendees) {
+    public EventDetailsAttendeesAdapter(Context appContext, List<User> attendees) {
         context = appContext;
         layoutInflater = LayoutInflater.from(context);
         this.attendees = attendees;
@@ -31,8 +29,8 @@ public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDeta
 
     @Override
     public void onBindViewHolder(EventDetailsAttendeesViewHolder holder, int position) {
-        UserProfile attendee = attendees.get(position);
-        holder.bindView("IMIE NAZWISKO", attendee.getPictureData());
+        User attendee = attendees.get(position);
+        holder.bindView("IMIE NAZWISKO", attendee.getPicture());
     }
 
     @Override
