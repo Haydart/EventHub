@@ -63,5 +63,9 @@
     <dimen name="event_details_map_height">250dp</dimen>
     <dimen name="event_details_padding">16dp</dimen>
     <dimen name="separator_line_height">2dip</dimen>
+    <dimen name="attendee_layout_width">76dp</dimen>
+    <dimen name="attendee_image_height">64dp</dimen>
+    <dimen name="attendee_name_height">28dp</dimen>
+    <dimen name="text_size_small">10dp</dimen>
 </resources>
 
