@@ -1,52 +1,36 @@
 package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-
 import butterknife.BindView;
 import butterknife.OnClick;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import java.util.List;
+import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.R;
-import pl.rmakowiecki.eventhub.model.local.UserProfile;
+import pl.rmakowiecki.eventhub.background.Constants;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
-import pl.rmakowiecki.eventhub.util.LocaleUtils;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
-public class UserProfileActivity extends BaseActivity<UserProfilePresenter> implements UserProfileView {
-
-    public static final int CAMERA_REQUEST_CODE = 1;
-    private static final String DIALOG_FRAGMENT_TAG = "dialog_fragment";
-    private static final String DEVICE_IMAGES_MIME = "image/*";
-    private static final int GALLERY_REQUEST_CODE = 2;
-    private static final int PHOTO_SOURCE_CAMERA = 1;
-    private static final int PHOTO_SOURCE_GALLERY = 2;
+public class UserProfileActivity extends BaseActivity<UserProfilePresenter> implements UserProfileView, AvatarPickDialogFragment.AvatarPickDialogListener {
 
     @BindView(R.id.user_profile_appbar_layout) AppBarLayout appBarLayout;
     @BindView(R.id.user_profile_toolbar) Toolbar profileToolbar;
@@ -107,7 +91,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
 
     @Override
     protected int getLayoutResId() {
-        return R.layout.user_profile_activity;
+        return R.layout.activity_user_profile;
     }
 
     @OnClick(R.id.add_image_button)
@@ -115,30 +99,31 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         presenter.onChooseImageButtonClicked();
     }
 
-    public void onDialogFragmentButtonClick(int photoSource) {
-        presenter.onPhotoOptionSelected(photoSource);
+    @Override
+    public void onDialogOptionChosen(AvatarSource avatarSource) {
+        presenter.onPhotoOptionSelected(avatarSource);
     }
 
     @Override
     public void launchCameraAppIntent() {
         Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (photoIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(photoIntent, CAMERA_REQUEST_CODE);
+            startActivityForResult(photoIntent, Constants.CAMERA_REQUEST_CODE);
         }
     }
 
     @Override
     public void launchGalleryAppIntent() {
         Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
-        getIntent.setType(DEVICE_IMAGES_MIME);
+        getIntent.setType(Constants.DEVICE_IMAGES_MIME);
 
         Intent pickIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-        pickIntent.setType(DEVICE_IMAGES_MIME);
+        pickIntent.setType(Constants.DEVICE_IMAGES_MIME);
 
         Intent chooserIntent = Intent.createChooser(getIntent, getString(R.string.gallery_option_window_text));
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { pickIntent });
 
-        startActivityForResult(chooserIntent, GALLERY_REQUEST_CODE);
+        startActivityForResult(chooserIntent, Constants.GALLERY_REQUEST_CODE);
     }
 
     @Override
@@ -147,10 +132,10 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         hideChoiceDialog();
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == CAMERA_REQUEST_CODE) {
-                applyTakenPhoto(data, PHOTO_SOURCE_CAMERA);
-            } else if (requestCode == GALLERY_REQUEST_CODE) {
-                applyTakenPhoto(data, PHOTO_SOURCE_GALLERY);
+            if (requestCode == Constants.CAMERA_REQUEST_CODE) {
+                applyTakenPhoto(data, AvatarSource.CAMERA);
+            } else if (requestCode == Constants.GALLERY_REQUEST_CODE) {
+                applyTakenPhoto(data, AvatarSource.GALLERY);
             }
         }
     }
@@ -162,12 +147,12 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
                 .commit();
     }
 
-    public void applyTakenPhoto(Intent data, int sourceType) {
+    public void applyTakenPhoto(Intent data, AvatarSource sourceType) {
         switch (sourceType) {
-            case PHOTO_SOURCE_CAMERA:
+            case CAMERA:
                 pictureBitmap = BitmapUtils.cropAndScaleBitmapFromCamera(data);
                 break;
-            case PHOTO_SOURCE_GALLERY:
+            case GALLERY:
                 pictureBitmap = BitmapUtils.cropAndScaleBitmapFromGallery(data, this);
                 break;
             default:
@@ -175,7 +160,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         }
 
         if (pictureBitmap != null) {
-            userImageView.setImageBitmap(pictureBitmap); // TODO: 02.06.2017 Fix refreshing imageView when bitmap is already present 
+            userImageView.setImageBitmap(pictureBitmap); // TODO: 02.06.2017 Fix refreshing imageView when bitmap is already present
         }
     }
 
@@ -209,9 +194,14 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         }
 
         byte[] data = BitmapUtils.getBytesFromBitmap(pictureBitmap);
-        UserProfile profile = new UserProfile(data);
+        User profile = new User("Moje imie nazwisko", data);
         repository.add(profile);
         preferencesManager.saveUserImage(pictureBitmap);
+    }
+
+    @Override
+    public void showProfileSaveSuccess() {
+        saveProfileButton.showSuccess();
     }
 
     @Override
@@ -221,18 +211,13 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     }
 
     @Override
-    public void showPictureSelectFragment() {
-        fragment = new UserPictureRetrievalDialogFragment();
-        fragment.show(getSupportFragmentManager(), DIALOG_FRAGMENT_TAG);
+    public void showPictureSelectDialog() {
+        fragment = new AvatarPickDialogFragment();
+        fragment.show(getSupportFragmentManager(), Constants.DIALOG_FRAGMENT_TAG);
     }
 
     private void launchMapActivity() {
         Intent intent = new Intent(this, EventsMapActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    public void showProfileSaveSuccess() {
-        saveProfileButton.showSuccess();
     }
 }

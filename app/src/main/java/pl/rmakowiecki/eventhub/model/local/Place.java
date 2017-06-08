@@ -1,8 +1,6 @@
 package pl.rmakowiecki.eventhub.model.local;
 
-import pl.rmakowiecki.eventhub.repository.DataItem;
-
-public final class Place implements DataItem {
+public final class Place {
     private final String id;
     private final String name;
     private final String address;

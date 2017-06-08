@@ -4,12 +4,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-
-import pl.rmakowiecki.eventhub.model.local.UserProfile;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.repository.QueryList;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.repository.Specification;
@@ -17,7 +14,7 @@ import rx.Observable;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PROFILE_IMAGE_REFERENCE;
 
-public class UserProfileRepository implements Repository<UserProfile>, QueryList<UserProfile> {
+public class UserProfileRepository implements Repository<User>, QueryList<User> {
 
     UserProfilePresenter presenter;
     private StorageReference storageReference;
@@ -34,20 +31,20 @@ public class UserProfileRepository implements Repository<UserProfile>, QueryList
     }
 
     @Override
-    public void add(UserProfile item) {
+    public void add(User item) {
         add(Collections.singletonList(item));
     }
 
     @Override
-    public void add(Iterable<UserProfile> items) {
+    public void add(Iterable<User> items) {
         if (storageReference == null) {
             presenter.onProfileSaveFailure();
         }
         else {
             presenter.onProfileSaveProcessing();
 
-            for (UserProfile item : items) {
-                UploadTask uploadTask = storageReference.putBytes(item.getPictureData());
+            for (User item : items) {
+                UploadTask uploadTask = storageReference.putBytes(item.getPicture());
                 uploadTask.addOnFailureListener(exception -> {
                     presenter.onProfileSaveFailure();
                 }).addOnSuccessListener(taskSnapshot -> {
@@ -58,17 +55,17 @@ public class UserProfileRepository implements Repository<UserProfile>, QueryList
     }
 
     @Override
-    public void update(UserProfile item) {
+    public void update(User item) {
         // TODO: 03.05.2017  
     }
 
     @Override
-    public void remove(UserProfile item) {
+    public void remove(User item) {
         // TODO: 03.05.2017  
     }
 
     @Override
-    public Observable<List<UserProfile>> query(Specification specification) {
+    public Observable<List<User>> query(Specification specification) {
         // TODO: 03.05.2017
         return null;
     }

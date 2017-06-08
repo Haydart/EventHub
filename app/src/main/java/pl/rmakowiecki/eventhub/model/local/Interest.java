@@ -2,9 +2,7 @@ package pl.rmakowiecki.eventhub.model.local;
 
 import java.util.List;
 
-import pl.rmakowiecki.eventhub.repository.DataItem;
-
-public class Interest implements DataItem {
+public class Interest {
         private final String categoryName;
         private final List<String> subCategories;
 

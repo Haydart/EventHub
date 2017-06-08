@@ -1,34 +1,37 @@
-package pl.rmakowiecki.eventhub.ui.screen_user_profile;
+package pl.rmakowiecki.eventhub;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import pl.rmakowiecki.eventhub.R;
 
-public class UserPictureRetrievalDialogFragment extends DialogFragment {
-
-    private static final int PHOTO_SOURCE_CAMERA = 1;
-    private static final int PHOTO_SOURCE_GALLERY = 2;
+public class AvatarPickDialogFragment extends DialogFragment {
 
     private Unbinder unbinder;
 
     @OnClick(R.id.camera_option_text_view)
     public void OnCameraOptionClicked() {
-        ((UserProfileActivity)
-                getActivity()).onDialogFragmentButtonClick(PHOTO_SOURCE_CAMERA);
+        tryNotifyActivity(AvatarPickDialogListener.AvatarSource.CAMERA);
     }
 
     @OnClick(R.id.gallery_option_text_view)
     public void OnGalleryOptionClicked() {
-        ((UserProfileActivity)
-                getActivity()).onDialogFragmentButtonClick(PHOTO_SOURCE_GALLERY);
+        tryNotifyActivity(AvatarPickDialogListener.AvatarSource.GALLERY);
+    }
+
+    private void tryNotifyActivity(AvatarPickDialogListener.AvatarSource avatarSource) {
+        try {
+            ((AvatarPickDialogListener) getActivity()).onDialogOptionChosen(avatarSource);
+        } catch (ClassCastException ex) {
+            Log.e(getClass().getSimpleName(), "Activity must implement AvatarPickDialogListener", ex);
+        }
     }
 
     @NonNull
@@ -47,5 +50,14 @@ public class UserPictureRetrievalDialogFragment extends DialogFragment {
             unbinder.unbind();
         }
         super.onDestroyView();
+    }
+
+    public interface AvatarPickDialogListener {
+        public enum AvatarSource {
+            CAMERA,
+            GALLERY
+        }
+
+        void onDialogOptionChosen(AvatarSource avatarSource);
     }
 }

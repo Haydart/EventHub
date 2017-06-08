@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.repository.Repository;
@@ -44,12 +45,25 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         view.showPickedTime(String.format(Locale.getDefault(), "%d:%d", hourOfDay, minute));
     }
 
-    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventAddress) {
+    void onEventAvatarButtonClicked() {
+        view.showAvatarSelectDialog();
+    }
+
+    void onPhotoOptionSelected(AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource photoSource) {
+        if (photoSource == AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource.CAMERA) {
+            view.launchCameraAppIntent();
+        } else if (photoSource == AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource.GALLERY) {
+            view.launchGalleryAppIntent();
+        }
+    }
+
+    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress) {
         Map<String, Boolean> attendingUsersMap = new HashMap<>();
         attendingUsersMap.put(userAuthManager.getCurrentUserId(), true);
         Event event = new Event(
                 "",
                 eventName,
+                eventDescription,
                 eventTime.getTimeInMillis(),
                 userAuthManager.getUserDisplayedName(),
                 eventAddress,

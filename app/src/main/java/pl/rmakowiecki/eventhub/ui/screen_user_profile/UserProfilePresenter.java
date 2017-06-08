@@ -1,11 +1,11 @@
 package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
 import java.util.concurrent.TimeUnit;
-
+import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import rx.Observable;
 
-public class UserProfilePresenter extends BasePresenter<UserProfileView> {
+class UserProfilePresenter extends BasePresenter<UserProfileView> {
 
     private static final int PHOTO_SOURCE_CAMERA = 1;
     private static final int PHOTO_SOURCE_GALLERY = 2;
@@ -26,21 +26,21 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
         wasButtonClicked = false;
     }
 
-    public void onProfileSaveButtonClick() {
+    void onProfileSaveButtonClick() {
         if (!wasButtonClicked) {
             wasButtonClicked = true;
             view.saveProfile();
         }
     }
 
-    public void onPhotoOptionSelected(int photoSource) {
-        if (photoSource == PHOTO_SOURCE_CAMERA)
+    void onPhotoOptionSelected(AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource photoSource) {
+        if (photoSource == AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource.CAMERA)
             view.launchCameraAppIntent();
-        else if (photoSource == PHOTO_SOURCE_GALLERY)
+        else if (photoSource == AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource.GALLERY)
             view.launchGalleryAppIntent();
     }
 
-    public void onProfileSaveFailure() {
+    void onProfileSaveFailure() {
         delayButtonFailure();
         delayButtonEnable();
     }
@@ -61,7 +61,7 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
                 });
     }
 
-    public void onProfileSaveSuccess() {
+    void onProfileSaveSuccess() {
         delayButtonSuccess();
         delayMapLaunch();
     }
@@ -82,12 +82,12 @@ public class UserProfilePresenter extends BasePresenter<UserProfileView> {
                 });
     }
 
-    public void onProfileSaveProcessing() {
+    void onProfileSaveProcessing() {
         view.showButtonProcessing();
     }
 
-    public void onChooseImageButtonClicked() {
-        view.showPictureSelectFragment();
+    void onChooseImageButtonClicked() {
+        view.showPictureSelectDialog();
     }
 
     @Override

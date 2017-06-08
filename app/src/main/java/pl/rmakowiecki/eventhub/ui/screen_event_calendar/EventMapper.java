@@ -9,6 +9,7 @@ class EventMapper implements ModelMapper<Event, RemoteEvent> {
     public RemoteEvent map(Event model) {
         return new RemoteEvent(
                 model.getName(),
+                model.getDescription(),
                 model.getTimestamp(),
                 model.getOrganizer(),
                 model.getAddress(),
