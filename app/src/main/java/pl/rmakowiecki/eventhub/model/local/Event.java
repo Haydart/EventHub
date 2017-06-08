@@ -2,7 +2,7 @@ package pl.rmakowiecki.eventhub.model.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import java.util.HashMap;
+import java.util.List;
 
 public final class Event implements Parcelable {
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -18,15 +18,17 @@ public final class Event implements Parcelable {
     };
     private final String id;
     private final String name;
+    private final String description;
     private final String organizer;
     private final long timestamp;
     private final String address;
     private final String locationCoordinates;
-    private HashMap<String, Boolean> users = new HashMap<>();
+    private List<User> users;
 
-    public Event(String id, String name, long timestamp, String organizer, String address, String coordinates, HashMap<String, Boolean> users) {
+    public Event(String id, String name, String description, long timestamp, String organizer, String address, String coordinates, List<User> users) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.timestamp = timestamp;
         this.organizer = organizer;
         this.address = address;
@@ -34,25 +36,18 @@ public final class Event implements Parcelable {
         this.users = users;
     }
 
-    public Event() {
-        id = "";
-        name = "";
-        organizer = "";
-        timestamp = 0;
-        address = "";
-        locationCoordinates = "";
-    }
-
     protected Event(Parcel in) {
         id = in.readString();
         name = in.readString();
+        description = in.readString();
         timestamp = in.readLong();
         organizer = in.readString();
         address = in.readString();
         locationCoordinates = in.readString();
+        in.readTypedList(users, User.CREATOR);
     }
 
-    public HashMap<String, Boolean> getUsers() {
+    public List<User> getUsers() {
         return users;
     }
 
@@ -80,6 +75,10 @@ public final class Event implements Parcelable {
         return locationCoordinates;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -89,6 +88,11 @@ public final class Event implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
+        dest.writeString(description);
         dest.writeLong(timestamp);
+        dest.writeString(organizer);
+        dest.writeString(address);
+        dest.writeString(locationCoordinates);
+        dest.writeTypedList(users);
     }
 }

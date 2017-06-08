@@ -14,4 +14,10 @@ interface EventCreationView extends BaseView {
     void showPickedDate(String date);
 
     void showPickedTime(String time);
+
+    void showAvatarSelectDialog();
+
+    void launchCameraAppIntent();
+
+    void launchGalleryAppIntent();
 }

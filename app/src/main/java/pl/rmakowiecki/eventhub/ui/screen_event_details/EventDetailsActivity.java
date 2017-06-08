@@ -7,16 +7,13 @@ import android.support.v7.widget.Toolbar;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
-
+import butterknife.BindView;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 import pl.rmakowiecki.eventhub.R;
-import pl.rmakowiecki.eventhub.model.local.UserProfile;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 
 public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> implements EventDetailsView {
@@ -73,27 +70,25 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
 
     @Override
     public void initUserList() {
-        List<UserProfile> attendees = getAttendees();
+        List<User> attendees = getAttendees();
         adapter = new EventDetailsAttendeesAdapter(getBaseContext(), attendees);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
-    
-    public List<UserProfile> getAttendees() {
+
+    public List<User> getAttendees() {
         // TODO: 05.06.2017
-        List<UserProfile> attendees = new ArrayList<>();
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
-        attendees.add(new UserProfile(null));
+        List<User> attendees = new ArrayList<>();
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
+        attendees.add(new User("empty id", "empty name", new byte[] { 2, 1, 3, 7 }));
         return attendees;
     }
 

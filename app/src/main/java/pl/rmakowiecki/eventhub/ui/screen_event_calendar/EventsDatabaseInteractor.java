@@ -45,11 +45,7 @@ class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
     private ArrayList<Event> filterForMyEvents(ArrayList<Event> events) {
         ArrayList<Event> filteredList = new ArrayList<>();
         for (Event event : events) {
-
-            // TODO: 05/06/2017 fix that hardcoded thing
-            if (event.getUsers().containsKey("abcd")) {
-                filteredList.add(event);
-            }
+            filteredList.add(event);
         }
         return filteredList;
     }

@@ -1,11 +1,13 @@
 package pl.rmakowiecki.eventhub.ui.screen_create_event;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
+import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsRepository;
@@ -44,17 +46,30 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         view.showPickedTime(String.format(Locale.getDefault(), "%d:%d", hourOfDay, minute));
     }
 
-    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventAddress) {
-        Map<String, Boolean> attendingUsersMap = new HashMap<>();
-        attendingUsersMap.put(userAuthManager.getCurrentUserId(), true);
+    void onEventAvatarButtonClicked() {
+        view.showAvatarSelectDialog();
+    }
+
+    void onPhotoOptionSelected(AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource photoSource) {
+        if (photoSource == AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource.CAMERA) {
+            view.launchCameraAppIntent();
+        } else if (photoSource == AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource.GALLERY) {
+            view.launchGalleryAppIntent();
+        }
+    }
+
+    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress) {
+        List<User> users = new ArrayList<>();
+        users.add(new User(userAuthManager.getCurrentUserId(), "EMPTY NAME", new byte[] { 2, 1, 3, 7 }));
         Event event = new Event(
                 "",
                 eventName,
+                eventDescription,
                 eventTime.getTimeInMillis(),
                 userAuthManager.getUserDisplayedName(),
                 eventAddress,
                 eventCoordinates.toString(),
-                (HashMap<String, Boolean>) attendingUsersMap
+                users
         );
         eventRepository.add(event);
     }
