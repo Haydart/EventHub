@@ -29,6 +29,12 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.onViewVisible();
+    }
+
+    @Override
     protected void onStop() {
         if (presenter != null) {
             presenter.onViewStopped();

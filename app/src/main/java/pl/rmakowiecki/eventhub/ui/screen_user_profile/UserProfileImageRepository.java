@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
-import java.util.List;
-
 import pl.rmakowiecki.eventhub.api.UserImageStorageInteractor;
 import pl.rmakowiecki.eventhub.repository.QuerySingle;
 import pl.rmakowiecki.eventhub.repository.Repository;
