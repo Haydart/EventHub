@@ -16,11 +16,6 @@ class SplashPresenter extends BasePresenter<SplashView> {
     private int currentComponentCount;
 
     @Override
-    public SplashView getNoOpView() {
-        return NoOpSplashView.INSTANCE;
-    }
-
-    @Override
     protected void onViewStarted(SplashView view) {
         super.onViewStarted(view);
         onViewInitialization();
@@ -78,5 +73,10 @@ class SplashPresenter extends BasePresenter<SplashView> {
                 .querySingle(new PreferencesLocaleSpecification() {})
                 .compose(applySchedulers())
                 .subscribe(view::saveUserImage);
+    }
+
+    @Override
+    public SplashView getNoOpView() {
+        return NoOpSplashView.INSTANCE;
     }
 }

@@ -6,7 +6,7 @@ import pl.rmakowiecki.eventhub.model.remote.google.Coordinates;
 import pl.rmakowiecki.eventhub.model.remote.google.GooglePlace;
 import pl.rmakowiecki.eventhub.repository.ModelMapper;
 
-public class PlaceModelMapper implements ModelMapper<GooglePlace, Place> {
+class PlaceModelMapper implements ModelMapper<GooglePlace, Place> {
     @Override
     public Place map(GooglePlace googlePlace) {
         Coordinates googlePlaceLocation = googlePlace.geometry.location;

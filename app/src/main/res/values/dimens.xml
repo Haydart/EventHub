@@ -36,12 +36,12 @@
     <dimen name="slider_indicator_selected_knob_size">8dp</dimen>
     <dimen name="slider_indicator_unselected_knob_size">6dp</dimen>
     <dimen name="slider_indicator_margin_bottom">56dp</dimen>
-    <dimen name="photo_source_select_option_height">64dp</dimen>
+    <dimen name="photo_source_select_option_height">48dp</dimen>
     <dimen name="layout_arc_border_width">2dp</dimen>
     <dimen name="layout_frame_user_profile_image_margin">52dp</dimen>
     <dimen name="layout_frame_user_profile_image_height">200dp</dimen>
     <dimen name="user_profile_image_border_width">4dp</dimen>
-    <dimen name="user_profile_image_margin">24dp</dimen>
+    <dimen name="user_profile_image_margin">40dp</dimen>
     <dimen name="user_profile_image_height">164dp</dimen>
     <dimen name="user_add_profile_image_size">64dp</dimen>
     <dimen name="user_add_profile_image_margin_top">24dp</dimen>

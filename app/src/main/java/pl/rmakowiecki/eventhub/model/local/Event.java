@@ -20,17 +20,17 @@ public final class Event implements Parcelable {
     private final String name;
     private final String organizer;
     private final long timestamp;
-    private final String location;
-    private final String coordinates;
+    private final String address;
+    private final String locationCoordinates;
     private HashMap<String, Boolean> users = new HashMap<>();
 
-    public Event(String id, String name, long timestamp, String organizer, String location, String coordinates, HashMap<String, Boolean> users) {
+    public Event(String id, String name, long timestamp, String organizer, String address, String coordinates, HashMap<String, Boolean> users) {
         this.id = id;
         this.name = name;
         this.timestamp = timestamp;
         this.organizer = organizer;
-        this.location = location;
-        this.coordinates = coordinates;
+        this.address = address;
+        this.locationCoordinates = coordinates;
         this.users = users;
     }
 
@@ -39,8 +39,8 @@ public final class Event implements Parcelable {
         name = "";
         organizer = "";
         timestamp = 0;
-        location = "";
-        coordinates = "";
+        address = "";
+        locationCoordinates = "";
     }
 
     protected Event(Parcel in) {
@@ -48,16 +48,16 @@ public final class Event implements Parcelable {
         name = in.readString();
         timestamp = in.readLong();
         organizer = in.readString();
-        location = in.readString();
-        coordinates = in.readString();
+        address = in.readString();
+        locationCoordinates = in.readString();
     }
 
     public HashMap<String, Boolean> getUsers() {
         return users;
     }
 
-    public String getLocation() {
-        return location;
+    public String getAddress() {
+        return address;
     }
 
     public String getOrganizer() {
@@ -76,8 +76,8 @@ public final class Event implements Parcelable {
         return timestamp;
     }
 
-    public String getCoordinates() {
-        return coordinates;
+    public String getLocationCoordinates() {
+        return locationCoordinates;
     }
 
     @Override

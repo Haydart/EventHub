@@ -13,12 +13,12 @@ import pl.rmakowiecki.eventhub.repository.Specification;
 import pl.rmakowiecki.eventhub.util.GoogleApiUtil;
 import rx.Observable;
 
-public class PlacesRepository implements Repository<Place>, QueryList<Place> {
+class PlacesRepository implements Repository<Place>, QueryList<Place> {
 
     private INearbyPlacesListApiInteractor nearbyPlacesInteractor;
     private ModelMapper<GooglePlace, Place> googlePlaceModelMapper;
 
-    public PlacesRepository() {
+    PlacesRepository() {
         this.nearbyPlacesInteractor = new NearbyPlacesListApiInteractor();
         this.googlePlaceModelMapper = new PlaceModelMapper();
     }

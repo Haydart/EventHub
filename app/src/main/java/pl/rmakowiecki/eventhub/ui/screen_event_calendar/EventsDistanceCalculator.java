@@ -28,7 +28,7 @@ public class EventsDistanceCalculator implements DistanceCalculator {
         userLocation.setLatitude(coordinates.getLatitude());
         userLocation.setLongitude(coordinates.getLongitude());
         for (Event event : events) {
-            eventCoords = event.getCoordinates().split(",");
+            eventCoords = event.getLocationCoordinates().split(",");
             Location eventLocation = new Location("");
             eventLocation.setLatitude(Double.parseDouble(eventCoords[0]));
             eventLocation.setLongitude(Double.parseDouble(eventCoords[1]));
