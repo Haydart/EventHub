@@ -56,5 +56,17 @@
     <dimen name="text_input_height">84dp</dimen>
     <dimen name="first_text_input_margin_top">16dp</dimen>
     <dimen name="login_image_view_size">40dp</dimen>
+    <dimen name="event_details_text_height">44dp</dimen>
+    <dimen name="event_details_text_margin">12dp</dimen>
+    <dimen name="event_details_attendees_margin">6dp</dimen>
+    <dimen name="event_details_attendees_height">100dp</dimen>
+    <dimen name="event_details_map_height">250dp</dimen>
+    <dimen name="event_details_padding">16dp</dimen>
+    <dimen name="separator_line_height">2dip</dimen>
+    <dimen name="attendee_layout_width">76dp</dimen>
+    <dimen name="attendee_image_height">64dp</dimen>
+    <dimen name="attendee_name_height">28dp</dimen>
+    <dimen name="text_size_small">10sp</dimen>
+    <dimen name="text_size_medium">16sp</dimen>
 </resources>
 

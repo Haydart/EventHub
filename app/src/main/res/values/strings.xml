@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-  <string name="app_name" translatable="false">EventHub</string>
-  <string name="fb_app_id" translatable="false">1378206448960637</string>
-  <string name="subcategories_msg">Choose your interests:</string>
-  <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
-  <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
-  <string name="action_settings" translatable="false">Settings</string>
-  <string name="button_text_save_preferences">Save Preferences</string>
-  <string name="title_preferences">Preferences</string>
-  <string name="bottom_sheet_bar_address_recognition">Recognizing address…</string>
-  <string name="title_calendar">Calendar</string>
-  <string name="sorting_option_sooner">Date</string>
-  <string name="sorting_option_closer">Distance</string>
-  <string name="sort_menu_title">Sort</string>
-  <string name="title_events">Events</string>
-  <string name="tab_title_my_events">My events</string>
-  <string name="tab_title_all_events">All events</string>
-  <string name="not_enough_preferences_msg">Please select at least three categories.</string>
-  <string name="day_today">Today</string>
-  <string name="day_tomorrow">Tomorrow</string>
-  <string name="reverse_geocoding_no_address_found_error">No address found</string>
-  <string name="reverse_geocoding_service_unavailable">Service unavailable, please try again</string>
-  <string name="title_event_creation">Create event</string>
-  <string name="title_sign_in">Sign In</string>
-  <string name="button_text_sign_up">Join Us!</string>
-  <string name="button_text_sign_in">Sign In</string>
-  <string name="camera_option_text">Make a new photo</string>
-  <string name="gallery_option_text">Pick a photo from gallery</string>
-  <string name="gallery_option_window_text">Select your photo:</string>
-  <string name="button_text_save_user_profile">Save profile</string>
-  <string name="save_user_profile_failure_text">Couldn\'t connect to the server.</string>
-  <string name="title_logout">Logout</string>
-  <string name="text_input_hint_email">Email address</string>
-  <string name="text_input_hint_password">Password</string>
-  <string name="text_input_hint_repeat_password">Repeat password</string>
-  <string name="text_forgot_password">Forgot password</string>
-  <string name="text_register_email">Sign up with email</string>
-  <string name="invalid_email_prompt">Invalid e-mail address</string>
-  <string name="invalid_password_prompt">The password is too weak</string>
-  <string name="invalid_password_matching">The passwords entered do not match</string>
-  <string name="button_failure_invalid_credentials">Invalid credentials</string>
-  <string name="button_failure_network_connection">Network connection lost</string>
-  <string name="button_failure_email_taken">Email already taken</string>
-  <string name="button_failure_credentials_discarded">Credentials discarded</string>
-  <string name="button_failure_unknown_error">Unknown server error</string>
-  <string name="title_user_profile">User Profile</string>
+    <string name="app_name" translatable="false">EventHub</string>
+    <string name="fb_app_id" translatable="false">1378206448960637</string>
+    <string name="subcategories_msg">Choose your interests:</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="button_text_save_preferences">Save Preferences</string>
+    <string name="title_preferences">Preferences</string>
+    <string name="bottom_sheet_bar_address_recognition">Recognizing address…</string>
+    <string name="title_calendar">Calendar</string>
+    <string name="sorting_option_sooner">Date</string>
+    <string name="sorting_option_closer">Distance</string>
+    <string name="sort_menu_title">Sort</string>
+    <string name="title_events">Events</string>
+    <string name="tab_title_my_events">My events</string>
+    <string name="tab_title_all_events">All events</string>
+    <string name="not_enough_preferences_msg">Please select at least three categories.</string>
+    <string name="day_today">Today</string>
+    <string name="day_tomorrow">Tomorrow</string>
+    <string name="reverse_geocoding_no_address_found_error">No address found</string>
+    <string name="reverse_geocoding_service_unavailable">Service unavailable, please try again</string>
+    <string name="title_event_creation">Create event</string>
+    <string name="title_sign_in">Sign In</string>
+    <string name="button_text_sign_up">Join Us!</string>
+    <string name="button_text_sign_in">Sign In</string>
+    <string name="camera_option_text">Make a new photo</string>
+    <string name="gallery_option_text">Pick a photo from gallery</string>
+    <string name="gallery_option_window_text">Select your photo:</string>
+    <string name="button_text_save_user_profile">Save profile</string>
+    <string name="save_user_profile_failure_text">Couldn\'t connect to the server.</string>
+    <string name="title_logout">Logout</string>
+    <string name="text_input_hint_email">Email address</string>
+    <string name="text_input_hint_password">Password</string>
+    <string name="text_input_hint_repeat_password">Repeat password</string>
+    <string name="text_forgot_password">Forgot password</string>
+    <string name="text_register_email">Sign up with email</string>
+    <string name="invalid_email_prompt">Invalid e-mail address</string>
+    <string name="invalid_password_prompt">The password is too weak</string>
+    <string name="invalid_password_matching">The passwords entered do not match</string>
+    <string name="button_failure_invalid_credentials">Invalid credentials</string>
+    <string name="button_failure_network_connection">Network connection lost</string>
+    <string name="button_failure_email_taken">Email already taken</string>
+    <string name="button_failure_credentials_discarded">Credentials discarded</string>
+    <string name="button_failure_unknown_error">Unknown server error</string>
+    <string name="title_user_profile">User Profile</string>
 </resources>

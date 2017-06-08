@@ -136,6 +136,9 @@ dependencies {
 	//Facebook SDK
 	compile 'com.facebook.android:facebook-android-sdk:4.23.0'
 
+	//Expandable Text View
+	compile 'com.ms-square:expandableTextView:0.1.4'
+
 	testCompile 'junit:junit:4.12'
 }
 
