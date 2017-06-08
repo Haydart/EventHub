@@ -282,9 +282,10 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
-    public void launchEventCreationScreen(String placeAddress) {
+    public void launchEventCreationScreen(String placeAddress, LocationCoordinates placeCoordinates) {
         Intent intent = new Intent(this, EventCreationActivity.class);
         intent.putExtra(Constants.PLACE_ADDRESS_EXTRA, placeAddress);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, placeCoordinates);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivityForResult(intent, EVENT_CREATION_REQUEST_CODE);
         getWindow().setBackgroundDrawableResource(R.drawable.ic_image_placeholder);

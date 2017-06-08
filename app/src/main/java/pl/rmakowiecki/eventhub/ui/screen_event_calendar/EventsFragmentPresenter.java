@@ -6,7 +6,6 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
-import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
@@ -19,7 +18,7 @@ import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.g
  * Created by m1per on 18.04.2017.
  */
 
-public class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
+class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
 
     private RxLocationProvider provider = new RxLocationProvider();
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
@@ -61,7 +60,7 @@ public class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
         onViewInitialization();
     }
 
-    public void onSortRequested(SortTypes type) {
+    void onSortRequested(SortTypes type) {
         switch (type) {
             case DISTANCE_SORT:
                 Collections.sort(eventsWithDistances, ascending(getComparator(DISTANCE_SORT)));

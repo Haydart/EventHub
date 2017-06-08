@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import pl.rmakowiecki.eventhub.api.BaseDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -18,7 +19,7 @@ import static android.content.ContentValues.TAG;
  * Created by m1per on 17.04.2017.
  */
 
-public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
+class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
 
     private static final String DATABASE_PATH = "app_data/events";
 
@@ -38,16 +39,15 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>
                 events = filterForMyEvents((ArrayList<Event>) events);
                 break;
         }
-
         return events;
     }
 
-    public ArrayList<Event> filterForMyEvents(ArrayList<Event> events) {
+    private ArrayList<Event> filterForMyEvents(ArrayList<Event> events) {
         ArrayList<Event> filteredList = new ArrayList<>();
         for (Event event : events) {
 
-            if (event.getUsers().containsKey("abcd")) //should be imported from users database but there's none
-            {
+            // TODO: 05/06/2017 fix that hardcoded thing
+            if (event.getUsers().containsKey("abcd")) {
                 filteredList.add(event);
             }
         }
@@ -66,7 +66,6 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>
     }
 
     public Observable<List<Event>> getData(int position) {
-
         setDatabaseQueryNode();
         publishSubject = PublishSubject.create();
         databaseQueryNode.addValueEventListener(new ValueEventListener() {
@@ -82,5 +81,15 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>
             }
         });
         return publishSubject;
+    }
+
+    void addEvent(RemoteEvent item) {
+        setDatabaseQueryNode();
+        databaseQueryNode
+                .push()
+                .setValue(item)
+                .addOnCompleteListener(task -> {
+                    Log.d(getClass().getSimpleName(), "task successful? " + task.isSuccessful());
+                });
     }
 }

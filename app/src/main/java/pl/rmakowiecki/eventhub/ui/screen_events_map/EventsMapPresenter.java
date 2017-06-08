@@ -220,7 +220,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     void onFabAnimationComplete() {
-        view.launchEventCreationScreen(clickedMarkerAddress);
+        view.launchEventCreationScreen(clickedMarkerAddress, focusedMarkerLocation);
     }
 
     void onSignInMenuOptionClicked() {

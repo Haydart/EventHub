@@ -1,6 +1,6 @@
 package pl.rmakowiecki.eventhub.util;
 
-public interface UserProvider {
+public interface UserManager {
     boolean isUserAuthorized();
 
     void logoutUser();
