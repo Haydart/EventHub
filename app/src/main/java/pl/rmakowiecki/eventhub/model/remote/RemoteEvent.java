@@ -11,9 +11,9 @@ public final class RemoteEvent {
     private final long timestamp;
     private final String address;
     private final String locationCoordinates;
-    private Map<String, Boolean> users = new HashMap<>();
+    private Map<String, String> users = new HashMap<>();
 
-    public RemoteEvent(String name, String description, long timestamp, String organizer, String address, String coordinates, Map<String, Boolean> users) {
+    public RemoteEvent(String name, String description, long timestamp, String organizer, String address, String coordinates, Map<String, String> users) {
         this.name = name;
         this.description = description;
         this.timestamp = timestamp;
@@ -32,7 +32,7 @@ public final class RemoteEvent {
         locationCoordinates = in.readString();
     }
 
-    public Map<String, Boolean> getUsers() {
+    public Map<String, String> getUsers() {
         return users;
     }
 

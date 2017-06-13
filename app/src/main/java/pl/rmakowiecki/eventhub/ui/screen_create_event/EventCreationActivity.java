@@ -2,6 +2,7 @@ package pl.rmakowiecki.eventhub.ui.screen_create_event;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -19,7 +20,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import java.util.Calendar;
@@ -131,8 +131,19 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
 
     @Override
     public void displayEventSubcategoryPicker(int position, PreferenceCategory category) {
-        // TODO: 13/06/2017 implement
-        Toast.makeText(this, "PICKER DISPLAYED", Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(category.getTitle());
+
+        List<String> subcategories = category.getChildList();
+        boolean[] checkedItems = new boolean[subcategories.size()];
+
+        builder.setMultiChoiceItems(subcategories.toArray(new String[subcategories.size()]), checkedItems, (dialog, which, isChecked) -> {
+            // user checked or unchecked a box
+        });
+
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.onSubcategoriesPicked(category, checkedItems));
+        builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
+        builder.create().show();
     }
 
     @OnClick(R.id.date_button)
