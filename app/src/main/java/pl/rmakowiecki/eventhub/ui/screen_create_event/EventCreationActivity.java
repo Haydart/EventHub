@@ -12,26 +12,33 @@ import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.DialogFragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import java.util.Calendar;
+import java.util.List;
 import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import pl.rmakowiecki.eventhub.util.UnitConversionUtils;
 
-public class EventCreationActivity extends BaseActivity<EventCreationPresenter> implements EventCreationView, AvatarPickDialogFragment.AvatarPickDialogListener {
+public class EventCreationActivity extends BaseActivity<EventCreationPresenter> implements EventCreationView, AvatarPickDialogFragment.AvatarPickDialogListener,
+        EventCategoryClickListener {
 
     public static final int APP_BAR_ANIMATION_DURATION = 300;
     private static final String DIALOG_FRAGMENT_TAG = "dialog_fragment";
+    public static final int GRID_SPAN_COUNT = 3;
 
     @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
@@ -42,6 +49,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     @BindView(R.id.event_name_edit_text) EditText eventNameEditText;
     @BindView(R.id.event_description_edit_text) EditText eventDescriptionEditText;
     @BindView(R.id.event_image_view) ImageView eventImageView;
+    @BindView(R.id.event_categories_recycler_view) RecyclerView eventCategoriesRecyclerView;
 
     private DialogFragment fragment;
     private Bitmap eventAvatarBitmap;
@@ -50,6 +58,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupToolbar();
+        setupEventCategoryRecyclerView();
         animateAppbarPadding();
     }
 
@@ -59,6 +68,10 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    private void setupEventCategoryRecyclerView() {
+        eventCategoriesRecyclerView.setLayoutManager(new GridLayoutManager(this, GRID_SPAN_COUNT));
     }
 
     private void animateAppbarPadding() {
@@ -132,6 +145,22 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     @Override
     public void showPickedTime(String time) {
         timeTextView.setText(time);
+    }
+
+    @Override
+    public void showCategoriesList(List<PreferenceCategory> categoryList) {
+        eventCategoriesRecyclerView.setAdapter(new EventCategoryAdapter(this, categoryList, this));
+    }
+
+    @Override
+    public void onCategoryClicked(int position, PreferenceCategory category) {
+        presenter.onEventCategoryClicked(position, category);
+    }
+
+    @Override
+    public void displayEventSubcategoryPicker(int position, PreferenceCategory category) {
+        // TODO: 13/06/2017 implement
+        Toast.makeText(this, "PICKER DISPLAYED", Toast.LENGTH_SHORT).show();
     }
 
     @Override

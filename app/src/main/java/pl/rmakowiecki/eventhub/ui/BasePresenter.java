@@ -9,6 +9,7 @@ import rx.schedulers.Schedulers;
 
 public abstract class BasePresenter<V extends BaseView> {
     protected V view;
+    protected boolean isViewVisible;
     protected List<Subscription> subscriptions;
 
     public BasePresenter() {
@@ -19,7 +20,12 @@ public abstract class BasePresenter<V extends BaseView> {
         this.view = view;
     }
 
+    protected void onViewVisible() {
+        isViewVisible = true;
+    }
+
     protected void onViewStopped() {
+        isViewVisible = false;
         cancelCallbacks();
         view = getNoOpView();
     }

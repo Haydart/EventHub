@@ -19,7 +19,6 @@ import pl.rmakowiecki.eventhub.model.local.EventWDistance;
  */
 
 class EventsViewHolder extends RecyclerView.ViewHolder {
-    final View view;
 
     @BindView(R.id.name_text_view) TextView nameTextView;
     @BindView(R.id.organizer_text_view) TextView organizerTextView;
@@ -30,6 +29,8 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.distance_text_view) TextView distanceTextView;
     @BindString(R.string.day_today) String today;
     @BindString(R.string.day_tomorrow) String tomorrow;
+
+    final View view;
 
     EventsViewHolder(View view) {
         super(view);
