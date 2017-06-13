@@ -22,10 +22,10 @@ class EventMapper implements ModelMapper<Event, RemoteEvent> {
         );
     }
 
-    private Map<String, Boolean> convertToMapRepresentation(List<User> userList) {
-        Map<String, Boolean> result = new HashMap<>(userList.size());
+    private Map<String, String> convertToMapRepresentation(List<User> userList) {
+        Map<String, String> result = new HashMap<>(userList.size());
         for (User user : userList) {
-            result.put(user.getId(), true);
+            result.put(user.getId(), user.getName());
         }
         return result;
     }

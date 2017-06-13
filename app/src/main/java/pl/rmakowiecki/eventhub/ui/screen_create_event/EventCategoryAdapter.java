@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.List;
-import java.util.Set;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.util.LocaleUtils;
@@ -43,7 +42,11 @@ public class EventCategoryAdapter extends RecyclerView.Adapter<EventCategoryView
         if (!localeName.isEmpty()) {
             categoryName = preferenceManager.getNameOrLocaleName(localeName, categoryName, categoryName);
         }
-        holder.bindView(categoryName, category, isSelected(category));
+        holder.bindView(categoryName, category, isSelected(position));
+    }
+
+    private boolean isSelected(int position) {
+        return false;
     }
 
     @Override
@@ -51,8 +54,4 @@ public class EventCategoryAdapter extends RecyclerView.Adapter<EventCategoryView
         return items.size();
     }
 
-    private boolean isSelected(PreferenceCategory category) {
-        Set<String> subCategories = preferenceManager.getInterests(category.getTitle());
-        return !subCategories.isEmpty();
-    }
 }
