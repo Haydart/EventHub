@@ -1,6 +1,8 @@
 package pl.rmakowiecki.eventhub.model.remote;
 
 import android.os.Parcel;
+import android.util.ArrayMap;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +23,16 @@ public final class RemoteEvent {
         this.address = address;
         this.locationCoordinates = coordinates;
         this.users = users;
+    }
+
+    public RemoteEvent() {
+        this.name = "";
+        this.description = "";
+        this.timestamp = 0;
+        this.organizer = "";
+        this.address = "";
+        this.locationCoordinates = "";
+        this.users = new HashMap<>();
     }
 
     protected RemoteEvent(Parcel in) {
