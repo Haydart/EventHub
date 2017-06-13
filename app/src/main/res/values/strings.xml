@@ -45,4 +45,12 @@
     <string name="button_failure_credentials_discarded">Credentials discarded</string>
     <string name="button_failure_unknown_error">Unknown server error</string>
     <string name="title_user_profile">User Profile</string>
+    <string name="event_details_full_users_list">FULL LIST</string>
+    <string name="event_details_title">Event Details</string>
+    <string name="event_details_address">Address</string>
+    <string name="event_details_organiser">Organized by</string>
+    <string name="event_details_date">Date</string>
+    <string name="event_details_time">Time</string>
+    <string name="event_details_attendees_count">Attendees</string>
+    <string name="event_details_join">ATTEND</string>
 </resources>
