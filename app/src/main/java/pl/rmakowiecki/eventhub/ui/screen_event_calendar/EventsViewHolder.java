@@ -24,7 +24,6 @@ import static pl.rmakowiecki.eventhub.background.Constants.EVENT_DETAILS_PARCEL_
  */
 
 class EventsViewHolder extends RecyclerView.ViewHolder {
-    final View view;
 
     @BindView(R.id.name_text_view) TextView nameTextView;
     @BindView(R.id.organizer_text_view) TextView organizerTextView;
@@ -37,6 +36,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     @BindString(R.string.day_tomorrow) String tomorrow;
 
     private EventWDistance eventWDistance;
+    final View view;
 
     EventsViewHolder(View view) {
         super(view);

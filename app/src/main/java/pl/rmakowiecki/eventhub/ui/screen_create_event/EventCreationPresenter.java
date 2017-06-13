@@ -11,6 +11,9 @@ import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsRepository;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesRepository;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesSpecification;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
 
 class EventCreationPresenter extends BasePresenter<EventCreationView> {
@@ -23,6 +26,17 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
     protected void onViewStarted(EventCreationView view) {
         super.onViewStarted(view);
         view.showEventPlaceAddress();
+    }
+
+    @Override
+    protected void onViewVisible() {
+        super.onViewVisible();
+
+        new PreferencesRepository()
+                .query(new PreferencesSpecification() {
+                })
+                .compose(applySchedulers())
+                .subscribe((preference) -> view.showCategoriesList(preference));
     }
 
     void onDatePickerButtonClicked() {
@@ -56,6 +70,10 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         } else if (photoSource == AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource.GALLERY) {
             view.launchGalleryAppIntent();
         }
+    }
+
+    void onEventCategoryClicked(int position, PreferenceCategory category) {
+        view.displayEventSubcategoryPicker(position, category);
     }
 
     void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress) {
