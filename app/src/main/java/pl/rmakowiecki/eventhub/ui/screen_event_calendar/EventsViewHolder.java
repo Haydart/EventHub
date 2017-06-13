@@ -6,6 +6,7 @@ import android.widget.TextView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import java.util.concurrent.TimeUnit;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
@@ -13,14 +14,15 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
+import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 
 /**
  * Created by m1per on 20.04.2017.
  */
 
 class EventsViewHolder extends RecyclerView.ViewHolder {
-    final View view;
 
+    final View view;
     @BindView(R.id.name_text_view) TextView nameTextView;
     @BindView(R.id.organizer_text_view) TextView organizerTextView;
     @BindView(R.id.date_text_view) TextView dateTextView;
@@ -28,8 +30,12 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.day_of_month_text_view) TextView dayDateTextView;
     @BindView(R.id.day_short_name_text_view) TextView dayNameTextView;
     @BindView(R.id.distance_text_view) TextView distanceTextView;
+    @BindView(R.id.attend_event_action_button) ActionButton attendButton;
     @BindString(R.string.day_today) String today;
     @BindString(R.string.day_tomorrow) String tomorrow;
+    private EventsFragmentPresenter presenter;
+    private EventWDistance eventWDistance;
+
 
     EventsViewHolder(View view) {
         super(view);
@@ -37,10 +43,21 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         this.view = view;
     }
 
+    EventsViewHolder(View view, EventsFragmentPresenter presenter) {
+        super(view);
+        ButterKnife.bind(this, view);
+        this.view = view;
+        this.presenter = presenter;
+    }
+
+    @OnClick(R.id.attend_event_action_button)
+    protected void preferencesButtonClick() {
+        presenter.addEventParticipant(eventWDistance.getEvent().getId());
+    }
+
     void bindView(EventWDistance eventWDistance) {
-
         //TODO: JUST A RARE SAMPLE FO DEVELOPMENT, NEEDS LOTS OF WORK
-
+        this.eventWDistance = eventWDistance;
         String dateFull;
         String time;
         String dateDay;

@@ -36,6 +36,27 @@ public final class Event implements Parcelable {
         this.users = users;
     }
 
+    public Event(String id, Event event) {
+        this.id = id;
+        this.name = event.name;
+        this.timestamp = event.timestamp;
+        this.description = event.description;
+        this.organizer = event.organizer;
+        this.address = event.address;
+        this.locationCoordinates = event.locationCoordinates;
+        this.users = event.users;
+    }
+
+    public Event() {
+        id = "";
+        name = "";
+        organizer = "";
+        timestamp = 0;
+        address = "";
+        locationCoordinates = "";
+        description = "";
+    }
+
     protected Event(Parcel in) {
         id = in.readString();
         name = in.readString();

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/calendar_list_item_height"
@@ -94,5 +95,26 @@
 
         </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
+            android:id="@+id/attend_event_action_button"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/action_button_height"
+            android:layout_gravity="center"
+            app:button_shape="pill"
+            app:default_color="@color/colorPrimary"
+            app:failure_color="@color/failure_red"
+            app:failure_icon="@drawable/icon_failure_action_button"
+            app:inactive_button_alpha="1.0"
+            app:success_color="@color/success_green"
+            app:success_icon="@drawable/icon_success_action_button"
+            app:text_color="@android:color/white" />
     </LinearLayout>
 </LinearLayout>

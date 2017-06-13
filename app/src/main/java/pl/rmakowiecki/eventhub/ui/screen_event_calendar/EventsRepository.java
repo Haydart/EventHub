@@ -27,6 +27,11 @@ public class EventsRepository implements Repository<Event>, QueryList<Event> {
         databaseInteractor.addEvent(eventMapper.map(item));
     }
 
+    public void updateEventParticipants(String eventId) {
+        databaseInteractor.addEventParticipant(eventId);
+    }
+
+
     @Override
     public void add(Iterable<Event> items) {
         //no-op

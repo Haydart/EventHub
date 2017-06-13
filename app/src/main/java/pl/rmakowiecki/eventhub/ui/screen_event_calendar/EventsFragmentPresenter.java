@@ -76,4 +76,12 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     public EventsFragmentView getNoOpView() {
         return NoOpEventsFragmentView.INSTANCE;
     }
+
+    public void onEventAttendButtonClick() {
+
+    }
+
+    public void addEventParticipant(String eventId) {
+        repository.updateEventParticipants(eventId);
+    }
 }
