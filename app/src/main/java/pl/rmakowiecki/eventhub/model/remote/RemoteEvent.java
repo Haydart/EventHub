@@ -1,7 +1,6 @@
 package pl.rmakowiecki.eventhub.model.remote;
 
 import android.os.Parcel;
-import android.util.ArrayMap;
 
 import java.util.HashMap;
 import java.util.Map;
