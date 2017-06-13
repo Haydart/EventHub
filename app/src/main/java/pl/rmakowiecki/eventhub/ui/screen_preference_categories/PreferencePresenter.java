@@ -1,8 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -10,11 +7,11 @@ import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import rx.Observable;
 
-public class PreferencePresenter extends BasePresenter<PreferenceView> {
+class PreferencePresenter extends BasePresenter<PreferenceView> {
 
     private static final int REQUIRED_PREFERENCES_COUNT = 3;
-    private final int SHOW_BUTTON_SUCCESS_DELAY = 2000;
-    private final int LAUNCH_MAP_ACTIVITY_DELAY = 3500;
+    private static final int SHOW_BUTTON_SUCCESS_DELAY = 2000;
+    private static final int LAUNCH_MAP_ACTIVITY_DELAY = 3500;
 
     private boolean isSaveButtonClicked = false;
 
@@ -29,16 +26,11 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
         view.enableHomeButton();
     }
 
-    protected void onPreferenceImageClick(PreferenceCategory category) {
+    void onPreferenceImageClick(PreferenceCategory category) {
         view.launchPreferenceDetailsScreen(category);
     }
 
-    @Override
-    public PreferenceView getNoOpView() {
-        return NoOpPreferenceView.INSTANCE;
-    }
-
-    public void onPreferenceSaveButtonClick(PreferencesManager manager, List<PreferenceCategory> preferences) {
+    void onPreferenceSaveButtonClick(PreferencesManager manager, List<PreferenceCategory> preferences) {
         if (!isSaveButtonClicked) {
             if (hasSelectedEnough(manager, preferences)) {
                 isSaveButtonClicked = true;
@@ -59,11 +51,10 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
             if (selectedCategoriesCount >= REQUIRED_PREFERENCES_COUNT)
                 return true;
         }
-
         return false;
     }
 
-    public void onPreferenceSave() {
+    void onPreferenceSave() {
         delayButtonAnimation();
         delayMapLaunch();
     }
@@ -79,8 +70,11 @@ public class PreferencePresenter extends BasePresenter<PreferenceView> {
     private void delayMapLaunch() {
         Observable.timer(LAUNCH_MAP_ACTIVITY_DELAY, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
-                .subscribe(ignored -> {
-                    view.launchMapAndFinish();
-                });
+                .subscribe(ignored -> view.launchMapAndFinish());
+    }
+
+    @Override
+    public PreferenceView getNoOpView() {
+        return NoOpPreferenceView.INSTANCE;
     }
 }

@@ -4,9 +4,8 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import com.bignerdranch.expandablerecyclerview.model.Parent;
 import java.util.List;
-import pl.rmakowiecki.eventhub.ui.screen_preference_subcategories.PreferenceInterest;
 
-// TODO: 22.03.2017 Synchronize Preference with PreferenceCategory and PreferenceInterest
+// TODO: 22.03.2017 Synchronize RemotePreference with PreferenceCategory and PreferenceInterest
 public class PreferenceCategory implements Parent<String>, Parcelable {
     private final String title;
     private final String imageResourceName;
@@ -33,7 +32,7 @@ public class PreferenceCategory implements Parent<String>, Parcelable {
         return imageResourceName;
     }
 
-    public List getChildList() {
+    public List<String> getChildList() {
         return childrenList;
     }
 

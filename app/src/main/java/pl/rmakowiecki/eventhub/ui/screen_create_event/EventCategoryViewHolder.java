@@ -1,53 +1,44 @@
-package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
+package pl.rmakowiecki.eventhub.ui.screen_create_event;
 
-import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
-import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
-class PreferenceCategoryViewHolder extends ParentViewHolder {
+class EventCategoryViewHolder extends RecyclerView.ViewHolder {
 
-    private static final int ANIMATION_START_OFFSET = 200;
-    @BindView(R.id.preference_category_list_item_image_view) ImageView categoryImageView;
-    @BindView(R.id.preference_category_list_checked_image_view) ImageView checkImageView;
-    @BindView(R.id.preference_category_list_item_category_name) TextView categoryNameView;
-    @BindView(R.id.preference_category_list_item_progress_bar) ProgressBar categoryProgressBar;
-    @BindView(R.id.preference_category_list_item_dark_view) View darkView;
+    private static final long ANIMATION_START_OFFSET = 200;
+
+    @BindView(R.id.event_category_image) ImageView eventCategoryImageView;
+    @BindView(R.id.check_image_view) ImageView checkImageView;
+    @BindView(R.id.event_category_name_text_view) TextView eventCategoryNameTextView;
 
     private final String resourceSource = "drawable";
+    private final View view;
+    private final EventCategoryClickListener itemClickListener;
 
-    private View view;
-    private PreferenceCategory category;
-    private PreferenceItemListener itemListener;
-
-    PreferenceCategoryViewHolder(View itemView, PreferenceItemListener listener) {
+    EventCategoryViewHolder(View itemView, EventCategoryClickListener itemListener) {
         super(itemView);
         ButterKnife.bind(this, itemView);
         view = itemView;
-        itemListener = listener;
+        this.itemClickListener = itemListener;
     }
 
-    @OnClick(R.id.preference_category_list_item_image_view)
-    void onImageClick(ImageView image) {
-        itemListener.onImageClick(image, category);
+    public void bindView(String categoryName, PreferenceCategory category, boolean isSelected) {
+        setupClickListener(category);
+        eventCategoryNameTextView.setText(categoryName);
+        loadCategoryImage(category, isSelected);
     }
 
-    void bindView(String categoryName, PreferenceCategory category, boolean isSelected) {
-        darkView.setVisibility(View.INVISIBLE);
-        checkImageView.setVisibility(View.INVISIBLE);
-        this.category = category;
-        categoryNameView.setText(categoryName);
-
+    private void loadCategoryImage(PreferenceCategory category, final boolean isSelected) {
         int resourceID = view.getContext()
                 .getResources()
                 .getIdentifier(category.getImageResourceName(), resourceSource, view.getContext().getPackageName());
@@ -56,15 +47,12 @@ class PreferenceCategoryViewHolder extends ParentViewHolder {
             Picasso.with(view.getContext())
                     .load(resourceID)
                     .fit()
-                    .into(categoryImageView, new Callback() {
+                    .into(eventCategoryImageView, new Callback() {
                         @Override
                         public void onSuccess() {
                             if (isSelected) {
-                                darkView.setVisibility(View.VISIBLE);
                                 showCheckMark();
                             }
-
-                            categoryProgressBar.setVisibility(View.INVISIBLE);
                         }
 
                         @Override
@@ -73,8 +61,10 @@ class PreferenceCategoryViewHolder extends ParentViewHolder {
                         }
                     });
         }
+    }
 
-        ViewCompat.setTransitionName(categoryImageView, String.valueOf(category.getTitle()));
+    private void setupClickListener(PreferenceCategory category) {
+        view.setOnClickListener(v -> itemClickListener.onCategoryClicked(getAdapterPosition(), category));
     }
 
     private void showCheckMark() {

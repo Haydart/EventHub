@@ -7,8 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import pl.rmakowiecki.eventhub.model.local.Preference;
+import pl.rmakowiecki.eventhub.model.local.RemotePreference;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -16,7 +15,7 @@ import static pl.rmakowiecki.eventhub.util.FirebaseConstants.APP_DATA_REFERENCE;
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.CATEGORIES_REFERENCE;
 
 @SuppressWarnings("unchecked")
-public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<Preference>> {
+public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<RemotePreference>> {
 
     public static final String CATEGORY_IMAGE_NAME = "image";
 
@@ -27,13 +26,13 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
                 .child(CATEGORIES_REFERENCE);
     }
 
-    private List<Preference> parsePreferenceData(DataSnapshot dataSnapshot) {
+    private List<RemotePreference> parsePreferenceData(DataSnapshot dataSnapshot) {
         Map<String, Object> map = (HashMap<String, Object>)dataSnapshot.getValue();
         return getPreferenceListFromMap(map);
     }
 
-    private List<Preference> getPreferenceListFromMap(Map<String, Object> categoryMap) {
-        List<Preference> preferenceList = new ArrayList<>();
+    private List<RemotePreference> getPreferenceListFromMap(Map<String, Object> categoryMap) {
+        List<RemotePreference> preferenceList = new ArrayList<>();
         int id = 1;
         for (Map.Entry<String, Object> entry : categoryMap.entrySet()) {
             String imageUrl = "";
@@ -48,14 +47,14 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<P
                     subCategories.add(value);
             }
 
-            preferenceList.add(new Preference(id++, entry.getKey(), subCategories, imageUrl));
+            preferenceList.add(new RemotePreference(id++, entry.getKey(), subCategories, imageUrl));
         }
 
         return preferenceList;
     }
 
     @Override
-    public Observable<List<Preference>> getData() {
+    public Observable<List<RemotePreference>> getData() {
         setDatabaseQueryNode();
         publishSubject = PublishSubject.create();
         databaseQueryNode.addListenerForSingleValueEvent(new ValueEventListener() {

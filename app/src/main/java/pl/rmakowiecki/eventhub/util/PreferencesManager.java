@@ -3,15 +3,12 @@ package pl.rmakowiecki.eventhub.util;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import pl.rmakowiecki.eventhub.model.local.Interest;
-import pl.rmakowiecki.eventhub.model.local.Preference;
 import pl.rmakowiecki.eventhub.model.local.PreferenceLocale;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
@@ -61,14 +58,14 @@ public class PreferencesManager {
         return preferenceCategories;
     }
 
-    public void saveCategories(List<Preference> preferenceList) {
+    public void saveCategories(List<PreferenceCategory> preferenceList) {
         Set<String> categories = new HashSet<>();
-        for (Preference preference : preferenceList) {
-            categories.add(preference.getName());
+        for (PreferenceCategory preference : preferenceList) {
+            categories.add(preference.getTitle());
             Set<String> subCategories = new HashSet<>();
-            subCategories.addAll(preference.getSubCategories());
-            sharedPreferences.edit().putStringSet(SHARED_PREFERENCES_SUBCATEGORIES_KEY + preference.getName().toUpperCase(), subCategories).commit();
-            sharedPreferences.edit().putString(SHARED_PREFERENCES_CATEGORY_IMAGE_KEY + preference.getName().toUpperCase(), preference.getImageUrl()).commit();
+            subCategories.addAll(preference.getChildList());
+            sharedPreferences.edit().putStringSet(SHARED_PREFERENCES_SUBCATEGORIES_KEY + preference.getTitle().toUpperCase(), subCategories).commit();
+            sharedPreferences.edit().putString(SHARED_PREFERENCES_CATEGORY_IMAGE_KEY + preference.getTitle().toUpperCase(), preference.getImageResourceName()).commit();
         }
 
         sharedPreferences.edit().putStringSet(SHARED_PREFERENCES_CATEGORIES_KEY, categories).commit();

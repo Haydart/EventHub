@@ -12,7 +12,7 @@ import pl.rmakowiecki.eventhub.util.LocaleUtils;
 
 class SplashPresenter extends BasePresenter<SplashView> {
 
-    private final int REQUIRED_COMPONENT_COUNT = 1;
+    private static final int REQUIRED_COMPONENT_COUNT = 1;
     private int currentComponentCount;
 
     @Override
@@ -40,7 +40,7 @@ class SplashPresenter extends BasePresenter<SplashView> {
         return currentComponentCount >= REQUIRED_COMPONENT_COUNT;
     }
 
-    protected void onComponentLoaded() {
+    void onComponentLoaded() {
         ++currentComponentCount;
         if (canLaunchApplication()) {
             view.launchApplication();
