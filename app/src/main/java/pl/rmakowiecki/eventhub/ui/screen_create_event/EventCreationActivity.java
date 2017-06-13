@@ -109,7 +109,6 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         presenter.onPhotoOptionSelected(avatarSource);
     }
 
-
     @Override
     public void showPickedDate(String date) {
         dateTextView.setText(date);
@@ -165,6 +164,20 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     }
 
     @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        hideChoiceDialog();
+
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == Constants.CAMERA_REQUEST_CODE) {
+                applyTakenPhoto(data, AvatarSource.CAMERA);
+            } else if (requestCode == Constants.GALLERY_REQUEST_CODE) {
+                applyTakenPhoto(data, AvatarSource.GALLERY);
+            }
+        }
+    }
+
+    @Override
     public void launchCameraAppIntent() {
         Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (photoIntent.resolveActivity(getPackageManager()) != null) {
@@ -184,20 +197,6 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] { pickIntent });
 
         startActivityForResult(chooserIntent, Constants.GALLERY_REQUEST_CODE);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        hideChoiceDialog();
-
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Constants.CAMERA_REQUEST_CODE) {
-                applyTakenPhoto(data, AvatarSource.CAMERA);
-            } else if (requestCode == Constants.GALLERY_REQUEST_CODE) {
-                applyTakenPhoto(data, AvatarSource.GALLERY);
-            }
-        }
     }
 
     private void hideChoiceDialog() {
