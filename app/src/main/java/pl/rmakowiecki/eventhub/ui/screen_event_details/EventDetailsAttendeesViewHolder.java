@@ -30,7 +30,10 @@ public class EventDetailsAttendeesViewHolder extends ParentViewHolder {
 
         if (attendeeName.equals(EVENT_DETAILS_MORE_USERS)) {
             attendeeTextView.setText(attendeeImageView.getContext().getString(R.string.event_details_full_users_list));
-            Picasso.with(attendeeImageView.getContext()).load(R.drawable.ic_more_horiz_black_24dp).into(attendeeImageView);
+            Picasso
+                    .with(attendeeImageView.getContext())
+                    .load(R.drawable.ic_more_horiz_black_24dp)
+                    .into(attendeeImageView);
         }
         else if (attendeePicture != null) {
             Bitmap picture = BitmapUtils.getBitmapFromBytes(attendeePicture);

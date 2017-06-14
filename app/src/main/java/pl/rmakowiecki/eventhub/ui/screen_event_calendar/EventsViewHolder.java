@@ -49,9 +49,9 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         //TODO: JUST A RARE SAMPLE FO DEVELOPMENT, NEEDS LOTS OF WORK
         eventWDistance = eventDistance;
         view.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), EventDetailsActivity.class);
+            Intent intent = new Intent(view.getContext(), EventDetailsActivity.class);
             intent.putExtra(EVENT_DETAILS_PARCEL_KEY, eventWDistance.getEvent());
-            v.getContext().startActivity(intent);
+            view.getContext().startActivity(intent);
         });
 
         String dateFull;
@@ -63,7 +63,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         int daysToEvent;
 
         DateTime todayDate = new DateTime();
-        DateTime dateOfEvent = new DateTime(TimeUnit.SECONDS.toSeconds(eventWDistance.getEvent().getTimestamp()));
+        DateTime dateOfEvent = new DateTime(eventWDistance.getEvent().getTimestamp());
         daysToEvent = Days.daysBetween(todayDate.toLocalDate(), dateOfEvent.toLocalDate()).getDays();
 
         DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");

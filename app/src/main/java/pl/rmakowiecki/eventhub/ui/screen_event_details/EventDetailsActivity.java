@@ -73,7 +73,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     }
 
     private void initEventInfo() {
-        DateTime dateOfEvent = new DateTime(TimeUnit.SECONDS.toSeconds(event.getTimestamp()));
+        DateTime dateOfEvent = new DateTime(event.getTimestamp());
         dateTextView.setText(getBaseContext().getString(R.string.event_details_date) + ":   " + DateUtils.getFormattedDate(dateOfEvent, "dd/MM/yyyy"));
         timeTextView.setText(getBaseContext().getString(R.string.event_details_time) + ":   " + DateUtils.getFormattedDate(dateOfEvent, "HH:mm"));
         placeTextView.setText(getBaseContext().getString(R.string.event_details_address) + ":   " + event.getAddress());
@@ -101,13 +101,17 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     private void initUserList() {
         List<User> attendees = getAttendees();
         adapter = new EventDetailsAttendeesAdapter(getBaseContext(), attendees);
-        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 0);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(adapter);
+        setupRecyclerView();
         attendeesTextView.setText(getBaseContext().getString(R.string.event_details_attendees_count) + ": " + attendees.size());
     }
 
-    public List<User> getAttendees() {
+    private void setupRecyclerView() {
+        recyclerView.getRecycledViewPool().setMaxRecycledViews(0, 0);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+
+    private List<User> getAttendees() {
         List<User> attendees = new ArrayList<>();
         UserAuthManager userAuthManager = new UserAuthManager();
         String userId = userAuthManager.getCurrentUserId();
