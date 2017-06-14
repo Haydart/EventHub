@@ -56,12 +56,8 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extras = getIntent().getExtras();
-        event = extras.getParcelable(EVENT_DETAILS_PARCEL_KEY);
-        eventToolbar.setTitle(R.string.event_details_title);
-        setSupportActionBar(eventToolbar);
-        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        initEventDetails();
+        readEventFromBundle();
+        setupToolbar();
     }
 
     @Override
@@ -70,6 +66,17 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         initEventDescription();
         initStaticMap();
         initUserList();
+    }
+
+    private void readEventFromBundle() {
+        Bundle extras = getIntent().getExtras();
+        event = extras.getParcelable(EVENT_DETAILS_PARCEL_KEY);
+    }
+
+    private void setupToolbar() {
+        eventToolbar.setTitle(R.string.event_details_title);
+        setSupportActionBar(eventToolbar);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     }
 
     private void initEventInfo() {
