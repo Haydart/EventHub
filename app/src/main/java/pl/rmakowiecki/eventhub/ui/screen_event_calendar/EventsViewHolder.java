@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
@@ -11,8 +12,12 @@ import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
+import pl.rmakowiecki.eventhub.ui.screen_event_details.EventDetailsActivity;
+
+import static pl.rmakowiecki.eventhub.background.Constants.EVENT_DETAILS_PARCEL_KEY;
 
 /**
  * Created by m1per on 20.04.2017.
@@ -30,6 +35,7 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     @BindString(R.string.day_today) String today;
     @BindString(R.string.day_tomorrow) String tomorrow;
 
+    private EventWDistance eventWDistance;
     final View view;
 
     EventsViewHolder(View view) {
@@ -38,9 +44,15 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         this.view = view;
     }
 
-    void bindView(EventWDistance eventWDistance) {
+    void bindView(EventWDistance eventDistance) {
 
         //TODO: JUST A RARE SAMPLE FO DEVELOPMENT, NEEDS LOTS OF WORK
+        eventWDistance = eventDistance;
+        view.setOnClickListener(v -> {
+            Intent intent = new Intent(view.getContext(), EventDetailsActivity.class);
+            intent.putExtra(EVENT_DETAILS_PARCEL_KEY, eventWDistance.getEvent());
+            view.getContext().startActivity(intent);
+        });
 
         String dateFull;
         String time;
@@ -51,10 +63,10 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         int daysToEvent;
 
         DateTime todayDate = new DateTime();
-        DateTime dateOfEvent = new DateTime(TimeUnit.SECONDS.toMillis(eventWDistance.getEvent().getTimestamp()));
+        DateTime dateOfEvent = new DateTime(eventWDistance.getEvent().getTimestamp());
         daysToEvent = Days.daysBetween(todayDate.toLocalDate(), dateOfEvent.toLocalDate()).getDays();
 
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("MM/dd/yyyy");
+        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
         dateFull = dateOfEvent.toString(dtf);
         dtf = DateTimeFormat.forPattern("HH:mm");
         time = dateOfEvent.toString(dtf);
@@ -83,4 +95,5 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         addressTextView.setText(eventWDistance.getEvent().getAddress());
         distanceTextView.setText(eventWDistance.getDistanceDisplayable());
     }
+
 }

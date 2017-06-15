@@ -20,48 +20,40 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:title="Nazwa Wydarzenia"
                 app:popupTheme="@style/AppTheme.PopupOverlay"
                 app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
         </android.support.design.widget.AppBarLayout>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/event_details_text_height"
-            android:layout_marginTop="@dimen/event_details_text_margin">
-
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right"
-                android:layout_marginRight="20dp"
-                android:text="Idę!"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/event_details_text_height"
-                android:layout_marginLeft="@dimen/event_details_text_margin"
-                android:text="Miejsce"/>
-
-        </FrameLayout>
-
         <TextView
+            android:id="@+id/event_details_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/event_details_text_height"
             android:layout_marginLeft="@dimen/event_details_text_margin"
-            android:text="Data"/>
+            android:layout_marginTop="@dimen/event_details_text_margin"/>
 
         <TextView
+            android:id="@+id/event_details_place"
             android:layout_width="match_parent"
             android:layout_height="@dimen/event_details_text_height"
-            android:layout_marginLeft="@dimen/event_details_text_margin"
-            android:text="Godzina"/>
+            android:layout_marginLeft="@dimen/event_details_text_margin"/>
 
         <TextView
+            android:id="@+id/event_details_date"
             android:layout_width="match_parent"
             android:layout_height="@dimen/event_details_text_height"
-            android:layout_marginLeft="@dimen/event_details_text_margin"
-            android:text="Organizator"/>
+            android:layout_marginLeft="@dimen/event_details_text_margin"/>
+
+        <TextView
+            android:id="@+id/event_details_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/event_details_text_height"
+            android:layout_marginLeft="@dimen/event_details_text_margin"/>
+
+        <TextView
+            android:id="@+id/event_details_organiser"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/event_details_text_height"
+            android:layout_marginLeft="@dimen/event_details_text_margin"/>
 
         <com.ms.square.android.expandabletextview.ExpandableTextView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -93,18 +85,33 @@
             android:layout_marginTop="@dimen/event_details_text_margin"
             android:background="@color/colorPrimaryDark"/>
 
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/event_details_text_height"
-            android:layout_marginLeft="@dimen/event_details_text_margin"
-            android:layout_marginTop="@dimen/event_details_text_margin"
-            android:text="Uczestnicy:"/>
+            android:layout_height="@dimen/event_details_text_height">
+
+            <Button
+                android:layout_width="@dimen/event_details_button_width"
+                android:layout_height="@dimen/event_details_text_height"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/event_details_margin_right"
+                android:text="@string/event_details_join"/>
+
+            <TextView
+                android:id="@+id/event_details_attendees_text_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/event_details_text_height"
+                android:layout_marginLeft="@dimen/event_details_text_margin"
+                android:textSize="@dimen/text_size_large"
+                android:layout_marginTop="@dimen/event_details_attendees_margin"/>
+
+        </FrameLayout>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/event_details_attendees_recycler_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/event_details_attendees_height"
             android:layout_marginLeft="@dimen/event_details_attendees_margin"
+            android:layout_marginTop="@dimen/event_details_attendees_margin_medium"
             android:scrollbars="horizontal"
             android:orientation="horizontal"
             app:layout_behavior="@string/appbar_scrolling_view_behavior" />

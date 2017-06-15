@@ -26,12 +26,12 @@ class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
     private List<Event> parseEventData(DataSnapshot dataSnapshot, int position) {
 
         List<Event> events = new ArrayList<>();
-        Event event;
+        RemoteEvent event;
         Map<String, Boolean> usersMap;
 
         for (DataSnapshot child : dataSnapshot.getChildren()) {
-            event = child.getValue(Event.class);
-            events.add(event);
+            event = child.getValue(RemoteEvent.class);
+            events.add(new RemoteEventMapper().map(event));
         }
         //TODO: more cases when filtering more advanced
         switch (position) {

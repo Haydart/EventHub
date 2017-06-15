@@ -26,4 +26,7 @@ public class Constants {
     public static final String DIALOG_FRAGMENT_TAG = "dialog_fragment";
     public static final String DEVICE_IMAGES_MIME = "image/*";
     public static final int GALLERY_REQUEST_CODE = 2;
+
+    public static final String EVENT_DETAILS_PARCEL_KEY = "event_parcel";
+    public static final String EVENT_DETAILS_MORE_USERS = "FULL LIST";
 }

@@ -30,7 +30,7 @@ public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDeta
     @Override
     public void onBindViewHolder(EventDetailsAttendeesViewHolder holder, int position) {
         User attendee = attendees.get(position);
-        holder.bindView("IMIE NAZWISKO", attendee.getPicture());
+        holder.bindView(attendee.getName(), attendee.getPicture());
     }
 
     @Override

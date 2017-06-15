@@ -2,6 +2,8 @@ package pl.rmakowiecki.eventhub.model.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public final class Event implements Parcelable {
@@ -44,6 +46,7 @@ public final class Event implements Parcelable {
         organizer = in.readString();
         address = in.readString();
         locationCoordinates = in.readString();
+        users = new ArrayList<>();
         in.readTypedList(users, User.CREATOR);
     }
 

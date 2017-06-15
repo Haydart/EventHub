@@ -12,7 +12,6 @@ public class EventDetailsPresenter extends BasePresenter<EventDetailsView> {
     protected void onViewStarted(EventDetailsView view) {
         super.onViewStarted(view);
         view.enableHomeButton();
-        view.initUserList();
-        view.loadStaticMap();
+        view.initEventDetails();
     }
 }

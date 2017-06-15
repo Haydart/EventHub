@@ -40,4 +40,12 @@
   <string name="button_failure_credentials_discarded">NiewĹ‚aĹ›ciwe dane</string>
   <string name="button_failure_unknown_error">Nieznany bĹ‚Ä…d serwera</string>
   <string name="title_user_profile">Profil Uzytkownika</string>
+  <string name="event_details_full_users_list">PEĹ�NA LISTA</string>
+  <string name="event_details_title">SzczegĂłĹ‚y Wydarzenia</string>
+  <string name="event_details_address">Adres</string>
+  <string name="event_details_organiser">Organizator</string>
+  <string name="event_details_date">Data</string>
+  <string name="event_details_time">Godzina</string>
+  <string name="event_details_attendees_count">Uczestnicy</string>
+  <string name="event_details_join">DOĹ�Ä„CZ</string>
 </resources>

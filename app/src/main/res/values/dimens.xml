@@ -59,7 +59,10 @@
     <dimen name="event_details_text_height">44dp</dimen>
     <dimen name="event_details_text_margin">12dp</dimen>
     <dimen name="event_details_attendees_margin">6dp</dimen>
+    <dimen name="event_details_attendees_margin_medium">8dp</dimen>
     <dimen name="event_details_attendees_height">100dp</dimen>
+    <dimen name="event_details_button_width">110dp</dimen>
+    <dimen name="event_details_margin_right">10dp</dimen>
     <dimen name="event_details_map_height">250dp</dimen>
     <dimen name="event_details_padding">16dp</dimen>
     <dimen name="separator_line_height">2dip</dimen>
@@ -68,5 +71,6 @@
     <dimen name="attendee_name_height">28dp</dimen>
     <dimen name="text_size_small">10sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
 </resources>
 

@@ -55,6 +55,10 @@
             android:parentActivityName=".ui.screen_events_map.EventsMapActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.screen_event_details.EventDetailsActivity"
+            android:parentActivityName=".ui.screen_event_calendar.CalendarActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.screen_user_profile.UserProfileActivity"
             android:parentActivityName=".ui.screen_events_map.EventsMapActivity"
             android:screenOrientation="portrait" />
