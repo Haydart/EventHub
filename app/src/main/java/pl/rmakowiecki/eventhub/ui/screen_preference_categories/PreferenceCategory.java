@@ -63,4 +63,9 @@ public class PreferenceCategory implements Parent<String>, Parcelable {
         dest.writeString(imageResourceName);
         dest.writeList(childrenList);
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return obj instanceof PreferenceCategory && ((PreferenceCategory) obj).getTitle().equals(this.title);
+    }
 }

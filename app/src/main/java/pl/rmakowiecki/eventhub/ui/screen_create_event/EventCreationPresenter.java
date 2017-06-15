@@ -77,14 +77,29 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         }
     }
 
-    void onEventCategoryClicked(int position, PreferenceCategory category) {
-        view.displayEventSubcategoryPicker(position, category);
+    void onEventCategoryClicked(int position, PreferenceCategory fullCategory) {
+        PreferenceCategory previouslyPickedCategory = null;
+        if (pickedCategoriesList.contains(fullCategory)) {
+            previouslyPickedCategory = pickedCategoriesList.get(pickedCategoriesList.indexOf(fullCategory));
+        }
+        view.displayEventSubcategoryPicker(position, fullCategory, previouslyPickedCategory);
     }
 
     void onSubcategoriesPicked(PreferenceCategory category, boolean[] checkedItems) {
-        if (!pickedCategoriesList.contains(category)) {
-            // TODO: 13/06/2017 implement
+        List<String> chosenSubcategories = new ArrayList<>();
+        int indexOfCategory = fullCategoriesList.indexOf(category);
+        List<String> fullCategoryChildrenList = fullCategoriesList.get(indexOfCategory).getChildList();
+
+        for (int i = 0; i < checkedItems.length; i++) {
+            if (checkedItems[i]) {
+                chosenSubcategories.add(fullCategoryChildrenList.get(i));
+            }
         }
+        PreferenceCategory pickedCategory = new PreferenceCategory(category.getTitle(), category.getImageResourceName(), chosenSubcategories);
+        if (pickedCategoriesList.contains(pickedCategory)) {
+            pickedCategoriesList.remove(pickedCategory);
+        }
+        pickedCategoriesList.add(pickedCategory);
     }
 
     void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress) {
@@ -98,6 +113,7 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
                 userAuthManager.getUserDisplayedName(),
                 eventAddress,
                 eventCoordinates.toString(),
+                pickedCategoriesList,
                 users
         );
         eventRepository.add(event);

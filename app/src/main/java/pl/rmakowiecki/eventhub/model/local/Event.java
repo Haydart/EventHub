@@ -2,9 +2,9 @@ package pl.rmakowiecki.eventhub.model.local;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
 import java.util.ArrayList;
 import java.util.List;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
 public final class Event implements Parcelable {
     public static final Creator<Event> CREATOR = new Creator<Event>() {
@@ -25,9 +25,11 @@ public final class Event implements Parcelable {
     private final long timestamp;
     private final String address;
     private final String locationCoordinates;
-    private List<User> users;
+    private final List<PreferenceCategory> eventTags;
+    private final List<User> users;
 
-    public Event(String id, String name, String description, long timestamp, String organizer, String address, String coordinates, List<User> users) {
+    public Event(String id, String name, String description, long timestamp, String organizer, String address,
+            String coordinates, List<PreferenceCategory> eventTags, List<User> users) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -35,6 +37,7 @@ public final class Event implements Parcelable {
         this.organizer = organizer;
         this.address = address;
         this.locationCoordinates = coordinates;
+        this.eventTags = eventTags;
         this.users = users;
     }
 
@@ -46,8 +49,14 @@ public final class Event implements Parcelable {
         organizer = in.readString();
         address = in.readString();
         locationCoordinates = in.readString();
+        eventTags = new ArrayList<>();
+        in.readTypedList(eventTags, PreferenceCategory.CREATOR);
         users = new ArrayList<>();
         in.readTypedList(users, User.CREATOR);
+    }
+
+    public List<PreferenceCategory> getEventTags() {
+        return eventTags;
     }
 
     public List<User> getUsers() {
@@ -96,6 +105,7 @@ public final class Event implements Parcelable {
         dest.writeString(organizer);
         dest.writeString(address);
         dest.writeString(locationCoordinates);
+        dest.writeTypedList(eventTags);
         dest.writeTypedList(users);
     }
 }
