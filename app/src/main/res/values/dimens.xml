@@ -58,6 +58,7 @@
     <dimen name="login_image_view_size">40dp</dimen>
     <dimen name="event_details_text_height">44dp</dimen>
     <dimen name="event_details_text_margin">12dp</dimen>
+    <dimen name="event_details_description_text_view_height">20dp</dimen>
     <dimen name="event_details_attendees_margin">6dp</dimen>
     <dimen name="event_details_attendees_margin_medium">8dp</dimen>
     <dimen name="event_details_attendees_height">120dp</dimen>

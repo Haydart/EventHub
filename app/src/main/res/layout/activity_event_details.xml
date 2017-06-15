@@ -95,7 +95,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="@dimen/event_details_description_text_view_height"
             android:layout_marginLeft="@dimen/event_details_text_margin"
             android:text="Opis: "/>
 
