@@ -25,5 +25,5 @@ interface EventCreationView extends BaseView {
 
     void showCategoriesList(List<PreferenceCategory> preference);
 
-    void displayEventSubcategoryPicker(int position, PreferenceCategory category);
+    void displayEventSubcategoryPicker(int position, PreferenceCategory category, PreferenceCategory preferenceCategory);
 }

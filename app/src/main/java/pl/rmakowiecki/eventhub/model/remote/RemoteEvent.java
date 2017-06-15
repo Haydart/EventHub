@@ -1,8 +1,6 @@
 package pl.rmakowiecki.eventhub.model.remote;
 
-import android.os.Parcel;
-
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class RemoteEvent {
@@ -12,35 +10,23 @@ public final class RemoteEvent {
     private final long timestamp;
     private final String address;
     private final String locationCoordinates;
-    private Map<String, String> users = new HashMap<>();
+    private final Map<String, List<String>> eventTags;
+    private final Map<String, String> users;
 
-    public RemoteEvent(String name, String description, long timestamp, String organizer, String address, String coordinates, Map<String, String> users) {
+    public RemoteEvent(String name, String description, long timestamp, String organizer,
+            String address, String coordinates, Map<String, List<String>> eventTags, Map<String, String> users) {
         this.name = name;
         this.description = description;
         this.timestamp = timestamp;
         this.organizer = organizer;
         this.address = address;
         this.locationCoordinates = coordinates;
+        this.eventTags = eventTags;
         this.users = users;
     }
 
-    public RemoteEvent() {
-        this.name = "";
-        this.description = "";
-        this.timestamp = 0;
-        this.organizer = "";
-        this.address = "";
-        this.locationCoordinates = "";
-        this.users = new HashMap<>();
-    }
-
-    protected RemoteEvent(Parcel in) {
-        name = in.readString();
-        description = in.readString();
-        timestamp = in.readLong();
-        organizer = in.readString();
-        address = in.readString();
-        locationCoordinates = in.readString();
+    public Map<String, List<String>> getEventTags() {
+        return eventTags;
     }
 
     public Map<String, String> getUsers() {

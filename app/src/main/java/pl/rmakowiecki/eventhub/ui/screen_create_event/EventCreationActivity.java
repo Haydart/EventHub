@@ -130,18 +130,29 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     }
 
     @Override
-    public void displayEventSubcategoryPicker(int position, PreferenceCategory category) {
+    public void displayEventSubcategoryPicker(int position, PreferenceCategory fullCategory, PreferenceCategory previouslyPickedCategory) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(category.getTitle());
+        builder.setTitle(fullCategory.getTitle());
 
-        List<String> subcategories = category.getChildList();
+        List<String> subcategories = fullCategory.getChildList();
         boolean[] checkedItems = new boolean[subcategories.size()];
+
+        if (previouslyPickedCategory != null) {
+            int previouslyPickedSubcategoriesConvertedCount = 0;
+            for (int i = 0; i < fullCategory.getChildList().size() &&
+                    previouslyPickedSubcategoriesConvertedCount < previouslyPickedCategory.getChildList().size(); i++) {
+                if (fullCategory.getChildList().get(i).equals(previouslyPickedCategory.getChildList().get(previouslyPickedSubcategoriesConvertedCount))) {
+                    previouslyPickedSubcategoriesConvertedCount++;
+                    checkedItems[i] = true;
+                }
+            }
+        }
 
         builder.setMultiChoiceItems(subcategories.toArray(new String[subcategories.size()]), checkedItems, (dialog, which, isChecked) -> {
             // user checked or unchecked a box
         });
 
-        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.onSubcategoriesPicked(category, checkedItems));
+        builder.setPositiveButton(android.R.string.ok, (dialog, which) -> presenter.onSubcategoriesPicked(fullCategory, checkedItems));
         builder.setNegativeButton(android.R.string.cancel, (dialog, which) -> dialog.dismiss());
         builder.create().show();
     }

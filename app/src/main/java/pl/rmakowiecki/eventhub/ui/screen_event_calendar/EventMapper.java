@@ -7,6 +7,7 @@ import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import pl.rmakowiecki.eventhub.repository.ModelMapper;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
 class EventMapper implements ModelMapper<Event, RemoteEvent> {
     @Override
@@ -18,6 +19,7 @@ class EventMapper implements ModelMapper<Event, RemoteEvent> {
                 model.getOrganizer(),
                 model.getAddress(),
                 model.getLocationCoordinates(),
+                mapToRemoteTagList(model.getEventTags()),
                 convertToMapRepresentation(model.getUsers())
         );
     }
@@ -28,5 +30,13 @@ class EventMapper implements ModelMapper<Event, RemoteEvent> {
             result.put(user.getId(), user.getName());
         }
         return result;
+    }
+
+    private Map<String, List<String>> mapToRemoteTagList(List<PreferenceCategory> eventTags) {
+        Map<String, List<String>> categories = new HashMap<>();
+        for (PreferenceCategory category : eventTags) {
+            categories.put(category.getTitle(), category.getChildList());
+        }
+        return categories;
     }
 }
