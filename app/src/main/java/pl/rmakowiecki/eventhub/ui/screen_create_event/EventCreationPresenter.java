@@ -21,6 +21,8 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
     private Calendar eventTime = Calendar.getInstance();
     private Repository<Event> eventRepository = new EventsRepository();
     private UserAuthManager userAuthManager = new UserAuthManager();
+    private List<PreferenceCategory> fullCategoriesList = new ArrayList<>();
+    private List<PreferenceCategory> pickedCategoriesList = new ArrayList<>();
 
     @Override
     protected void onViewStarted(EventCreationView view) {
@@ -36,7 +38,10 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
                 .query(new PreferencesSpecification() {
                 })
                 .compose(applySchedulers())
-                .subscribe((preference) -> view.showCategoriesList(preference));
+                .subscribe((categoriesList) -> {
+                    fullCategoriesList = categoriesList;
+                    view.showCategoriesList(categoriesList);
+                });
     }
 
     void onDatePickerButtonClicked() {
@@ -74,6 +79,12 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
 
     void onEventCategoryClicked(int position, PreferenceCategory category) {
         view.displayEventSubcategoryPicker(position, category);
+    }
+
+    void onSubcategoriesPicked(PreferenceCategory category, boolean[] checkedItems) {
+        if (!pickedCategoriesList.contains(category)) {
+            // TODO: 13/06/2017 implement
+        }
     }
 
     void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress) {
