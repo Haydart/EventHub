@@ -26,10 +26,10 @@ public final class Event implements Parcelable {
     private final String address;
     private final String locationCoordinates;
     private final List<PreferenceCategory> eventTags;
-    private final List<User> users;
+    private final List<EventAttendee> attendees;
 
     public Event(String id, String name, String description, long timestamp, String organizer, String address,
-            String coordinates, List<PreferenceCategory> eventTags, List<User> users) {
+            String coordinates, List<PreferenceCategory> eventTags, List<EventAttendee> attendees) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -38,7 +38,7 @@ public final class Event implements Parcelable {
         this.address = address;
         this.locationCoordinates = coordinates;
         this.eventTags = eventTags;
-        this.users = users;
+        this.attendees = attendees;
     }
 
     protected Event(Parcel in) {
@@ -51,16 +51,16 @@ public final class Event implements Parcelable {
         locationCoordinates = in.readString();
         eventTags = new ArrayList<>();
         in.readTypedList(eventTags, PreferenceCategory.CREATOR);
-        users = new ArrayList<>();
-        in.readTypedList(users, User.CREATOR);
+        attendees = new ArrayList<>();
+        in.readTypedList(attendees, EventAttendee.CREATOR);
     }
 
     public List<PreferenceCategory> getEventTags() {
         return eventTags;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public List<EventAttendee> getAttendees() {
+        return attendees;
     }
 
     public String getAddress() {
@@ -106,6 +106,6 @@ public final class Event implements Parcelable {
         dest.writeString(address);
         dest.writeString(locationCoordinates);
         dest.writeTypedList(eventTags);
-        dest.writeTypedList(users);
+        dest.writeTypedList(attendees);
     }
 }

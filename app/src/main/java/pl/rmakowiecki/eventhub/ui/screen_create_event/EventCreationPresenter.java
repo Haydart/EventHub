@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Locale;
 import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.repository.Repository;
@@ -103,8 +104,8 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
     }
 
     void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress) {
-        List<User> users = new ArrayList<>();
-        users.add(new User(userAuthManager.getCurrentUserId(), "EMPTY NAME", new byte[] { 2, 1, 3, 7 }));
+        List<EventAttendee> attendees = new ArrayList<>();
+        attendees.add(new EventAttendee(userAuthManager.getCurrentUserId(), "EMPTY NAME"));
         Event event = new Event(
                 "",
                 eventName,
@@ -114,7 +115,7 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
                 eventAddress,
                 eventCoordinates.toString(),
                 pickedCategoriesList,
-                users
+                attendees
         );
         eventRepository.add(event);
     }

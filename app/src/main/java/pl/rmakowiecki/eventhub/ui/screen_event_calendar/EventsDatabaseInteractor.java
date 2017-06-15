@@ -27,7 +27,6 @@ class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
 
         List<Event> events = new ArrayList<>();
         RemoteEvent event;
-        Map<String, Boolean> usersMap;
 
         for (DataSnapshot child : dataSnapshot.getChildren()) {
             event = child.getValue(RemoteEvent.class);

@@ -48,4 +48,6 @@
   <string name="event_details_time">Godzina</string>
   <string name="event_details_attendees_count">Uczestnicy</string>
   <string name="event_details_join">DOĹ�Ä„CZ</string>
+  <string name="event_details_name">Nazwa</string>
+  <string name="event_details_no_attendees_info">NIKT INNY JESZCZE SIÄ� NIE WYBIERA, ZAPROĹš SWOICH ZNAJOMYCH</string>
 </resources>

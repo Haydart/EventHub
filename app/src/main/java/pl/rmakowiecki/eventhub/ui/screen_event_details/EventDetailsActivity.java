@@ -4,9 +4,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -17,11 +19,10 @@ import org.joda.time.DateTime;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
-import pl.rmakowiecki.eventhub.model.local.User;
+import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.util.DateUtils;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
@@ -47,6 +48,8 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @BindView(R.id.event_details_organiser) TextView organiserTextView;
     @BindView(R.id.event_details_name) TextView nameTextView;
     @BindView(R.id.event_details_attendees_text_view) TextView attendeesTextView;
+    @BindView(R.id.event_details_no_attendees_text_view) TextView noAttendeesTextView;
+    @BindView(R.id.event_details_attendees_layout) LinearLayout attendeesLinearLayout;
 
     @Override
     protected void initPresenter() {
@@ -85,7 +88,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         timeTextView.setText(getBaseContext().getString(R.string.event_details_time) + ":   " + DateUtils.getFormattedDate(dateOfEvent, "HH:mm"));
         placeTextView.setText(getBaseContext().getString(R.string.event_details_address) + ":   " + event.getAddress());
         organiserTextView.setText(getBaseContext().getString(R.string.event_details_organiser) + ":   " + event.getOrganizer());
-        nameTextView.setText(event.getName());
+        nameTextView.setText(getBaseContext().getString(R.string.event_details_name) + ":   " + event.getName());
     }
 
     private void initEventDescription() {
@@ -106,10 +109,22 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     }
 
     private void initUserList() {
-        List<User> attendees = getAttendees();
-        adapter = new EventDetailsAttendeesAdapter(getBaseContext(), attendees);
-        setupRecyclerView();
-        attendeesTextView.setText(getBaseContext().getString(R.string.event_details_attendees_count) + ": " + attendees.size());
+        List<EventAttendee> attendees = getAttendees();
+
+        if (!attendees.isEmpty()) {
+            adapter = new EventDetailsAttendeesAdapter(getBaseContext(), attendees);
+            setupRecyclerView();
+            attendeesTextView.setText(getBaseContext().getString(R.string.event_details_attendees_count) + ": " + attendees.size());
+            changeAttendeesVisibility(true);
+        }
+        else {
+            changeAttendeesVisibility(false);
+        }
+    }
+
+    private void changeAttendeesVisibility(boolean showList) {
+        noAttendeesTextView.setVisibility(showList ? View.INVISIBLE : View.VISIBLE);
+        attendeesLinearLayout.setVisibility(showList ? View.VISIBLE : View.INVISIBLE);
     }
 
     private void setupRecyclerView() {
@@ -118,18 +133,18 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         recyclerView.setAdapter(adapter);
     }
 
-    private List<User> getAttendees() {
-        List<User> attendees = new ArrayList<>();
+    private List<EventAttendee> getAttendees() {
+        List<EventAttendee> attendees = new ArrayList<>();
         UserAuthManager userAuthManager = new UserAuthManager();
         String userId = userAuthManager.getCurrentUserId();
 
-        for (User user : event.getUsers()) {
-            if (!user.getId().equals(userId)) {
+        for (EventAttendee attendee : event.getAttendees()) {
+            if (!attendee.getId().equals(userId)) {
                 if (attendees.size() >= MAX_DISPLAYED_USERS) {
-                    attendees.add(new User("FULL LIST", EVENT_DETAILS_MORE_USERS, new byte[] { 2, 1, 3, 7 }));
+                    attendees.add(new EventAttendee("FULL LIST", EVENT_DETAILS_MORE_USERS));
                     break;
                 }
-                attendees.add(user);
+                attendees.add(attendee);
                 break;
             }
         }
@@ -141,6 +156,9 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         String location = event.getLocationCoordinates().replaceAll("\\s+","");
         String marker = "&markers=color:purple|" + location + "&";
         String url = "http://maps.google.com/maps/api/staticmap?center=" + location + "&zoom=15&size=800x400&sensor=false" + marker;
-        Picasso.with(this).load(url).into(staticMapImageView);
+        Picasso
+                .with(this)
+                .load(url)
+                .into(staticMapImageView);
     }
 }

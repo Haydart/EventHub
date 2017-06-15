@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.model.remote;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,10 +12,21 @@ public final class RemoteEvent {
     private final String address;
     private final String locationCoordinates;
     private final Map<String, List<String>> eventTags;
-    private final Map<String, String> users;
+    private final Map<String, String> attendees;
+
+    public RemoteEvent() {
+        name = "";
+        organizer = "";
+        description = "";
+        timestamp = 0;
+        address = "";
+        locationCoordinates = "";
+        eventTags = new HashMap<>();
+        attendees = new HashMap<>();
+    }
 
     public RemoteEvent(String name, String description, long timestamp, String organizer,
-            String address, String coordinates, Map<String, List<String>> eventTags, Map<String, String> users) {
+            String address, String coordinates, Map<String, List<String>> eventTags, Map<String, String> attendees) {
         this.name = name;
         this.description = description;
         this.timestamp = timestamp;
@@ -22,15 +34,15 @@ public final class RemoteEvent {
         this.address = address;
         this.locationCoordinates = coordinates;
         this.eventTags = eventTags;
-        this.users = users;
+        this.attendees = attendees;
     }
 
     public Map<String, List<String>> getEventTags() {
         return eventTags;
     }
 
-    public Map<String, String> getUsers() {
-        return users;
+    public Map<String, String> getAttendees() {
+        return attendees;
     }
 
     public String getAddress() {

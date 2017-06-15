@@ -53,4 +53,6 @@
     <string name="event_details_time">Time</string>
     <string name="event_details_attendees_count">Attendees</string>
     <string name="event_details_join">ATTEND</string>
+    <string name="event_details_name">Name</string>
+    <string name="event_details_no_attendees_info">NOBODY ELSE IS COMING YET, INVITE YOUR FRIENDS!</string>
 </resources>

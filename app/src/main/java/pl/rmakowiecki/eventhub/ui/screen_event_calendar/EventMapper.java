@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import pl.rmakowiecki.eventhub.repository.ModelMapper;
@@ -20,14 +21,14 @@ class EventMapper implements ModelMapper<Event, RemoteEvent> {
                 model.getAddress(),
                 model.getLocationCoordinates(),
                 mapToRemoteTagList(model.getEventTags()),
-                convertToMapRepresentation(model.getUsers())
+                convertToMapRepresentation(model.getAttendees())
         );
     }
 
-    private Map<String, String> convertToMapRepresentation(List<User> userList) {
-        Map<String, String> result = new HashMap<>(userList.size());
-        for (User user : userList) {
-            result.put(user.getId(), user.getName());
+    private Map<String, String> convertToMapRepresentation(List<EventAttendee> attendeeList) {
+        Map<String, String> result = new HashMap<>(attendeeList.size());
+        for (EventAttendee attendee : attendeeList) {
+            result.put(attendee.getId(), attendee.getName());
         }
         return result;
     }
