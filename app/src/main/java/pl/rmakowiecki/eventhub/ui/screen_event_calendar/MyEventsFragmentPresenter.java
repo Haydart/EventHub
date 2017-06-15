@@ -6,21 +6,19 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
-import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DATE_SORT;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DISTANCE_SORT;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.ascending;
-import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.descending;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.getComparator;
 
 /**
  * Created by m1per on 18.04.2017.
  */
 
-public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
+class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
 
     private RxLocationProvider provider = new RxLocationProvider();
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
@@ -28,8 +26,6 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
     private ArrayList<String> distances = new ArrayList<>();
     private int position;
     private List<EventWDistance> eventsWithDistances = new ArrayList<>();
-
-
 
     MyEventsFragmentPresenter(int position) {
         repository = new EventsRepository();
@@ -65,7 +61,7 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
         onViewInitialization();
     }
 
-    public void onSortRequested(SortTypes type) {
+    void onSortRequested(SortTypes type) {
         switch (type) {
             case DISTANCE_SORT:
                 Collections.sort(eventsWithDistances, ascending(getComparator(DISTANCE_SORT)));
