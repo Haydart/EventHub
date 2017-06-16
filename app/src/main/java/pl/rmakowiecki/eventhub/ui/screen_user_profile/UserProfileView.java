@@ -2,13 +2,12 @@ package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
 import com.jenzz.noop.annotation.NoOp;
 import pl.rmakowiecki.eventhub.ui.BaseView;
+import pl.rmakowiecki.eventhub.util.UserManager;
 
 @NoOp
-public interface UserProfileView extends BaseView {
+interface UserProfileView extends BaseView {
 
     void enableHomeButton();
-
-    void saveProfile();
 
     void displayInterestsList();
 
@@ -24,11 +23,9 @@ public interface UserProfileView extends BaseView {
 
     void showPictureSelectDialog();
 
-    void initRepository();
-
     void showButtonProcessing();
 
-    void changeToolbarTitles();
+    void displayUserInfo(UserManager userDisplayedName);
 
     void loadUserImage();
 }

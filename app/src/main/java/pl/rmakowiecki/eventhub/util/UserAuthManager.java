@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.util;
 
+import android.content.Context;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -14,13 +15,14 @@ public class UserAuthManager implements UserManager {
         FirebaseAuth.getInstance().signOut();
     }
 
+    @Override
     public String getCurrentUserId() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         return currentUser != null ? currentUser.getUid() : "";
     }
 
-    public String getUserDisplayedName() {
-        // TODO: 05/06/2017 implement
-        return "RemoteEvent Hub";
+    @Override
+    public String getUserDisplayedName(Context context) {
+        return new PreferencesManager(context).getUserName();
     }
 }

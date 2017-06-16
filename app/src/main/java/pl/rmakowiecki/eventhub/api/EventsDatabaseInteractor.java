@@ -1,4 +1,4 @@
-package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
+package pl.rmakowiecki.eventhub.api;
 
 import android.util.Log;
 import com.google.firebase.database.DataSnapshot;
@@ -6,9 +6,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import pl.rmakowiecki.eventhub.api.BaseDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.mappers.RemoteEventMapper;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -19,7 +18,7 @@ import static android.content.ContentValues.TAG;
  * Created by m1per on 17.04.2017.
  */
 
-class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
+public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
 
     private static final String DATABASE_PATH = "app_data/events";
 
@@ -78,7 +77,7 @@ class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
         return publishSubject;
     }
 
-    void addEvent(RemoteEvent item) {
+    public void addEvent(RemoteEvent item) {
         setDatabaseQueryNode();
         databaseQueryNode
                 .push()

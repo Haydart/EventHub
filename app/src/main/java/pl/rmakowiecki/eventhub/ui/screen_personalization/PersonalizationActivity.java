@@ -9,15 +9,17 @@ import android.support.v4.app.DialogFragment;
 import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
+import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
 
 public class PersonalizationActivity extends BaseActivity<PersonalizationPresenter> implements PersonalizationView, AvatarPickDialogFragment.AvatarPickDialogListener {
 
     @BindView(R.id.user_profile_image_view) ImageView userImageView;
+    @BindView(R.id.personalization_action_button) ActionButton actionButton;
 
     private Bitmap pictureBitmap;
     private DialogFragment fragment;
