@@ -7,8 +7,6 @@ import rx.Observable;
 
 class UserProfilePresenter extends BasePresenter<UserProfileView> {
 
-    private static final int PHOTO_SOURCE_CAMERA = 1;
-    private static final int PHOTO_SOURCE_GALLERY = 2;
     private static final int SHOW_BUTTON_RESULT_DELAY = 2000;
     private static final int LAUNCH_MAP_ACTIVITY_DELAY = 3500;
     private static final int BUTTON_ENABLE_DELAY = 5000;
