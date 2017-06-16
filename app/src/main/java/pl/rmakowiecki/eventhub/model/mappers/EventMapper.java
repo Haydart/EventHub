@@ -1,16 +1,14 @@
-package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
+package pl.rmakowiecki.eventhub.model.mappers;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
-import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
-import pl.rmakowiecki.eventhub.repository.ModelMapper;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
-class EventMapper implements ModelMapper<Event, RemoteEvent> {
+public class EventMapper implements ModelMapper<Event, RemoteEvent> {
     @Override
     public RemoteEvent map(Event model) {
         return new RemoteEvent(

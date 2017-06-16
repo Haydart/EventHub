@@ -37,7 +37,7 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
 
     private void acquireEvents() {
         repository
-                .query(new MyEventsSpecifications(position) {
+                .query(new MyEventsSpecification(position) {
                 })
                 .compose(applySchedulers())
                 .subscribe(this::passCompleteData);

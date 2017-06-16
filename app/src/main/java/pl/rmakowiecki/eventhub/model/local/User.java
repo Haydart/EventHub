@@ -17,24 +17,17 @@ public final class User implements Parcelable {
         }
     };
 
-    private final String id;
     private final String name;
     private final byte[] pictureData;
 
-    public User(String id, String name, byte[] pictureData) {
-        this.id = id;
+    public User(String name, byte[] pictureData) {
         this.name = name;
         this.pictureData = pictureData;
     }
 
     protected User(Parcel in) {
-        id = in.readString();
         name = in.readString();
         pictureData = in.createByteArray();
-    }
-
-    public String getId() {
-        return id;
     }
 
     public String getName() {
@@ -52,7 +45,6 @@ public final class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(id);
         dest.writeString(name);
         dest.writeByteArray(pictureData);
     }

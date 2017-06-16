@@ -24,13 +24,14 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import java.util.Calendar;
 import java.util.List;
-import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
+import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import pl.rmakowiecki.eventhub.util.UnitConversionUtils;
 
 public class EventCreationActivity extends BaseActivity<EventCreationPresenter> implements EventCreationView, AvatarPickDialogFragment.AvatarPickDialogListener,
@@ -53,6 +54,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
 
     private DialogFragment fragment;
     private Bitmap eventAvatarBitmap;
+    private PreferencesManager preferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +62,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         setupToolbar();
         setupEventCategoryRecyclerView();
         animateAppbarPadding();
+        preferencesManager = new PreferencesManager(this);
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -252,7 +255,8 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
                 getEventCoordinates(),
                 eventNameEditText.getText().toString(),
                 eventDescriptionEditText.getText().toString(),
-                eventAddressTextView.getText().toString()
+                eventAddressTextView.getText().toString(),
+                preferencesManager.getUserName()
         );
     }
 

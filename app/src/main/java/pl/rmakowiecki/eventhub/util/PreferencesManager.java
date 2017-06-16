@@ -1,8 +1,10 @@
 package pl.rmakowiecki.eventhub.util;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.util.Base64;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -10,6 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import pl.rmakowiecki.eventhub.model.local.Interest;
 import pl.rmakowiecki.eventhub.model.local.PreferenceLocale;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
 import static android.content.Context.MODE_PRIVATE;
@@ -20,7 +23,9 @@ import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_KE
 import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_PREFERENCE_LOCALE_KEY;
 import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_SUBCATEGORIES_KEY;
 import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_USER_IMAGE_KEY;
+import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_USER_NAME_KEY;
 
+@SuppressLint("ApplySharedPref")
 public class PreferencesManager {
 
     private SharedPreferences sharedPreferences;
@@ -117,8 +122,7 @@ public class PreferencesManager {
                         translatedSubcategories.add(getNameOrLocaleName(utils.getLocaleString(), category.getTitle(), subCategory));
                     }
                     displayList.add(new PreferenceCategory(categoryName, "", translatedSubcategories));
-                }
-                else {
+                } else {
                     List<String> subcategories = new ArrayList<>();
                     subcategories.addAll(interests);
                     displayList.add(new PreferenceCategory(categoryName, "", subcategories));
@@ -130,21 +134,27 @@ public class PreferencesManager {
     }
 
     public String getNameOrLocaleName(String localeName, String categoryName, String defaultName) {
-        return sharedPreferences.getString(SHARED_PREFERENCES_PREFERENCE_LOCALE_KEY + localeName.toUpperCase() + categoryName.toUpperCase() + defaultName.toUpperCase(), defaultName);
+        return sharedPreferences.getString(SHARED_PREFERENCES_PREFERENCE_LOCALE_KEY + localeName.toUpperCase() + categoryName.toUpperCase() + defaultName.toUpperCase(),
+                defaultName);
     }
 
-    public void saveUserImage(Bitmap bitmap) {
-        String encodedImage = BitmapUtils.convertBitmapToBase64(bitmap);
-        if (!encodedImage.isEmpty())
-            sharedPreferences.edit().putString(SHARED_PREFERENCES_USER_IMAGE_KEY, encodedImage).commit();
+    public void saveUserDataLocally(User user) {
+        String base64ImageRepresentation = Base64.encodeToString(user.getPicture(), Base64.DEFAULT);
+        sharedPreferences.edit().putString(SHARED_PREFERENCES_USER_IMAGE_KEY, base64ImageRepresentation).commit();
+        sharedPreferences.edit().putString(SHARED_PREFERENCES_USER_NAME_KEY, user.getName()).commit();
     }
 
     public Bitmap getUserImage() {
         Bitmap bitmap = null;
         String encodedImage = sharedPreferences.getString(SHARED_PREFERENCES_USER_IMAGE_KEY, "");
-        if (!encodedImage.isEmpty())
+        if (!encodedImage.isEmpty()) {
             bitmap = BitmapUtils.convertBase64ToBitmap(encodedImage);
+        }
 
         return bitmap;
+    }
+
+    public String getUserName() {
+        return sharedPreferences.getString(SHARED_PREFERENCES_USER_NAME_KEY, "");
     }
 }

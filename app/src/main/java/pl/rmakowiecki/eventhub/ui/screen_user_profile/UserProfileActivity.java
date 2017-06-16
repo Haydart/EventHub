@@ -16,19 +16,18 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.OnClick;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import java.util.List;
-import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.model.local.User;
+import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
+import pl.rmakowiecki.eventhub.util.UserManager;
 
 public class UserProfileActivity extends BaseActivity<UserProfilePresenter> implements UserProfileView, AvatarPickDialogFragment.AvatarPickDialogListener {
 
@@ -39,7 +38,6 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @BindView(R.id.save_user_profile_action_button) ActionButton saveProfileButton;
     @BindView(R.id.user_profile_preferences_recycler_view) RecyclerView recyclerView;
 
-    private UserProfileRepository repository;
     private Bitmap pictureBitmap;
     private DialogFragment fragment;
     private RecyclerView.Adapter adapter;
@@ -50,19 +48,12 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         super.onCreate(savedInstanceState);
         setSupportActionBar(profileToolbar);
         preferencesManager = new PreferencesManager(this);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
     @Override
-    public void initRepository() {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        repository = new UserProfileRepository(presenter, user);
-    }
-
-    @Override
-    public void changeToolbarTitles() {
+    public void displayUserInfo(UserManager userManager) {
         profileToolbar.setTitle("");
-        collapsingToolbarLayout.setTitle("Imie Nazwisko");
+        collapsingToolbarLayout.setTitle(userManager.getUserDisplayedName(this));
 
         Window window = getWindow();
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -71,14 +62,16 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @Override
     public void loadUserImage() {
         Bitmap userImage = preferencesManager.getUserImage();
-        if (userImage != null)
+        if (userImage != null) {
             userImageView.setImageBitmap(userImage);
+        }
     }
 
     @Override
     public void displayInterestsList() {
         List<PreferenceCategory> displayList = preferencesManager.getInterestsDisplayList();
         if (!displayList.isEmpty()) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
             adapter = new UserProfilePreferencesAdapter(getBaseContext(), displayList);
             recyclerView.setAdapter(adapter);
         }
@@ -172,7 +165,9 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
 
     @OnClick(R.id.save_user_profile_action_button)
     protected void saveProfileButtonClick() {
-        presenter.onProfileSaveButtonClick();
+        User user = new User(collapsingToolbarLayout.getTitle().toString(), BitmapUtils.getBytesFromBitmap(pictureBitmap));
+        presenter.onProfileSaveButtonClick(user);
+        preferencesManager.saveUserDataLocally(user);
     }
 
     @Override
@@ -183,20 +178,6 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @Override
     public void showButtonProcessing() {
         saveProfileButton.showProcessing();
-    }
-
-    // TODO: 01.05.2017 Rework this method when more save-able options are implemented
-    public void saveProfile() {
-        if (pictureBitmap == null) {
-            saveProfileButton.showProcessing();
-            presenter.onProfileSaveSuccess();
-            return;
-        }
-
-        byte[] data = BitmapUtils.getBytesFromBitmap(pictureBitmap);
-        User profile = new User("Moje ID", "Moje imie nazwisko", data);
-        repository.add(profile);
-        preferencesManager.saveUserImage(pictureBitmap);
     }
 
     @Override
