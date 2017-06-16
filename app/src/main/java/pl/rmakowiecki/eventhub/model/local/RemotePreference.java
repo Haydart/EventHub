@@ -2,13 +2,13 @@ package pl.rmakowiecki.eventhub.model.local;
 
 import java.util.List;
 
-public final class Preference {
+public final class RemotePreference {
     private final int id;
     private final String categoryName;
     private final List<String> subCategories;
     private final String imageUrl;
 
-    public Preference(int id, String categoryName, List<String> subCategories, String imageUrl) {
+    public RemotePreference(int id, String categoryName, List<String> subCategories, String imageUrl) {
         this.id = id;
         this.categoryName = categoryName;
         this.subCategories = subCategories;

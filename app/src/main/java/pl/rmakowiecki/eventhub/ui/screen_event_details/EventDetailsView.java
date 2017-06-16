@@ -8,7 +8,5 @@ import pl.rmakowiecki.eventhub.ui.BaseView;
 public interface EventDetailsView extends BaseView {
     void enableHomeButton();
 
-    void initUserList();
-
-    void loadStaticMap();
+    void initEventDetails();
 }

@@ -3,6 +3,7 @@
     package="pl.rmakowiecki.eventhub">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <uses-feature android:name="android.hardware.camera" />
 
     <application
@@ -16,7 +17,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="${GOOGLE_API_KEY}" />
-
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/fb_app_id" />
@@ -55,6 +55,10 @@
             android:parentActivityName=".ui.screen_events_map.EventsMapActivity"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.screen_event_details.EventDetailsActivity"
+            android:parentActivityName=".ui.screen_event_calendar.CalendarActivity"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.screen_user_profile.UserProfileActivity"
             android:parentActivityName=".ui.screen_events_map.EventsMapActivity"
             android:screenOrientation="portrait" />
@@ -77,11 +81,14 @@
         <activity
             android:name=".ui.screen_auth.AuthActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.screen_personalization.PersonalizationActivity"
+            android:screenOrientation="portrait">
+        </activity>
 
         <service
             android:name=".background.FetchAddressIntentService"
             android:exported="false" />
-
     </application>
 
 </manifest>

@@ -1,34 +1,26 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
-import android.util.Log;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
-import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DATE_SORT;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DISTANCE_SORT;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.ascending;
-import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.descending;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.getComparator;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.APP_DATA_REFERENCE;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EVENTS_REFERENCE;
 
 /**
  * Created by m1per on 18.04.2017.
  */
 
-public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
+class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
 
     private RxLocationProvider provider = new RxLocationProvider();
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
@@ -36,8 +28,7 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
     private ArrayList<String> distances = new ArrayList<>();
     private int position;
     private List<EventWDistance> eventsWithDistances = new ArrayList<>();
-
-
+    private List<Event> allEvents = new ArrayList<>();
 
     MyEventsFragmentPresenter(int position) {
         repository = new EventsRepository();
@@ -46,36 +37,6 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
 
     private void onViewInitialization() {
         acquireEvents();
-        FirebaseDatabase
-                .getInstance()
-                .getReference(APP_DATA_REFERENCE)
-                .child(EVENTS_REFERENCE).addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.d("ONCHILDADDED", "CHILDADD");
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.d("ONCHILDCHANGED", "CHILDCHANGE");
-                acquireEvents();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
     }
 
     private void acquireEvents() {
@@ -83,16 +44,40 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
                 .query(new MyEventsSpecifications(position) {
                 })
                 .compose(applySchedulers())
-                .subscribe(this::passCompleteData);
+                .subscribe(this::update);
     }
 
-    private void passCompleteData(List<Event> events) {
+    private void update(List<Event> events) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        boolean toRemove = false;
+        int position = 0;
+        if (allEvents.isEmpty()) {
+            allEvents = events;
+        } else {
+            for (Event event : events) {
+                toRemove = false;
+                for (Event currentEvent : allEvents) {
+                    if (currentEvent.getId().equals(event.getId())) {
+                        toRemove = true;
+                        position = allEvents.indexOf(currentEvent);
+                    }
+                }
+                if (toRemove) {
+                    allEvents.remove(position);
+                }
+                allEvents.add(event);
+            }
+        }
+        passCompleteData();
+    }
+
+    private void passCompleteData() {
         provider.getLocation()
                 .filter(location -> location != null)
                 .compose(applySchedulers())
                 .subscribe(
                         coordinates -> {
-                            eventsWithDistances = calculator.calculateDistances(coordinates, events);
+                            eventsWithDistances = calculator.calculateDistances(coordinates, allEvents);
                             view.showEvents(eventsWithDistances);
                         });
     }
@@ -103,7 +88,7 @@ public class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentVie
         onViewInitialization();
     }
 
-    public void onSortRequested(SortTypes type) {
+    void onSortRequested(SortTypes type) {
         switch (type) {
             case DISTANCE_SORT:
                 Collections.sort(eventsWithDistances, ascending(getComparator(DISTANCE_SORT)));

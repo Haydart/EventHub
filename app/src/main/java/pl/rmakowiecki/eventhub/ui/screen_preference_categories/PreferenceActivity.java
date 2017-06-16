@@ -9,7 +9,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 import butterknife.BindView;
@@ -20,9 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import pl.rmakowiecki.eventhub.R;
@@ -33,8 +30,6 @@ import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_subcategories.PreferenceDetailsActivity;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EN_LOCALE_REFERENCE;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.PL_LOCALE_REFERENCE;
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_DATA_REFERENCE;
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PREFERENCES_REFERENCE;
 
@@ -113,8 +108,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
 
     private Map<String, List<String>> getUserDataFromSharedPreferences() {
         Map<String, List<String>> categories = new HashMap<>();
-        for (PreferenceCategory category : preferences)
-        {
+        for (PreferenceCategory category : preferences) {
             Set<String> subCategories = preferencesManager.getInterests(category.getTitle());
             List<String> subCategoriesList = new ArrayList<>();
             subCategoriesList.addAll(subCategories);

@@ -3,13 +3,13 @@ package pl.rmakowiecki.eventhub.ui.screen_splash;
 import com.jenzz.noop.annotation.NoOp;
 import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.Interest;
-import pl.rmakowiecki.eventhub.model.local.Preference;
 import pl.rmakowiecki.eventhub.model.local.PreferenceLocale;
 import pl.rmakowiecki.eventhub.ui.BaseView;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
 @NoOp
 interface SplashView extends BaseView {
-    void savePreferences(List<Preference> preference);
+    void savePreferences(List<PreferenceCategory> preference);
 
     void saveInterests(List<Interest> interests);
 

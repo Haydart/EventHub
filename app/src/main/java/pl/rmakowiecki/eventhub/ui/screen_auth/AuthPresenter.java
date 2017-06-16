@@ -143,7 +143,10 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public void onSuccess() {
         view.showSuccess();
-        view.launchMainScreen();
+        Observable.timer(500, TimeUnit.MILLISECONDS)
+                .compose(applySchedulers())
+                .subscribe((ignored) -> view.launchPersonalizationScreen());
+
     }
 
     @Override

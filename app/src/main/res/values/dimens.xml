@@ -43,7 +43,7 @@
     <dimen name="user_profile_image_border_width">4dp</dimen>
     <dimen name="user_profile_image_margin">40dp</dimen>
     <dimen name="user_profile_image_height">164dp</dimen>
-    <dimen name="user_add_profile_image_size">64dp</dimen>
+    <dimen name="user_add_profile_image_size">56dp</dimen>
     <dimen name="user_add_profile_image_margin_top">24dp</dimen>
     <dimen name="user_add_profile_image_margin_right">88dp</dimen>
     <dimen name="user_profile_user_name_margin">256dp</dimen>
@@ -58,8 +58,14 @@
     <dimen name="login_image_view_size">40dp</dimen>
     <dimen name="event_details_text_height">44dp</dimen>
     <dimen name="event_details_text_margin">12dp</dimen>
+    <dimen name="event_details_description_text_view_height">20dp</dimen>
     <dimen name="event_details_attendees_margin">6dp</dimen>
-    <dimen name="event_details_attendees_height">100dp</dimen>
+    <dimen name="event_details_attendees_margin_medium">8dp</dimen>
+    <dimen name="event_details_attendees_height">120dp</dimen>
+    <dimen name="event_details_attendees_layout_height">160dp</dimen>
+    <dimen name="event_details_no_attendees_text_view_width">300dp</dimen>
+    <dimen name="event_details_button_width">150dp</dimen>
+    <dimen name="event_details_margin_right">10dp</dimen>
     <dimen name="event_details_map_height">250dp</dimen>
     <dimen name="event_details_padding">16dp</dimen>
     <dimen name="separator_line_height">2dip</dimen>
@@ -68,5 +74,14 @@
     <dimen name="attendee_name_height">28dp</dimen>
     <dimen name="text_size_small">10sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_very_large">24sp</dimen>
+    <dimen name="standard_margin_xlarge">32dp</dimen>
+    <dimen name="personalization_welcome_line_3_text_size">18sp</dimen>
+    <dimen name="personalization_welcome_line_2_text_size">24sp</dimen>
+    <dimen name="personalization_welcome_line_1_text_size">40sp</dimen>
+    <dimen name="personalization_welcome_margin_top">64dp</dimen>
+    <dimen name="personalization_name_input_margin_top">44dp</dimen>
+    <dimen name="personalization_name_input_height">72dp</dimen>
 </resources>
 

@@ -6,11 +6,15 @@ import java.util.List;
 import java.util.Locale;
 import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsRepository;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesRepository;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesSpecification;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
 
 class EventCreationPresenter extends BasePresenter<EventCreationView> {
@@ -18,11 +22,27 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
     private Calendar eventTime = Calendar.getInstance();
     private Repository<Event> eventRepository = new EventsRepository();
     private UserAuthManager userAuthManager = new UserAuthManager();
+    private List<PreferenceCategory> fullCategoriesList = new ArrayList<>();
+    private List<PreferenceCategory> pickedCategoriesList = new ArrayList<>();
 
     @Override
     protected void onViewStarted(EventCreationView view) {
         super.onViewStarted(view);
         view.showEventPlaceAddress();
+    }
+
+    @Override
+    protected void onViewVisible() {
+        super.onViewVisible();
+
+        new PreferencesRepository()
+                .query(new PreferencesSpecification() {
+                })
+                .compose(applySchedulers())
+                .subscribe((categoriesList) -> {
+                    fullCategoriesList = categoriesList;
+                    view.showCategoriesList(categoriesList);
+                });
     }
 
     void onDatePickerButtonClicked() {
@@ -58,9 +78,34 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         }
     }
 
+    void onEventCategoryClicked(int position, PreferenceCategory fullCategory) {
+        PreferenceCategory previouslyPickedCategory = null;
+        if (pickedCategoriesList.contains(fullCategory)) {
+            previouslyPickedCategory = pickedCategoriesList.get(pickedCategoriesList.indexOf(fullCategory));
+        }
+        view.displayEventSubcategoryPicker(position, fullCategory, previouslyPickedCategory);
+    }
+
+    void onSubcategoriesPicked(PreferenceCategory category, boolean[] checkedItems) {
+        List<String> chosenSubcategories = new ArrayList<>();
+        int indexOfCategory = fullCategoriesList.indexOf(category);
+        List<String> fullCategoryChildrenList = fullCategoriesList.get(indexOfCategory).getChildList();
+
+        for (int i = 0; i < checkedItems.length; i++) {
+            if (checkedItems[i]) {
+                chosenSubcategories.add(fullCategoryChildrenList.get(i));
+            }
+        }
+        PreferenceCategory pickedCategory = new PreferenceCategory(category.getTitle(), category.getImageResourceName(), chosenSubcategories);
+        if (pickedCategoriesList.contains(pickedCategory)) {
+            pickedCategoriesList.remove(pickedCategory);
+        }
+        pickedCategoriesList.add(pickedCategory);
+    }
+
     void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress) {
-        List<User> users = new ArrayList<>();
-        users.add(new User(userAuthManager.getCurrentUserId(), "EMPTY NAME", new byte[] { 2, 1, 3, 7 }));
+        List<EventAttendee> attendees = new ArrayList<>();
+        attendees.add(new EventAttendee(userAuthManager.getCurrentUserId(), "EMPTY NAME"));
         Event event = new Event(
                 "",
                 eventName,
@@ -69,7 +114,8 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
                 userAuthManager.getUserDisplayedName(),
                 eventAddress,
                 eventCoordinates.toString(),
-                users
+                pickedCategoriesList,
+                attendees
         );
         eventRepository.add(event);
     }

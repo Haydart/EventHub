@@ -7,11 +7,11 @@ import android.os.Bundle;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Interest;
-import pl.rmakowiecki.eventhub.model.local.Preference;
 import pl.rmakowiecki.eventhub.model.local.PreferenceLocale;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceActivity;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
@@ -50,7 +50,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     }
 
     @Override
-    public void savePreferences(List<Preference> preferenceList) {
+    public void savePreferences(List<PreferenceCategory> preferenceList) {
         preferencesManager.saveCategories(preferenceList);
         presenter.onComponentLoaded();
     }

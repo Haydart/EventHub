@@ -19,6 +19,7 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
+import pl.rmakowiecki.eventhub.ui.screen_personalization.PersonalizationActivity;
 
 public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthView {
 
@@ -210,7 +211,8 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     }
 
     @Override
-    public void launchMainScreen() {
+    public void launchPersonalizationScreen() {
+        startActivity(new Intent(this, PersonalizationActivity.class));
         finish();
     }
 

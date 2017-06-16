@@ -64,17 +64,17 @@
                     android:layout_height="@dimen/user_profile_image_height"
                     android:layout_marginTop="@dimen/user_profile_image_margin"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_photo_placeholder"
+                    android:src="@drawable/blank_profile"
                     app:civ_border_width="@dimen/user_profile_image_border_width"
                     app:civ_border_color="@android:color/white" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/add_image_button"
+                    android:layout_width="@dimen/user_add_profile_image_size"
+                    android:layout_height="@dimen/user_add_profile_image_size"
                     android:layout_gravity="top|right"
                     android:layout_marginRight="@dimen/user_add_profile_image_margin_right"
                     android:layout_marginTop="@dimen/user_add_profile_image_margin_top"
-                    android:layout_width="@dimen/user_add_profile_image_size"
-                    android:layout_height="@dimen/user_add_profile_image_size"
                     android:background="@drawable/ic_add_a_photo_white_18px" />
             </FrameLayout>
         </android.support.design.widget.CollapsingToolbarLayout>

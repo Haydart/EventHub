@@ -1,67 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:fillViewport="true">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context="pl.rmakowiecki.eventhub.ui.screen_event_details.EventDetailsActivity">
 
-    <LinearLayout
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="@dimen/app_bar_height"
+        android:fitsSystemWindows="true"
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.design.widget.AppBarLayout
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/toolbar_layout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme.AppBarOverlay">
+            android:layout_height="match_parent"
+            android:fitsSystemWindows="true"
+            app:contentScrim="@color/colorPrimary"
+            app:expandedTitleTextAppearance="@style/ExpandedTitleText"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <ImageView
+                android:id="@+id/toolbar_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_technology_image"
+                app:layout_collapseMode="pin" />
+
+            <View
+                android:id="@+id/header_gradient_view"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/gradient_height"
+                android:layout_gravity="bottom"
+                android:background="@drawable/image_gradient"
+                android:visibility="invisible" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/event_details_toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
-                android:background="?attr/colorPrimary"
-                app:title="Nazwa Wydarzenia"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
-        </android.support.design.widget.AppBarLayout>
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-        <FrameLayout
+        </android.support.design.widget.CollapsingToolbarLayout>
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/event_details_name"
             android:layout_width="match_parent"
             android:layout_height="@dimen/event_details_text_height"
-            android:layout_marginTop="@dimen/event_details_text_margin">
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold"
+            android:layout_marginLeft="@dimen/event_details_text_margin"
+            android:layout_marginTop="@dimen/event_details_text_margin"/>
 
-            <Button
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:layout_gravity="right"
-                android:layout_marginRight="20dp"
-                android:text="Idę!"/>
+        <TextView
+            android:id="@+id/event_details_place"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/event_details_text_height"
+            android:layout_marginLeft="@dimen/event_details_text_margin"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/event_details_text_height"
-                android:layout_marginLeft="@dimen/event_details_text_margin"
-                android:text="Miejsce"/>
+        <TextView
+            android:id="@+id/event_details_date"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/event_details_text_height"
+            android:layout_marginLeft="@dimen/event_details_text_margin"/>
 
-        </FrameLayout>
+        <TextView
+            android:id="@+id/event_details_time"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/event_details_text_height"
+            android:layout_marginLeft="@dimen/event_details_text_margin"/>
+
+        <TextView
+            android:id="@+id/event_details_organiser"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/event_details_text_height"
+            android:layout_marginLeft="@dimen/event_details_text_margin"/>
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="@dimen/event_details_text_height"
+            android:layout_height="@dimen/event_details_description_text_view_height"
             android:layout_marginLeft="@dimen/event_details_text_margin"
-            android:text="Data"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/event_details_text_height"
-            android:layout_marginLeft="@dimen/event_details_text_margin"
-            android:text="Godzina"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/event_details_text_height"
-            android:layout_marginLeft="@dimen/event_details_text_margin"
-            android:text="Organizator"/>
+            android:text="Opis: "/>
 
         <com.ms.square.android.expandabletextview.ExpandableTextView
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -69,8 +105,9 @@
             android:id="@+id/event_details_exp_text_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            expandableTextView:maxCollapsedLines="4"
+            expandableTextView:maxCollapsedLines="3"
             expandableTextView:animDuration="200">
+
             <TextView
                 android:id="@id/expandable_text"
                 android:layout_width="match_parent"
@@ -78,6 +115,7 @@
                 android:layout_marginLeft="@dimen/event_details_text_height"
                 android:layout_marginRight="@dimen/event_details_text_height"
                 android:textSize="@dimen/text_size_medium"/>
+
             <ImageButton
                 android:id="@id/expand_collapse"
                 android:layout_width="wrap_content"
@@ -85,32 +123,76 @@
                 android:padding="@dimen/event_details_padding"
                 android:layout_gravity="right|bottom"
                 android:background="@android:color/transparent"/>
+
         </com.ms.square.android.expandabletextview.ExpandableTextView>
 
+        <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
+            android:id="@+id/event_details_join_button"
+            android:layout_width="@dimen/event_details_button_width"
+            android:layout_height="@dimen/action_button_height"
+            android:layout_gravity="bottom|center"
+            android:layout_margin="@dimen/standard_margin_large"
+            app:button_shape="pill"
+            app:default_color="@color/colorPrimary"
+            app:failure_color="@color/failure_red"
+            app:failure_icon="@drawable/icon_failure_action_button"
+            app:inactive_button_alpha="1.0"
+            app:success_color="@color/success_green"
+            app:success_icon="@drawable/icon_success_action_button"
+            app:text="@string/event_details_join"
+            app:text_color="@android:color/white" />
+
         <View
-            android:layout_width="fill_parent"
+            android:id="@+id/event_details_first_line_separator"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/separator_line_height"
             android:layout_marginTop="@dimen/event_details_text_margin"
             android:background="@color/colorPrimaryDark"/>
 
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/event_details_text_height"
-            android:layout_marginLeft="@dimen/event_details_text_margin"
-            android:layout_marginTop="@dimen/event_details_text_margin"
-            android:text="Uczestnicy:"/>
+            android:layout_height="@dimen/event_details_attendees_layout_height">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/event_details_attendees_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/event_details_attendees_height"
-            android:layout_marginLeft="@dimen/event_details_attendees_margin"
-            android:scrollbars="horizontal"
-            android:orientation="horizontal"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            <LinearLayout
+                android:id="@+id/event_details_attendees_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="invisible"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/event_details_attendees_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/event_details_text_height"
+                    android:layout_marginLeft="@dimen/event_details_text_margin"
+                    android:textSize="@dimen/text_size_large"
+                    android:layout_marginTop="@dimen/event_details_attendees_margin"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/event_details_attendees_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/event_details_attendees_height"
+                    android:layout_marginLeft="@dimen/event_details_attendees_margin"
+                    android:scrollbars="horizontal"
+                    android:orientation="horizontal"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/event_details_no_attendees_text_view"
+                android:layout_width="@dimen/event_details_no_attendees_text_view_width"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical|center"
+                android:gravity="center"
+                android:text="@string/event_details_no_attendees_info"
+                android:textSize="@dimen/text_size_very_large"
+                android:layout_marginTop="@dimen/event_details_attendees_margin"/>
+
+        </FrameLayout>
 
         <View
-            android:layout_width="fill_parent"
+            android:id="@+id/event_details_second_line_separator"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/separator_line_height"
             android:layout_marginTop="@dimen/event_details_text_margin"
             android:background="@color/colorPrimaryDark"/>
@@ -120,4 +202,5 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/event_details_map_height"/>
     </LinearLayout>
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

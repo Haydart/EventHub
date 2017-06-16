@@ -30,7 +30,7 @@ interface AuthView extends BaseView {
 
     void showSuccess();
 
-    void launchMainScreen();
+    void launchPersonalizationScreen();
 
     void showNetworkConnectionError();
 
