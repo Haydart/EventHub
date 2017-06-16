@@ -4,6 +4,7 @@ import com.jenzz.noop.annotation.NoOp;
 import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.Interest;
 import pl.rmakowiecki.eventhub.model.local.PreferenceLocale;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.BaseView;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
@@ -15,7 +16,7 @@ interface SplashView extends BaseView {
 
     void saveLocales(List<PreferenceLocale> localesList);
 
-    void saveUserImage(byte[] bytes);
+    void saveUserData(User user);
 
     void checkIfFirstLaunch();
 

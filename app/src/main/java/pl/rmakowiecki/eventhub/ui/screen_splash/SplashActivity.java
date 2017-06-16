@@ -2,17 +2,16 @@ package pl.rmakowiecki.eventhub.ui.screen_splash;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Interest;
 import pl.rmakowiecki.eventhub.model.local.PreferenceLocale;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
-import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 import static pl.rmakowiecki.eventhub.background.Constants.SHARED_PREFERENCES_KEY;
@@ -66,10 +65,8 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements Spl
     }
 
     @Override
-    public void saveUserImage(byte[] imageBytes) {
-        Bitmap bitmap = BitmapUtils.getBitmapFromBytes(imageBytes);
-        if (bitmap != null)
-            preferencesManager.saveUserImage(bitmap);
+    public void saveUserData(User user) {
+        preferencesManager.saveUserDataLocally(user);
     }
 
     @Override

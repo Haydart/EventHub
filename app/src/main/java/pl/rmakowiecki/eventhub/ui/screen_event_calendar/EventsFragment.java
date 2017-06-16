@@ -78,16 +78,6 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     }
 
     @Override
-    public void showParticipationSavingSuccess() {
-
-    }
-
-    @Override
-    public void showParticipationSavingFail() {
-
-    }
-
-    @Override
     public void showActionStatus(OperationStatus operationStatus, int position) {
         EventsViewHolder viewHolder = (EventsViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
         viewHolder.showParticipationSavingStatus(operationStatus);

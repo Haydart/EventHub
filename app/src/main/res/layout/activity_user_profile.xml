@@ -10,8 +10,8 @@
         android:id="@+id/user_profile_appbar_layout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/user_profile_appbar_height"
-        android:fitsSystemWindows="false"
         android:background="@color/android_background_grey"
+        android:fitsSystemWindows="false"
         android:theme="@style/AppBarUserProfile"
         android:windowTranslucentStatus="false">
 
@@ -21,8 +21,8 @@
             android:layout_height="match_parent"
             android:fitsSystemWindows="false"
             app:contentScrim="@color/colorPrimary"
-            app:expandedTitleTextAppearance="@style/ExpandedUserProfileTitleText"
             app:expandedTitleGravity="bottom|center_horizontal"
+            app:expandedTitleTextAppearance="@style/ExpandedUserProfileTitleText"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
@@ -48,8 +48,8 @@
                 <ImageView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="fitCenter"
-                    android:background="@color/colorPrimary" />
+                    android:background="@color/colorPrimary"
+                    android:scaleType="fitCenter" />
             </com.github.florent37.arclayout.ArcLayout>
 
             <FrameLayout
@@ -65,8 +65,8 @@
                     android:layout_marginTop="@dimen/user_profile_image_margin"
                     android:scaleType="centerCrop"
                     android:src="@drawable/blank_profile"
-                    app:civ_border_width="@dimen/user_profile_image_border_width"
-                    app:civ_border_color="@android:color/white" />
+                    app:civ_border_color="@android:color/white"
+                    app:civ_border_width="@dimen/user_profile_image_border_width" />
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/add_image_button"
@@ -104,7 +104,7 @@
     <ImageView
         android:layout_width="@dimen/back_arrow_size"
         android:layout_height="@dimen/back_arrow_size"
-        android:src="@drawable/ic_arrow_back_white_24px"
+        android:layout_marginLeft="@dimen/back_arrow_margin"
         android:layout_marginTop="@dimen/back_arrow_margin"
-        android:layout_marginLeft="@dimen/back_arrow_margin"/>
+        android:src="@drawable/ic_arrow_back_white_24px" />
 </android.support.design.widget.CoordinatorLayout>

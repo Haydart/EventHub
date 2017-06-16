@@ -41,8 +41,8 @@ public final class Event implements Parcelable {
         this.attendees = attendees;
     }
 
-    public Event(String id, Event event) {
-        this.id = id;
+    public Event(Event event) {
+        this.id = event.id;
         this.name = event.name;
         this.timestamp = event.timestamp;
         this.description = event.description;

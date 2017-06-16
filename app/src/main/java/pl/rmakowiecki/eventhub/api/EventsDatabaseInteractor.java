@@ -1,4 +1,4 @@
-package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
+package pl.rmakowiecki.eventhub.api;
 
 import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
@@ -11,6 +11,7 @@ import pl.rmakowiecki.eventhub.api.BaseDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.User;
+import pl.rmakowiecki.eventhub.model.mappers.RemoteEventMapper;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -19,7 +20,7 @@ import rx.subjects.PublishSubject;
  * Created by m1per on 17.04.2017.
  */
 
-class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
+public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
     private static final String DATABASE_PATH = "app_data/events";
 
@@ -30,7 +31,7 @@ class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
         RemoteEvent remoteEvent = dataSnapshot.getValue(RemoteEvent.class);
         id = dataSnapshot.getKey();
-        event = new Event(id, new RemoteEventMapper().map(remoteEvent));
+        event = new Event(new RemoteEventMapper().map(remoteEvent, id));
         //TODO: more cases when filtering more advanced
         if (position == 1) {
             if (user != null) {
@@ -78,12 +79,12 @@ class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-
+                //TODO: implement reaction for removing event
             }
 
             @Override
             public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
+                //no-op
             }
 
             @Override
@@ -95,7 +96,7 @@ class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
         return publishSubject;
     }
 
-    void addEvent(RemoteEvent item) {
+    public void addEvent(RemoteEvent item) {
         setDatabaseQueryNode();
         databaseQueryNode
                 .push()

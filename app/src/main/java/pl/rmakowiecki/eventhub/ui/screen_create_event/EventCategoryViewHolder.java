@@ -16,14 +16,12 @@ import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategor
 class EventCategoryViewHolder extends RecyclerView.ViewHolder {
 
     private static final long ANIMATION_START_OFFSET = 200;
-
-    @BindView(R.id.event_category_image) ImageView eventCategoryImageView;
-    @BindView(R.id.check_image_view) ImageView checkImageView;
-    @BindView(R.id.event_category_name_text_view) TextView eventCategoryNameTextView;
-
     private final String resourceSource = "drawable";
     private final View view;
     private final EventCategoryClickListener itemClickListener;
+    @BindView(R.id.event_category_image) ImageView eventCategoryImageView;
+    @BindView(R.id.check_image_view) ImageView checkImageView;
+    @BindView(R.id.event_category_name_text_view) TextView eventCategoryNameTextView;
 
     EventCategoryViewHolder(View itemView, EventCategoryClickListener itemListener) {
         super(itemView);

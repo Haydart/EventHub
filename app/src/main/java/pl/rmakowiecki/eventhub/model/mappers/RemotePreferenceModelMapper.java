@@ -1,7 +1,7 @@
-package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
+package pl.rmakowiecki.eventhub.model.mappers;
 
 import pl.rmakowiecki.eventhub.model.local.RemotePreference;
-import pl.rmakowiecki.eventhub.repository.ModelMapper;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
 public class RemotePreferenceModelMapper implements ModelMapper<RemotePreference, PreferenceCategory> {
     @Override

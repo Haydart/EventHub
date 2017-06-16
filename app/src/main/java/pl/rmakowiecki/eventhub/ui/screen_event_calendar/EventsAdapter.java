@@ -15,7 +15,7 @@ import pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsFragment.OnListFra
 
 class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
-    @BindView(R.id.loadingPanel) RelativeLayout progressBar;
+    @BindView(R.id.loading_panel) RelativeLayout progressBar;
 
     private OnListFragmentInteractionListener listener;
     private List<EventWDistance> items;

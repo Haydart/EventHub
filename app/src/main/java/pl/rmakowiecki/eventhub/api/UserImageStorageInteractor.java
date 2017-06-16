@@ -1,9 +1,9 @@
 package pl.rmakowiecki.eventhub.api;
 
+import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
-
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -31,11 +31,24 @@ public class UserImageStorageInteractor extends BaseStorageInteractor<byte[]> {
         if (!setUser()) {
             return Observable.empty();
         }
-
         setStorageQueryNode();
         publishSubject = PublishSubject.create();
         storageQueryNode.getBytes(FIVE_MEGABYTES).addOnSuccessListener(bytes -> publishSubject.onNext(bytes));
 
         return publishSubject;
+    }
+
+    public void add(byte[] userImage) {
+        setUser();
+        setStorageQueryNode();
+        storageQueryNode.putBytes(userImage)
+                .addOnSuccessListener(taskSnapshot -> {
+                    // TODO: 16/06/2017 propagate back success
+                    Log.d(getClass().getSimpleName(), "User image sent successfully");
+                })
+                .addOnFailureListener(e -> {
+                    // TODO: 16/06/2017 propagate back failure
+                    Log.d(getClass().getSimpleName(), "User image sending failure");
+                });
     }
 }

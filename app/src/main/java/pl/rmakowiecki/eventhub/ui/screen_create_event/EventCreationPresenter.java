@@ -4,12 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
-import pl.rmakowiecki.eventhub.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
-import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.repository.Repository;
+import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
@@ -103,15 +102,15 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         pickedCategoriesList.add(pickedCategory);
     }
 
-    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress) {
+    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress, String organizerName) {
         List<EventAttendee> attendees = new ArrayList<>();
-        attendees.add(new EventAttendee(userAuthManager.getCurrentUserId(), "EMPTY NAME"));
+        attendees.add(new EventAttendee(userAuthManager.getCurrentUserId(), organizerName));
         Event event = new Event(
                 "",
                 eventName,
                 eventDescription,
                 eventTime.getTimeInMillis(),
-                userAuthManager.getUserDisplayedName(),
+                organizerName,
                 eventAddress,
                 eventCoordinates.toString(),
                 pickedCategoriesList,

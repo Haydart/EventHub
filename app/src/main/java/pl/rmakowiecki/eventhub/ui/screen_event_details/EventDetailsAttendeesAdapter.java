@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
-import pl.rmakowiecki.eventhub.model.local.User;
 
 public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDetailsAttendeesViewHolder> {
 
@@ -31,7 +30,7 @@ public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDeta
     @Override
     public void onBindViewHolder(EventDetailsAttendeesViewHolder holder, int position) {
         EventAttendee attendee = attendees.get(position);
-        holder.bindView(attendee.getName(), new byte[] { 2, 1, 3, 7});
+        holder.bindView(attendee.getName(), new byte[] { 2, 1, 3, 7 });
     }
 
     @Override

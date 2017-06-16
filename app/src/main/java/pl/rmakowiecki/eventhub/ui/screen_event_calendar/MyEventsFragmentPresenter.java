@@ -41,13 +41,13 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
 
     private void acquireEvents() {
         repository
-                .query(new MyEventsSpecifications(position) {
+                .query(new MyEventsSpecification(position) {
                 })
                 .compose(applySchedulers())
-                .subscribe(this::update);
+                .subscribe(this::updateEventsList);
     }
 
-    private void update(List<Event> events) {
+    private void updateEventsList(List<Event> events) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         boolean toRemove = false;
         int position = 0;

@@ -8,6 +8,7 @@ import rx.Observable;
 import rx.subjects.PublishSubject;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EVENT_ATTENDEES_REFERENCE;
+
 /**
  * Created by m1per on 13.06.2017.
  */

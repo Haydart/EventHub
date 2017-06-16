@@ -9,7 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
-
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import java.io.ByteArrayOutputStream;
@@ -113,14 +112,6 @@ public final class BitmapUtils {
 
     private static boolean isLandscapePicture(Bitmap sourceBitmap) {
         return sourceBitmap.getWidth() >= sourceBitmap.getHeight();
-    }
-
-    public static String convertBitmapToBase64(Bitmap bitmap) {
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-        byte[] b = outputStream.toByteArray();
-
-        return Base64.encodeToString(b, Base64.DEFAULT);
     }
 
     public static Bitmap convertBase64ToBitmap(String encodedImage) {

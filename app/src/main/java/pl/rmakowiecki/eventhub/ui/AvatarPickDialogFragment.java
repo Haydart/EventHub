@@ -1,4 +1,4 @@
-package pl.rmakowiecki.eventhub;
+package pl.rmakowiecki.eventhub.ui;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -11,6 +11,7 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import pl.rmakowiecki.eventhub.R;
 
 public class AvatarPickDialogFragment extends DialogFragment {
 

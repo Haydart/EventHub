@@ -10,16 +10,12 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
 import butterknife.BindView;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
-
-import org.joda.time.DateTime;
-
 import java.util.ArrayList;
 import java.util.List;
-
+import org.joda.time.DateTime;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
@@ -33,11 +29,6 @@ import static pl.rmakowiecki.eventhub.background.Constants.EVENT_DETAILS_PARCEL_
 public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> implements EventDetailsView {
 
     private final int MAX_DISPLAYED_USERS = 20;
-
-    private RecyclerView.Adapter adapter;
-    private RecyclerView.LayoutManager layoutManager;
-    private Event event;
-
     @BindView(R.id.event_details_toolbar) Toolbar eventToolbar;
     @BindView(R.id.event_details_attendees_recycler_view) RecyclerView recyclerView;
     @BindView(R.id.event_details_static_map) ImageView staticMapImageView;
@@ -50,6 +41,9 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @BindView(R.id.event_details_attendees_text_view) TextView attendeesTextView;
     @BindView(R.id.event_details_no_attendees_text_view) TextView noAttendeesTextView;
     @BindView(R.id.event_details_attendees_layout) LinearLayout attendeesLinearLayout;
+    private RecyclerView.Adapter adapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private Event event;
 
     @Override
     protected void initPresenter() {
@@ -116,8 +110,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
             setupRecyclerView();
             attendeesTextView.setText(getBaseContext().getString(R.string.event_details_attendees_count) + ": " + attendees.size());
             changeAttendeesVisibility(true);
-        }
-        else {
+        } else {
             changeAttendeesVisibility(false);
         }
     }
@@ -153,7 +146,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     }
 
     private void initStaticMap() {
-        String location = event.getLocationCoordinates().replaceAll("\\s+","");
+        String location = event.getLocationCoordinates().replaceAll("\\s+", "");
         String marker = "&markers=color:purple|" + location + "&";
         String url = "http://maps.google.com/maps/api/staticmap?center=" + location + "&zoom=15&size=800x400&sensor=false" + marker;
         Picasso

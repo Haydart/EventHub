@@ -10,7 +10,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Subscription;
 
-public abstract class BaseApiInteractor<I extends ResponseInterceptor> extends RemoteServiceInteractor<I> {
+public abstract class BaseApiInteractor {
     protected Retrofit retrofit;
     protected List<Subscription> apiCallsSubscriptions;
 

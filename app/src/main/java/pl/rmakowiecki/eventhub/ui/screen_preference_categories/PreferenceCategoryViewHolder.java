@@ -18,14 +18,12 @@ import pl.rmakowiecki.eventhub.R;
 class PreferenceCategoryViewHolder extends ParentViewHolder {
 
     private static final int ANIMATION_START_OFFSET = 200;
+    private final String resourceSource = "drawable";
     @BindView(R.id.preference_category_list_item_image_view) ImageView categoryImageView;
     @BindView(R.id.preference_category_list_checked_image_view) ImageView checkImageView;
     @BindView(R.id.preference_category_list_item_category_name) TextView categoryNameView;
     @BindView(R.id.preference_category_list_item_progress_bar) ProgressBar categoryProgressBar;
     @BindView(R.id.preference_category_list_item_dark_view) View darkView;
-
-    private final String resourceSource = "drawable";
-
     private View view;
     private PreferenceCategory category;
     private PreferenceItemListener itemListener;

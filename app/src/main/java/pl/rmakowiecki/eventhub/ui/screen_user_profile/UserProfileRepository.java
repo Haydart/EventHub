@@ -1,57 +1,36 @@
 package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import java.util.Collections;
-import java.util.List;
+import pl.rmakowiecki.eventhub.api.UserImageStorageInteractor;
+import pl.rmakowiecki.eventhub.api.UserProfileInteractor;
 import pl.rmakowiecki.eventhub.model.local.User;
-import pl.rmakowiecki.eventhub.repository.QueryList;
+import pl.rmakowiecki.eventhub.repository.QuerySingle;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PROFILE_IMAGE_REFERENCE;
+public class UserProfileRepository implements Repository<User>, QuerySingle<User> {
 
-public class UserProfileRepository implements Repository<User>, QueryList<User> {
+    private FirebaseUser firebaseUser;
+    private UserImageStorageInteractor imageStorageInteractor;
+    private UserProfileInteractor userProfileDataInteractor;
 
-    UserProfilePresenter presenter;
-    private StorageReference storageReference;
-    private FirebaseUser user;
-
-    public UserProfileRepository(UserProfilePresenter profilePresenter, FirebaseUser firebaseUser) {
-        user = firebaseUser;
-        presenter = profilePresenter;
-        if (user != null) {
-            storageReference = FirebaseStorage.getInstance().getReference()
-                    .child(USER_PROFILE_IMAGE_REFERENCE)
-                    .child(user.getUid());
-        }
+    public UserProfileRepository() {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        imageStorageInteractor = new UserImageStorageInteractor();
+        userProfileDataInteractor = new UserProfileInteractor();
     }
 
     @Override
-    public void add(User item) {
-        add(Collections.singletonList(item));
+    public void add(User user) {
+        userProfileDataInteractor.add(user.getName());
+        imageStorageInteractor.add(user.getPicture());
     }
 
     @Override
     public void add(Iterable<User> items) {
-        if (storageReference == null) {
-            presenter.onProfileSaveFailure();
-        }
-        else {
-            presenter.onProfileSaveProcessing();
-
-            for (User item : items) {
-                UploadTask uploadTask = storageReference.putBytes(item.getPicture());
-                uploadTask.addOnFailureListener(exception -> {
-                    presenter.onProfileSaveFailure();
-                }).addOnSuccessListener(taskSnapshot -> {
-                    presenter.onProfileSaveSuccess();
-                });
-            }
-        }
+        //no-op
     }
 
     @Override
@@ -65,8 +44,10 @@ public class UserProfileRepository implements Repository<User>, QueryList<User> 
     }
 
     @Override
-    public Observable<List<User>> query(Specification specification) {
-        // TODO: 03.05.2017
-        return null;
+    public Observable<User> querySingle(Specification specification) {
+        return Observable.combineLatest(
+                imageStorageInteractor.getData(),
+                userProfileDataInteractor.getData(),
+                (userPhoto, userName) -> new User(userName, userPhoto));
     }
 }
