@@ -70,7 +70,7 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
 
     @Override
     public void onListFragmentInteraction(Event event) {
-        //TODO: will be used and named properly during list actions development
+        //no-op
     }
 
     @Override

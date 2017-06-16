@@ -7,6 +7,16 @@ import java.util.List;
 
 // TODO: 22.03.2017 Synchronize RemotePreference with PreferenceCategory and PreferenceInterest
 public class PreferenceCategory implements Parent<String>, Parcelable {
+    public static final Parcelable.Creator<PreferenceCategory> CREATOR
+            = new Parcelable.Creator<PreferenceCategory>() {
+        public PreferenceCategory createFromParcel(Parcel parcel) {
+            return new PreferenceCategory(parcel);
+        }
+
+        public PreferenceCategory[] newArray(int size) {
+            return new PreferenceCategory[size];
+        }
+    };
     private final String title;
     private final String imageResourceName;
     private List<String> childrenList;
@@ -40,17 +50,6 @@ public class PreferenceCategory implements Parent<String>, Parcelable {
     public boolean isInitiallyExpanded() {
         return false;
     }
-
-    public static final Parcelable.Creator<PreferenceCategory> CREATOR
-            = new Parcelable.Creator<PreferenceCategory>() {
-        public PreferenceCategory createFromParcel(Parcel parcel) {
-            return new PreferenceCategory(parcel);
-        }
-
-        public PreferenceCategory[] newArray(int size) {
-            return new PreferenceCategory[size];
-        }
-    };
 
     @Override
     public int describeContents() {

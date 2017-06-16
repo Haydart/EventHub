@@ -1,51 +1,55 @@
 package pl.rmakowiecki.eventhub.api;
 
 import android.util.Log;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Map;
+import pl.rmakowiecki.eventhub.api.BaseDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventAttendee;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.model.mappers.RemoteEventMapper;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-import static android.content.ContentValues.TAG;
-
 /**
  * Created by m1per on 17.04.2017.
  */
 
-public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>> {
+public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
     private static final String DATABASE_PATH = "app_data/events";
 
-    private List<Event> parseEventData(DataSnapshot dataSnapshot, int position) {
+    private Event parseEventData(DataSnapshot dataSnapshot, int position) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        Event event;
+        String id;
 
-        List<Event> events = new ArrayList<>();
-        RemoteEvent event;
-
-        for (DataSnapshot child : dataSnapshot.getChildren()) {
-            event = child.getValue(RemoteEvent.class);
-            events.add(new RemoteEventMapper().map(event));
-        }
+        RemoteEvent remoteEvent = dataSnapshot.getValue(RemoteEvent.class);
+        id = dataSnapshot.getKey();
+        event = new Event(new RemoteEventMapper().map(remoteEvent, id));
         //TODO: more cases when filtering more advanced
-        switch (position) {
-            case 1:
-                events = filterForMyEvents((ArrayList<Event>) events);
-                break;
+        if (position == 1) {
+            if (user != null) {
+                event = filterForMyEvents(event, user.getUid());
+            }
         }
-        return events;
+
+        return event;
     }
 
-    private ArrayList<Event> filterForMyEvents(ArrayList<Event> events) {
-        ArrayList<Event> filteredList = new ArrayList<>();
-        for (Event event : events) {
-            filteredList.add(event);
+    private Event filterForMyEvents(Event event, String userId) {
+        for (EventAttendee attendee : event.getAttendees()) {
+            if (attendee.getId().equals(userId)) {
+                return event;
+            }
         }
-        return filteredList;
+
+        return null;
     }
 
     @Override
@@ -55,25 +59,40 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<List<Event>
     }
 
     @Override
-    public Observable<List<Event>> getData() {
+    public Observable<Event> getData() {
         return Observable.empty();
     }
 
-    public Observable<List<Event>> getData(int position) {
+    public Observable<Event> getData(int position) {
         setDatabaseQueryNode();
         publishSubject = PublishSubject.create();
-        databaseQueryNode.addValueEventListener(new ValueEventListener() {
+        databaseQueryNode.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 publishSubject.onNext(parseEventData(dataSnapshot, position));
-                publishSubject.onCompleted();
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                publishSubject.onNext(parseEventData(dataSnapshot, position));
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                //TODO: implement reaction for removing event
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                //no-op
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.d(TAG, "The read failed: " + databaseError.getCode());
+
             }
         });
+
         return publishSubject;
     }
 

@@ -38,9 +38,8 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         EventCategoryClickListener {
 
     public static final int APP_BAR_ANIMATION_DURATION = 300;
-    private static final String DIALOG_FRAGMENT_TAG = "dialog_fragment";
     public static final int GRID_SPAN_COUNT = 3;
-
+    private static final String DIALOG_FRAGMENT_TAG = "dialog_fragment";
     @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.app_bar) AppBarLayout appBarLayout;

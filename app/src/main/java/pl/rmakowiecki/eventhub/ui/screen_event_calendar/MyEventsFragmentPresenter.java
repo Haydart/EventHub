@@ -1,5 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +28,7 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
     private ArrayList<String> distances = new ArrayList<>();
     private int position;
     private List<EventWDistance> eventsWithDistances = new ArrayList<>();
+    private List<Event> allEvents = new ArrayList<>();
 
     MyEventsFragmentPresenter(int position) {
         repository = new EventsRepository();
@@ -41,16 +44,40 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
                 .query(new MyEventsSpecification(position) {
                 })
                 .compose(applySchedulers())
-                .subscribe(this::passCompleteData);
+                .subscribe(this::updateEventsList);
     }
 
-    private void passCompleteData(List<Event> events) {
+    private void updateEventsList(List<Event> events) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        boolean toRemove = false;
+        int position = 0;
+        if (allEvents.isEmpty()) {
+            allEvents = events;
+        } else {
+            for (Event event : events) {
+                toRemove = false;
+                for (Event currentEvent : allEvents) {
+                    if (currentEvent.getId().equals(event.getId())) {
+                        toRemove = true;
+                        position = allEvents.indexOf(currentEvent);
+                    }
+                }
+                if (toRemove) {
+                    allEvents.remove(position);
+                }
+                allEvents.add(event);
+            }
+        }
+        passCompleteData();
+    }
+
+    private void passCompleteData() {
         provider.getLocation()
                 .filter(location -> location != null)
                 .compose(applySchedulers())
                 .subscribe(
                         coordinates -> {
-                            eventsWithDistances = calculator.calculateDistances(coordinates, events);
+                            eventsWithDistances = calculator.calculateDistances(coordinates, allEvents);
                             view.showEvents(eventsWithDistances);
                         });
     }
