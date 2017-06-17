@@ -8,14 +8,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import pl.rmakowiecki.eventhub.model.local.Interest;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EN_LOCALE_REFERENCE;
-import static pl.rmakowiecki.eventhub.util.FirebaseConstants.PL_LOCALE_REFERENCE;
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_DATA_REFERENCE;
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PREFERENCES_REFERENCE;
 
@@ -34,26 +31,6 @@ public class InterestsDatabaseInteractor extends BaseDatabaseInteractor<List<Int
                 .getReference(USER_DATA_REFERENCE)
                 .child(user.getUid())
                 .child(USER_PREFERENCES_REFERENCE);
-    }
-
-    private List<Interest> parseInterestData(DataSnapshot dataSnapshot) {
-        Map<String, List<Object>> interestsMap = (HashMap<String, List<Object>>)dataSnapshot.getValue();
-        return getInterestListFromMap(interestsMap);
-    }
-
-    private List<Interest> getInterestListFromMap(Map<String, List<Object>> interestsMap) {
-        List<Interest> interestsList = new ArrayList<>();
-
-        if (interestsMap != null && !interestsMap.isEmpty()) {
-            for (Map.Entry<String, List<Object>> entry : interestsMap.entrySet()) {
-                List<String> subCategories = new ArrayList<>();
-                for (Object subCategory : entry.getValue())
-                    subCategories.add(subCategory.toString());
-                interestsList.add(new Interest(entry.getKey(), subCategories));
-            }
-        }
-
-        return interestsList;
     }
 
     @Override
@@ -78,5 +55,25 @@ public class InterestsDatabaseInteractor extends BaseDatabaseInteractor<List<Int
         });
 
         return publishSubject;
+    }
+
+    private List<Interest> parseInterestData(DataSnapshot dataSnapshot) {
+        Map<String, List<Object>> interestsMap = (HashMap<String, List<Object>>) dataSnapshot.getValue();
+        return getInterestListFromMap(interestsMap);
+    }
+
+    private List<Interest> getInterestListFromMap(Map<String, List<Object>> interestsMap) {
+        List<Interest> interestsList = new ArrayList<>();
+
+        if (interestsMap != null && !interestsMap.isEmpty()) {
+            for (Map.Entry<String, List<Object>> entry : interestsMap.entrySet()) {
+                List<String> subCategories = new ArrayList<>();
+                for (Object subCategory : entry.getValue())
+                    subCategories.add(subCategory.toString());
+                interestsList.add(new Interest(entry.getKey(), subCategories));
+            }
+        }
+
+        return interestsList;
     }
 }

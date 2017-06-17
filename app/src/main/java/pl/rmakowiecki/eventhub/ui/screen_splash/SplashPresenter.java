@@ -51,7 +51,7 @@ class SplashPresenter extends BasePresenter<SplashView> {
         new PreferencesRepository()
                 .query(new PreferencesSpecification() {})
                 .compose(applySchedulers())
-                .subscribe(view::savePreferences);
+                .subscribe(preference -> view.savePreferences(preference));
     }
 
     private void queryInterests() {

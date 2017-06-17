@@ -168,28 +168,18 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
-    public void onResume(){
-        super.onResume();
-        presenter.onActivityResume();
-    }
-
-    @Override
     public void updateNavigationDrawer(boolean loggedIn) {
         navigationView.getMenu().findItem(R.id.nav_sign_in).setVisible(!loggedIn);
         navigationView.getMenu().findItem(R.id.nav_logout).setVisible(loggedIn);
         navigationView.getMenu().findItem(R.id.nav_user_profile).setVisible(loggedIn);
-        ImageView headerImageView = (ImageView)navigationView.getHeaderView(0).findViewById(R.id.navbar_header_image_view);
+        ImageView headerImageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navbar_header_image_view);
 
-        int visibility = View.INVISIBLE;
         if (loggedIn) {
             Bitmap image = preferencesManager.getUserImage();
             if (image != null) {
                 headerImageView.setImageBitmap(image);
-                visibility = View.VISIBLE;
             }
         }
-
-        headerImageView.setVisibility(visibility);
     }
 
     @Override
@@ -200,7 +190,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     private void initNavigationDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, android.R.string.ok, android.R.string.cancel);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
@@ -234,12 +224,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private void initRevealSheetLayout() {
         revealSheetLayout.setFab(bottomSheetFab);
         revealSheetLayout.setFabAnimationEndListener(this);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        presenter.onViewInitialization();
     }
 
     @Override
