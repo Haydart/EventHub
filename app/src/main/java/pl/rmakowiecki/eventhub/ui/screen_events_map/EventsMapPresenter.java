@@ -159,7 +159,12 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     void onLocationAddressFetched(String addressOutput) {
         clickedMarkerAddress = addressOutput;
         view.setBottomSheetData(addressOutput, focusedMarkerLocation.toString());
-        view.showBottomSheetFab();
+        view.showEventCreationButton();
+    }
+
+    void onEventCreationButtonClicked() {
+        view.setEventCreationButtonRevealColor(userAuthManager.isUserAuthorized() ? RevealColor.PRIMARY_COLOR : RevealColor.WHITE);
+        view.animateRevealEventAddButton();
     }
 
     void onPlaceSearchError() {
@@ -226,8 +231,12 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
         view.launchPreferencesScreen();
     }
 
-    void onFabAnimationComplete() {
-        view.launchEventCreationScreen(clickedMarkerAddress, focusedMarkerLocation);
+    void onEventCreationButtonAnimationComplete() {
+        if (userAuthManager.isUserAuthorized()) {
+            view.launchEventCreationScreen(clickedMarkerAddress, focusedMarkerLocation);
+        } else {
+            view.launchAppFeaturesScreen();
+        }
     }
 
     void onSignInMenuOptionClicked() {

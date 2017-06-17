@@ -8,12 +8,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetBehavior;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -99,6 +100,29 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private AddressResultReceiver addressResultReceiver;
     private PreferencesManager preferencesManager;
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        checkLocationPermissions();
+        initMapBottomSheet();
+        initNavigationDrawer();
+        initSearchBar();
+        initRevealSheetLayout();
+        addressResultReceiver = new AddressResultReceiver(this, new Handler());
+        preferencesManager = new PreferencesManager(this);
+        setNavigationDrawerJoinButtonClickListener();
+        ((CoordinatorLayout.LayoutParams) mapSearchBar.getLayoutParams()).setMargins(0, getStatusBarHeight(), 0, 0);
+    }
+
+    public int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
     @OnClick(R.id.navigation_drawer_icon)
     public void onMenuIconClicked() {
         drawer.openDrawer(GravityCompat.START, true);
@@ -111,27 +135,13 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     @OnClick(R.id.bottom_sheet_fab)
     public void onBottomSheetFabClicked() {
+        presenter.onEventCreationButtonClicked();
+    }
+
+    @Override
+    public void animateRevealEventAddButton() {
         revealSheetLayout.setVisibility(View.VISIBLE);
         revealSheetLayout.expandFab();
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        checkLocationPermissions();
-        initMapBottomSheet();
-        initNavigationDrawer();
-        initSearchBar();
-        initRevealSheetLayout();
-        addressResultReceiver = new AddressResultReceiver(this, new Handler());
-        preferencesManager = new PreferencesManager(this);
-        setNavigationDrawerJoinButtonClickListener();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Toast.makeText(this, "PAUSED", Toast.LENGTH_SHORT).show();
     }
 
     private void setNavigationDrawerJoinButtonClickListener() {
@@ -184,7 +194,6 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     @Override
     public void updateNavigationDrawer(boolean loggedIn) {
-        Log.d(getClass().getSimpleName(), "UPDATE NAV DRAWER, LOGGED = " + loggedIn);
         navigationView.getMenu().findItem(R.id.nav_sign_in).setVisible(!loggedIn);
         navigationView.getMenu().findItem(R.id.nav_logout).setVisible(loggedIn);
         navigationView.getMenu().findItem(R.id.nav_user_profile).setVisible(loggedIn);
@@ -206,7 +215,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
-    public void showBottomSheetFab() {
+    public void showEventCreationButton() {
         bottomSheetFab.setVisibility(View.VISIBLE);
         bottomSheetFab.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_up_fade_in));
     }
@@ -285,12 +294,17 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     @Override
     public void onFabAnimationEnd() {
-        presenter.onFabAnimationComplete();
+        presenter.onEventCreationButtonAnimationComplete();
     }
 
     @Override
     public void launchAuthScreen() {
         startActivity(new Intent(this, AuthActivity.class));
+    }
+
+    @Override
+    public void setEventCreationButtonRevealColor(RevealColor revealColor) {
+        revealSheetLayout.setColor(ContextCompat.getColor(this, revealColor.getColor()));
     }
 
     @Override
@@ -300,13 +314,15 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, placeCoordinates);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivityForResult(intent, EVENT_CREATION_REQUEST_CODE);
-        getWindow().setBackgroundDrawableResource(R.drawable.ic_image_placeholder);
         overridePendingTransition(0, 0);
     }
 
     @Override
     public void launchAppFeaturesScreen() {
-        startActivity(new Intent(this, AppFeaturesActivity.class));
+        Intent intent = new Intent(this, AppFeaturesActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+        startActivityForResult(intent, EVENT_CREATION_REQUEST_CODE);
+        overridePendingTransition(0, 0);
     }
 
     @Override

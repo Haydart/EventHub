@@ -39,7 +39,9 @@
             android:name=".ui.screen_events_map.EventsMapActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.screen_splash.SplashActivity">
+        <activity
+            android:name=".ui.screen_splash.SplashActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -65,10 +67,12 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:screenOrientation="portrait" />
         <activity
             android:name="com.facebook.CustomTabActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -80,15 +84,11 @@
         </activity>
         <activity
             android:name=".ui.screen_auth.AuthActivity"
+            android:parentActivityName=".ui.screen_events_map.EventsMapActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.screen_personalization.PersonalizationActivity"
             android:screenOrientation="portrait">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
         </activity>
 
         <service

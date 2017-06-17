@@ -15,7 +15,6 @@ import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.DefaultSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
 import com.github.florent37.arclayout.ArcLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
@@ -31,7 +30,6 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
     @BindView(R.id.content_layout) LinearLayout contentLayout;
     @BindView(R.id.arc_layout) ArcLayout arcLayout;
 
-    private FirebaseAuth firebaseAuth;
     private int[] featuresRedIds = {
             R.drawable.dziad,
             R.drawable.mudzin,
@@ -52,14 +50,7 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        firebaseAuth = FirebaseAuth.getInstance();
         initImageSlider();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        presenter.onViewResumed();
     }
 
     private void initImageSlider() {
@@ -91,10 +82,35 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
     }
 
     @Override
+    public void animateInTransition(int screenTransitionDuration) {
+        animateDescriptionTextIn(screenTransitionDuration);
+        animateSignUpButtonIn();
+        animateSliderLayoutIn(screenTransitionDuration);
+    }
+
+    private void animateDescriptionTextIn(int screenTransitionDuration) {
+        featureDescriptionTextView.setVisibility(View.VISIBLE);
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.fade_in);
+        animation.setDuration(screenTransitionDuration);
+        featureDescriptionTextView.startAnimation(animation);
+    }
+
+    private void animateSignUpButtonIn() {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_from_down);
+        signUpActionButton.startAnimation(animation);
+    }
+
+    private void animateSliderLayoutIn(int screenTransitionDuration) {
+        Animation animation = AnimationUtils.loadAnimation(this, R.anim.slide_from_up);
+        animation.setDuration(screenTransitionDuration);
+        arcLayout.startAnimation(animation);
+    }
+
+    @Override
     public void animateOutTransition(int screenTransitionDuration) {
         featureDescriptionTextView.setVisibility(View.INVISIBLE);
         animateSignUpButtonOut();
-        animateSliderLayout(screenTransitionDuration);
+        animateSliderLayoutOut(screenTransitionDuration);
     }
 
     @Override
@@ -104,14 +120,7 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
         finish();
     }
 
-    @Override
-    public void makeViewsVisible() {
-        arcLayout.setVisibility(View.VISIBLE);
-        signUpActionButton.setVisibility(View.VISIBLE);
-        featureDescriptionTextView.setVisibility(View.VISIBLE);
-    }
-
-    private void animateSliderLayout(int screenTransitionDuration) {
+    private void animateSliderLayoutOut(int screenTransitionDuration) {
         Animation animation = AnimationUtils.loadAnimation(this, R.anim.exit_slide_up);
         animation.setAnimationListener(new ViewAnimationListenerAdapter() {
             @Override
@@ -132,6 +141,13 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
             }
         });
         signUpActionButton.startAnimation(animation);
+    }
+
+    @Override
+    public void makeViewsVisible() {
+        arcLayout.setVisibility(View.VISIBLE);
+        signUpActionButton.setVisibility(View.VISIBLE);
+        featureDescriptionTextView.setVisibility(View.VISIBLE);
     }
 
     @Override

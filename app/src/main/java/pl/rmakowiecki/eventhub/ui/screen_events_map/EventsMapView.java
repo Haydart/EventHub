@@ -44,11 +44,15 @@ interface EventsMapView extends BaseView {
 
     void launchUserProfileScreen();
 
+    void animateRevealEventAddButton();
+
     void updateNavigationDrawer(boolean loggedIn);
 
-    void showBottomSheetFab();
+    void showEventCreationButton();
 
     void launchEventCreationScreen(String markerAddress, LocationCoordinates clickedMarkerAddress);
 
     void launchAuthScreen();
+
+    void setEventCreationButtonRevealColor(RevealColor revealColor);
 }

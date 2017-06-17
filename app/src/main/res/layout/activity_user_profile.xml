@@ -12,7 +12,7 @@
         android:layout_height="@dimen/user_profile_appbar_height"
         android:background="@color/android_background_grey"
         android:fitsSystemWindows="false"
-        android:theme="@style/AppBarUserProfile"
+        android:theme="@style/AppBarTheme"
         android:windowTranslucentStatus="false">
 
         <android.support.design.widget.CollapsingToolbarLayout

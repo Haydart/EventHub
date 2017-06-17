@@ -1,6 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
@@ -46,6 +47,11 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @BindString(R.string.button_failure_credentials_discarded) String credentialsDiscardedErrorMessage;
 
     private CallbackManager facebookCallbackManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     protected void onStart() {
