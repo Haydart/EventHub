@@ -5,10 +5,10 @@ import pl.rmakowiecki.eventhub.api.EventsDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.mappers.EventMapper;
 import pl.rmakowiecki.eventhub.model.mappers.ModelMapper;
-import pl.rmakowiecki.eventhub.model.remote.OperationStatus;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.repository.QueryList;
-import pl.rmakowiecki.eventhub.repository.Repository;
+import pl.rmakowiecki.eventhub.repository.AddOperationRepository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
@@ -16,7 +16,7 @@ import rx.Observable;
  * Created by m1per on 17.04.2017.
  */
 
-public class EventsRepository implements Repository<Event>, QueryList<Event> {
+public class EventsRepository implements AddOperationRepository<Event, GenericQueryStatus>, QueryList<Event> {
 
     public static final int BUFFER_TIMESPAN = 200;
 
@@ -31,28 +31,18 @@ public class EventsRepository implements Repository<Event>, QueryList<Event> {
     }
 
     @Override
-    public void add(Event item) {
-        eventDBInteractor.addEvent(eventMapper.map(item));
+    public Observable<GenericQueryStatus> add(Event item) {
+        return eventDBInteractor.addEvent(eventMapper.map(item));
     }
 
-    public Observable<OperationStatus> updateEventParticipants(String eventId) {
+    public Observable<GenericQueryStatus> updateEventParticipants(String eventId) {
         return eventPatricipantsDBInteractor
                 .addEventParticipant(eventId);
     }
 
     @Override
-    public void add(Iterable<Event> items) {
-        //no-op
-    }
-
-    @Override
-    public void update(Event item) {
-        //no-op
-    }
-
-    @Override
-    public void remove(Event item) {
-        //no-op
+    public Observable<GenericQueryStatus> add(Iterable<Event> items) {
+        return Observable.empty();
     }
 
     @Override

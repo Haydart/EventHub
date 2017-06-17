@@ -7,7 +7,6 @@ import java.util.Locale;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
-import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsRepository;
@@ -19,7 +18,7 @@ import pl.rmakowiecki.eventhub.util.UserAuthManager;
 class EventCreationPresenter extends BasePresenter<EventCreationView> {
 
     private Calendar eventTime = Calendar.getInstance();
-    private Repository<Event> eventRepository = new EventsRepository();
+    private EventsRepository eventRepository = new EventsRepository();
     private UserAuthManager userAuthManager = new UserAuthManager();
     private List<PreferenceCategory> fullCategoriesList = new ArrayList<>();
     private List<PreferenceCategory> pickedCategoriesList = new ArrayList<>();
