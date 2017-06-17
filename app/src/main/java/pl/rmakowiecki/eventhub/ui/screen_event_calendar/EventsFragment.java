@@ -5,14 +5,13 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
+import pl.rmakowiecki.eventhub.model.remote.OperationStatus;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
@@ -22,7 +21,7 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
 
     private int columnCount = 1;
     private OnListFragmentInteractionListener listener;
-    private RecyclerView.Adapter adapter;
+    private EventsAdapter adapter;
     private View view;
     private RecyclerView recyclerView;
     private int page;
@@ -72,10 +71,16 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public void initEvents(List<EventWDistance> ewd) {
         Context context = getContext();
-        adapter = new EventsAdapter(context, ewd, listener);
+        adapter = new EventsAdapter(context, ewd, listener, presenter);
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void showActionStatus(OperationStatus operationStatus, int position) {
+        EventsViewHolder viewHolder = (EventsViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
+        viewHolder.showParticipationSavingStatus(operationStatus);
     }
 
     @Override

@@ -53,5 +53,4 @@ public class EventCategoryAdapter extends RecyclerView.Adapter<EventCategoryView
     public int getItemCount() {
         return items.size();
     }
-
 }

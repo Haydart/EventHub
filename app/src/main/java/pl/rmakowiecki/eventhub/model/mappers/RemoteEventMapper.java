@@ -23,6 +23,20 @@ public class RemoteEventMapper implements ModelMapper<RemoteEvent, Event> {
         );
     }
 
+    public Event map(RemoteEvent model, String id) {
+        return new Event(
+                id,
+                model.getName(),
+                model.getDescription(),
+                model.getTimestamp(),
+                model.getOrganizer(),
+                model.getAddress(),
+                model.getLocationCoordinates(),
+                new ArrayList<>(),
+                convertToListRepresentation(model.getAttendees())
+        );
+    }
+
     private List<EventAttendee> convertToListRepresentation(Map<String, String> attendeeMap) {
         List<EventAttendee> result = new ArrayList<>(attendeeMap.size());
         for (Map.Entry<String, String> attendee : attendeeMap.entrySet()) {

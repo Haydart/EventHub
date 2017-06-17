@@ -7,14 +7,15 @@ import android.widget.TextView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import java.util.concurrent.TimeUnit;
+import butterknife.OnClick;
 import org.joda.time.DateTime;
 import org.joda.time.Days;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
-
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
+import pl.rmakowiecki.eventhub.model.remote.OperationStatus;
+import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_event_details.EventDetailsActivity;
 
 import static pl.rmakowiecki.eventhub.background.Constants.EVENT_DETAILS_PARCEL_KEY;
@@ -25,6 +26,7 @@ import static pl.rmakowiecki.eventhub.background.Constants.EVENT_DETAILS_PARCEL_
 
 class EventsViewHolder extends RecyclerView.ViewHolder {
 
+    final View view;
     @BindView(R.id.name_text_view) TextView nameTextView;
     @BindView(R.id.organizer_text_view) TextView organizerTextView;
     @BindView(R.id.date_text_view) TextView dateTextView;
@@ -32,11 +34,18 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.day_of_month_text_view) TextView dayDateTextView;
     @BindView(R.id.day_short_name_text_view) TextView dayNameTextView;
     @BindView(R.id.distance_text_view) TextView distanceTextView;
+    @BindView(R.id.attend_event_action_button) ActionButton attendButton;
     @BindString(R.string.day_today) String today;
     @BindString(R.string.day_tomorrow) String tomorrow;
-
+    private EventsFragmentPresenter presenter;
     private EventWDistance eventWDistance;
-    final View view;
+
+    EventsViewHolder(View view, EventsFragmentPresenter presenter) {
+        super(view);
+        ButterKnife.bind(this, view);
+        this.view = view;
+        this.presenter = presenter;
+    }
 
     EventsViewHolder(View view) {
         super(view);
@@ -44,9 +53,20 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         this.view = view;
     }
 
-    void bindView(EventWDistance eventDistance) {
+    @OnClick(R.id.attend_event_action_button)
+    protected void preferencesButtonClick() {
+        presenter.addEventParticipant(eventWDistance.getEvent().getId(), getAdapterPosition());
+    }
 
-        //TODO: JUST A RARE SAMPLE FO DEVELOPMENT, NEEDS LOTS OF WORK
+    public void showParticipationSavingStatus(OperationStatus status) {
+        if (status == OperationStatus.SUCCESS) {
+            attendButton.showSuccess();
+        } else {
+            attendButton.showFailure("");
+        }
+    }
+
+    void bindView(EventWDistance eventDistance) {
         eventWDistance = eventDistance;
         view.setOnClickListener(v -> {
             Intent intent = new Intent(view.getContext(), EventDetailsActivity.class);
@@ -95,5 +115,4 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         addressTextView.setText(eventWDistance.getEvent().getAddress());
         distanceTextView.setText(eventWDistance.getDistanceDisplayable());
     }
-
 }

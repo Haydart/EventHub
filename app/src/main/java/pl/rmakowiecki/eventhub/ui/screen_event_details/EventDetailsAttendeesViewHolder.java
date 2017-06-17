@@ -4,12 +4,10 @@ import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
-import com.squareup.picasso.Picasso;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
+import com.squareup.picasso.Picasso;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
 
@@ -34,8 +32,7 @@ public class EventDetailsAttendeesViewHolder extends ParentViewHolder {
                     .with(attendeeImageView.getContext())
                     .load(R.drawable.ic_more_horiz_black_24dp)
                     .into(attendeeImageView);
-        }
-        else if (attendeePicture != null) {
+        } else if (attendeePicture != null) {
             Bitmap picture = BitmapUtils.getBitmapFromBytes(attendeePicture);
             if (picture != null)
                 attendeeImageView.setImageBitmap(picture);

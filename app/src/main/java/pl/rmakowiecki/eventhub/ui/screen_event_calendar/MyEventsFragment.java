@@ -25,7 +25,6 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
     private View view;
     private RecyclerView recyclerView;
 
-
     public MyEventsFragment() {
         //no-op
     }

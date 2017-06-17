@@ -5,6 +5,7 @@ import pl.rmakowiecki.eventhub.api.EventsDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.mappers.EventMapper;
 import pl.rmakowiecki.eventhub.model.mappers.ModelMapper;
+import pl.rmakowiecki.eventhub.model.remote.OperationStatus;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import pl.rmakowiecki.eventhub.repository.QueryList;
 import pl.rmakowiecki.eventhub.repository.Repository;
@@ -17,16 +18,26 @@ import rx.Observable;
 
 public class EventsRepository implements Repository<Event>, QueryList<Event> {
 
-    private EventsDatabaseInteractor databaseInteractor;
+    public static final int BUFFER_TIMESPAN = 200;
+
+    private EventsDatabaseInteractor eventDBInteractor;
+    private EventParticipantsDatabaseInteractor eventPatricipantsDBInteractor;
     private ModelMapper<Event, RemoteEvent> eventMapper = new EventMapper();
 
     public EventsRepository() {
-        databaseInteractor = new EventsDatabaseInteractor();
+
+        eventDBInteractor = new EventsDatabaseInteractor();
+        eventPatricipantsDBInteractor = new EventParticipantsDatabaseInteractor();
     }
 
     @Override
     public void add(Event item) {
-        databaseInteractor.addEvent(eventMapper.map(item));
+        eventDBInteractor.addEvent(eventMapper.map(item));
+    }
+
+    public Observable<OperationStatus> updateEventParticipants(String eventId) {
+        return eventPatricipantsDBInteractor
+                .addEventParticipant(eventId);
     }
 
     @Override
@@ -47,6 +58,10 @@ public class EventsRepository implements Repository<Event>, QueryList<Event> {
     @Override
     public Observable<List<Event>> query(Specification specification) {
         MyEventsSpecification spec = (MyEventsSpecification) specification;
-        return databaseInteractor.getData(spec.getTabPosition());
+        return eventDBInteractor
+                .getData(spec.getTabPosition())
+                .filter(event -> event != null)
+                .buffer(BUFFER_TIMESPAN, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .filter(events -> !events.isEmpty());
     }
 }

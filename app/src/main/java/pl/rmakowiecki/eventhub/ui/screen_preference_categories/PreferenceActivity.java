@@ -38,17 +38,15 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     private static final int GRID_SPAN_COUNT = 2;
     private static final String SHARED_PREFERENCES_FIRST_LAUNCH_KEY = "is_first_launch";
     private static final String SHARED_PREFERENCES_KEY = "shared_preferences";
-
+    @BindView(R.id.preferences_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
+    @BindView(R.id.save_preferences_action_button) ActionButton savePreferencesButton;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private PreferenceItemListener itemListener;
     private SharedPreferences sharedPreferences;
     private PreferencesManager preferencesManager;
     private List<PreferenceCategory> preferences;
-
-    @BindView(R.id.preferences_recycler_view) RecyclerView recyclerView;
-    @BindView(R.id.preferences_toolbar) Toolbar preferencesToolbar;
-    @BindView(R.id.save_preferences_action_button) ActionButton savePreferencesButton;
     private ImageView sharedTransitionImage;
 
     @Override

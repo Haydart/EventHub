@@ -27,10 +27,10 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
                 android:layout_gravity="center_horizontal"
-                android:orientation="vertical"
-                android:layout_marginTop="@dimen/personalization_welcome_margin_top">
+                android:layout_marginTop="@dimen/personalization_welcome_margin_top"
+                android:gravity="center_horizontal"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -120,15 +120,15 @@
         <FrameLayout
             android:layout_width="@dimen/user_add_profile_image_size"
             android:layout_height="@dimen/user_add_profile_image_size"
-            android:layout_marginTop="@dimen/user_profile_image_margin"
-            android:layout_gravity="top|right">
+            android:layout_gravity="top|right"
+            android:layout_marginTop="@dimen/user_profile_image_margin">
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:civ_border_width="@dimen/user_profile_image_border_width"
+                android:src="@color/colorAccent"
                 app:civ_border_color="@android:color/white"
-                android:src="@color/colorAccent" />
+                app:civ_border_width="@dimen/user_profile_image_border_width" />
 
             <ImageView
                 android:id="@+id/add_image_button"
