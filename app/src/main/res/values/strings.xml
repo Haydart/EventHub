@@ -4,7 +4,7 @@
     <string name="fb_app_id" translatable="false">1378206448960637</string>
     <string name="subcategories_msg">Choose your interests:</string>
     <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
-    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="navigation_drawer_welcome">Welcome, stranger!</string>
     <string name="action_settings" translatable="false">Settings</string>
     <string name="button_text_save_preferences">Save Preferences</string>
     <string name="title_preferences">Preferences</string>

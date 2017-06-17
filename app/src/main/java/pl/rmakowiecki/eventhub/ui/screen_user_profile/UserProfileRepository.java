@@ -45,9 +45,10 @@ public class UserProfileRepository implements Repository<User>, QuerySingle<User
 
     @Override
     public Observable<User> querySingle(Specification specification) {
-        return Observable.combineLatest(
+        return firebaseUser != null ? Observable.combineLatest(
                 imageStorageInteractor.getData(),
                 userProfileDataInteractor.getData(),
-                (userPhoto, userName) -> new User(userName, userPhoto));
+                (userPhoto, userName) -> new User(userName, userPhoto))
+                : Observable.empty();
     }
 }

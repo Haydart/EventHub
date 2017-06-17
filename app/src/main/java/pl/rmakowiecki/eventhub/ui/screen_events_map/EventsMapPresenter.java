@@ -26,7 +26,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     private LocationCoordinates lastKnownDeviceLocation;
     private LocationCoordinates focusedMarkerLocation;
     private Subscription mapTransitionSubscription = Subscriptions.unsubscribed();
-    private UserAuthManager authManager;
+    private UserAuthManager userAuthManager;
     
     private String clickedMarkerAddress;
     private boolean isMapClickMarkerShown = false;
@@ -37,24 +37,27 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     EventsMapPresenter() {
         placesRepository = new PlacesRepository();
         locationProvider = new RxLocationProvider();
-        authManager = new UserAuthManager();
+        userAuthManager = new UserAuthManager();
     }
 
     @Override
     protected void onViewStarted(EventsMapView view) {
         super.onViewStarted(view);
         if (!isMapClickMarkerShown) shouldMapBeInitializedToDeviceLocation = true;
+        view.initMap();
+        promptForLocalizationSettings();
+    }
+
+    @Override
+    protected void onViewVisible() {
+        super.onViewVisible();
+        view.updateNavigationDrawer(userAuthManager.isUserAuthorized());
     }
 
     @Override
     protected void onViewStopped() {
         super.onViewStopped();
         dismissMapTransitionTask();
-    }
-
-    void onViewInitialization() {
-        view.initMap();
-        promptForLocalizationSettings();
     }
 
     private void promptForLocalizationSettings() {
@@ -236,12 +239,8 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     private void logoutUser() {
-        authManager.logoutUser();
+        userAuthManager.logoutUser();
         view.updateNavigationDrawer(false);
-    }
-
-    void onActivityResume() {
-        view.updateNavigationDrawer(authManager.isUserAuthorized());
     }
 
     private void dismissMapTransitionTask() {

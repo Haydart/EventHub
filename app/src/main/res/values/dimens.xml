@@ -83,5 +83,6 @@
     <dimen name="personalization_welcome_margin_top">64dp</dimen>
     <dimen name="personalization_name_input_margin_top">44dp</dimen>
     <dimen name="personalization_name_input_height">72dp</dimen>
+    <dimen name="navigation_drawer_profile_image_size">80dp</dimen>
 </resources>
 
