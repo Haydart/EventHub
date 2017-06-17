@@ -214,6 +214,10 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
                 .subscribe(view::moveMapCamera);
     }
 
+    void onJoinButtonClicked() {
+        view.launchAuthScreen();
+    }
+
     void onCalendarMenuOptionClicked() {
         view.launchCalendarScreen();
     }
@@ -227,7 +231,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     void onSignInMenuOptionClicked() {
-        view.launchSignInScreen();
+        view.launchAppFeaturesScreen();
     }
 
     void onUserProfileMenuOptionClicked() {

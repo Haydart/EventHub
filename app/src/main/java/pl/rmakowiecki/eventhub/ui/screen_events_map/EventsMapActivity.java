@@ -13,6 +13,7 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -53,6 +54,7 @@ import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.screen_app_features.AppFeaturesActivity;
+import pl.rmakowiecki.eventhub.ui.screen_auth.AuthActivity;
 import pl.rmakowiecki.eventhub.ui.screen_create_event.EventCreationActivity;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.CalendarActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceActivity;
@@ -123,6 +125,19 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         initRevealSheetLayout();
         addressResultReceiver = new AddressResultReceiver(this, new Handler());
         preferencesManager = new PreferencesManager(this);
+        setNavigationDrawerJoinButtonClickListener();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Toast.makeText(this, "PAUSED", Toast.LENGTH_SHORT).show();
+    }
+
+    private void setNavigationDrawerJoinButtonClickListener() {
+        navigationView.getHeaderView(0)
+                .findViewById(R.id.nav_drawer_join_action_button)
+                .setOnClickListener(v -> presenter.onJoinButtonClicked());
     }
 
     private void checkLocationPermissions() {
@@ -169,16 +184,24 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     @Override
     public void updateNavigationDrawer(boolean loggedIn) {
+        Log.d(getClass().getSimpleName(), "UPDATE NAV DRAWER, LOGGED = " + loggedIn);
         navigationView.getMenu().findItem(R.id.nav_sign_in).setVisible(!loggedIn);
         navigationView.getMenu().findItem(R.id.nav_logout).setVisible(loggedIn);
         navigationView.getMenu().findItem(R.id.nav_user_profile).setVisible(loggedIn);
-        ImageView headerImageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.navbar_header_image_view);
+        ImageView headerImageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_drawer_header_image_view);
+        FrameLayout anonymousUserNavigationDrawerHeader = (FrameLayout) navigationView.getHeaderView(0).findViewById(R.id.anonymous_user_nav_drawer_header);
+        LinearLayout authorizedUserNavigationDrawerHeader = (LinearLayout) navigationView.getHeaderView(0).findViewById(R.id.authorized_user_nav_drawer_header);
 
         if (loggedIn) {
+            authorizedUserNavigationDrawerHeader.setVisibility(View.VISIBLE);
+            anonymousUserNavigationDrawerHeader.setVisibility(View.INVISIBLE);
             Bitmap image = preferencesManager.getUserImage();
             if (image != null) {
                 headerImageView.setImageBitmap(image);
             }
+        } else {
+            authorizedUserNavigationDrawerHeader.setVisibility(View.INVISIBLE);
+            anonymousUserNavigationDrawerHeader.setVisibility(View.VISIBLE);
         }
     }
 
@@ -266,6 +289,11 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
+    public void launchAuthScreen() {
+        startActivity(new Intent(this, AuthActivity.class));
+    }
+
+    @Override
     public void launchEventCreationScreen(String placeAddress, LocationCoordinates placeCoordinates) {
         Intent intent = new Intent(this, EventCreationActivity.class);
         intent.putExtra(Constants.PLACE_ADDRESS_EXTRA, placeAddress);
@@ -277,7 +305,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     }
 
     @Override
-    public void launchSignInScreen() {
+    public void launchAppFeaturesScreen() {
         startActivity(new Intent(this, AppFeaturesActivity.class));
     }
 

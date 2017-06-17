@@ -14,12 +14,13 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <LinearLayout
+        android:id="@+id/authorized_user_nav_drawer_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <de.hdodenhof.circleimageview.CircleImageView
-            android:id="@+id/navbar_header_image_view"
+            android:id="@+id/nav_drawer_header_image_view"
             android:layout_width="@dimen/navigation_drawer_profile_image_size"
             android:layout_height="@dimen/navigation_drawer_profile_image_size"
             android:layout_marginTop="@dimen/user_profile_image_margin"
@@ -50,25 +51,25 @@
         </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
+    <FrameLayout
+        android:id="@+id/anonymous_user_nav_drawer_header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/navigation_drawer_welcome"
             android:layout_gravity="center_horizontal"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_margin="@dimen/standard_margin_large"
-            android:layout_marginTop="@dimen/standard_margin_xlarge" />
+            android:layout_marginTop="@dimen/nav_drawer_welcome_text_margin_top"
+            android:text="@string/navigation_drawer_welcome"
+            android:textSize="@dimen/nav_drawer_welcome_text_size"
+            android:textStyle="bold" />
 
         <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
             android:id="@+id/nav_drawer_join_action_button"
             android:layout_width="match_parent"
             android:layout_height="@dimen/action_button_height"
+            android:layout_gravity="bottom"
             android:layout_marginTop="@dimen/standard_margin_medium"
             app:button_shape="pill"
             app:default_color="@android:color/white"
@@ -80,5 +81,5 @@
             app:text="@string/button_text_sign_up"
             app:text_color="@color/colorAccent" />
 
-    </LinearLayout>
+    </FrameLayout>
 </FrameLayout>

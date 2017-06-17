@@ -1,8 +1,11 @@
 package pl.rmakowiecki.eventhub.api.auth;
 
+import com.facebook.AccessToken;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
@@ -31,6 +34,24 @@ public class FirebaseAuthInteractor implements IAuthInteractor {
         perspective = AuthPerspective.REGISTER;
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this::handleAuthResponse);
+    }
+
+    @Override
+    public void loginWithFacebook(AccessToken token) {
+        AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        auth.signInWithCredential(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        callback.onFacebookLoginSuccess();
+                    } else {
+                        callback.onFacebookLoginError();
+                    }
+                });
+    }
+
+    @Override
+    public void loginWithGoogle() {
+        // TODO: 17/06/2017 implement
     }
 
     private void handleAuthResponse(Task<AuthResult> authResultTask) {

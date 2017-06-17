@@ -45,4 +45,14 @@ interface AuthView extends BaseView {
     void showButtonProcessing();
 
     void loginWithFacebookAuthentication(List<String> readPermissionsList);
+
+    void showFacebookLoginError();
+
+    void showGoogleLoginError();
+
+    void showFacebookLoginSuccess();
+
+    void launchMainScreen();
+
+    void showGoogleLoginSuccess();
 }

@@ -10,4 +10,6 @@ public interface UserManager {
     String getCurrentUserId();
 
     String getUserDisplayedName(Context context);
+
+    String getUserEmail(Context context);
 }
