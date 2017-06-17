@@ -1,6 +1,5 @@
 package pl.rmakowiecki.eventhub.api;
 
-import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;

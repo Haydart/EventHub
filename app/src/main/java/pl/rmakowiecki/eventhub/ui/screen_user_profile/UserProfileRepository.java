@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import pl.rmakowiecki.eventhub.api.UserImageStorageInteractor;

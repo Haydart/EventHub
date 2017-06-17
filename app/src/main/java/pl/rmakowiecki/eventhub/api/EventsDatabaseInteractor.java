@@ -1,16 +1,12 @@
 package pl.rmakowiecki.eventhub.api;
 
-import android.util.Log;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
-import java.util.Map;
-import pl.rmakowiecki.eventhub.api.BaseDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
-import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.model.mappers.RemoteEventMapper;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import pl.rmakowiecki.eventhub.repository.QueryStatus;
