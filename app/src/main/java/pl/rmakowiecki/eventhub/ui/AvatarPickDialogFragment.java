@@ -54,11 +54,11 @@ public class AvatarPickDialogFragment extends DialogFragment {
     }
 
     public interface AvatarPickDialogListener {
+        void onDialogOptionChosen(AvatarSource avatarSource);
+
         public enum AvatarSource {
             CAMERA,
             GALLERY
         }
-
-        void onDialogOptionChosen(AvatarSource avatarSource);
     }
 }
