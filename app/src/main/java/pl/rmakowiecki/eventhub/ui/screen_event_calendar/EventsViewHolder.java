@@ -14,7 +14,7 @@ import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
-import pl.rmakowiecki.eventhub.model.remote.OperationStatus;
+import pl.rmakowiecki.eventhub.repository.QueryStatus;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_event_details.EventDetailsActivity;
 
@@ -58,8 +58,8 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         presenter.addEventParticipant(eventWDistance.getEvent().getId(), getAdapterPosition());
     }
 
-    public void showParticipationSavingStatus(OperationStatus status) {
-        if (status == OperationStatus.SUCCESS) {
+    public void showParticipationSavingStatus(QueryStatus status) {
+        if (status == QueryStatus.STATUS_SUCCESS) {
             attendButton.showSuccess();
         } else {
             attendButton.showFailure("");

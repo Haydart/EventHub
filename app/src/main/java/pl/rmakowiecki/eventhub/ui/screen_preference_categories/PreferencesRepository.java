@@ -6,23 +6,24 @@ import pl.rmakowiecki.eventhub.model.local.RemotePreference;
 import pl.rmakowiecki.eventhub.model.mappers.ModelMapper;
 import pl.rmakowiecki.eventhub.model.mappers.RemotePreferenceModelMapper;
 import pl.rmakowiecki.eventhub.repository.QueryList;
+import pl.rmakowiecki.eventhub.repository.QueryStatus;
 import pl.rmakowiecki.eventhub.repository.Repository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
-public class PreferencesRepository implements Repository<PreferenceCategory>, QueryList<PreferenceCategory> {
+public class PreferencesRepository implements Repository<PreferenceCategory, QueryStatus>, QueryList<PreferenceCategory> {
 
     private ModelMapper<RemotePreference, PreferenceCategory> modelMapper = new RemotePreferenceModelMapper();
     private PreferencesDatabaseInteractor preferencesDatabaseInteractor = new PreferencesDatabaseInteractor();
 
     @Override
-    public void add(PreferenceCategory item) {
-        //no-op
+    public Observable<QueryStatus> add(PreferenceCategory item) {
+        return Observable.empty();
     }
 
     @Override
-    public void add(Iterable<PreferenceCategory> items) {
-        //no-op
+    public Observable<QueryStatus> add(Iterable<PreferenceCategory> items) {
+        return Observable.empty();
     }
 
     @Override

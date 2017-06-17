@@ -1,17 +1,17 @@
 package pl.rmakowiecki.eventhub.api;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
+
+import pl.rmakowiecki.eventhub.repository.QueryStatus;
 import pl.rmakowiecki.eventhub.util.FirebaseConstants;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
 public class UserProfileInteractor extends BaseDatabaseInteractor<String> {
+
     @Override
     protected void setDatabaseQueryNode() {
         databaseQueryNode = firebaseDatabase
@@ -39,19 +39,13 @@ public class UserProfileInteractor extends BaseDatabaseInteractor<String> {
         return publishSubject;
     }
 
-    public void add(String name) {
+    public Observable<QueryStatus> add(String name) {
+        PublishSubject<QueryStatus> publishSubject = PublishSubject.create();
         setDatabaseQueryNode();
         databaseQueryNode.setValue(name)
-                .addOnSuccessListener(aVoid -> {
-                    Log.d(getClass().getSimpleName(), "User profile set successfully");
-                    // TODO: 16/06/2017 propagate success to UI
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.d(getClass().getSimpleName(), "User profile setting failed");
-                        // TODO: 16/06/2017 propagate failure to UI
-                    }
-                });
+                .addOnSuccessListener(aVoid -> publishSubject.onNext(QueryStatus.STATUS_SUCCESS))
+                .addOnFailureListener(e -> publishSubject.onNext(QueryStatus.STATUS_FAILURE));
+
+        return publishSubject;
     }
 }

@@ -1,11 +1,13 @@
 package pl.rmakowiecki.eventhub.repository;
 
-public interface Repository<T> {
-    void add(T item);
+import rx.Observable;
 
-    void add(Iterable<T> items);
+public interface Repository<A, B> {
+    Observable<B> add(A item);
 
-    void update(T item);
+    Observable<B> add(Iterable<A> items);
 
-    void remove(T item);
+    void update(A item);
+
+    void remove(A item);
 }

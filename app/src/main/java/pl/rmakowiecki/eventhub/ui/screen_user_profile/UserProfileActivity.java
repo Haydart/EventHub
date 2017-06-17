@@ -63,6 +63,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     public void loadUserImage() {
         Bitmap userImage = preferencesManager.getUserImage();
         if (userImage != null) {
+            pictureBitmap = userImage;
             userImageView.setImageBitmap(userImage);
         }
     }
