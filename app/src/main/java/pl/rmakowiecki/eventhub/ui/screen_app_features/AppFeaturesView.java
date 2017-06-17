@@ -8,6 +8,8 @@ interface AppFeaturesView extends BaseView {
 
     void changePageDescription(int position);
 
+    void animateInTransition(int screenTransitionDuration);
+
     void animateOutTransition(int screenTransitionDuration);
 
     void launchAuthScreen();

@@ -6,7 +6,14 @@ import rx.Observable;
 
 class AppFeaturesPresenter extends BasePresenter<AppFeaturesView> {
 
-    private static final int SCREEN_TRANSITION_DURATION = 600;
+    private static final int SCREEN_TRANSITION_DURATION = 400;
+
+    @Override
+    protected void onViewVisible() {
+        super.onViewVisible();
+        view.makeViewsVisible();
+        view.animateInTransition(SCREEN_TRANSITION_DURATION);
+    }
 
     void onPageSelected(int position) {
         view.changePageDescription(position);
@@ -17,10 +24,6 @@ class AppFeaturesPresenter extends BasePresenter<AppFeaturesView> {
         Observable.timer(SCREEN_TRANSITION_DURATION, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
                 .subscribe(ignored -> view.launchAuthScreen());
-    }
-
-    void onViewResumed() {
-        view.makeViewsVisible();
     }
 
     @Override
