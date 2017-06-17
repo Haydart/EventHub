@@ -1,9 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import com.facebook.AccessToken;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.FacebookAuthProvider;
-import com.google.firebase.auth.FirebaseAuth;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -19,12 +16,12 @@ import rx.android.schedulers.AndroidSchedulers;
 class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValidator.CredentialsValidationCallback,
         AuthResponseInterceptor {
 
+    public static final int SCREEN_LAUNCH_DELAY = 500;
     private AuthPerspective authPerspective = AuthPerspective.LOGIN;
     private CredentialsValidator credentialsValidator;
     private Subscription credentialsChangesSubscription;
     private IAuthInteractor authInteractor;
     private List<String> readPermissionsList = Arrays.asList("email", "public_profile", "user_friends");
-    private FirebaseAuth auth = FirebaseAuth.getInstance();
 
     AuthPresenter() {
         credentialsValidator = new CredentialsValidator(this);
@@ -84,42 +81,6 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
         view.displayRegisterTextOnAuthButton();
     }
 
-    void onFacebookLoginButtonClicked() {
-        view.loginWithFacebookAuthentication(readPermissionsList);
-    }
-
-    void onFacebookLoginSuccess(AccessToken accessToken) {
-        // TODO: 01/06/2017 extract to interactor
-
-        AuthCredential credential = FacebookAuthProvider.getCredential(accessToken.getToken());
-        auth.signInWithCredential(credential)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        // TODO: 01/06/2017 implement
-                    } else {
-                        // TODO: 01/06/2017 implement
-                    }
-                });
-    }
-
-    void onFacebookLoginCancelled() {
-        // TODO: 01/06/2017 implement
-    }
-
-    void onFacebookLoginFailed() {
-        // TODO: 01/06/2017 implement
-    }
-
-    void onBackButtonPressed() {
-        if (authPerspective == AuthPerspective.LOGIN) {
-            view.performDefaultBackButtonPressAction();
-        } else {
-            authPerspective = AuthPerspective.LOGIN;
-            view.openLoginForm();
-            view.displayLoginTextOnAuthButton();
-        }
-    }
-
     @Override
     public void onAllCredentialsValid() {
         view.enableAuthButton();
@@ -143,20 +104,7 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public void onSuccess() {
         view.showSuccess();
-        Observable.timer(500, TimeUnit.MILLISECONDS)
-                .compose(applySchedulers())
-                .subscribe((ignored) -> view.launchPersonalizationScreen());
-
-    }
-
-    @Override
-    public void onNetworkConnectionError() {
-        view.showNetworkConnectionError();
-    }
-
-    @Override
-    public void onUnknownError() {
-        view.showUnknownError();
+        launchPersonalizationScreenDelayed();
     }
 
     @Override
@@ -172,6 +120,76 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public void onCredentialsDiscarded() {
         view.showRegisterCredentialsDiscardedError();
+    }
+
+    @Override
+    public void onNetworkConnectionError() {
+        view.showNetworkConnectionError();
+    }
+
+    @Override
+    public void onUnknownError() {
+        view.showUnknownError();
+    }
+
+    void onFacebookLoginButtonClicked() {
+        view.loginWithFacebookAuthentication(readPermissionsList);
+    }
+
+    void onFacebookLoginSuccess(AccessToken accessToken) {
+        authInteractor.loginWithFacebook(accessToken);
+    }
+
+    void onFacebookLoginCancelled() {
+        view.showFacebookLoginError();
+    }
+
+    void onFacebookLoginFailed() {
+        view.showFacebookLoginError();
+    }
+
+    void onBackButtonPressed() {
+        if (authPerspective == AuthPerspective.LOGIN) {
+            view.performDefaultBackButtonPressAction();
+        } else {
+            authPerspective = AuthPerspective.LOGIN;
+            view.openLoginForm();
+            view.displayLoginTextOnAuthButton();
+        }
+    }
+
+    @Override
+    public void onFacebookLoginSuccess() {
+        view.showFacebookLoginSuccess();
+        launchMainScreenDelayed();
+    }
+
+    @Override
+    public void onFacebookLoginError() {
+        view.showFacebookLoginError();
+    }
+
+    @Override
+    public void onGoogleLoginSuccess() {
+        view.showGoogleLoginSuccess();
+        launchMainScreenDelayed();
+    }
+
+    @Override
+    public void onGoogleLoginError() {
+        view.showGoogleLoginError();
+    }
+
+    private void launchPersonalizationScreenDelayed() {
+        Observable.timer(SCREEN_LAUNCH_DELAY, TimeUnit.MILLISECONDS)
+                .compose(applySchedulers())
+                .subscribe((ignored) -> view.launchPersonalizationScreen());
+    }
+
+    private void launchMainScreenDelayed() {
+        Observable.timer(SCREEN_LAUNCH_DELAY, TimeUnit.MILLISECONDS)
+                .compose(applySchedulers())
+                .subscribe((ignored) -> view.launchMainScreen());
     }
 
     @Override

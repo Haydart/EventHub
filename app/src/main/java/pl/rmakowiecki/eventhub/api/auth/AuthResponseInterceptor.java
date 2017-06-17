@@ -8,4 +8,12 @@ public interface AuthResponseInterceptor extends ResponseInterceptor {
     void onCredentialsDiscarded();
 
     void onUnknownError();
+
+    void onFacebookLoginSuccess();
+
+    void onFacebookLoginError();
+
+    void onGoogleLoginSuccess();
+
+    void onGoogleLoginError();
 }

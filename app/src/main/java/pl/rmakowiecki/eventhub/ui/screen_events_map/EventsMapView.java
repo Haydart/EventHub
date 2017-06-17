@@ -36,7 +36,7 @@ interface EventsMapView extends BaseView {
 
     void fetchAddressForLocation(LocationCoordinates location);
 
-    void launchSignInScreen();
+    void launchAppFeaturesScreen();
 
     void launchPreferencesScreen();
 
@@ -49,4 +49,6 @@ interface EventsMapView extends BaseView {
     void showBottomSheetFab();
 
     void launchEventCreationScreen(String markerAddress, LocationCoordinates clickedMarkerAddress);
+
+    void launchAuthScreen();
 }

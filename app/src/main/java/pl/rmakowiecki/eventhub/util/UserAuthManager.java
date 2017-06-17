@@ -25,4 +25,10 @@ public class UserAuthManager implements UserManager {
     public String getUserDisplayedName(Context context) {
         return new PreferencesManager(context).getUserName();
     }
+
+    @Override
+    public String getUserEmail(Context context) {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        return user != null ? user.getEmail() : "";
+    }
 }

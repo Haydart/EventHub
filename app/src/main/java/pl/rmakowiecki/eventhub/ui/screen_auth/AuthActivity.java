@@ -5,6 +5,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -140,6 +141,30 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     }
 
     @Override
+    public void showFacebookLoginSuccess() {
+        // TODO: 17/06/2017 rework
+        Toast.makeText(this, "Facebook login success", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showFacebookLoginError() {
+        // TODO: 17/06/2017 rework
+        Toast.makeText(this, "Could not login with Facebook", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showGoogleLoginSuccess() {
+        // TODO: 17/06/2017 rework
+        Toast.makeText(this, "Google login success", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showGoogleLoginError() {
+        // TODO: 17/06/2017 rework
+        Toast.makeText(this, "Could not login with Google", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void openLoginForm() {
         passwordRepeatInputLayout.setVisibility(View.GONE);
         loginOptionsBottomLayout.setVisibility(View.VISIBLE);
@@ -208,6 +233,11 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @Override
     public void showSuccess() {
         authActionButton.showSuccess();
+    }
+
+    @Override
+    public void launchMainScreen() {
+        finish();
     }
 
     @Override
