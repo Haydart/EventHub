@@ -5,7 +5,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import pl.rmakowiecki.eventhub.repository.QueryStatus;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.util.FirebaseConstants;
 import rx.Observable;
 import rx.subjects.PublishSubject;
@@ -39,12 +39,12 @@ public class UserProfileInteractor extends BaseDatabaseInteractor<String> {
         return publishSubject;
     }
 
-    public Observable<QueryStatus> add(String name) {
-        PublishSubject<QueryStatus> publishSubject = PublishSubject.create();
+    public Observable<GenericQueryStatus> add(String name) {
+        PublishSubject<GenericQueryStatus> publishSubject = PublishSubject.create();
         setDatabaseQueryNode();
         databaseQueryNode.setValue(name)
-                .addOnSuccessListener(aVoid -> publishSubject.onNext(QueryStatus.STATUS_SUCCESS))
-                .addOnFailureListener(e -> publishSubject.onNext(QueryStatus.STATUS_FAILURE));
+                .addOnSuccessListener(aVoid -> publishSubject.onNext(GenericQueryStatus.STATUS_SUCCESS))
+                .addOnFailureListener(e -> publishSubject.onNext(GenericQueryStatus.STATUS_FAILURE));
 
         return publishSubject;
     }

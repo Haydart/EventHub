@@ -3,7 +3,7 @@ package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 import com.jenzz.noop.annotation.NoOp;
 import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
-import pl.rmakowiecki.eventhub.repository.QueryStatus;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.BaseView;
 
 /**
@@ -16,5 +16,5 @@ public interface EventsFragmentView extends BaseView {
 
     void initEvents(List<EventWDistance> ewd);
 
-    void showActionStatus(QueryStatus queryStatus, int position);
+    void showActionStatus(GenericQueryStatus genericQueryStatus, int position);
 }

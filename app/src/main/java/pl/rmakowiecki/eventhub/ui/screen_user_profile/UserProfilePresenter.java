@@ -2,8 +2,7 @@ package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.model.local.User;
-import pl.rmakowiecki.eventhub.repository.QueryStatus;
-import pl.rmakowiecki.eventhub.repository.Repository;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
@@ -18,7 +17,7 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
     private final int REQUIRED_SAVE_RESULT_COUNT = 2;
 
     private boolean wasButtonClicked;
-    private Repository<User, QueryStatus> repository = new UserProfileRepository();
+    private UserProfileRepository repository = new UserProfileRepository();
     private UserManager userManager = new UserAuthManager();
     private int saveResultCount;
 
@@ -47,13 +46,13 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
                 .subscribe(result -> onProfileSaveResult(result));
     }
 
-    private void onProfileSaveResult(QueryStatus result) {
+    private void onProfileSaveResult(GenericQueryStatus result) {
         ++saveResultCount;
-        if (result == QueryStatus.STATUS_FAILURE) {
+        if (result == GenericQueryStatus.STATUS_FAILURE) {
             showButtonFailureDelayed();
             enableButtonDelayed();
         }
-        else if (result == QueryStatus.STATUS_SUCCESS && saveResultCount >= REQUIRED_SAVE_RESULT_COUNT) {
+        else if (result == GenericQueryStatus.STATUS_SUCCESS && saveResultCount >= REQUIRED_SAVE_RESULT_COUNT) {
             showButtonSuccessDelayed();
             launchMapScreenDelayed();
         }

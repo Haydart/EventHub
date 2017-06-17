@@ -9,7 +9,7 @@ import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.mappers.RemoteEventMapper;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
-import pl.rmakowiecki.eventhub.repository.QueryStatus;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -93,13 +93,13 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
         return publishSubject;
     }
 
-    public Observable<QueryStatus> addEvent(RemoteEvent item) {
-        PublishSubject<QueryStatus> publishSubject = PublishSubject.create();
+    public Observable<GenericQueryStatus> addEvent(RemoteEvent item) {
+        PublishSubject<GenericQueryStatus> publishSubject = PublishSubject.create();
         setDatabaseQueryNode();
         databaseQueryNode
                 .push()
                 .setValue(item)
-                .addOnCompleteListener(task -> publishSubject.onNext(task.isSuccessful() ? QueryStatus.STATUS_SUCCESS : QueryStatus.STATUS_FAILURE));
+                .addOnCompleteListener(task -> publishSubject.onNext(task.isSuccessful() ? GenericQueryStatus.STATUS_SUCCESS : GenericQueryStatus.STATUS_FAILURE));
 
         return publishSubject;
     }

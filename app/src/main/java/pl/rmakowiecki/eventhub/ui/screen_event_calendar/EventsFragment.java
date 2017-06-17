@@ -11,7 +11,7 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
-import pl.rmakowiecki.eventhub.repository.QueryStatus;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
@@ -78,9 +78,9 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     }
 
     @Override
-    public void showActionStatus(QueryStatus queryStatus, int position) {
+    public void showActionStatus(GenericQueryStatus genericQueryStatus, int position) {
         EventsViewHolder viewHolder = (EventsViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
-        viewHolder.showParticipationSavingStatus(queryStatus);
+        viewHolder.showParticipationSavingStatus(genericQueryStatus);
     }
 
     @Override

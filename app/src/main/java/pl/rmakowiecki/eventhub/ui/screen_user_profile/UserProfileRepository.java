@@ -5,21 +5,21 @@ import com.google.firebase.auth.FirebaseUser;
 import pl.rmakowiecki.eventhub.api.UserImageStorageInteractor;
 import pl.rmakowiecki.eventhub.api.UserProfileInteractor;
 import pl.rmakowiecki.eventhub.model.local.User;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.repository.QuerySingle;
-import pl.rmakowiecki.eventhub.repository.QueryStatus;
-import pl.rmakowiecki.eventhub.repository.Repository;
+import pl.rmakowiecki.eventhub.repository.AddOperationRepository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
-public class UserProfileRepository implements Repository<User, QueryStatus>, QuerySingle<User> {
+public class UserProfileRepository implements AddOperationRepository<User, GenericQueryStatus>, QuerySingle<User> {
 
     private FirebaseUser firebaseUser;
     private UserImageStorageInteractor imageStorageInteractor;
     private UserProfileInteractor userProfileDataInteractor;
-    private PublishSubject<QueryStatus> publishSubject;
+    private PublishSubject<GenericQueryStatus> publishSubject;
 
     public UserProfileRepository() {
         publishSubject = PublishSubject.create();
@@ -29,7 +29,7 @@ public class UserProfileRepository implements Repository<User, QueryStatus>, Que
     }
 
     @Override
-    public Observable<QueryStatus> add(User user) {
+    public Observable<GenericQueryStatus> add(User user) {
         userProfileDataInteractor.add(user.getName())
                 .compose(applySchedulers())
                 .subscribe((result) -> saveDatabaseQueryResult(result));
@@ -40,11 +40,11 @@ public class UserProfileRepository implements Repository<User, QueryStatus>, Que
         return publishSubject;
     }
 
-    private void saveDatabaseQueryResult(QueryStatus result) {
+    private void saveDatabaseQueryResult(GenericQueryStatus result) {
         publishSubject.onNext(result);
     }
 
-    private void saveStorageQueryResult(QueryStatus result) {
+    private void saveStorageQueryResult(GenericQueryStatus result) {
         publishSubject.onNext(result);
     }
 
@@ -55,18 +55,8 @@ public class UserProfileRepository implements Repository<User, QueryStatus>, Que
     }
 
     @Override
-    public Observable<QueryStatus> add(Iterable<User> items) {
+    public Observable<GenericQueryStatus> add(Iterable<User> items) {
         return Observable.empty();
-    }
-
-    @Override
-    public void update(User item) {
-        // TODO: 03.05.2017  
-    }
-
-    @Override
-    public void remove(User item) {
-        // TODO: 03.05.2017  
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 
-import pl.rmakowiecki.eventhub.repository.QueryStatus;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -39,16 +39,16 @@ public class UserImageStorageInteractor extends BaseStorageInteractor<byte[]> {
         return publishSubject;
     }
 
-    public Observable<QueryStatus> add(byte[] userImage) {
-        PublishSubject<QueryStatus> publishSubject = PublishSubject.create();
+    public Observable<GenericQueryStatus> add(byte[] userImage) {
+        PublishSubject<GenericQueryStatus> publishSubject = PublishSubject.create();
         setUser();
         setStorageQueryNode();
         storageQueryNode.putBytes(userImage)
                 .addOnSuccessListener(taskSnapshot -> {
-                    publishSubject.onNext(QueryStatus.STATUS_SUCCESS);
+                    publishSubject.onNext(GenericQueryStatus.STATUS_SUCCESS);
                 })
                 .addOnFailureListener(e -> {
-                    publishSubject.onNext(QueryStatus.STATUS_FAILURE);
+                    publishSubject.onNext(GenericQueryStatus.STATUS_FAILURE);
                 });
 
         return publishSubject;

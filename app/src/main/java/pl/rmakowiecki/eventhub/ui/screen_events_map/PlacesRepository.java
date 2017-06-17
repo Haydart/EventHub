@@ -8,14 +8,14 @@ import pl.rmakowiecki.eventhub.model.local.Place;
 import pl.rmakowiecki.eventhub.model.mappers.ModelMapper;
 import pl.rmakowiecki.eventhub.model.mappers.PlaceModelMapper;
 import pl.rmakowiecki.eventhub.model.remote.google.GooglePlace;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.repository.QueryList;
-import pl.rmakowiecki.eventhub.repository.QueryStatus;
-import pl.rmakowiecki.eventhub.repository.Repository;
+import pl.rmakowiecki.eventhub.repository.AddOperationRepository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import pl.rmakowiecki.eventhub.util.GoogleApiUtil;
 import rx.Observable;
 
-class PlacesRepository implements Repository<Place, QueryStatus>, QueryList<Place> {
+class PlacesRepository implements AddOperationRepository<Place, GenericQueryStatus>, QueryList<Place> {
 
     private INearbyPlacesListApiInteractor nearbyPlacesInteractor;
     private ModelMapper<GooglePlace, Place> googlePlaceModelMapper;
@@ -26,23 +26,13 @@ class PlacesRepository implements Repository<Place, QueryStatus>, QueryList<Plac
     }
 
     @Override
-    public Observable<QueryStatus> add(Place item) {
+    public Observable<GenericQueryStatus> add(Place item) {
         return Observable.empty();
     }
 
     @Override
-    public Observable<QueryStatus> add(Iterable<Place> items) {
+    public Observable<GenericQueryStatus> add(Iterable<Place> items) {
         return Observable.empty();
-    }
-
-    @Override
-    public void update(Place item) {
-        // TODO: 14/03/2017 implement
-    }
-
-    @Override
-    public void remove(Place item) {
-        // TODO: 14/03/2017 implement
     }
 
     @Override

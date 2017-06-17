@@ -3,7 +3,7 @@ package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import pl.rmakowiecki.eventhub.api.BaseDatabaseInteractor;
-import pl.rmakowiecki.eventhub.repository.QueryStatus;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -13,7 +13,7 @@ import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EVENT_ATTENDEES_REF
  * Created by m1per on 13.06.2017.
  */
 
-public class EventParticipantsDatabaseInteractor extends BaseDatabaseInteractor<QueryStatus> {
+public class EventParticipantsDatabaseInteractor extends BaseDatabaseInteractor<GenericQueryStatus> {
 
     private static final String DATABASE_PATH = "app_data/events";
 
@@ -24,15 +24,11 @@ public class EventParticipantsDatabaseInteractor extends BaseDatabaseInteractor<
     }
 
     @Override
-    public Observable<QueryStatus> getData() {
+    public Observable<GenericQueryStatus> getData() {
         return Observable.empty();
     }
 
-    public Observable<QueryStatus> getData(int position) {
-        return Observable.empty();
-    }
-
-    Observable<QueryStatus> addEventParticipant(String eventId) {
+    Observable<GenericQueryStatus> addEventParticipant(String eventId) {
         publishSubject = PublishSubject.create();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         setDatabaseQueryNode();
@@ -43,9 +39,9 @@ public class EventParticipantsDatabaseInteractor extends BaseDatabaseInteractor<
                 .setValue("DISPLAY NAME")
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        publishSubject.onNext(QueryStatus.STATUS_SUCCESS);
+                        publishSubject.onNext(GenericQueryStatus.STATUS_SUCCESS);
                     } else {
-                        publishSubject.onNext(QueryStatus.STATUS_FAILURE);
+                        publishSubject.onNext(GenericQueryStatus.STATUS_FAILURE);
                     }
                     publishSubject.onCompleted();
                 });
