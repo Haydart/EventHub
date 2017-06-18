@@ -20,6 +20,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import java.util.Calendar;
@@ -53,6 +55,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     @BindView(R.id.event_image_view) ImageView eventImageView;
     @BindView(R.id.event_categories_recycler_view) RecyclerView eventCategoriesRecyclerView;
     @BindView(R.id.create_event_action_button) ActionButton eventCreateActionButton;
+    @BindString(R.string.save_user_profile_failure_text) String saveFailureText;
 
     private DialogFragment fragment;
     private Bitmap eventAvatarBitmap;
@@ -164,7 +167,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
 
     @Override
     public void showFailureMessage() {
-        eventCreateActionButton.showFailure(getString(R.string.save_user_profile_failure_text));
+        eventCreateActionButton.showFailure(saveFailureText);
     }
 
     @Override
@@ -284,9 +287,13 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
                 eventNameEditText.getText().toString(),
                 eventDescriptionEditText.getText().toString(),
                 eventAddressTextView.getText().toString(),
-                preferencesManager.getUserName(),
-                eventAvatarBitmap
+                preferencesManager.getUserName()
         );
+    }
+
+    @Override
+    public Bitmap getEventPicture() {
+        return eventAvatarBitmap;
     }
 
     private LocationCoordinates getEventCoordinates() {

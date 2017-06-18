@@ -2,9 +2,11 @@ package pl.rmakowiecki.eventhub.ui.screen_event_details;
 
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
-import pl.rmakowiecki.eventhub.util.EventUtils;
 
 public class EventDetailsPresenter extends BasePresenter<EventDetailsView> {
+
+    private EventImageRepository eventImageRepository;
+
     @Override
     public EventDetailsView getNoOpView() {
         return NoOpEventDetailsView.INSTANCE;
@@ -15,12 +17,13 @@ public class EventDetailsPresenter extends BasePresenter<EventDetailsView> {
         super.onViewStarted(view);
         view.enableHomeButton();
         view.initEventDetails();
+        eventImageRepository = new EventImageRepository();
         loadEventPicture();
     }
 
     private void loadEventPicture() {
-        EventUtils
-                .getEventPicture(view.getEventId())
+        eventImageRepository
+                .querySingle(new EventImageSpecification(view.getEventId()))
                 .compose(applySchedulers())
                 .subscribe(pictureData -> onEventPictureLoaded(pictureData));
     }

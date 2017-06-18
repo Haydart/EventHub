@@ -8,25 +8,20 @@ import rx.subjects.PublishSubject;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EVENT_IMAGE_REFERENCE;
 
-public class EventImageStorageInteractor extends BaseStorageInteractor<byte[]> {
+public class EventImageStorageInteractor extends BaseSpecificStorageInteractor<byte[]> {
 
     private final long FIVE_MEGABYTES = 5 * 1024 * 1024;
-    private String firebaseKey;
-
-    public EventImageStorageInteractor(String key) {
-        firebaseKey = key;
-    }
 
     @Override
-    protected void setStorageQueryNode() {
+    protected void setStorageQueryNode(String childKey) {
         storageQueryNode = FirebaseStorage.getInstance().getReference()
                 .child(EVENT_IMAGE_REFERENCE)
-                .child(firebaseKey);
+                .child(childKey);
     }
 
     @Override
-    public Observable<byte[]> getData() {
-        setStorageQueryNode();
+    public Observable<byte[]> getData(String childKey) {
+        setStorageQueryNode(childKey);
         publishSubject = PublishSubject.create();
         storageQueryNode
                 .getBytes(FIVE_MEGABYTES)
@@ -35,9 +30,9 @@ public class EventImageStorageInteractor extends BaseStorageInteractor<byte[]> {
         return publishSubject;
     }
 
-    public Observable<GenericQueryStatus> add(byte[] eventImage) {
+    public Observable<GenericQueryStatus> add(String childKey, byte[] eventImage) {
         PublishSubject<GenericQueryStatus> publishSubject = PublishSubject.create();
-        setStorageQueryNode();
+        setStorageQueryNode(childKey);
         storageQueryNode.putBytes(eventImage)
                 .addOnSuccessListener(taskSnapshot -> {
                     publishSubject.onNext(GenericQueryStatus.STATUS_SUCCESS);

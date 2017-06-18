@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import pl.rmakowiecki.eventhub.api.EventImageStorageInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
@@ -16,6 +15,7 @@ import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsRepository;
+import pl.rmakowiecki.eventhub.ui.screen_event_details.EventImageRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesSpecification;
@@ -34,8 +34,8 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
     private UserAuthManager userAuthManager = new UserAuthManager();
     private List<PreferenceCategory> fullCategoriesList = new ArrayList<>();
     private List<PreferenceCategory> pickedCategoriesList = new ArrayList<>();
-    private Bitmap eventPicture = null;
     private boolean wasButtonClicked = false;
+    private EventImageRepository eventImageRepository = new EventImageRepository();
 
     @Override
     protected void onViewStarted(EventCreationView view) {
@@ -115,11 +115,10 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         pickedCategoriesList.add(pickedCategory);
     }
 
-    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress, String organizerName, Bitmap eventPicture) {
+    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress, String organizerName) {
         if (!wasButtonClicked) {
             wasButtonClicked = true;
 
-            this.eventPicture = eventPicture;
             List<EventAttendee> attendees = new ArrayList<>();
             attendees.add(new EventAttendee(userAuthManager.getCurrentUserId(), organizerName));
             view.showButtonProcessing();
@@ -135,52 +134,42 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
                     attendees
             );
 
-            eventRepository
-                    .add(event)
-                    .subscribe(genericQueryStatus -> onEventAdded(genericQueryStatus));
+            addEventToRepository(event);
 
         }
+    }
+
+    private void addEventToRepository(Event event) {
+        eventRepository
+                .add(event)
+                .subscribe(genericQueryStatus -> onEventAdded(genericQueryStatus));
     }
 
     private void onEventAdded(GenericQueryStatus status) {
         if (status == GenericQueryStatus.STATUS_FAILURE) {
-            eventPicture = null;
-            showButtonFailureDelayed();
-            enableButtonDelayed();
+            handleDelayedOperation(view::showFailureMessage, SHOW_BUTTON_RESULT_DELAY);
+            handleDelayedOperation(this::enableButton, BUTTON_ENABLE_DELAY);
         }
         else {
+            Bitmap eventPicture = view.getEventPicture();
             if (eventPicture != null) {
                 String key = eventRepository.getLastReferenceKey();
-                new EventImageStorageInteractor(key).add(BitmapUtils.getBytesFromBitmap(eventPicture));
+                eventImageRepository.add(key, BitmapUtils.getBytesFromBitmap(eventPicture));
             }
 
-            showButtonSuccessDelayed();
-            launchMapScreenDelayed();
+            handleDelayedOperation(view::showProfileSaveSuccess, SHOW_BUTTON_RESULT_DELAY);
+            handleDelayedOperation(view::launchMapAndFinish, LAUNCH_MAP_ACTIVITY_DELAY);
         }
     }
 
-    private void showButtonFailureDelayed() {
-        Observable.timer(SHOW_BUTTON_RESULT_DELAY, TimeUnit.MILLISECONDS)
-                .compose(applySchedulers())
-                .subscribe(ignored -> view.showFailureMessage());
+    private void enableButton() {
+        wasButtonClicked = false;
     }
 
-    private void enableButtonDelayed() {
-        Observable.timer(BUTTON_ENABLE_DELAY, TimeUnit.MILLISECONDS)
+    private void handleDelayedOperation(Runnable operation, int delay) {
+        Observable.timer(delay, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
-                .subscribe(ignored -> wasButtonClicked = false);
-    }
-
-    private void showButtonSuccessDelayed() {
-        Observable.timer(SHOW_BUTTON_RESULT_DELAY, TimeUnit.MILLISECONDS)
-                .compose(applySchedulers())
-                .subscribe(ignored -> view.showProfileSaveSuccess());
-    }
-
-    private void launchMapScreenDelayed() {
-        Observable.timer(LAUNCH_MAP_ACTIVITY_DELAY, TimeUnit.MILLISECONDS)
-                .compose(applySchedulers())
-                .subscribe(ignored -> view.launchMapAndFinish());
+                .subscribe(ignored -> operation.run());
     }
 
     @Override

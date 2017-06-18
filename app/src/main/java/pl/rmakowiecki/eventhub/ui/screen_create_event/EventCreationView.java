@@ -1,5 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_create_event;
 
+import android.graphics.Bitmap;
+
 import com.jenzz.noop.annotation.NoOp;
 import java.util.List;
 import pl.rmakowiecki.eventhub.ui.BaseView;
@@ -34,4 +36,6 @@ interface EventCreationView extends BaseView {
     void launchMapAndFinish();
 
     void showButtonProcessing();
+
+    Bitmap getEventPicture();
 }
