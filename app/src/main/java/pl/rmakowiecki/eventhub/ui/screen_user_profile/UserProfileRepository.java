@@ -33,7 +33,7 @@ public class UserProfileRepository implements AddOperationRepository<User, Gener
         userProfileDataInteractor.add(user.getName())
                 .compose(applySchedulers())
                 .subscribe((result) -> saveDatabaseQueryResult(result));
-        imageStorageInteractor.add(user.getPicture())
+        imageStorageInteractor.add(firebaseUser != null ? firebaseUser.getUid() : "", user.getPicture())
                 .compose(applySchedulers())
                 .subscribe((result) -> saveStorageQueryResult(result));
 
@@ -62,7 +62,7 @@ public class UserProfileRepository implements AddOperationRepository<User, Gener
     @Override
     public Observable<User> querySingle(Specification specification) {
         return firebaseUser != null ? Observable.combineLatest(
-                imageStorageInteractor.getData(),
+                imageStorageInteractor.getData(firebaseUser.getUid()),
                 userProfileDataInteractor.getData(),
                 (userPhoto, userName) -> new User(userName, userPhoto))
                 : Observable.empty();

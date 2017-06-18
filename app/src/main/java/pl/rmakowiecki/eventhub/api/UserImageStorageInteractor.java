@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.api;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
 import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import rx.Observable;
@@ -9,39 +7,35 @@ import rx.subjects.PublishSubject;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PROFILE_IMAGE_REFERENCE;
 
-public class UserImageStorageInteractor extends BaseStorageInteractor<byte[]> {
+public class UserImageStorageInteractor extends BaseSpecificStorageInteractor<byte[]> {
 
     private final long FIVE_MEGABYTES = 5 * 1024 * 1024;
-    private FirebaseUser user;
-
-    private boolean setUser() {
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        return user != null;
-    }
 
     @Override
-    protected void setStorageQueryNode() {
+    protected void setStorageQueryNode(String childKey) {
         storageQueryNode = FirebaseStorage.getInstance().getReference()
                 .child(USER_PROFILE_IMAGE_REFERENCE)
-                .child(user.getUid());
+                .child(childKey);
     }
 
     @Override
-    public Observable<byte[]> getData() {
-        if (!setUser()) {
+    public Observable<byte[]> getData(String childKey) {
+        if (childKey.isEmpty()) {
             return Observable.empty();
         }
-        setStorageQueryNode();
+        setStorageQueryNode(childKey);
         publishSubject = PublishSubject.create();
-        storageQueryNode.getBytes(FIVE_MEGABYTES).addOnSuccessListener(bytes -> publishSubject.onNext(bytes));
+        storageQueryNode
+                .getBytes(FIVE_MEGABYTES)
+                .addOnSuccessListener(bytes -> publishSubject.onNext(bytes))
+                .addOnFailureListener(e -> publishSubject.onNext(null));
 
         return publishSubject;
     }
 
-    public Observable<GenericQueryStatus> add(byte[] userImage) {
+    public Observable<GenericQueryStatus> add(String childKey, byte[] userImage) {
         PublishSubject<GenericQueryStatus> publishSubject = PublishSubject.create();
-        setUser();
-        setStorageQueryNode();
+        setStorageQueryNode(childKey);
         storageQueryNode.putBytes(userImage)
                 .addOnSuccessListener(taskSnapshot -> {
                     publishSubject.onNext(GenericQueryStatus.STATUS_SUCCESS);
