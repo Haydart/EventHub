@@ -26,7 +26,6 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
     private static List<PreferenceCategory> interestsList;
 
     public EventsDatabaseInteractor() {
-        super();
     }
 
     public EventsDatabaseInteractor(List<PreferenceCategory> interestsList) {
