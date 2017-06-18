@@ -10,7 +10,7 @@ import android.support.v4.app.FragmentPagerAdapter;
  */
 public class EventsFragmentAdapter extends FragmentPagerAdapter {
 
-    private final int PAGE_COUNT = 2;
+    private final int PAGE_COUNT = 3;
 
     private String tabTitles[];
 
@@ -28,7 +28,7 @@ public class EventsFragmentAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case 0:
-                return EventsFragment.newInstance(position);
+                return PersonalizedEventsFragment.newInstance(position);
             case 1:
                 return MyEventsFragment.newInstance(position);
             default:

@@ -37,14 +37,22 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     @BindView(R.id.attend_event_action_button) ActionButton attendButton;
     @BindString(R.string.day_today) String today;
     @BindString(R.string.day_tomorrow) String tomorrow;
-    private EventsFragmentPresenter presenter;
+    private EventsFragmentPresenter eventsPresenter;
+    private PersonalizedEventsFragmentPresenter personalizedEventsPresenter;
     private EventWDistance eventWDistance;
 
     EventsViewHolder(View view, EventsFragmentPresenter presenter) {
         super(view);
         ButterKnife.bind(this, view);
         this.view = view;
-        this.presenter = presenter;
+        this.eventsPresenter = presenter;
+    }
+
+    EventsViewHolder(View view, PersonalizedEventsFragmentPresenter presenter) {
+        super(view);
+        ButterKnife.bind(this, view);
+        this.view = view;
+        this.personalizedEventsPresenter = presenter;
     }
 
     EventsViewHolder(View view) {
@@ -55,7 +63,12 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
 
     @OnClick(R.id.attend_event_action_button)
     protected void preferencesButtonClick() {
-        presenter.addEventParticipant(eventWDistance.getEvent().getId(), getAdapterPosition());
+        if (eventsPresenter != null) {
+            eventsPresenter.addEventParticipant(eventWDistance.getEvent().getId(), getAdapterPosition());
+        } else if (personalizedEventsPresenter != null) {
+            personalizedEventsPresenter.addEventParticipant(eventWDistance.getEvent().getId(), getAdapterPosition());
+        }
+
     }
 
     public void showParticipationSavingStatus(GenericQueryStatus status) {

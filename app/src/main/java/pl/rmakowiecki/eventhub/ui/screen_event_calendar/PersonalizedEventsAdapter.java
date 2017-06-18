@@ -9,27 +9,31 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 
-class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
+/**
+ * Created by m1per on 17.06.2017.
+ */
 
-    private MyEventsFragment.OnListFragmentInteractionListener listener;
+class PersonalizedEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
+
+    private PersonalizedEventsFragment.OnListFragmentInteractionListener listener;
     private List<EventWDistance> items;
-    private MyEventsFragmentPresenter presenter;
+    private PersonalizedEventsFragmentPresenter presenter;
 
-
-    public MyEventsAdapter(Context baseContext, List<EventWDistance> events, MyEventsFragment.OnListFragmentInteractionListener listener) {
+    public PersonalizedEventsAdapter(Context baseContext, List<EventWDistance> events,
+            PersonalizedEventsFragment.OnListFragmentInteractionListener listener,
+            PersonalizedEventsFragmentPresenter presenter) {
         final LayoutInflater layoutInflater = LayoutInflater.from(baseContext);
         final Context context = baseContext;
         items = events;
         this.listener = listener;
         this.presenter = presenter;
-
     }
 
     @Override
     public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_my_events, parent, false);
-        return new EventsViewHolder(view);
+                .inflate(R.layout.fragment_personalized_events, parent, false);
+        return new EventsViewHolder(view, presenter);
     }
 
     @Override
@@ -42,3 +46,4 @@ class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
         return items.size();
     }
 }
+

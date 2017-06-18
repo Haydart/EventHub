@@ -7,6 +7,7 @@ import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DATE_SORT;
@@ -15,22 +16,24 @@ import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.a
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.getComparator;
 
 /**
- * Created by m1per on 18.04.2017.
+ * Created by m1per on 17.06.2017.
  */
 
-class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
+public class PersonalizedEventsFragmentPresenter extends BasePresenter<PersonalizedEventsFragmentView> {
 
     private RxLocationProvider provider = new RxLocationProvider();
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
     private EventsRepository repository;
-    private ArrayList<String> distances = new ArrayList<>();
-    private int position;
+    private List<String> distances = new ArrayList<>();
+    private int tabPosition;
     private List<EventWDistance> eventsWithDistances = new ArrayList<>();
     private List<Event> allEvents = new ArrayList<>();
+    private PreferencesManager preferencesManager;
 
-    MyEventsFragmentPresenter(int position) {
-        repository = new EventsRepository();
-        this.position = position;
+    PersonalizedEventsFragmentPresenter(int tabPosition, PreferencesManager preferencesManager) {
+        repository = new EventsRepository(preferencesManager.getInterestsList());
+        this.tabPosition = tabPosition;
+        this.preferencesManager = preferencesManager;
     }
 
     private void onViewInitialization() {
@@ -39,7 +42,7 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
 
     private void acquireEvents() {
         repository
-                .query(new MyEventsSpecification(position) {
+                .query(new MyEventsSpecification(tabPosition) {
                 })
                 .compose(applySchedulers())
                 .subscribe(this::updateEventsList);
@@ -80,7 +83,7 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
     }
 
     @Override
-    protected void onViewStarted(MyEventsFragmentView view) {
+    protected void onViewStarted(PersonalizedEventsFragmentView view) {
         super.onViewStarted(view);
         onViewInitialization();
     }
@@ -97,8 +100,13 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
         view.showEvents(eventsWithDistances);
     }
 
+    public void addEventParticipant(String eventId, int position) {
+        repository.updateEventParticipants(eventId)
+                .subscribe(operationStatus -> view.showActionStatus(operationStatus, position));
+    }
+
     @Override
-    public MyEventsFragmentView getNoOpView() {
-        return NoOpMyEventsFragmentView.INSTANCE;
+    public PersonalizedEventsFragmentView getNoOpView() {
+        return NoOpPersonalizedEventsFragmentView.INSTANCE;
     }
 }

@@ -16,7 +16,9 @@ import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
 public class CalendarActivity extends BaseActivity<CalendarPresenter>
-        implements CalendarView, EventsFragment.OnListFragmentInteractionListener, MyEventsFragment.OnListFragmentInteractionListener {
+        implements CalendarView, EventsFragment.OnListFragmentInteractionListener,
+        MyEventsFragment.OnListFragmentInteractionListener,
+        PersonalizedEventsFragment.OnListFragmentInteractionListener {
 
     @BindView(R.id.toolbar) Toolbar calendarToolbar;
     @BindView(R.id.viewpager) ViewPager viewPager;
@@ -24,13 +26,14 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
     @BindString(R.string.title_events) String calendarScreenTitle;
     @BindString(R.string.tab_title_all_events) String allEventsTabTitle;
     @BindString(R.string.tab_title_my_events) String myEventsTabTitle;
+    @BindString(R.string.tab_title_personalized_events) String personalizedEventsTabTitle;
     private String tabTitles[];
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        tabTitles = new String[] { allEventsTabTitle, myEventsTabTitle };
+        tabTitles = new String[] { personalizedEventsTabTitle, myEventsTabTitle, allEventsTabTitle };
         viewPager.setAdapter(new EventsFragmentAdapter(getSupportFragmentManager(),
                 CalendarActivity.this, tabTitles));
 

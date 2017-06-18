@@ -6,12 +6,14 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-
+import java.util.ArrayList;
+import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.mappers.RemoteEventMapper;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
 import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
@@ -22,25 +24,62 @@ import rx.subjects.PublishSubject;
 public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
     private static final String DATABASE_PATH = "app_data/events";
+    private static List<PreferenceCategory> interestsList;
+
+    public EventsDatabaseInteractor() {
+    }
+
+    public EventsDatabaseInteractor(List<PreferenceCategory> interestsList) {
+        this.interestsList = interestsList;
+    }
 
     private String referenceKey;
 
     private Event parseEventData(DataSnapshot dataSnapshot, int position) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
         Event event;
         String id;
 
         RemoteEvent remoteEvent = dataSnapshot.getValue(RemoteEvent.class);
         id = dataSnapshot.getKey();
         event = new Event(new RemoteEventMapper().map(remoteEvent, id));
-        //TODO: more cases when filtering more advanced
+        if (position == 0) {
+            if (user != null) {
+                event = filterForPersonalizedEvents(event);
+            } else {
+                return null;
+            }
+        }
         if (position == 1) {
             if (user != null) {
                 event = filterForMyEvents(event, user.getUid());
+            } else {
+                return null;
             }
         }
 
         return event;
+    }
+
+    private Event filterForPersonalizedEvents(Event event) {
+        List<String> eventCategories = flattenCategoryList(event.getEventTags());
+        List<String> userInterests = flattenCategoryList(interestsList);
+
+        for (String eventCategory : eventCategories) {
+            if (userInterests.contains(eventCategory)) {
+                return event;
+            }
+        }
+        return null;
+    }
+
+    private List<String> flattenCategoryList(List<PreferenceCategory> categoryList) {
+        List<String> flatList = new ArrayList<>();
+        for (PreferenceCategory category : categoryList) {
+            flatList.addAll(category.getChildList());
+        }
+        return flatList;
     }
 
     private Event filterForMyEvents(Event event, String userId) {
@@ -90,7 +129,41 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                //no-op
+            }
+        });
 
+        return publishSubject;
+    }
+
+    public Observable<Event> getData(int position, List<PreferenceCategory> displayList) {
+        interestsList = displayList;
+        setDatabaseQueryNode();
+        publishSubject = PublishSubject.create();
+        databaseQueryNode.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                publishSubject.onNext(parseEventData(dataSnapshot, position));
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                publishSubject.onNext(parseEventData(dataSnapshot, position));
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+                //TODO: implement reaction for removing event
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                //no-op
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //no-op
             }
         });
 

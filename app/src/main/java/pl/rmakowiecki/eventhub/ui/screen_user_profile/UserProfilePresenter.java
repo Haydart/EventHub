@@ -51,8 +51,7 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
         if (result == GenericQueryStatus.STATUS_FAILURE) {
             showButtonFailureDelayed();
             enableButtonDelayed();
-        }
-        else if (result == GenericQueryStatus.STATUS_SUCCESS && saveResultCount >= REQUIRED_SAVE_RESULT_COUNT) {
+        } else if (result == GenericQueryStatus.STATUS_SUCCESS && saveResultCount >= REQUIRED_SAVE_RESULT_COUNT) {
             showButtonSuccessDelayed();
             launchMapScreenDelayed();
         }

@@ -3,7 +3,6 @@ package pl.rmakowiecki.eventhub.api;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.storage.FirebaseStorage;
-
 import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import rx.Observable;
 import rx.subjects.PublishSubject;
