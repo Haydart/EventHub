@@ -29,6 +29,8 @@ import pl.rmakowiecki.eventhub.background.Constants;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
 import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
+import pl.rmakowiecki.eventhub.ui.screen_events_map.EventsMapActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
@@ -50,6 +52,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     @BindView(R.id.event_description_edit_text) EditText eventDescriptionEditText;
     @BindView(R.id.event_image_view) ImageView eventImageView;
     @BindView(R.id.event_categories_recycler_view) RecyclerView eventCategoriesRecyclerView;
+    @BindView(R.id.create_event_action_button) ActionButton eventCreateActionButton;
 
     private DialogFragment fragment;
     private Bitmap eventAvatarBitmap;
@@ -159,6 +162,32 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         builder.create().show();
     }
 
+    @Override
+    public void showFailureMessage() {
+        eventCreateActionButton.showFailure(getString(R.string.save_user_profile_failure_text));
+    }
+
+    @Override
+    public void showButtonProcessing() {
+        eventCreateActionButton.showProcessing();
+    }
+
+    @Override
+    public void showProfileSaveSuccess() {
+        eventCreateActionButton.showSuccess();
+    }
+
+    @Override
+    public void launchMapAndFinish() {
+        launchMapActivity();
+        finish();
+    }
+
+    private void launchMapActivity() {
+        Intent intent = new Intent(this, EventsMapActivity.class);
+        startActivity(intent);
+    }
+
     @OnClick(R.id.date_button)
     public void onDatePickerButtonClicked() {
         presenter.onDatePickerButtonClicked();
@@ -255,7 +284,8 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
                 eventNameEditText.getText().toString(),
                 eventDescriptionEditText.getText().toString(),
                 eventAddressTextView.getText().toString(),
-                preferencesManager.getUserName()
+                preferencesManager.getUserName(),
+                eventAvatarBitmap
         );
     }
 

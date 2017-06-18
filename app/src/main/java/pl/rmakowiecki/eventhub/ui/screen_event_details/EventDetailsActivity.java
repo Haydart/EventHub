@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_details;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -31,6 +32,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     private final int MAX_DISPLAYED_USERS = 20;
     @BindView(R.id.event_details_toolbar) Toolbar eventToolbar;
     @BindView(R.id.event_details_attendees_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.event_details_event_picture) ImageView eventPictureImageView;
     @BindView(R.id.event_details_static_map) ImageView staticMapImageView;
     @BindView(R.id.event_details_exp_text_view) ExpandableTextView expandableTextView;
     @BindView(R.id.event_details_date) TextView dateTextView;
@@ -63,6 +65,16 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         initEventDescription();
         initStaticMap();
         initUserList();
+    }
+
+    @Override
+    public String getEventId() {
+        return event.getId();
+    }
+
+    @Override
+    public void displayEventPicture(Bitmap bitmapFromBytes) {
+        eventPictureImageView.setImageBitmap(bitmapFromBytes);
     }
 
     private void readEventFromBundle() {

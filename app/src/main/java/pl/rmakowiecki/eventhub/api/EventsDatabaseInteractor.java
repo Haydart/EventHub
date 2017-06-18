@@ -1,10 +1,15 @@
 package pl.rmakowiecki.eventhub.api;
 
+import android.provider.ContactsContract;
+import android.util.Log;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.mappers.RemoteEventMapper;
@@ -20,6 +25,8 @@ import rx.subjects.PublishSubject;
 public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
     private static final String DATABASE_PATH = "app_data/events";
+
+    private String referenceKey;
 
     private Event parseEventData(DataSnapshot dataSnapshot, int position) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -96,11 +103,16 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
     public Observable<GenericQueryStatus> addEvent(RemoteEvent item) {
         PublishSubject<GenericQueryStatus> publishSubject = PublishSubject.create();
         setDatabaseQueryNode();
-        databaseQueryNode
-                .push()
+        DatabaseReference databaseReference = databaseQueryNode.push();
+        referenceKey = databaseReference.getKey();
+        databaseReference
                 .setValue(item)
                 .addOnCompleteListener(task -> publishSubject.onNext(task.isSuccessful() ? GenericQueryStatus.STATUS_SUCCESS : GenericQueryStatus.STATUS_FAILURE));
 
         return publishSubject;
+    }
+
+    public String getReferenceKey() {
+        return referenceKey;
     }
 }

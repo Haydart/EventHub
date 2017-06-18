@@ -24,11 +24,10 @@
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
             <ImageView
-                android:id="@+id/toolbar_image"
+                android:id="@+id/event_details_event_picture"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_technology_image"
                 app:layout_collapseMode="pin" />
 
             <View
