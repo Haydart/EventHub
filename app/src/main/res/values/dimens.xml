@@ -68,6 +68,8 @@
     <dimen name="event_details_margin_right">10dp</dimen>
     <dimen name="event_details_map_height">250dp</dimen>
     <dimen name="event_details_padding">16dp</dimen>
+    <dimen name="event_details_login_button_width">100dp</dimen>
+    <dimen name="event_details_login_button_height">52dp</dimen>
     <dimen name="separator_line_height">2dip</dimen>
     <dimen name="attendee_layout_width">76dp</dimen>
     <dimen name="attendee_image_height">64dp</dimen>

@@ -14,4 +14,10 @@ public interface EventDetailsView extends BaseView {
     String getEventId();
 
     void displayEventPicture(Bitmap bitmapFromBytes);
+
+    void initAttendeesList();
+
+    void hideAttendeesList();
+
+    void launchAppFeaturesActivity();
 }

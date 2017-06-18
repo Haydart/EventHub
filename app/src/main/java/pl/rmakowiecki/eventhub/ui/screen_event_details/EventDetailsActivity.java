@@ -1,26 +1,31 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_details;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import butterknife.BindString;
 import butterknife.BindView;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 import java.util.List;
 import org.joda.time.DateTime;
+
+import butterknife.OnClick;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
+import pl.rmakowiecki.eventhub.ui.screen_app_features.AppFeaturesActivity;
 import pl.rmakowiecki.eventhub.util.DateUtils;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
 
@@ -43,8 +48,18 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @BindView(R.id.event_details_attendees_text_view) TextView attendeesTextView;
     @BindView(R.id.event_details_no_attendees_text_view) TextView noAttendeesTextView;
     @BindView(R.id.event_details_attendees_layout) LinearLayout attendeesLinearLayout;
+    @BindView(R.id.event_details_login_button) ActionButton loginActionButton;
+    @BindString(R.string.event_details_date) String eventDateString;
+    @BindString(R.string.event_details_time) String eventTimeString;
+    @BindString(R.string.event_details_address) String eventPlaceString;
+    @BindString(R.string.event_details_organiser) String eventOrganizerString;
+    @BindString(R.string.event_details_name) String eventNameString;
+    @BindString(R.string.event_details_attendees_count) String eventAttendeesString;
+    @BindString(R.string.event_details_title) String eventDetailsTitleString;
+
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private UserAuthManager userAuthManager;
     private Event event;
 
     @Override
@@ -55,6 +70,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userAuthManager = new UserAuthManager();
         readEventFromBundle();
         setupToolbar();
     }
@@ -64,7 +80,6 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         initEventInfo();
         initEventDescription();
         initStaticMap();
-        initUserList();
     }
 
     @Override
@@ -83,18 +98,18 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     }
 
     private void setupToolbar() {
-        eventToolbar.setTitle(R.string.event_details_title);
+        eventToolbar.setTitle(eventDetailsTitleString);
         setSupportActionBar(eventToolbar);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
     }
 
     private void initEventInfo() {
         DateTime dateOfEvent = new DateTime(event.getTimestamp());
-        dateTextView.setText(getBaseContext().getString(R.string.event_details_date) + ":   " + DateUtils.getFormattedDate(dateOfEvent, "dd/MM/yyyy"));
-        timeTextView.setText(getBaseContext().getString(R.string.event_details_time) + ":   " + DateUtils.getFormattedDate(dateOfEvent, "HH:mm"));
-        placeTextView.setText(getBaseContext().getString(R.string.event_details_address) + ":   " + event.getAddress());
-        organiserTextView.setText(getBaseContext().getString(R.string.event_details_organiser) + ":   " + event.getOrganizer());
-        nameTextView.setText(getBaseContext().getString(R.string.event_details_name) + ":   " + event.getName());
+        dateTextView.setText(eventDateString + ":   " + DateUtils.getFormattedDate(dateOfEvent, "dd/MM/yyyy"));
+        timeTextView.setText(eventTimeString + ":   " + DateUtils.getFormattedDate(dateOfEvent, "HH:mm"));
+        placeTextView.setText(eventPlaceString + ":   " + event.getAddress());
+        organiserTextView.setText(eventOrganizerString + ":   " + event.getOrganizer());
+        nameTextView.setText(eventNameString + ":   " + event.getName());
     }
 
     private void initEventDescription() {
@@ -112,17 +127,25 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         return R.layout.activity_event_details;
     }
 
-    private void initUserList() {
+    @Override
+    public void initAttendeesList() {
         List<EventAttendee> attendees = getAttendees();
 
         if (!attendees.isEmpty()) {
             adapter = new EventDetailsAttendeesAdapter(getBaseContext(), attendees);
             setupRecyclerView();
-            attendeesTextView.setText(getBaseContext().getString(R.string.event_details_attendees_count) + ": " + attendees.size());
+            attendeesTextView.setText(eventAttendeesString + ": " + attendees.size());
             changeAttendeesVisibility(true);
         } else {
             changeAttendeesVisibility(false);
         }
+    }
+
+    @Override
+    public void hideAttendeesList() {
+        loginActionButton.setVisibility(View.VISIBLE);
+        noAttendeesTextView.setVisibility(View.INVISIBLE);
+        attendeesLinearLayout.setVisibility(View.INVISIBLE);
     }
 
     private void changeAttendeesVisibility(boolean showList) {
@@ -163,5 +186,16 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
                 .with(this)
                 .load(url)
                 .into(staticMapImageView);
+    }
+
+    @OnClick(R.id.event_details_login_button)
+    protected void onLoginButtonClicked() {
+        presenter.onLoginButtonClicked();
+    }
+
+    @Override
+    public void launchAppFeaturesActivity() {
+        Intent intent = new Intent(this, AppFeaturesActivity.class);
+        startActivity(intent);
     }
 }
