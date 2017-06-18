@@ -13,29 +13,32 @@ import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
-public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implements EventsFragmentView {
+/**
+ * Created by m1per on 17.06.2017.
+ */
+
+public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsFragmentPresenter> implements PersonalizedEventsFragmentView {
 
     public static final String ARG_PAGE = "ARG_PAGE";
-    private static final int PAGE = 2;
-
-
+    private static final int PAGE = 0;
+    private PreferencesManager preferencesManager;
     private int columnCount = 1;
-    private OnListFragmentInteractionListener listener;
-    private EventsAdapter adapter;
+    private PersonalizedEventsFragment.OnListFragmentInteractionListener listener;
+    private RecyclerView.Adapter adapter;
     private View view;
     private RecyclerView recyclerView;
-    private int page;
 
-    public EventsFragment() {
+    public PersonalizedEventsFragment() {
         //no-op
     }
 
-    public static EventsFragment newInstance(int page) {
+    public static PersonalizedEventsFragment newInstance(int page) {
         Bundle args = new Bundle();
         args.putInt(ARG_PAGE, page);
-        EventsFragment fragment = new EventsFragment();
+        PersonalizedEventsFragment fragment = new PersonalizedEventsFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -43,37 +46,36 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt(ARG_PAGE);
-        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_events_list, container, false);
+        view = inflater.inflate(R.layout.fragment_personalized_events_list, container, false);
 
         return view;
     }
 
     @Override
     protected int getLayoutRes() {
-        return R.layout.fragment_events_list;
+        return R.layout.fragment_personalized_events_list;
     }
 
     @Override
     protected void initPresenter() {
-        presenter = new EventsFragmentPresenter(PAGE);
+        preferencesManager = new PreferencesManager(getContext());
+        presenter = new PersonalizedEventsFragmentPresenter(PAGE, preferencesManager);
     }
 
     @Override
-    public void showEvents(List<EventWDistance> ewd) {
-        initEvents(ewd);
+    public void showEvents(List<EventWDistance> eventWithDistance) {
+        initEvents(eventWithDistance);
     }
 
     @Override
-    public void initEvents(List<EventWDistance> ewd) {
+    public void initEvents(List<EventWDistance> eventWithDistance) {
         Context context = getContext();
-        adapter = new EventsAdapter(context, ewd, listener, presenter);
+        adapter = new PersonalizedEventsAdapter(context, eventWithDistance, listener, presenter);
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);
@@ -88,22 +90,22 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnListFragmentInteractionListener) {
-            listener = (OnListFragmentInteractionListener) context;
+        if (context instanceof PersonalizedEventsFragment.OnListFragmentInteractionListener) {
+            listener = (PersonalizedEventsFragment.OnListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
     }
 
+    public void sortEvents(SortTypes type) {
+        presenter.onSortRequested(type);
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
         listener = null;
-    }
-
-    public void sortEvents(SortTypes type) {
-        presenter.onSortRequested(type);
     }
 
     public interface OnListFragmentInteractionListener {

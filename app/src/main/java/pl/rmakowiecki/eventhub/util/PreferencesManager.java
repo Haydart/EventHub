@@ -133,6 +133,24 @@ public class PreferencesManager {
         return displayList;
     }
 
+    public List<PreferenceCategory> getInterestsList() {
+        List<PreferenceCategory> categoryList = getPreferenceCategoryList();
+        List<PreferenceCategory> displayList = new ArrayList<>();
+
+        for (PreferenceCategory category : categoryList) {
+            String categoryName = category.getTitle();
+            Set<String> interests = getInterests(categoryName);
+
+            if (!interests.isEmpty()) {
+                List<String> subcategories = new ArrayList<>();
+                subcategories.addAll(interests);
+                displayList.add(new PreferenceCategory(categoryName, "", subcategories));
+            }
+        }
+
+        return displayList;
+    }
+
     public String getNameOrLocaleName(String localeName, String categoryName, String defaultName) {
         return sharedPreferences.getString(SHARED_PREFERENCES_PREFERENCE_LOCALE_KEY + localeName.toUpperCase() + categoryName.toUpperCase() + defaultName.toUpperCase(),
                 defaultName);
