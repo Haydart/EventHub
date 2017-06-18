@@ -143,12 +143,12 @@
             <View
                 android:id="@+id/event_details_first_line_separator"
                 android:layout_width="match_parent"
-            android:layout_height="@dimen/separator_line_height"
-            android:layout_marginTop="@dimen/event_details_text_margin"
-            android:background="@color/colorPrimaryDark"/>
+                android:layout_height="@dimen/separator_line_height"
+                android:layout_marginTop="@dimen/event_details_text_margin"
+                android:background="@color/colorPrimaryDark"/>
 
             <FrameLayout
-            android:layout_width="match_parent"
+                android:layout_width="match_parent"
                 android:layout_height="@dimen/event_details_attendees_layout_height">
 
                 <LinearLayout
@@ -185,6 +185,37 @@
                     android:gravity="center"
                     android:text="@string/event_details_no_attendees_info"
                     android:textSize="@dimen/text_size_very_large" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/event_details_text_height"
+                        android:layout_marginLeft="@dimen/event_details_text_margin"
+                        android:layout_marginTop="@dimen/event_details_attendees_margin"
+                        android:text="@string/event_details_attendees_list"
+                        android:textSize="@dimen/text_size_large" />
+
+                    <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
+                        android:id="@+id/event_details_login_button"
+                        android:layout_width="@dimen/event_details_login_button_width"
+                        android:layout_height="@dimen/event_details_login_button_height"
+                        android:layout_gravity="center"
+                        android:layout_margin="@dimen/standard_margin_large"
+                        android:visibility="invisible"
+                        app:button_shape="pill"
+                        app:default_color="@color/colorPrimary"
+                        app:failure_color="@color/failure_red"
+                        app:failure_icon="@drawable/icon_failure_action_button"
+                        app:inactive_button_alpha="1.0"
+                        app:success_color="@color/success_green"
+                        app:success_icon="@drawable/icon_success_action_button"
+                        app:text="@string/event_details_login"
+                        app:text_color="@android:color/white" />
+
+                </FrameLayout>
 
             </FrameLayout>
 
