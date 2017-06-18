@@ -7,8 +7,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import pl.rmakowiecki.eventhub.api.BaseDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.mappers.RemoteEventMapper;
@@ -25,7 +23,15 @@ import rx.subjects.PublishSubject;
 public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
     private static final String DATABASE_PATH = "app_data/events";
-    private static List<PreferenceCategory> preferenceList;
+    private static List<PreferenceCategory> interestsList;
+
+    public EventsDatabaseInteractor() {
+        super();
+    }
+
+    public EventsDatabaseInteractor(List<PreferenceCategory> interestsList) {
+        this.interestsList = interestsList;
+    }
 
     private Event parseEventData(DataSnapshot dataSnapshot, int position) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -56,7 +62,7 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
     private Event filterForPersonalizedEvents(Event event) {
         List<String> eventCategories = flattenCategoryList(event.getEventTags());
-        List<String> userInterests = flattenCategoryList(preferenceList);
+        List<String> userInterests = flattenCategoryList(interestsList);
 
         for (String eventCategory : eventCategories) {
             if (userInterests.contains(eventCategory)) {
@@ -129,7 +135,7 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
     }
 
     public Observable<Event> getData(int position, List<PreferenceCategory> displayList) {
-        preferenceList = displayList;
+        interestsList = displayList;
         setDatabaseQueryNode();
         publishSubject = PublishSubject.create();
         databaseQueryNode.addChildEventListener(new ChildEventListener() {

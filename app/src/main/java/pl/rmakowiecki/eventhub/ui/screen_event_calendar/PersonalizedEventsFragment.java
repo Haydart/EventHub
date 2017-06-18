@@ -11,6 +11,7 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import pl.rmakowiecki.eventhub.util.SortTypes;
@@ -23,7 +24,7 @@ public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsF
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private static final int PAGE = 0;
-    PreferencesManager preferencesManager;
+    private PreferencesManager preferencesManager;
     private int columnCount = 1;
     private PersonalizedEventsFragment.OnListFragmentInteractionListener listener;
     private RecyclerView.Adapter adapter;
@@ -50,7 +51,7 @@ public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsF
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_personalized_events_list, container, false); //modify
+        view = inflater.inflate(R.layout.fragment_personalized_events_list, container, false);
 
         return view;
     }
@@ -67,17 +68,23 @@ public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsF
     }
 
     @Override
-    public void showEvents(List<EventWDistance> ewd) {
-        initEvents(ewd);
+    public void showEvents(List<EventWDistance> eventWithDistance) {
+        initEvents(eventWithDistance);
     }
 
     @Override
-    public void initEvents(List<EventWDistance> ewd) {
+    public void initEvents(List<EventWDistance> eventWithDistance) {
         Context context = getContext();
-        adapter = new PersonalizedEventsAdapter(context, ewd, listener);
+        adapter = new PersonalizedEventsAdapter(context, eventWithDistance, listener, presenter);
         recyclerView = (RecyclerView) view;
         recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);
+    }
+
+    @Override
+    public void showActionStatus(GenericQueryStatus genericQueryStatus, int position) {
+        EventsViewHolder viewHolder = (EventsViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
+        viewHolder.showParticipationSavingStatus(genericQueryStatus);
     }
 
     @Override
@@ -91,14 +98,14 @@ public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsF
         }
     }
 
+    public void sortEvents(SortTypes type) {
+        presenter.onSortRequested(type);
+    }
+
     @Override
     public void onDetach() {
         super.onDetach();
         listener = null;
-    }
-
-    public void sortEvents(SortTypes type) {
-        presenter.onSortRequested(type);
     }
 
     public interface OnListFragmentInteractionListener {

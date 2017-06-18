@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,15 +24,15 @@ public class PersonalizedEventsFragmentPresenter extends BasePresenter<Personali
     private RxLocationProvider provider = new RxLocationProvider();
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
     private EventsRepository repository;
-    private ArrayList<String> distances = new ArrayList<>();
-    private int position;
+    private List<String> distances = new ArrayList<>();
+    private int tabPosition;
     private List<EventWDistance> eventsWithDistances = new ArrayList<>();
     private List<Event> allEvents = new ArrayList<>();
     private PreferencesManager preferencesManager;
 
-    PersonalizedEventsFragmentPresenter(int position, PreferencesManager preferencesManager) {
-        repository = new EventsRepository();
-        this.position = position;
+    PersonalizedEventsFragmentPresenter(int tabPosition, PreferencesManager preferencesManager) {
+        repository = new EventsRepository(preferencesManager.getInterestsList());
+        this.tabPosition = tabPosition;
         this.preferencesManager = preferencesManager;
     }
 
@@ -44,14 +42,13 @@ public class PersonalizedEventsFragmentPresenter extends BasePresenter<Personali
 
     private void acquireEvents() {
         repository
-                .query(new MyEventsSpecification(position) {
-                }, preferencesManager.getInterestsList())
+                .query(new MyEventsSpecification(tabPosition) {
+                })
                 .compose(applySchedulers())
                 .subscribe(this::updateEventsList);
     }
 
     private void updateEventsList(List<Event> events) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         boolean toRemove = false;
         int position = 0;
         if (allEvents.isEmpty()) {
@@ -101,6 +98,11 @@ public class PersonalizedEventsFragmentPresenter extends BasePresenter<Personali
                 break;
         }
         view.showEvents(eventsWithDistances);
+    }
+
+    public void addEventParticipant(String eventId, int position) {
+        repository.updateEventParticipants(eventId)
+                .subscribe(operationStatus -> view.showActionStatus(operationStatus, position));
     }
 
     @Override

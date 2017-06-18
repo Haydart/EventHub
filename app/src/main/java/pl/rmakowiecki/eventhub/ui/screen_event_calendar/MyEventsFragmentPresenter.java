@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -48,7 +46,6 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
     }
 
     private void updateEventsList(List<Event> events) {
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         boolean toRemove = false;
         int position = 0;
         if (allEvents.isEmpty()) {

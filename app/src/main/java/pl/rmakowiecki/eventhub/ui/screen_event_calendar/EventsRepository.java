@@ -6,9 +6,9 @@ import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.mappers.EventMapper;
 import pl.rmakowiecki.eventhub.model.mappers.ModelMapper;
 import pl.rmakowiecki.eventhub.model.remote.RemoteEvent;
+import pl.rmakowiecki.eventhub.repository.AddOperationRepository;
 import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.repository.QueryList;
-import pl.rmakowiecki.eventhub.repository.AddOperationRepository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import rx.Observable;
@@ -26,8 +26,12 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
     private ModelMapper<Event, RemoteEvent> eventMapper = new EventMapper();
 
     public EventsRepository() {
-
         eventDBInteractor = new EventsDatabaseInteractor();
+        eventPatricipantsDBInteractor = new EventParticipantsDatabaseInteractor();
+    }
+
+    public EventsRepository(List<PreferenceCategory> interestsList) {
+        eventDBInteractor = new EventsDatabaseInteractor(interestsList);
         eventPatricipantsDBInteractor = new EventParticipantsDatabaseInteractor();
     }
 
@@ -51,15 +55,6 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
         MyEventsSpecification spec = (MyEventsSpecification) specification;
         return eventDBInteractor
                 .getData(spec.getTabPosition())
-                .filter(event -> event != null)
-                .buffer(BUFFER_TIMESPAN, java.util.concurrent.TimeUnit.MILLISECONDS)
-                .filter(events -> !events.isEmpty());
-    }
-
-    public Observable<List<Event>> query(Specification specification, List<PreferenceCategory> preferencesList) {
-        MyEventsSpecification spec = (MyEventsSpecification) specification;
-        return eventDBInteractor
-                .getData(spec.getTabPosition(), preferencesList)
                 .filter(event -> event != null)
                 .buffer(BUFFER_TIMESPAN, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .filter(events -> !events.isEmpty());

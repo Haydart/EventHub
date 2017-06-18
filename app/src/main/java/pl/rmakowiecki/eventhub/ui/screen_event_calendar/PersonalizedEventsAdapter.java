@@ -17,19 +17,23 @@ class PersonalizedEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     private PersonalizedEventsFragment.OnListFragmentInteractionListener listener;
     private List<EventWDistance> items;
+    private PersonalizedEventsFragmentPresenter presenter;
 
-    public PersonalizedEventsAdapter(Context baseContext, List<EventWDistance> events, PersonalizedEventsFragment.OnListFragmentInteractionListener listener) {
+    public PersonalizedEventsAdapter(Context baseContext, List<EventWDistance> events,
+            PersonalizedEventsFragment.OnListFragmentInteractionListener listener,
+            PersonalizedEventsFragmentPresenter presenter) {
         final LayoutInflater layoutInflater = LayoutInflater.from(baseContext);
         final Context context = baseContext;
         items = events;
         this.listener = listener;
+        this.presenter = presenter;
     }
 
     @Override
     public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_personalized_events, parent, false);
-        return new EventsViewHolder(view);
+        return new EventsViewHolder(view, presenter);
     }
 
     @Override

@@ -13,12 +13,16 @@ class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     private MyEventsFragment.OnListFragmentInteractionListener listener;
     private List<EventWDistance> items;
+    private MyEventsFragmentPresenter presenter;
+
 
     public MyEventsAdapter(Context baseContext, List<EventWDistance> events, MyEventsFragment.OnListFragmentInteractionListener listener) {
         final LayoutInflater layoutInflater = LayoutInflater.from(baseContext);
         final Context context = baseContext;
         items = events;
         this.listener = listener;
+        this.presenter = presenter;
+
     }
 
     @Override
