@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_create_event;
 
-import android.graphics.Bitmap;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -19,7 +17,6 @@ import pl.rmakowiecki.eventhub.ui.screen_event_details.EventImageRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesSpecification;
-import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
 import rx.Observable;
 
@@ -115,7 +112,7 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         pickedCategoriesList.add(pickedCategory);
     }
 
-    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress, String organizerName, Bitmap eventPicture) {
+    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress, String organizerName, byte[] eventPicture) {
         if (!wasButtonClicked) {
             wasButtonClicked = true;
 
@@ -138,13 +135,13 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         }
     }
 
-    private void addEventToRepository(Event event, Bitmap eventPicture) {
+    private void addEventToRepository(Event event, byte[] eventPicture) {
         eventRepository
                 .add(event)
                 .subscribe(genericQueryStatus -> onEventAdded(genericQueryStatus, eventPicture));
     }
 
-    private void onEventAdded(GenericQueryStatus status, Bitmap eventPicture) {
+    private void onEventAdded(GenericQueryStatus status, byte[] eventPicture) {
         if (status == GenericQueryStatus.STATUS_FAILURE) {
             handleDelayedOperation(view::showFailureMessage, SHOW_BUTTON_RESULT_DELAY);
             handleDelayedOperation(this::enableButton, BUTTON_ENABLE_DELAY);
@@ -152,7 +149,7 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         else {
             if (eventPicture != null) {
                 String key = eventRepository.getLastReferenceKey();
-                eventImageRepository.add(key, BitmapUtils.getBytesFromBitmap(eventPicture));
+                eventImageRepository.add(key, eventPicture);
             }
 
             handleDelayedOperation(view::showProfileSaveSuccess, SHOW_BUTTON_RESULT_DELAY);

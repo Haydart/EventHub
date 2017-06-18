@@ -288,7 +288,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
                 eventDescriptionEditText.getText().toString(),
                 eventAddressTextView.getText().toString(),
                 preferencesManager.getUserName(),
-                eventAvatarBitmap
+                eventAvatarBitmap != null ? BitmapUtils.getBytesFromBitmap(eventAvatarBitmap) : new byte[]{}
         );
     }
 
