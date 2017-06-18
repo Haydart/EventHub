@@ -115,7 +115,7 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         pickedCategoriesList.add(pickedCategory);
     }
 
-    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress, String organizerName) {
+    void onEventCreationButtonClicked(LocationCoordinates eventCoordinates, String eventName, String eventDescription, String eventAddress, String organizerName, Bitmap eventPicture) {
         if (!wasButtonClicked) {
             wasButtonClicked = true;
 
@@ -134,24 +134,22 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
                     attendees
             );
 
-            addEventToRepository(event);
-
+            addEventToRepository(event, eventPicture);
         }
     }
 
-    private void addEventToRepository(Event event) {
+    private void addEventToRepository(Event event, Bitmap eventPicture) {
         eventRepository
                 .add(event)
-                .subscribe(genericQueryStatus -> onEventAdded(genericQueryStatus));
+                .subscribe(genericQueryStatus -> onEventAdded(genericQueryStatus, eventPicture));
     }
 
-    private void onEventAdded(GenericQueryStatus status) {
+    private void onEventAdded(GenericQueryStatus status, Bitmap eventPicture) {
         if (status == GenericQueryStatus.STATUS_FAILURE) {
             handleDelayedOperation(view::showFailureMessage, SHOW_BUTTON_RESULT_DELAY);
             handleDelayedOperation(this::enableButton, BUTTON_ENABLE_DELAY);
         }
         else {
-            Bitmap eventPicture = view.getEventPicture();
             if (eventPicture != null) {
                 String key = eventRepository.getLastReferenceKey();
                 eventImageRepository.add(key, BitmapUtils.getBytesFromBitmap(eventPicture));

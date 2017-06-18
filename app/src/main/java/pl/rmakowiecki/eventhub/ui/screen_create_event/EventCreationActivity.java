@@ -287,13 +287,9 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
                 eventNameEditText.getText().toString(),
                 eventDescriptionEditText.getText().toString(),
                 eventAddressTextView.getText().toString(),
-                preferencesManager.getUserName()
+                preferencesManager.getUserName(),
+                eventAvatarBitmap
         );
-    }
-
-    @Override
-    public Bitmap getEventPicture() {
-        return eventAvatarBitmap;
     }
 
     private LocationCoordinates getEventCoordinates() {

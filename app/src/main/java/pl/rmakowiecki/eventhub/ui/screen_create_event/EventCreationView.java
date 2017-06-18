@@ -36,6 +36,4 @@ interface EventCreationView extends BaseView {
     void launchMapAndFinish();
 
     void showButtonProcessing();
-
-    Bitmap getEventPicture();
 }
