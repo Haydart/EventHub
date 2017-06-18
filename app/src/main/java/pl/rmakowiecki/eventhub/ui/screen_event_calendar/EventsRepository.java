@@ -59,4 +59,8 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
                 .buffer(BUFFER_TIMESPAN, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .filter(events -> !events.isEmpty());
     }
+
+    public String getLastReferenceKey() {
+        return eventDBInteractor.getReferenceKey();
+    }
 }

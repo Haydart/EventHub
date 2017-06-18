@@ -1,5 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_create_event;
 
+import android.graphics.Bitmap;
+
 import com.jenzz.noop.annotation.NoOp;
 import java.util.List;
 import pl.rmakowiecki.eventhub.ui.BaseView;
@@ -26,4 +28,12 @@ interface EventCreationView extends BaseView {
     void showCategoriesList(List<PreferenceCategory> preference);
 
     void displayEventSubcategoryPicker(int position, PreferenceCategory category, PreferenceCategory preferenceCategory);
+
+    void showFailureMessage();
+
+    void showProfileSaveSuccess();
+
+    void launchMapAndFinish();
+
+    void showButtonProcessing();
 }

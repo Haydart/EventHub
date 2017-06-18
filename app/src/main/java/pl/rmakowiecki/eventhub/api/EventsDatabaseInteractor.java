@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 import java.util.List;
 import pl.rmakowiecki.eventhub.model.local.Event;
@@ -31,6 +32,8 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
     public EventsDatabaseInteractor(List<PreferenceCategory> interestsList) {
         this.interestsList = interestsList;
     }
+
+    private String referenceKey;
 
     private Event parseEventData(DataSnapshot dataSnapshot, int position) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -170,11 +173,16 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
     public Observable<GenericQueryStatus> addEvent(RemoteEvent item) {
         PublishSubject<GenericQueryStatus> publishSubject = PublishSubject.create();
         setDatabaseQueryNode();
-        databaseQueryNode
-                .push()
+        DatabaseReference databaseReference = databaseQueryNode.push();
+        referenceKey = databaseReference.getKey();
+        databaseReference
                 .setValue(item)
                 .addOnCompleteListener(task -> publishSubject.onNext(task.isSuccessful() ? GenericQueryStatus.STATUS_SUCCESS : GenericQueryStatus.STATUS_FAILURE));
 
         return publishSubject;
+    }
+
+    public String getReferenceKey() {
+        return referenceKey;
     }
 }
