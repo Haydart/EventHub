@@ -1,8 +1,5 @@
 package pl.rmakowiecki.eventhub.api;
 
-import android.provider.ContactsContract;
-import android.util.Log;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
