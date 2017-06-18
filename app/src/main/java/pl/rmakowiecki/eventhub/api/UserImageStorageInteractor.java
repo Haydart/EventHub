@@ -27,8 +27,7 @@ public class UserImageStorageInteractor extends BaseSpecificStorageInteractor<by
         publishSubject = PublishSubject.create();
         storageQueryNode
                 .getBytes(FIVE_MEGABYTES)
-                .addOnSuccessListener(bytes -> publishSubject.onNext(bytes))
-                .addOnFailureListener(e -> publishSubject.onNext(null));
+                .addOnSuccessListener(bytes -> publishSubject.onNext(bytes));
 
         return publishSubject;
     }
