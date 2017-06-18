@@ -2,7 +2,7 @@ package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.model.local.User;
-import pl.rmakowiecki.eventhub.repository.Repository;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
@@ -14,10 +14,12 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
     private static final int SHOW_BUTTON_RESULT_DELAY = 2000;
     private static final int LAUNCH_MAP_ACTIVITY_DELAY = 3500;
     private static final int BUTTON_ENABLE_DELAY = 5000;
+    private final int REQUIRED_SAVE_RESULT_COUNT = 2;
 
     private boolean wasButtonClicked;
-    private Repository<User> repository = new UserProfileRepository();
+    private UserProfileRepository repository = new UserProfileRepository();
     private UserManager userManager = new UserAuthManager();
+    private int saveResultCount;
 
     @Override
     protected void onViewStarted(UserProfileView view) {
@@ -31,6 +33,7 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
 
     void onProfileSaveButtonClick(User user) {
         if (!wasButtonClicked) {
+            saveResultCount = 0;
             wasButtonClicked = true;
             saveProfile(user);
             view.showButtonProcessing();
@@ -38,7 +41,21 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
     }
 
     private void saveProfile(User user) {
-        repository.add(user);
+        repository.add(user)
+                .compose(applySchedulers())
+                .subscribe(result -> onProfileSaveResult(result));
+    }
+
+    private void onProfileSaveResult(GenericQueryStatus result) {
+        ++saveResultCount;
+        if (result == GenericQueryStatus.STATUS_FAILURE) {
+            showButtonFailureDelayed();
+            enableButtonDelayed();
+        }
+        else if (result == GenericQueryStatus.STATUS_SUCCESS && saveResultCount >= REQUIRED_SAVE_RESULT_COUNT) {
+            showButtonSuccessDelayed();
+            launchMapScreenDelayed();
+        }
     }
 
     void onPhotoOptionSelected(AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource photoSource) {
@@ -46,11 +63,6 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
             view.launchCameraAppIntent();
         else if (photoSource == AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource.GALLERY)
             view.launchGalleryAppIntent();
-    }
-
-    void onProfileSaveFailure() {
-        showButtonFailureDelayed();
-        enableButtonDelayed();
     }
 
     private void showButtonFailureDelayed() {
@@ -65,11 +77,6 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
                 .subscribe(ignored -> wasButtonClicked = false);
     }
 
-    void onProfileSaveSuccess() {
-        showButtonSuccessDelayed();
-        launchMapScreenDelayed();
-    }
-
     private void showButtonSuccessDelayed() {
         Observable.timer(SHOW_BUTTON_RESULT_DELAY, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
@@ -80,10 +87,6 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
         Observable.timer(LAUNCH_MAP_ACTIVITY_DELAY, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
                 .subscribe(ignored -> view.launchMapAndFinish());
-    }
-
-    void onProfileSaveProcessing() {
-        view.showButtonProcessing();
     }
 
     void onChooseImageButtonClicked() {

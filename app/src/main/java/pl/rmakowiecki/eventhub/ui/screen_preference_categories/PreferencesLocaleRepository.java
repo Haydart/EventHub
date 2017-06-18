@@ -4,29 +4,20 @@ import java.util.List;
 import pl.rmakowiecki.eventhub.api.LocaleDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.PreferenceLocale;
 import pl.rmakowiecki.eventhub.repository.QueryList;
-import pl.rmakowiecki.eventhub.repository.Repository;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
+import pl.rmakowiecki.eventhub.repository.AddOperationRepository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
-public class PreferencesLocaleRepository implements Repository<PreferenceLocale>, QueryList<PreferenceLocale> {
+public class PreferencesLocaleRepository implements AddOperationRepository<PreferenceLocale, GenericQueryStatus>, QueryList<PreferenceLocale> {
     @Override
-    public void add(PreferenceLocale item) {
-        // TODO: 2017-04-23
+    public Observable<GenericQueryStatus> add(PreferenceLocale item) {
+        return Observable.empty();
     }
 
     @Override
-    public void add(Iterable<PreferenceLocale> items) {
-        // TODO: 2017-04-23
-    }
-
-    @Override
-    public void update(PreferenceLocale item) {
-        // TODO: 2017-04-23
-    }
-
-    @Override
-    public void remove(PreferenceLocale item) {
-        // TODO: 2017-04-23
+    public Observable<GenericQueryStatus> add(Iterable<PreferenceLocale> items) {
+        return Observable.empty();
     }
 
     @Override

@@ -3,30 +3,23 @@ package pl.rmakowiecki.eventhub.ui.screen_preference_categories;
 import java.util.List;
 import pl.rmakowiecki.eventhub.api.InterestsDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Interest;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.repository.QueryList;
-import pl.rmakowiecki.eventhub.repository.Repository;
+import pl.rmakowiecki.eventhub.repository.AddOperationRepository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
-public class PreferenceInterestRepository implements Repository<Interest>, QueryList<Interest> {
+public class PreferenceInterestRepository implements AddOperationRepository<Interest, GenericQueryStatus>, QueryList<Interest> {
     @Override
-    public void add(Interest item) {
+    public Observable<GenericQueryStatus> add(Interest item) {
         // TODO: 2017-04-23  
+        return Observable.empty();
     }
 
     @Override
-    public void add(Iterable<Interest> items) {
+    public Observable<GenericQueryStatus> add(Iterable<Interest> items) {
         // TODO: 2017-04-23  
-    }
-
-    @Override
-    public void update(Interest item) {
-        // TODO: 2017-04-23  
-    }
-
-    @Override
-    public void remove(Interest item) {
-        // TODO: 2017-04-23
+        return Observable.empty();
     }
 
     @Override
