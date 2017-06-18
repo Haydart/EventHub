@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -76,6 +75,11 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        finish();
     }
 
     private void setupEventCategoryRecyclerView() {

@@ -220,6 +220,11 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         bottomSheetFab.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_up_fade_in));
     }
 
+    @Override
+    public void hideEventCreationButton() {
+        bottomSheetFab.setVisibility(View.INVISIBLE);
+    }
+
     private void initNavigationDrawer() {
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, android.R.string.ok, android.R.string.cancel);
