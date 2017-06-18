@@ -5,9 +5,9 @@ import pl.rmakowiecki.eventhub.api.PreferencesDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.RemotePreference;
 import pl.rmakowiecki.eventhub.model.mappers.ModelMapper;
 import pl.rmakowiecki.eventhub.model.mappers.RemotePreferenceModelMapper;
+import pl.rmakowiecki.eventhub.repository.AddOperationRepository;
 import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.repository.QueryList;
-import pl.rmakowiecki.eventhub.repository.AddOperationRepository;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
 
