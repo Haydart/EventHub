@@ -105,8 +105,6 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     public void enableHomeButton() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
-        Window window = getWindow();
-        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
     }
 
     @Override
