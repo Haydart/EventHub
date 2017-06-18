@@ -80,7 +80,6 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         initEventInfo();
         initEventDescription();
         initStaticMap();
-        initUserList();
     }
 
     @Override
@@ -128,24 +127,25 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         return R.layout.activity_event_details;
     }
 
-    private void initUserList() {
-        if (userAuthManager.isUserAuthorized()) {
-            List<EventAttendee> attendees = getAttendees();
+    @Override
+    public void initAttendeesList() {
+        List<EventAttendee> attendees = getAttendees();
 
-            if (!attendees.isEmpty()) {
-                adapter = new EventDetailsAttendeesAdapter(getBaseContext(), attendees);
-                setupRecyclerView();
-                attendeesTextView.setText(eventAttendeesString + ": " + attendees.size());
-                changeAttendeesVisibility(true);
-            } else {
-                changeAttendeesVisibility(false);
-            }
+        if (!attendees.isEmpty()) {
+            adapter = new EventDetailsAttendeesAdapter(getBaseContext(), attendees);
+            setupRecyclerView();
+            attendeesTextView.setText(eventAttendeesString + ": " + attendees.size());
+            changeAttendeesVisibility(true);
+        } else {
+            changeAttendeesVisibility(false);
         }
-        else {
-            loginActionButton.setVisibility(View.VISIBLE);
-            noAttendeesTextView.setVisibility(View.INVISIBLE);
-            attendeesLinearLayout.setVisibility(View.INVISIBLE);
-        }
+    }
+
+    @Override
+    public void hideAttendeesList() {
+        loginActionButton.setVisibility(View.VISIBLE);
+        noAttendeesTextView.setVisibility(View.INVISIBLE);
+        attendeesLinearLayout.setVisibility(View.INVISIBLE);
     }
 
     private void changeAttendeesVisibility(boolean showList) {
@@ -190,6 +190,11 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
 
     @OnClick(R.id.event_details_login_button)
     protected void onLoginButtonClicked() {
+        presenter.onLoginButtonClicked();
+    }
+
+    @Override
+    public void launchAppFeaturesActivity() {
         Intent intent = new Intent(this, AppFeaturesActivity.class);
         startActivity(intent);
     }
