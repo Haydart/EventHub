@@ -55,4 +55,6 @@ interface EventsMapView extends BaseView {
     void launchAuthScreen();
 
     void setEventCreationButtonRevealColor(RevealColor revealColor);
+
+    void hideEventCreationButton();
 }

@@ -95,8 +95,10 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     void onMapMarkerClicked(Place place) {
         if (place != null) {
             isFocusedOnProvidedMarker = true;
+            clickedMarkerAddress = place.getAddress();
             view.setBottomSheetData(place.getName(), place.getAddress());
             view.showBottomSheet();
+            view.showEventCreationButton();
             view.setMapPadding(
                     DEFAULT_MAP_PADDING,
                     DEFAULT_MAP_PADDING,
@@ -145,6 +147,7 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
             focusedMarkerLocation = null;
             view.hideMapMarker();
             view.hideBottomSheet();
+            view.hideEventCreationButton();
             view.setMapPadding(
                     DEFAULT_MAP_PADDING,
                     SEARCH_BAR_MAP_TOP_PADDING,
@@ -157,9 +160,11 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
     }
 
     void onLocationAddressFetched(String addressOutput) {
-        clickedMarkerAddress = addressOutput;
-        view.setBottomSheetData(addressOutput, focusedMarkerLocation.toString());
-        view.showEventCreationButton();
+        if (focusedMarkerLocation != null) {
+            clickedMarkerAddress = addressOutput;
+            view.setBottomSheetData(addressOutput, focusedMarkerLocation.toString());
+            view.showEventCreationButton();
+        }
     }
 
     void onEventCreationButtonClicked() {
@@ -176,9 +181,11 @@ class EventsMapPresenter extends BasePresenter<EventsMapView> {
             view.hideMapMarker();
         }
         isMapClickMarkerShown = true;
+        clickedMarkerAddress = place.getAddress();
         view.showMapMarker(place.getLocationCoordinates());
         view.setBottomSheetData(place.getName(), place.getAddress());
         view.showBottomSheet();
+        view.showEventCreationButton();
         hideSearchBar();
         dismissMapTransitionTask();
         appointMapTransitionTask(focusedMarkerLocation = place.getLocationCoordinates(), IMMEDIATE_CAMERA_TRANSITION_DELAY);
