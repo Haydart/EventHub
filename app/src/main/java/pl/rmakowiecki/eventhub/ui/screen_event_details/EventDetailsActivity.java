@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @BindView(R.id.event_details_no_attendees_text_view) TextView noAttendeesTextView;
     @BindView(R.id.event_details_attendees_layout) LinearLayout attendeesLinearLayout;
     @BindView(R.id.event_details_login_button) ActionButton loginActionButton;
+    @BindView(R.id.event_details_not_logged_in_frame_layout) FrameLayout notLoggedInLayout;
     @BindString(R.string.event_details_date) String eventDateString;
     @BindString(R.string.event_details_time) String eventTimeString;
     @BindString(R.string.event_details_address) String eventPlaceString;
@@ -59,7 +61,6 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
-    private UserAuthManager userAuthManager;
     private Event event;
 
     @Override
@@ -69,8 +70,6 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        userAuthManager = new UserAuthManager();
         readEventFromBundle();
         setupToolbar();
     }
@@ -143,12 +142,13 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
 
     @Override
     public void hideAttendeesList() {
-        loginActionButton.setVisibility(View.VISIBLE);
+        notLoggedInLayout.setVisibility(View.VISIBLE);
         noAttendeesTextView.setVisibility(View.INVISIBLE);
         attendeesLinearLayout.setVisibility(View.INVISIBLE);
     }
 
     private void changeAttendeesVisibility(boolean showList) {
+        notLoggedInLayout.setVisibility(View.INVISIBLE);
         noAttendeesTextView.setVisibility(showList ? View.INVISIBLE : View.VISIBLE);
         attendeesLinearLayout.setVisibility(showList ? View.VISIBLE : View.INVISIBLE);
     }
