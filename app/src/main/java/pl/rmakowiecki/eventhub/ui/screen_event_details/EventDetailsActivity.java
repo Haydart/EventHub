@@ -70,6 +70,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         readEventFromBundle();
         setupToolbar();
     }

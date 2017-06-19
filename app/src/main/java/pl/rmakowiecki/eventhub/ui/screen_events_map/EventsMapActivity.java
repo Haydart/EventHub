@@ -61,6 +61,8 @@ import pl.rmakowiecki.eventhub.ui.screen_event_calendar.CalendarActivity;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceActivity;
 import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileActivity;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
+import pl.rmakowiecki.eventhub.util.UserAuthManager;
+import pl.rmakowiecki.eventhub.util.UserManager;
 import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
 import rx.android.schedulers.AndroidSchedulers;
 
@@ -99,6 +101,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
     private Marker mapClickMarker;
     private AddressResultReceiver addressResultReceiver;
     private PreferencesManager preferencesManager;
+    private UserManager userManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +113,7 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         initRevealSheetLayout();
         addressResultReceiver = new AddressResultReceiver(this, new Handler());
         preferencesManager = new PreferencesManager(this);
+        userManager = new UserAuthManager();
         setNavigationDrawerJoinButtonClickListener();
         ((CoordinatorLayout.LayoutParams) mapSearchBar.getLayoutParams()).setMargins(0, getStatusBarHeight(), 0, 0);
     }
@@ -198,6 +202,8 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
         navigationView.getMenu().findItem(R.id.nav_logout).setVisible(loggedIn);
         navigationView.getMenu().findItem(R.id.nav_user_profile).setVisible(loggedIn);
         ImageView headerImageView = (ImageView) navigationView.getHeaderView(0).findViewById(R.id.nav_drawer_header_image_view);
+        TextView nameTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.user_name_text_view);
+        TextView emailTextView = (TextView) navigationView.getHeaderView(0).findViewById(R.id.email_text_view);
         FrameLayout anonymousUserNavigationDrawerHeader = (FrameLayout) navigationView.getHeaderView(0).findViewById(R.id.anonymous_user_nav_drawer_header);
         LinearLayout authorizedUserNavigationDrawerHeader = (LinearLayout) navigationView.getHeaderView(0).findViewById(R.id.authorized_user_nav_drawer_header);
 
@@ -205,6 +211,8 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
             authorizedUserNavigationDrawerHeader.setVisibility(View.VISIBLE);
             anonymousUserNavigationDrawerHeader.setVisibility(View.INVISIBLE);
             Bitmap image = preferencesManager.getUserImage();
+            nameTextView.setText(userManager.getUserDisplayedName(this));
+            emailTextView.setText(userManager.getUserEmail(this));
             if (image != null) {
                 headerImageView.setImageBitmap(image);
             }
