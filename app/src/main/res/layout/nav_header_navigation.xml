@@ -32,17 +32,19 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:visibility="invisible">
+            android:layout_marginLeft="@dimen/standard_margin_medium"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/user_name_text_view"
+                android:layout_marginTop="@dimen/standard_margin_xlarge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingTop="@dimen/nav_header_vertical_spacing"
                 tools:text="Name" />
 
             <TextView
+                android:layout_marginTop="@dimen/standard_margin_small"
                 android:id="@+id/email_text_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
