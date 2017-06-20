@@ -55,4 +55,8 @@ interface AuthView extends BaseView {
     void launchMainScreen();
 
     void showGoogleLoginSuccess();
+
+    void handleLoginSuccess();
+
+    void handleRegisterSuccess();
 }

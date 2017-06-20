@@ -48,10 +48,12 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     private PreferencesManager preferencesManager;
     private List<PreferenceCategory> preferences;
     private ImageView sharedTransitionImage;
+    private PreferenceInterestRepository preferenceInterestRepository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferenceInterestRepository = new PreferenceInterestRepository();
         preferences = new ArrayList<>();
         sharedPreferences = getSharedPreferences(SHARED_PREFERENCES_KEY, MODE_PRIVATE);
         preferencesManager = new PreferencesManager(this);
@@ -119,18 +121,7 @@ public class PreferenceActivity extends BaseActivity<PreferencePresenter> implem
     @Override
     public void savePreferences() {
         savePreferencesButton.showProcessing();
-
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            DatabaseReference userPreferencesRef = FirebaseDatabase
-                    .getInstance()
-                    .getReference(USER_DATA_REFERENCE)
-                    .child(user.getUid())
-                    .child(USER_PREFERENCES_REFERENCE);
-
-            userPreferencesRef.setValue(getUserDataFromSharedPreferences());
-        }
-
+        preferenceInterestRepository.savePreferences(getUserDataFromSharedPreferences());
         presenter.onPreferenceSave();
     }
 

@@ -26,14 +26,14 @@ public class FirebaseAuthInteractor implements IAuthInteractor {
     public void loginUserWithEmail(String email, String password) {
         perspective = AuthPerspective.LOGIN;
         auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this::handleAuthResponse);
+                .addOnCompleteListener(task -> handleAuthResponse(task, false));
     }
 
     @Override
     public void registerUserWithEmail(String email, String password) {
         perspective = AuthPerspective.REGISTER;
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this::handleAuthResponse);
+                .addOnCompleteListener(task -> handleAuthResponse(task, true));
     }
 
     @Override
@@ -54,9 +54,9 @@ public class FirebaseAuthInteractor implements IAuthInteractor {
         // TODO: 17/06/2017 implement
     }
 
-    private void handleAuthResponse(Task<AuthResult> authResultTask) {
+    private void handleAuthResponse(Task<AuthResult> authResultTask, boolean register) {
         if (authResultTask.isSuccessful()) {
-            callback.onSuccess();
+            callback.onSuccess(register);
         } else {
             recognizeErrorAndReact(authResultTask);
         }

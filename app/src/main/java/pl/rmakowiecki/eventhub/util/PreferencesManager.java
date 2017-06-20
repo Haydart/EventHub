@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Base64;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -63,6 +64,18 @@ public class PreferencesManager {
         return preferenceCategories;
     }
 
+    public Map<String, List<String>> getUserInterestsMap() {
+        Map<String, List<String>> categories = new HashMap<>();
+        for (PreferenceCategory category : getPreferenceCategoryList()) {
+            Set<String> subCategories = getInterests(category.getTitle());
+            List<String> subCategoriesList = new ArrayList<>();
+            subCategoriesList.addAll(subCategories);
+            categories.put(category.getTitle(), subCategoriesList);
+        }
+
+        return categories;
+    }
+
     public void saveCategories(List<PreferenceCategory> preferenceList) {
         Set<String> categories = new HashSet<>();
         for (PreferenceCategory preference : preferenceList) {
@@ -77,6 +90,8 @@ public class PreferencesManager {
     }
 
     public void saveInterests(List<Interest> interests) {
+        clearSharedPreferencesInterests();
+
         if (!interests.isEmpty()) {
             for (Interest interest : interests) {
                 Set<String> subCategories = new HashSet<>();
@@ -86,8 +101,17 @@ public class PreferencesManager {
         }
     }
 
+    private void clearSharedPreferencesInterests() {
+        Set<String> categories = getCategories();
+        if (!categories.isEmpty()) {
+            for (String categoryName : categories) {
+                sharedPreferences.edit().remove(SHARED_PREFERENCES_INTERESTS_KEY + categoryName.toUpperCase()).commit();
+            }
+        }
+    }
+
     public void saveSubCategories(String categoryName, Set<String> subCategories) {
-        sharedPreferences.edit().remove(SHARED_PREFERENCES_INTERESTS_KEY + categoryName.toUpperCase());
+        sharedPreferences.edit().remove(SHARED_PREFERENCES_INTERESTS_KEY + categoryName.toUpperCase()).commit();
         sharedPreferences.edit().putStringSet(SHARED_PREFERENCES_INTERESTS_KEY + categoryName.toUpperCase(), subCategories).commit();
     }
 

@@ -22,6 +22,7 @@ import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_personalization.PersonalizationActivity;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthView {
 
@@ -47,10 +48,12 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @BindString(R.string.button_failure_credentials_discarded) String credentialsDiscardedErrorMessage;
 
     private CallbackManager facebookCallbackManager;
+    private PreferencesManager preferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferencesManager = new PreferencesManager(this);
     }
 
     @Override
@@ -162,6 +165,16 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     public void showGoogleLoginSuccess() {
         // TODO: 17/06/2017 rework
         Toast.makeText(this, "Google login success", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void handleLoginSuccess() {
+        presenter.loadInterests(preferencesManager);
+    }
+
+    @Override
+    public void handleRegisterSuccess() {
+        presenter.saveInterests(preferencesManager);
     }
 
     @Override
