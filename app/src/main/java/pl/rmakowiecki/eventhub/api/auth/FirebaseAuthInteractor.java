@@ -1,11 +1,6 @@
 package pl.rmakowiecki.eventhub.api.auth;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-import android.widget.Toast;
-
 import com.facebook.AccessToken;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
@@ -15,7 +10,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
 import pl.rmakowiecki.eventhub.ui.screen_auth.AuthPerspective;
@@ -59,7 +53,6 @@ public class FirebaseAuthInteractor implements IAuthInteractor {
 
     @Override
     public void loginWithGoogle(String tokenId) {
-        Log.d("TAG", "TOKEN: " + tokenId);
         AuthCredential credential = GoogleAuthProvider.getCredential(tokenId, null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
