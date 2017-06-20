@@ -7,8 +7,12 @@ import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.api.auth.AuthResponseInterceptor;
 import pl.rmakowiecki.eventhub.api.auth.FirebaseAuthInteractor;
 import pl.rmakowiecki.eventhub.api.auth.IAuthInteractor;
+import pl.rmakowiecki.eventhub.model.local.Interest;
 import pl.rmakowiecki.eventhub.model.remote.credentials.AuthCredentials;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestRepository;
+import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestSpecification;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import rx.Observable;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -22,10 +26,14 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     private Subscription credentialsChangesSubscription;
     private IAuthInteractor authInteractor;
     private List<String> readPermissionsList = Arrays.asList("email", "public_profile", "user_friends");
+    private PreferenceInterestRepository preferenceInterestRepository;
+    private PreferencesManager preferencesManager;
 
-    AuthPresenter() {
+    AuthPresenter(PreferencesManager prefManager) {
+        preferencesManager = prefManager;
         credentialsValidator = new CredentialsValidator(this);
         authInteractor = new FirebaseAuthInteractor(this);
+        preferenceInterestRepository = new PreferenceInterestRepository();
     }
 
     void onEmailChanged() {
@@ -99,6 +107,14 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public void onPasswordRepeatInvalid() {
         view.showPasswordMatchingError();
+    }
+
+    @Override
+    public void onSuccess(AuthPerspective authPerspective) {
+        if (authPerspective == AuthPerspective.REGISTER)
+            saveInterests();
+        else
+            loadInterests();
     }
 
     @Override
@@ -178,6 +194,25 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public void onGoogleLoginError() {
         view.showGoogleLoginError();
+    }
+
+    public void saveInterests() {
+        preferenceInterestRepository.savePreferences(preferencesManager.getUserInterestsMap());
+        view.showSuccess();
+        launchPersonalizationScreenDelayed();
+    }
+
+    public void loadInterests() {
+        preferenceInterestRepository
+                .query(new PreferenceInterestSpecification() {})
+                .compose(applySchedulers())
+                .subscribe(this::onInterestsLoaded);
+    }
+
+    private void onInterestsLoaded(List<Interest> interestsList) {
+        preferencesManager.saveInterests(interestsList);
+        view.showSuccess();
+        launchPersonalizationScreenDelayed();
     }
 
     private void launchPersonalizationScreenDelayed() {
