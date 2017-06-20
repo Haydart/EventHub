@@ -8,4 +8,6 @@ public interface IAuthInteractor {
     void registerUserWithEmail(String email, String password);
 
     void loginWithFacebook(AccessToken token);
+
+    void loginWithGoogle(String tokenId);
 }

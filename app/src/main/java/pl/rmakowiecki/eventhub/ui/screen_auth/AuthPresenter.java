@@ -1,7 +1,18 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
+import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.Toast;
+
 import com.facebook.AccessToken;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 import java.util.Arrays;
 import java.util.List;
@@ -184,7 +195,7 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
 
     public void onGoogleLoginResult(GoogleSignInResult result) {
         if (result.isSuccess())
-            onGoogleLoginSuccess();
+            onGoogleLoginSuccess(result.getSignInAccount());
         else
             onGoogleLoginError();
     }
@@ -194,14 +205,24 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     }
 
     @Override
-    public void onGoogleLoginSuccess() {
-        view.showGoogleLoginSuccess();
-        launchMainScreenDelayed();
+    public void onGoogleLoginSuccess(GoogleSignInAccount signInAccount) {
+        firebaseAuthWithGoogle(signInAccount);
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount account) {
+        Log.d("TAG", "firebaseAuthWithGoogle:" + account.getId());
+        authInteractor.loginWithGoogle(account.getIdToken());
     }
 
     @Override
     public void onGoogleLoginError() {
         view.showGoogleLoginError();
+    }
+
+    @Override
+    public void onFirebaseGoogleLoginSuccess() {
+        view.showGoogleLoginSuccess();
+        launchMainScreenDelayed();
     }
 
     public void saveInterests() {
