@@ -27,8 +27,10 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     private IAuthInteractor authInteractor;
     private List<String> readPermissionsList = Arrays.asList("email", "public_profile", "user_friends");
     private PreferenceInterestRepository preferenceInterestRepository;
+    private PreferencesManager preferencesManager;
 
-    AuthPresenter() {
+    AuthPresenter(PreferencesManager prefManager) {
+        preferencesManager = prefManager;
         credentialsValidator = new CredentialsValidator(this);
         authInteractor = new FirebaseAuthInteractor(this);
         preferenceInterestRepository = new PreferenceInterestRepository();
@@ -108,11 +110,11 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     }
 
     @Override
-    public void onSuccess(boolean register) {
-        if (register)
-            view.handleRegisterSuccess();
+    public void onSuccess(AuthPerspective authPerspective) {
+        if (authPerspective == AuthPerspective.REGISTER)
+            saveInterests();
         else
-            view.handleLoginSuccess();
+            loadInterests();
     }
 
     @Override
@@ -188,20 +190,20 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
         view.showGoogleLoginError();
     }
 
-    public void saveInterests(PreferencesManager preferencesManager) {
+    public void saveInterests() {
         preferenceInterestRepository.savePreferences(preferencesManager.getUserInterestsMap());
         view.showSuccess();
         launchPersonalizationScreenDelayed();
     }
 
-    public void loadInterests(PreferencesManager manager) {
+    public void loadInterests() {
         preferenceInterestRepository
                 .query(new PreferenceInterestSpecification() {})
                 .compose(applySchedulers())
-                .subscribe((interestsList) -> onInterestsLoaded(manager, interestsList));
+                .subscribe(this::onInterestsLoaded);
     }
 
-    private void onInterestsLoaded(PreferencesManager preferencesManager, List<Interest> interestsList) {
+    private void onInterestsLoaded(List<Interest> interestsList) {
         preferencesManager.saveInterests(interestsList);
         view.showSuccess();
         launchPersonalizationScreenDelayed();

@@ -1,7 +1,9 @@
 package pl.rmakowiecki.eventhub.api.auth;
 
+import pl.rmakowiecki.eventhub.ui.screen_auth.AuthPerspective;
+
 interface ResponseInterceptor {
-    void onSuccess(boolean register);
+    void onSuccess(AuthPerspective register);
 
     void onNetworkConnectionError();
 }

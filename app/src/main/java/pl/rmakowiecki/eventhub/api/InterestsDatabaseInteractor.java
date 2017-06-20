@@ -78,10 +78,9 @@ public class InterestsDatabaseInteractor extends BaseDatabaseInteractor<List<Int
     }
 
     public void savePreferences(Map<String, List<String>> userDataFromSharedPreferences) {
-        if (!setUser())
-            return;
-
-        setDatabaseQueryNode();
-        databaseQueryNode.setValue(userDataFromSharedPreferences);
+        if (setUser()) {
+            setDatabaseQueryNode();
+            databaseQueryNode.setValue(userDataFromSharedPreferences);
+        }
     }
 }
