@@ -16,6 +16,9 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
@@ -25,6 +28,8 @@ import pl.rmakowiecki.eventhub.ui.screen_personalization.PersonalizationActivity
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthView {
+
+    private static final int RC_SIGN_IN = 1;
 
     @BindView(R.id.input_layout_email) TextInputLayout emailInputLayout;
     @BindView(R.id.input_layout_password) TextInputLayout passwordInputLayout;
@@ -48,6 +53,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @BindString(R.string.button_failure_credentials_discarded) String credentialsDiscardedErrorMessage;
 
     private CallbackManager facebookCallbackManager;
+    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +65,18 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         super.onStart();
         registerCredentialsChanges();
         setupFacebookLoginCallbacks();
+        setupGoogleLoginClient();
+    }
+
+    private void setupGoogleLoginClient() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, connectionResult -> presenter.onGoogleLoginError())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
     private void setupFacebookLoginCallbacks() {
@@ -85,7 +103,13 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            presenter.onGoogleLoginResult(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
+        }
+        else {
+            facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -142,9 +166,20 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         presenter.onFacebookLoginButtonClicked();
     }
 
+    @OnClick(R.id.image_view_login_g)
+    public void onGoogleLoginButtonClicked() {
+        presenter.onGoogleLoginButtonClicked();
+    }
+
     @Override
     public void loginWithFacebookAuthentication(List<String> readPermissionsList) {
         LoginManager.getInstance().logInWithReadPermissions(this, readPermissionsList);
+    }
+
+    @Override
+    public void loginWithGoogleAuthentication() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override

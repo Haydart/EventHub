@@ -50,6 +50,8 @@ interface AuthView extends BaseView {
 
     void showGoogleLoginError();
 
+    void loginWithGoogleAuthentication();
+
     void showFacebookLoginSuccess();
 
     void launchMainScreen();

@@ -1,6 +1,8 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import com.facebook.AccessToken;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -177,6 +179,18 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public void onFacebookLoginError() {
         view.showFacebookLoginError();
+    }
+
+
+    public void onGoogleLoginResult(GoogleSignInResult result) {
+        if (result.isSuccess())
+            onGoogleLoginSuccess();
+        else
+            onGoogleLoginError();
+    }
+
+    void onGoogleLoginButtonClicked() {
+        view.loginWithGoogleAuthentication();
     }
 
     @Override

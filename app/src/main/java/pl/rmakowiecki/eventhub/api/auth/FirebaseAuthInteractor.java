@@ -49,11 +49,6 @@ public class FirebaseAuthInteractor implements IAuthInteractor {
                 });
     }
 
-    @Override
-    public void loginWithGoogle() {
-        // TODO: 17/06/2017 implement
-    }
-
     private void handleAuthResponse(Task<AuthResult> authResultTask, AuthPerspective authPerspective) {
         if (authResultTask.isSuccessful()) {
             callback.onSuccess(authPerspective);

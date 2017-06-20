@@ -139,6 +139,10 @@ dependencies {
 	//Expandable Text View
 	compile 'com.ms-square:expandableTextView:0.1.4'
 
+	//Google+ auth
+	compile 'com.google.firebase:firebase-auth:10.2.1'
+	compile 'com.google.android.gms:play-services-auth:10.2.1'
+
 	testCompile 'junit:junit:4.12'
 }
 
