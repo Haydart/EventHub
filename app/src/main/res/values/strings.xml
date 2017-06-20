@@ -19,6 +19,11 @@
   <string name="tab_title_all_events">All events</string>
   <string name="not_enough_preferences_msg">Please select at least three categories.</string>
   <string name="day_today">Today</string>
+    <string name="away_text">away</string>
+    <string name="button_text_leave">Leave</string>
+    <string name="button_text_join">Join</string>
+    <string name="status_success_message">Joining succeed!</string>
+    <string name="status_fail_message">Joining failed!</string>
   <string name="day_tomorrow">Tomorrow</string>
   <string name="reverse_geocoding_no_address_found_error">No address found</string>
   <string name="reverse_geocoding_service_unavailable">Service unavailable, please try again</string>
@@ -63,4 +68,9 @@
   <string name="personalization_welcome_3">Tell us something abour yourself!</string>
   <string name="personalization_user_name_hint">What is your name\?</string>
   <string name="personalization_button_text_save">Save</string>
+    <string name="button_text_next">Next</string>
+    <string name="feature_slider_description_1">See what people like!</string>
+    <string name="feature_slider_description_2">Keep in touch with your friends!</string>
+    <string name="feature_slider_description_3">Get to know interesting places!</string>
+    <string name="feature_slider_description_4">Try activities you’ve never tried before!</string>
 </resources>

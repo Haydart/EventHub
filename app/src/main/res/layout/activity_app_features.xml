@@ -62,7 +62,7 @@
             android:layout_gravity="center_horizontal"
             android:layout_margin="@dimen/standard_margin_large"
             android:gravity="center_horizontal"
-            android:text="Nasza apka jest dobra dla starych ludzi."
+            android:text="@string/feature_slider_description_1"
             android:textSize="16sp" />
 
         <pl.rmakowiecki.eventhub.ui.custom_view.ActionButton
@@ -78,7 +78,7 @@
             app:inactive_button_alpha="1.0"
             app:success_color="@color/success_green"
             app:success_icon="@drawable/icon_success_action_button"
-            app:text="@string/button_text_sign_in"
+            app:text="@string/button_text_next"
             app:text_color="@android:color/white" />
     </LinearLayout>
 </LinearLayout>
