@@ -12,7 +12,7 @@ public final class TextUtils {
     }
 
     public static boolean isNotEmpty(String string) {
-        return !isEmpty(string);
+        return !isEmpty(string.trim());
     }
 
     public static String getDefaultUsernameFromEmail(@NonNull String userEmail) {

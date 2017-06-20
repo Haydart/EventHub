@@ -15,4 +15,10 @@ interface AppFeaturesView extends BaseView {
     void launchAuthScreen();
 
     void makeViewsVisible();
+
+    void showNextFeatureTab();
+
+    void setButtonActionNextTab();
+
+    void setButtonTextJoin();
 }
