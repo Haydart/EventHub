@@ -68,6 +68,7 @@
   <string name="personalization_welcome_3">Tell us something abour yourself!</string>
   <string name="personalization_user_name_hint">What is your name\?</string>
   <string name="personalization_button_text_save">Save</string>
+    <string name="button_text_general_fail">Failed to send data</string>
     <string name="button_text_next">Next</string>
     <string name="feature_slider_description_1">See what people like!</string>
     <string name="feature_slider_description_2">Keep in touch with your friends!</string>
