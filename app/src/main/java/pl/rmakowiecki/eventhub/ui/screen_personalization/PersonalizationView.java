@@ -7,7 +7,17 @@ import pl.rmakowiecki.eventhub.ui.BaseView;
 interface PersonalizationView extends BaseView {
     void showPictureSelectDialog();
 
+    void showPersonalizationUploadSuccess();
+
     void launchCameraAppIntent();
 
     void launchGalleryAppIntent();
+
+    void disableConfirmButton();
+
+    void enableConfirmButton();
+
+    void showPersonalizationUploadError();
+
+    void launchMainScreen();
 }

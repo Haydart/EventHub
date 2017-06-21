@@ -64,6 +64,7 @@
     <string name="personalization_welcome_3">Powiedz nam coś o sobie!</string>
     <string name="personalization_user_name_hint">Jak się nazywasz\?</string>
   <string name="personalization_button_text_save">Zapisz</string>
+    <string name="button_text_general_fail">Błąd wysyłania danych</string>
     <string name="button_text_next">Dalej</string>
     <string name="feature_slider_description_1">Zobacz, co lubią ludzie!</string>
     <string name="feature_slider_description_2">Bądź blisko swoich znajomych!</string>

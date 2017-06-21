@@ -1,17 +1,28 @@
 package pl.rmakowiecki.eventhub.ui.screen_personalization;
 
+import java.util.concurrent.TimeUnit;
+import pl.rmakowiecki.eventhub.model.local.User;
+import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
+import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileRepository;
+import pl.rmakowiecki.eventhub.util.TextUtils;
+import rx.Observable;
 
 class PersonalizationPresenter extends BasePresenter<PersonalizationView> {
 
-    void onChooseImageButtonClicked() {
-        view.showPictureSelectDialog();
+    private static final int SCREEN_LAUNHC_DELAY_MILLIS = 600;
+    public static final int SAFETY_DELAY = 100;
+    private String displayedNameText;
+    private byte[] userPhoto;
+    private UserProfileRepository userRepository;
+
+    PersonalizationPresenter() {
+        userRepository = new UserProfileRepository();
     }
 
-    @Override
-    public PersonalizationView getNoOpView() {
-        return NoOpPersonalizationView.INSTANCE;
+    void onChooseImageButtonClicked() {
+        view.showPictureSelectDialog();
     }
 
     void onPhotoOptionSelected(AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource photoSource) {
@@ -20,5 +31,57 @@ class PersonalizationPresenter extends BasePresenter<PersonalizationView> {
         } else if (photoSource == AvatarPickDialogFragment.AvatarPickDialogListener.AvatarSource.GALLERY) {
             view.launchGalleryAppIntent();
         }
+    }
+
+    void onConfirmButtonClicked() {
+        userRepository
+                .add(new User(displayedNameText, userPhoto))
+                .compose(applySchedulers())
+                .subscribe(this::handleResponse);
+    }
+
+    private void handleResponse(GenericQueryStatus genericQueryStatus) {
+        if (genericQueryStatus == GenericQueryStatus.STATUS_SUCCESS) {
+            view.showPersonalizationUploadSuccess();
+            launchMainScreenDelayed();
+        } else {
+            view.showPersonalizationUploadError();
+        }
+    }
+
+    private void launchMainScreenDelayed() {
+        Observable
+                .timer(SCREEN_LAUNHC_DELAY_MILLIS, TimeUnit.MILLISECONDS)
+                .compose(applySchedulers())
+                .subscribe(ignored -> view.launchMainScreen());
+    }
+
+    void onPhotoSet(byte[] photo) {
+        userPhoto = photo;
+        manageButtonState();
+    }
+
+    void onDisplayedNameTextChanged(String newText) {
+        displayedNameText = newText;
+        manageButtonState();
+    }
+
+    private void manageButtonState() {
+        if (userPhoto != null && userPhoto.length > 0 && TextUtils.isNotEmpty(displayedNameText)) {
+            enableConfirmButtonDelayed();
+        } else {
+            view.disableConfirmButton();
+        }
+    }
+
+    private void enableConfirmButtonDelayed() {
+        Observable
+                .timer(SAFETY_DELAY, TimeUnit.MILLISECONDS)
+                .compose(applySchedulers())
+                .subscribe(ignored -> view.enableConfirmButton());
+    }
+
+    public PersonalizationView getNoOpView() {
+        return NoOpPersonalizationView.INSTANCE;
     }
 }

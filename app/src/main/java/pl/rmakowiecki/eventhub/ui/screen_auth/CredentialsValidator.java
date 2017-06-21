@@ -3,16 +3,16 @@ package pl.rmakowiecki.eventhub.ui.screen_auth;
 import pl.rmakowiecki.eventhub.model.remote.credentials.AuthCredentials;
 import pl.rmakowiecki.eventhub.util.TextUtils;
 
-class CredentialsValidator {
+public class CredentialsValidator {
     private final CredentialsValidationCallback callback;
     private final RegExpValidator regExpMatcher;
 
-    CredentialsValidator(CredentialsValidationCallback callback) {
+    public CredentialsValidator(CredentialsValidationCallback callback) {
         this.callback = callback;
         this.regExpMatcher = new RegExpValidator();
     }
 
-    void validateCredentials(AuthCredentials authCredentials, AuthPerspective authPerspective) {
+    public void validateCredentials(AuthCredentials authCredentials, AuthPerspective authPerspective) {
         if (authPerspective == AuthPerspective.LOGIN) {
             boolean isEmailValid = checkEmail(authCredentials.getEmail());
             boolean isPasswordValid = checkPassword(authCredentials.getPassword());

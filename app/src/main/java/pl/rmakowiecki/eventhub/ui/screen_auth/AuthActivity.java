@@ -26,7 +26,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Target;
-
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.GoogleUser;
@@ -44,7 +43,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @BindView(R.id.input_layout_email) TextInputLayout emailInputLayout;
     @BindView(R.id.input_layout_password) TextInputLayout passwordInputLayout;
     @BindView(R.id.input_layout_repeat_password) TextInputLayout passwordRepeatInputLayout;
-    @BindView(R.id.edit_text_email) AppCompatEditText emailEditText;
+    @BindView(R.id.edit_text_displayed_name) AppCompatEditText emailEditText;
     @BindView(R.id.edit_text_password) AppCompatEditText passwordEditText;
     @BindView(R.id.edit_text_repeat_password) AppCompatEditText passwordRepeatEditText;
     @BindView(R.id.login_bottom_layout) FrameLayout loginOptionsBottomLayout;
@@ -150,7 +149,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         );
     }
 
-    @OnTextChanged(R.id.edit_text_email)
+    @OnTextChanged(R.id.edit_text_displayed_name)
     public void onEmailChanged() {
         presenter.onEmailChanged();
     }
