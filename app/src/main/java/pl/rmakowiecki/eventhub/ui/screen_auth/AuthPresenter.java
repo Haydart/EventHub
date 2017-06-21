@@ -136,12 +136,6 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     }
 
     @Override
-    public void onSuccess() {
-        view.showSuccess();
-        launchPersonalizationScreenDelayed();
-    }
-
-    @Override
     public void onNetworkConnectionError() {
         view.showNetworkConnectionError();
     }
