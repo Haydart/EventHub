@@ -11,8 +11,8 @@ import rx.Observable;
 
 class PersonalizationPresenter extends BasePresenter<PersonalizationView> {
 
-    private static final int SCREEN_LAUNHC_DELAY_MILLIS = 600;
-    public static final int SAFETY_DELAY = 100;
+    private static final int SCREEN_LAUNCH_DELAY_MILLIS = 600;
+    private static final int SAFETY_DELAY = 100;
     private String displayedNameText;
     private byte[] userPhoto;
     private UserProfileRepository userRepository;
@@ -51,7 +51,7 @@ class PersonalizationPresenter extends BasePresenter<PersonalizationView> {
 
     private void launchMainScreenDelayed() {
         Observable
-                .timer(SCREEN_LAUNHC_DELAY_MILLIS, TimeUnit.MILLISECONDS)
+                .timer(SCREEN_LAUNCH_DELAY_MILLIS, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
                 .subscribe(ignored -> view.launchMainScreen());
     }
