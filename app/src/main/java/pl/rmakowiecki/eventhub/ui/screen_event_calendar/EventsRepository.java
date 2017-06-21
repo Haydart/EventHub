@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
-import android.util.Log;
-
 import java.util.List;
 import pl.rmakowiecki.eventhub.api.EventsDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;

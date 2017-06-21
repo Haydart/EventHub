@@ -1,6 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_preference_subcategories;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;

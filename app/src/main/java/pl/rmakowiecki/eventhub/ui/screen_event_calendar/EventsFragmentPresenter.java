@@ -1,7 +1,5 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -139,7 +137,6 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     }
 
     public void removeEventParticipant(String eventId) {
-        Log.d("tag", "remove event part");
         repository.removeEventParticipant(eventId)
                 .compose(applySchedulers())
                 .subscribe(operationStatus -> view.showLeaveActionStatus(operationStatus));
