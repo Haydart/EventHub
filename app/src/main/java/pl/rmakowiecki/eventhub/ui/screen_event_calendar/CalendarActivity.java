@@ -34,8 +34,8 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         tabTitles = new String[] { personalizedEventsTabTitle, myEventsTabTitle, allEventsTabTitle };
-        viewPager.setAdapter(new EventsFragmentAdapter(getSupportFragmentManager(),
-                CalendarActivity.this, tabTitles));
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(new EventsFragmentAdapter(getSupportFragmentManager(), CalendarActivity.this, tabTitles));
 
         tabLayout.setupWithViewPager(viewPager);
 

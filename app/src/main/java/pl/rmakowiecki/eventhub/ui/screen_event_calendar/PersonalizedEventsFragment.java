@@ -102,6 +102,11 @@ public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsF
         }
     }
 
+    public void sortEvents(SortTypes type) {
+        presenter.onSortRequested(type);
+    }
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -111,10 +116,6 @@ public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsF
             throw new RuntimeException(context.toString()
                     + " must implement OnListFragmentInteractionListener");
         }
-    }
-
-    public void sortEvents(SortTypes type) {
-        presenter.onSortRequested(type);
     }
 
     @Override

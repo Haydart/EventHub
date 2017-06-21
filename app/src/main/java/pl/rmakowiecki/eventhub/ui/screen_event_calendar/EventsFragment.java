@@ -32,7 +32,6 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     private OnListFragmentInteractionListener listener;
     private EventsAdapter adapter;
     private View view;
-    private int page;
 
     public EventsFragment() {
         //no-op
@@ -49,8 +48,6 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt(ARG_PAGE);
-        setHasOptionsMenu(true);
     }
 
     @Override
