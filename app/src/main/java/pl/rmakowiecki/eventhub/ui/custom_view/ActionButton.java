@@ -146,6 +146,7 @@ public class ActionButton extends FrameLayout {
 
     public void setText(String text) {
         buttonActionDescriptionTextView.setText(text);
+        buttonActionDescriptionTextView.setVisibility(VISIBLE);
     }
 
     public void showSuccess() {

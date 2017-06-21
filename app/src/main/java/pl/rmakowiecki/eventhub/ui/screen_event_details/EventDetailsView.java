@@ -20,4 +20,12 @@ public interface EventDetailsView extends BaseView {
     void hideAttendeesList();
 
     void launchAppFeaturesActivity();
+
+    void updateJoinEventButton(boolean isUserAttendingEvent);
+
+    void showFailureMessage();
+
+    void showButtonProcessing();
+
+    void showSuccessMessage();
 }
