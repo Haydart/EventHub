@@ -67,6 +67,14 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
                 .filter(events -> !events.isEmpty());
     }
 
+    public Observable<List<Event>> queryForUserEvents(String userId) {
+        return userEventsDBInteractor
+                .getData(userId)
+                .filter(event -> event != null)
+                .buffer(BUFFER_TIMESPAN, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .filter(events -> !events.isEmpty());
+    }
+
     public String getLastReferenceKey() {
         return eventDBInteractor.getReferenceKey();
     }

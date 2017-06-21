@@ -90,5 +90,14 @@
     <dimen name="nav_drawer_welcome_text_margin_top">40dp</dimen>
     <dimen name="nav_drawer_welcome_text_size">20sp</dimen>
     <dimen name="splash_image_size">128dp</dimen>
+    <dimen name="user_events_layout_height">100dp</dimen>
+    <dimen name="user_events_image_width">140dp</dimen>
+    <dimen name="user_events_event_text_height">20dp</dimen>
+    <dimen name="user_events_event_text_width">120dp</dimen>
+    <dimen name="user_events_event_text_left_margin">116dp</dimen>
+    <dimen name="user_events_event_top_margin">25dp</dimen>
+    <dimen name="user_events_event_bottom_margin">60dp</dimen>
+    <dimen name="user_events_event_date_right_margin">20dp</dimen>
+    <dimen name="user_events_event_height">52dp</dimen>
 </resources>
 

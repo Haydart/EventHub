@@ -6,10 +6,12 @@ import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.repository.QuerySingle;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
+import rx.subjects.PublishSubject;
 
 public class EventImageRepository implements AddSpecificOperationRepository<byte[], GenericQueryStatus>, QuerySingle<byte[]> {
 
     private EventImageStorageInteractor eventImageStorageInteractor;
+    PublishSubject<byte[]> publishSubject = PublishSubject.create();
 
     public EventImageRepository() {
         eventImageStorageInteractor = new EventImageStorageInteractor();
@@ -18,7 +20,16 @@ public class EventImageRepository implements AddSpecificOperationRepository<byte
     @Override
     public Observable<byte[]> querySingle(Specification specification) {
         EventImageSpecification eventImageSpecification = (EventImageSpecification) specification;
-        return eventImageStorageInteractor.getData(eventImageSpecification.getFirebaseKey());
+
+        eventImageStorageInteractor
+                .getData(eventImageSpecification.getFirebaseKey())
+                .subscribe(data -> dataArrived(data));
+
+        return publishSubject;
+    }
+
+    private void dataArrived(byte[] data) {
+        publishSubject.onNext(data);
     }
 
     @Override
