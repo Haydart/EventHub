@@ -19,5 +19,5 @@ public interface AuthResponseInterceptor extends ResponseInterceptor {
 
     void onGoogleLoginError();
 
-    void onFirebaseGoogleLoginSuccess();
+    void onFirebaseGoogleLoginSuccess(GoogleSignInAccount account);
 }

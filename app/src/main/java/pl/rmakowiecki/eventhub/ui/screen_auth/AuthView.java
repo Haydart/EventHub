@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.jenzz.noop.annotation.NoOp;
 import java.util.List;
 import pl.rmakowiecki.eventhub.ui.BaseView;
@@ -57,4 +58,6 @@ interface AuthView extends BaseView {
     void launchMainScreen();
 
     void showGoogleLoginSuccess();
+
+    void saveUserGoogleData(GoogleSignInAccount signInAccount);
 }

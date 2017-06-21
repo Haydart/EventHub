@@ -1,6 +1,8 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
@@ -17,14 +19,21 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_personalization.PersonalizationActivity;
+import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileRepository;
+import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthView {
@@ -54,10 +63,14 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
 
     private CallbackManager facebookCallbackManager;
     private GoogleApiClient googleApiClient;
+    private PreferencesManager preferencesManager;
+    private UserProfileRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferencesManager = new PreferencesManager(this);
+        repository = new UserProfileRepository();
     }
 
     @Override
@@ -199,6 +212,34 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     public void showGoogleLoginSuccess() {
         // TODO: 17/06/2017 rework
         Toast.makeText(this, "Google login success", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void saveUserGoogleData(GoogleSignInAccount signInAccount) {
+        Picasso.with(this)
+                .load(signInAccount.getPhotoUrl())
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        createUserFromGoogleData(signInAccount, bitmap);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+                        //no-op
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        //no-op
+                    }
+                });
+    }
+
+    private void createUserFromGoogleData(GoogleSignInAccount signInAccount, Bitmap bitmap) {
+        User user = new User(signInAccount.getDisplayName(), BitmapUtils.getBytesFromBitmap(bitmap));
+        preferencesManager.saveUserDataLocally(user);
+        repository.add(user);
     }
 
     @Override

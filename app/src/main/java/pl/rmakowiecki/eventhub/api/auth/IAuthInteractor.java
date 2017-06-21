@@ -1,6 +1,7 @@
 package pl.rmakowiecki.eventhub.api.auth;
 
 import com.facebook.AccessToken;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 
 public interface IAuthInteractor {
     void loginUserWithEmail(String email, String password);
@@ -9,5 +10,5 @@ public interface IAuthInteractor {
 
     void loginWithFacebook(AccessToken token);
 
-    void loginWithGoogle(String tokenId);
+    void loginWithGoogle(String tokenId, GoogleSignInAccount account);
 }
