@@ -21,6 +21,7 @@ import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.jakewharton.rxbinding.widget.RxTextView;
 import com.squareup.picasso.Picasso;
@@ -28,11 +29,11 @@ import com.squareup.picasso.Target;
 
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.model.local.GoogleUser;
 import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_personalization.PersonalizationActivity;
-import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileRepository;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
@@ -64,13 +65,11 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     private CallbackManager facebookCallbackManager;
     private GoogleApiClient googleApiClient;
     private PreferencesManager preferencesManager;
-    private UserProfileRepository repository;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferencesManager = new PreferencesManager(this);
-        repository = new UserProfileRepository();
     }
 
     @Override
@@ -119,7 +118,14 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == RC_SIGN_IN) {
-            presenter.onGoogleLoginResult(Auth.GoogleSignInApi.getSignInResultFromIntent(data));
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            GoogleSignInAccount account = result.getSignInAccount();
+            if (result.isSuccess() && account != null) {
+                presenter.onGoogleLoginSuccess(account.getIdToken(), new GoogleUser(account.getDisplayName(), account.getPhotoUrl()));
+            }
+            else {
+                presenter.onGoogleLoginError();
+            }
         }
         else {
             facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
@@ -215,13 +221,13 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     }
 
     @Override
-    public void saveUserGoogleData(GoogleSignInAccount signInAccount) {
+    public void saveUserGoogleData(GoogleUser googleUser) {
         Picasso.with(this)
-                .load(signInAccount.getPhotoUrl())
+                .load(googleUser.getPhotoUrl())
                 .into(new Target() {
                     @Override
                     public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-                        createUserFromGoogleData(signInAccount, bitmap);
+                        createUserFromGoogleData(googleUser, bitmap);
                     }
 
                     @Override
@@ -236,10 +242,10 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
                 });
     }
 
-    private void createUserFromGoogleData(GoogleSignInAccount signInAccount, Bitmap bitmap) {
-        User user = new User(signInAccount.getDisplayName(), BitmapUtils.getBytesFromBitmap(bitmap));
+    private void createUserFromGoogleData(GoogleUser googleUser, Bitmap bitmap) {
+        User user = new User(googleUser.getDisplayName(), BitmapUtils.getBytesFromBitmap(bitmap));
         preferencesManager.saveUserDataLocally(user);
-        repository.add(user);
+        presenter.saveUser(user);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package pl.rmakowiecki.eventhub.api.auth;
 
 import com.facebook.AccessToken;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseNetworkException;
 import com.google.firebase.auth.AuthCredential;
@@ -13,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.GoogleAuthProvider;
 
+import pl.rmakowiecki.eventhub.model.local.GoogleUser;
 import pl.rmakowiecki.eventhub.ui.screen_auth.AuthPerspective;
 
 public class FirebaseAuthInteractor implements IAuthInteractor {
@@ -53,12 +53,12 @@ public class FirebaseAuthInteractor implements IAuthInteractor {
     }
 
     @Override
-    public void loginWithGoogle(String tokenId, GoogleSignInAccount account) {
+    public void loginWithGoogle(String tokenId, GoogleUser googleUser) {
         AuthCredential credential = GoogleAuthProvider.getCredential(tokenId, null);
         auth.signInWithCredential(credential)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        callback.onFirebaseGoogleLoginSuccess(account);
+                        callback.onDatabaseGoogleLoginSuccess(googleUser);
                     } else {
                         callback.onGoogleLoginError();
                     }

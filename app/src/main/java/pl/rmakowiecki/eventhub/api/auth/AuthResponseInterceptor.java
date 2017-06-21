@@ -1,6 +1,6 @@
 package pl.rmakowiecki.eventhub.api.auth;
 
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import pl.rmakowiecki.eventhub.model.local.GoogleUser;
 
 public interface AuthResponseInterceptor extends ResponseInterceptor {
     void onInvalidCredentials();
@@ -15,9 +15,9 @@ public interface AuthResponseInterceptor extends ResponseInterceptor {
 
     void onFacebookLoginError();
 
-    void onGoogleLoginSuccess(GoogleSignInAccount signInAccount);
+    void onGoogleLoginSuccess(String userIdToken, GoogleUser user);
 
     void onGoogleLoginError();
 
-    void onFirebaseGoogleLoginSuccess(GoogleSignInAccount account);
+    void onDatabaseGoogleLoginSuccess(GoogleUser user);
 }
