@@ -90,11 +90,9 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public void showActionStatus(GenericQueryStatus status) {
         if (status == GenericQueryStatus.STATUS_SUCCESS) {
-            Toast toast = Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
         } else {
-            Toast toast = Toast.makeText(getContext(), failMessage, Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(getContext(), failMessage, Toast.LENGTH_SHORT).show();
         }
     }
 

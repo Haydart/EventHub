@@ -16,7 +16,7 @@
         android:layout_height="match_parent"
         android:tag="calendar_events_list"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/fragment_events"></android.support.v7.widget.RecyclerView>
+        tools:listitem="@layout/fragment_events" />
 
     <RelativeLayout
         android:id="@+id/loading_panel"

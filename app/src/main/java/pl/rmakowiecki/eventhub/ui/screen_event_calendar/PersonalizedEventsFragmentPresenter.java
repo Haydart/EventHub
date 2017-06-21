@@ -130,11 +130,13 @@ public class PersonalizedEventsFragmentPresenter extends BasePresenter<Personali
 
     public void addEventParticipant(String eventId) {
         repository.updateEventParticipants(eventId)
+                .compose(applySchedulers())
                 .subscribe(operationStatus -> view.showActionStatus(operationStatus));
     }
 
     public void removeEventParticipant(String eventId) {
         repository.removeEventParticipant(eventId)
+                .compose(applySchedulers())
                 .subscribe(operationStatus -> view.showActionStatus(operationStatus));
     }
 

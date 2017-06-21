@@ -13,7 +13,7 @@ import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
  * Created by m1per on 17.05.2017.
  */
 
-public class EventsDistanceCalculator implements DistanceCalculator {
+public class EventsDistanceCalculator implements DistanceCalculator<EventWDistance> {
 
     @Override
     public List<EventWDistance> calculateDistances(LocationCoordinates coordinates, List<Event> events) {

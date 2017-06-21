@@ -56,7 +56,6 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
         view = inflater.inflate(R.layout.fragment_my_events_list, container, false);
         ButterKnife.bind(this, view);
 
-
         return view;
     }
 
@@ -88,11 +87,9 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
     @Override
     public void showActionStatus(GenericQueryStatus status) {
         if (status == GenericQueryStatus.STATUS_SUCCESS) {
-            Toast toast = Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
         } else {
-            Toast toast = Toast.makeText(getContext(), failMessage, Toast.LENGTH_SHORT);
-            toast.show();
+            Toast.makeText(getContext(), failMessage, Toast.LENGTH_SHORT).show();
         }
     }
 

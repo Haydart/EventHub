@@ -106,19 +106,19 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
         DateTime todayDate = new DateTime();
         DateTime dateOfEvent = new DateTime(eventWDistance.getEvent().getTimestamp());
 
-        DateTimeFormatter dtf = DateTimeFormat.forPattern("dd/MM/yyyy");
-        dateFull = dateOfEvent.toString(dtf);
-        dtf = DateTimeFormat.forPattern("HH:mm");
-        time = dateOfEvent.toString(dtf);
-        dtf = DateTimeFormat.forPattern("dd");
-        dateDay = dateOfEvent.toString(dtf);
-        dtf = DateTimeFormat.forPattern("EEE");
-        dayOfTheWeekShort = dateOfEvent.toString(dtf);
+        DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd/MM/yyyy");
+        dateFull = dateOfEvent.toString(dateTimeFormatter);
+        dateTimeFormatter = DateTimeFormat.forPattern("HH:mm");
+        time = dateOfEvent.toString(dateTimeFormatter);
+        dateTimeFormatter = DateTimeFormat.forPattern("dd");
+        dateDay = dateOfEvent.toString(dateTimeFormatter);
+        dateTimeFormatter = DateTimeFormat.forPattern("EEE");
+        dayOfTheWeekShort = dateOfEvent.toString(dateTimeFormatter);
         dayOfTheWeekShort = dayOfTheWeekShort.toUpperCase();
-        dtf = DateTimeFormat.forPattern("EEEE");
-        dayOfTheWeekName = dateOfEvent.toString(dtf);
-        dtf = DateTimeFormat.forPattern("MMM");
-        monthOfTheYearShort = dateOfEvent.toString(dtf);
+        dateTimeFormatter = DateTimeFormat.forPattern("EEEE");
+        dayOfTheWeekName = dateOfEvent.toString(dateTimeFormatter);
+        dateTimeFormatter = DateTimeFormat.forPattern("MMM");
+        monthOfTheYearShort = dateOfEvent.toString(dateTimeFormatter);
         monthOfTheYearShort = monthOfTheYearShort.toUpperCase();
 
         if (todayDate.isAfter(eventWDistance.getEvent().getTimestamp())) {

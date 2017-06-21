@@ -35,7 +35,7 @@ class PersonalizedEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
     @Override
     public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_personalized_events, parent, false);
+                .inflate(R.layout.fragment_events, parent, false);
         return new EventsViewHolder(view, presenter);
     }
 

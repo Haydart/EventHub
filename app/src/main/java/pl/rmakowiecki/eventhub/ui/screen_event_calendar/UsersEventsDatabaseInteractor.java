@@ -24,9 +24,6 @@ public class UsersEventsDatabaseInteractor extends BaseDatabaseInteractor<Event>
 
     private static final String DATABASE_PATH = "user_data";
 
-    public UsersEventsDatabaseInteractor() {
-    }
-
     private Event parseEventData(DataSnapshot dataSnapshot) {
         Event event;
         String id;

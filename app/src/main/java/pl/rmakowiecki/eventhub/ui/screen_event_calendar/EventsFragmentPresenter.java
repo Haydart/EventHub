@@ -30,9 +30,6 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     private UserAuthManager userAuthManager = new UserAuthManager();
     private SortTypes sortType = SortTypes.DATE_SORT;
     private int position;
-
-
-
     private List<Event> allEvents = new ArrayList<>();
 
     EventsFragmentPresenter(int position) {
@@ -90,7 +87,7 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
 
     private void setAttendance() {
         String userId = userAuthManager.getCurrentUserId();
-        Boolean userAttendance;
+        boolean userAttendance;
         attendance.clear();
         for (EventWDistance event : eventsWithDistances) {
             userAttendance = false;
@@ -133,11 +130,13 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
 
     public void addEventParticipant(String eventId) {
         repository.updateEventParticipants(eventId)
+                .compose(applySchedulers())
                 .subscribe(operationStatus -> view.showActionStatus(operationStatus));
     }
 
     public void removeEventParticipant(String eventId) {
         repository.removeEventParticipant(eventId)
+                .compose(applySchedulers())
                 .subscribe(operationStatus -> view.showActionStatus(operationStatus));
     }
 

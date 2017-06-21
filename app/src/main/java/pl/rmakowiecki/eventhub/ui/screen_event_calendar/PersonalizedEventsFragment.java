@@ -30,7 +30,7 @@ public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsF
     public static final String ARG_PAGE = "ARG_PAGE";
     private static final int PAGE = 0;
     @BindView(R.id.loading_panel) RelativeLayout loadingPanel;
-    @BindView(R.id.calendar_events_list) RecyclerView recyclerView;
+    @BindView(R.id.calendar_personalized_events_list) RecyclerView recyclerView;
     @BindString(R.string.status_success_message) String successMessage;
     @BindString(R.string.status_fail_message) String failMessage;
     private PreferencesManager preferencesManager;

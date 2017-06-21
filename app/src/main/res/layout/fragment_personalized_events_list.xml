@@ -7,17 +7,17 @@
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/standard_margin_large"
     android:layout_marginRight="@dimen/standard_margin_large"
-    tools:context="pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsFragment">
+    tools:context="pl.rmakowiecki.eventhub.ui.screen_event_calendar.PersonalizedEventsFragment">
 
     <android.support.v7.widget.RecyclerView
 
-        android:id="@+id/calendar_events_list"
-        android:name="pl.rmakowiecki.eventhub.ui.calendar_screen.eventsFragment"
+        android:id="@+id/calendar_personalized_events_list"
+        android:name="pl.rmakowiecki.eventhub.ui.calendar_screen.personalizedEventsFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:tag="calendar_events_list"
         app:layoutManager="LinearLayoutManager"
-        tools:listitem="@layout/fragment_events"></android.support.v7.widget.RecyclerView>
+        tools:listitem="@layout/fragment_events" />
 
     <RelativeLayout
         android:id="@+id/loading_panel"
