@@ -1,17 +1,21 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import com.facebook.AccessToken;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import pl.rmakowiecki.eventhub.api.auth.AuthResponseInterceptor;
 import pl.rmakowiecki.eventhub.api.auth.FirebaseAuthInteractor;
 import pl.rmakowiecki.eventhub.api.auth.IAuthInteractor;
+import pl.rmakowiecki.eventhub.model.local.GoogleUser;
 import pl.rmakowiecki.eventhub.model.local.Interest;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.model.remote.credentials.AuthCredentials;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceInterestSpecification;
+import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileRepository;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import rx.Observable;
 import rx.Subscription;
@@ -28,12 +32,14 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     private List<String> readPermissionsList = Arrays.asList("email", "public_profile", "user_friends");
     private PreferenceInterestRepository preferenceInterestRepository;
     private PreferencesManager preferencesManager;
+    private UserProfileRepository userProfileRepository;
 
     AuthPresenter(PreferencesManager prefManager) {
         preferencesManager = prefManager;
         credentialsValidator = new CredentialsValidator(this);
         authInteractor = new FirebaseAuthInteractor(this);
         preferenceInterestRepository = new PreferenceInterestRepository();
+        userProfileRepository = new UserProfileRepository();
     }
 
     void onEmailChanged() {
@@ -133,12 +139,6 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     }
 
     @Override
-    public void onSuccess() {
-        view.showSuccess();
-        launchPersonalizationScreenDelayed();
-    }
-
-    @Override
     public void onNetworkConnectionError() {
         view.showNetworkConnectionError();
     }
@@ -185,15 +185,25 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
         view.showFacebookLoginError();
     }
 
+    void onGoogleLoginButtonClicked() {
+        view.loginWithGoogleAuthentication();
+    }
+
     @Override
-    public void onGoogleLoginSuccess() {
-        view.showGoogleLoginSuccess();
-        launchMainScreenDelayed();
+    public void onGoogleLoginSuccess(String accountIdToken, GoogleUser user) {
+        authInteractor.loginWithGoogle(accountIdToken, user);
     }
 
     @Override
     public void onGoogleLoginError() {
         view.showGoogleLoginError();
+    }
+
+    @Override
+    public void onDatabaseGoogleLoginSuccess(GoogleUser user) {
+        view.saveUserGoogleData(user);
+        view.showGoogleLoginSuccess();
+        launchMainScreenDelayed();
     }
 
     public void saveInterests() {
@@ -230,5 +240,9 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public AuthView getNoOpView() {
         return NoOpAuthView.INSTANCE;
+    }
+
+    public void saveUser(User user) {
+        userProfileRepository.add(user);
     }
 }

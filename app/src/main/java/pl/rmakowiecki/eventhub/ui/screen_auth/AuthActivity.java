@@ -1,6 +1,8 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.AppCompatEditText;
@@ -16,15 +18,28 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.jakewharton.rxbinding.widget.RxTextView;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
+
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.model.local.GoogleUser;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_personalization.PersonalizationActivity;
+import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthView {
+
+    private static final int RC_SIGN_IN = 1;
 
     @BindView(R.id.input_layout_email) TextInputLayout emailInputLayout;
     @BindView(R.id.input_layout_password) TextInputLayout passwordInputLayout;
@@ -48,10 +63,13 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @BindString(R.string.button_failure_credentials_discarded) String credentialsDiscardedErrorMessage;
 
     private CallbackManager facebookCallbackManager;
+    private GoogleApiClient googleApiClient;
+    private PreferencesManager preferencesManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferencesManager = new PreferencesManager(this);
     }
 
     @Override
@@ -59,6 +77,19 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         super.onStart();
         registerCredentialsChanges();
         setupFacebookLoginCallbacks();
+        setupGoogleLoginClient();
+    }
+
+    private void setupGoogleLoginClient() {
+        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build();
+
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, connectionResult -> presenter.onGoogleLoginError())
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                .build();
     }
 
     private void setupFacebookLoginCallbacks() {
@@ -85,7 +116,20 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            GoogleSignInAccount account = result.getSignInAccount();
+            if (result.isSuccess() && account != null) {
+                presenter.onGoogleLoginSuccess(account.getIdToken(), new GoogleUser(account.getDisplayName(), account.getPhotoUrl()));
+            }
+            else {
+                presenter.onGoogleLoginError();
+            }
+        }
+        else {
+            facebookCallbackManager.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     @Override
@@ -142,9 +186,20 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
         presenter.onFacebookLoginButtonClicked();
     }
 
+    @OnClick(R.id.image_view_login_g)
+    public void onGoogleLoginButtonClicked() {
+        presenter.onGoogleLoginButtonClicked();
+    }
+
     @Override
     public void loginWithFacebookAuthentication(List<String> readPermissionsList) {
         LoginManager.getInstance().logInWithReadPermissions(this, readPermissionsList);
+    }
+
+    @Override
+    public void loginWithGoogleAuthentication() {
+        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(signInIntent, RC_SIGN_IN);
     }
 
     @Override
@@ -163,6 +218,34 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     public void showGoogleLoginSuccess() {
         // TODO: 17/06/2017 rework
         Toast.makeText(this, "Google login success", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void saveUserGoogleData(GoogleUser googleUser) {
+        Picasso.with(this)
+                .load(googleUser.getPhotoUrl())
+                .into(new Target() {
+                    @Override
+                    public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                        createUserFromGoogleData(googleUser, bitmap);
+                    }
+
+                    @Override
+                    public void onBitmapFailed(Drawable errorDrawable) {
+                        //no-op
+                    }
+
+                    @Override
+                    public void onPrepareLoad(Drawable placeHolderDrawable) {
+                        //no-op
+                    }
+                });
+    }
+
+    private void createUserFromGoogleData(GoogleUser googleUser, Bitmap bitmap) {
+        User user = new User(googleUser.getDisplayName(), BitmapUtils.getBytesFromBitmap(bitmap));
+        preferencesManager.saveUserDataLocally(user);
+        presenter.saveUser(user);
     }
 
     @Override

@@ -30,12 +30,18 @@ public class UserProfileRepository implements AddOperationRepository<User, Gener
 
     @Override
     public Observable<GenericQueryStatus> add(User user) {
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         userProfileDataInteractor.add(user.getName())
                 .compose(applySchedulers())
                 .subscribe((result) -> saveDatabaseQueryResult(result));
-        imageStorageInteractor.add(firebaseUser != null ? firebaseUser.getUid() : "", user.getPicture())
-                .compose(applySchedulers())
-                .subscribe((result) -> saveStorageQueryResult(result));
+        if (firebaseUser != null) {
+            imageStorageInteractor.add(firebaseUser.getUid(), user.getPicture())
+                    .compose(applySchedulers())
+                    .subscribe((result) -> saveStorageQueryResult(result));
+        }
+        else {
+            saveStorageQueryResult(GenericQueryStatus.STATUS_FAILURE);
+        }
 
         return publishSubject;
     }

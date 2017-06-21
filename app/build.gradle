@@ -65,6 +65,7 @@ dependencies {
 	compile "com.google.android.gms:play-services-places:${gms_components_version}"
 	compile "com.google.android.gms:play-services-location:${gms_components_version}"
 	compile "com.google.android.gms:play-services-base:${gms_components_version}"
+	compile "com.google.android.gms:play-services-auth:${gms_components_version}"
 
 	//Firebase
 	compile "com.google.firebase:firebase-core:${firebase_components_version}"

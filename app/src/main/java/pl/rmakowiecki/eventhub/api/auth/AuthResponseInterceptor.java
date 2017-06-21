@@ -1,5 +1,7 @@
 package pl.rmakowiecki.eventhub.api.auth;
 
+import pl.rmakowiecki.eventhub.model.local.GoogleUser;
+
 public interface AuthResponseInterceptor extends ResponseInterceptor {
     void onInvalidCredentials();
 
@@ -13,7 +15,9 @@ public interface AuthResponseInterceptor extends ResponseInterceptor {
 
     void onFacebookLoginError();
 
-    void onGoogleLoginSuccess();
+    void onGoogleLoginSuccess(String userIdToken, GoogleUser user);
 
     void onGoogleLoginError();
+
+    void onDatabaseGoogleLoginSuccess(GoogleUser user);
 }
