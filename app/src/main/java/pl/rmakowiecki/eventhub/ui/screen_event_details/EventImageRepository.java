@@ -6,6 +6,8 @@ import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.repository.QuerySingle;
 import pl.rmakowiecki.eventhub.repository.Specification;
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 import rx.subjects.PublishSubject;
 
 public class EventImageRepository implements AddSpecificOperationRepository<byte[], GenericQueryStatus>, QuerySingle<byte[]> {
@@ -23,6 +25,7 @@ public class EventImageRepository implements AddSpecificOperationRepository<byte
 
         eventImageStorageInteractor
                 .getData(eventImageSpecification.getFirebaseKey())
+                .compose(applySchedulers())
                 .subscribe(data -> dataArrived(data));
 
         return publishSubject;
@@ -40,5 +43,11 @@ public class EventImageRepository implements AddSpecificOperationRepository<byte
     @Override
     public Observable<GenericQueryStatus> add(String key, Iterable<byte[]> items) {
         return Observable.empty();
+    }
+
+    protected <T> Observable.Transformer<T, T> applySchedulers() {
+        return observable -> observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 }

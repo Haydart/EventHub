@@ -41,23 +41,30 @@ public class UserProfileEventsAdapter extends RecyclerView.Adapter<UserProfileEv
     public void onBindViewHolder(UserProfileEventsViewHolder holder, int position) {
         Event event = events.get(position);
         holder.bindView(event);
+        loadPictureForViewHolder(event, holder);
+    }
 
+    private void loadPictureForViewHolder(Event event, UserProfileEventsViewHolder holder) {
         if (eventImageMap.containsKey(event.getId())) {
             holder.loadPicture(BitmapUtils.getBitmapFromBytes(eventImageMap.get(event.getId())));
         }
         else {
-            EventImageSpecification specification = new EventImageSpecification(event.getId());
-            new EventImageRepository()
-                    .querySingle(specification)
-                    .compose(applySchedulers())
-                    .subscribe(pictureData -> {
-                        if (pictureData != null) {
-                            eventImageMap.put(event.getId(), pictureData);
-                            if (holder != null)
-                                holder.loadPicture(BitmapUtils.getBitmapFromBytes(pictureData));
-                        }
-                    });
+            queryDatabaseForEventPicture(event, holder);
         }
+    }
+
+    private void queryDatabaseForEventPicture(Event event, UserProfileEventsViewHolder holder) {
+        EventImageSpecification specification = new EventImageSpecification(event.getId());
+        new EventImageRepository()
+                .querySingle(specification)
+                .compose(applySchedulers())
+                .subscribe(pictureData -> {
+                    if (pictureData != null) {
+                        eventImageMap.put(event.getId(), pictureData);
+                        if (holder != null)
+                            holder.loadPicture(BitmapUtils.getBitmapFromBytes(pictureData));
+                    }
+                });
     }
 
     protected <T> Observable.Transformer<T, T> applySchedulers() {
