@@ -20,5 +20,7 @@ interface SplashView extends BaseView {
 
     void checkIfFirstLaunch();
 
+    void showSplashAnimation();
+
     void launchApplication();
 }

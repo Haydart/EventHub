@@ -40,6 +40,12 @@ class SplashPresenter extends BasePresenter<SplashView> {
         return currentComponentCount >= REQUIRED_COMPONENT_COUNT;
     }
 
+    @Override
+    protected void onViewVisible() {
+        super.onViewVisible();
+        view.showSplashAnimation();
+    }
+
     void onComponentLoaded() {
         ++currentComponentCount;
         if (canLaunchApplication()) {
