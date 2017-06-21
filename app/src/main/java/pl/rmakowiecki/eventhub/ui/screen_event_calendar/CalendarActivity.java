@@ -34,8 +34,8 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
         tabTitles = new String[] { personalizedEventsTabTitle, myEventsTabTitle, allEventsTabTitle };
-        viewPager.setAdapter(new EventsFragmentAdapter(getSupportFragmentManager(),
-                CalendarActivity.this, tabTitles));
+        viewPager.setOffscreenPageLimit(2);
+        viewPager.setAdapter(new EventsFragmentAdapter(getSupportFragmentManager(), CalendarActivity.this, tabTitles));
 
         tabLayout.setupWithViewPager(viewPager);
 
@@ -84,9 +84,13 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
 
     @Override
     public void sortEvents(SortTypes sortType) {
-        EventsFragment allEventsFragment = (EventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":0");
+        PersonalizedEventsFragment personalizedEventsFragment =
+                (PersonalizedEventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":0");
         MyEventsFragment filteredEventsFragment = (MyEventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":1");
-        allEventsFragment.sortEvents(sortType);
+        EventsFragment allEventsFragment = (EventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":2");
+
+        personalizedEventsFragment.sortEvents(sortType);
         filteredEventsFragment.sortEvents(sortType);
+        allEventsFragment.sortEvents(sortType);
     }
 }

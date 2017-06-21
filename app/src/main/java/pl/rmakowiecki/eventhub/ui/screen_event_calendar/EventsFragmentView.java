@@ -12,9 +12,9 @@ import pl.rmakowiecki.eventhub.ui.BaseView;
 @NoOp
 public interface EventsFragmentView extends BaseView {
 
-    void showEvents(List<EventWDistance> ewd);
+    void showEvents(List<EventWDistance> eventsWithDistance, List<Boolean> attendance);
 
-    void initEvents(List<EventWDistance> ewd);
+    void initEvents(List<EventWDistance> eventsWithDistance, List<Boolean> attendance);
 
-    void showActionStatus(GenericQueryStatus genericQueryStatus, int position);
+    void showActionStatus(GenericQueryStatus genericQueryStatus);
 }

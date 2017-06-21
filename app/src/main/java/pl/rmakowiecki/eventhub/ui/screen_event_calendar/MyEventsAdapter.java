@@ -14,27 +14,31 @@ class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
     private MyEventsFragment.OnListFragmentInteractionListener listener;
     private List<EventWDistance> items;
     private MyEventsFragmentPresenter presenter;
+    private List<Boolean> attendance;
 
-
-    public MyEventsAdapter(Context baseContext, List<EventWDistance> events, MyEventsFragment.OnListFragmentInteractionListener listener) {
+    public MyEventsAdapter(Context baseContext, List<EventWDistance> events, List<Boolean> attendance,
+            MyEventsFragment.OnListFragmentInteractionListener listener,
+            MyEventsFragmentPresenter presenter) {
         final LayoutInflater layoutInflater = LayoutInflater.from(baseContext);
         final Context context = baseContext;
         items = events;
         this.listener = listener;
         this.presenter = presenter;
+        this.attendance = attendance;
+
 
     }
 
     @Override
     public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_my_events, parent, false);
-        return new EventsViewHolder(view);
+                .inflate(R.layout.fragment_events, parent, false);
+        return new EventsViewHolder(view, presenter);
     }
 
     @Override
     public void onBindViewHolder(final EventsViewHolder holder, int position) {
-        holder.bindView(items.get(position));
+        holder.bindView(items.get(position), attendance.get(position));
     }
 
     @Override

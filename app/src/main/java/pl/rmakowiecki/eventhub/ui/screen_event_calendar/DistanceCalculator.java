@@ -8,7 +8,6 @@ import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
  * Created by m1per on 17.05.2017.
  */
 
-public interface DistanceCalculator {
-
-    public List calculateDistances(LocationCoordinates coordinates, List<Event> events);
+public interface DistanceCalculator<T> {
+    List<T> calculateDistances(LocationCoordinates coordinates, List<Event> events);
 }

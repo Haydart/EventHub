@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.SortTypes;
+import pl.rmakowiecki.eventhub.util.UserAuthManager;
 
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DATE_SORT;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DISTANCE_SORT;
@@ -23,8 +25,11 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     private RxLocationProvider provider = new RxLocationProvider();
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
     private EventsRepository repository;
-    private int position;
     private List<EventWDistance> eventsWithDistances = new ArrayList<>();
+    private List<Boolean> attendance = new ArrayList<>();
+    private UserAuthManager userAuthManager = new UserAuthManager();
+    private SortTypes sortType = SortTypes.DATE_SORT;
+    private int position;
     private List<Event> allEvents = new ArrayList<>();
 
     EventsFragmentPresenter(int position) {
@@ -45,7 +50,7 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     }
 
     private void updateEventsList(List<Event> events) {
-        boolean toRemove = false;
+        boolean toRemove;
         int position = 0;
         if (allEvents.isEmpty()) {
             allEvents = events;
@@ -74,8 +79,25 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
                 .subscribe(
                         coordinates -> {
                             eventsWithDistances = calculator.calculateDistances(coordinates, allEvents);
-                            view.showEvents(eventsWithDistances);
+                            sortEvents();
+                            setAttendance();
+                            view.showEvents(eventsWithDistances, attendance);
                         });
+    }
+
+    private void setAttendance() {
+        String userId = userAuthManager.getCurrentUserId();
+        boolean userAttendance;
+        attendance.clear();
+        for (EventWDistance event : eventsWithDistances) {
+            userAttendance = false;
+            for (EventAttendee attendee : event.getEvent().getAttendees()) {
+                if (attendee.getId().equals(userId)) {
+                    userAttendance = true;
+                }
+            }
+            attendance.add(userAttendance);
+        }
     }
 
     @Override
@@ -85,7 +107,13 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     }
 
     void onSortRequested(SortTypes type) {
-        switch (type) {
+        sortType = type;
+        sortEvents();
+        view.showEvents(eventsWithDistances, attendance);
+    }
+
+    private void sortEvents() {
+        switch (sortType) {
             case DISTANCE_SORT:
                 Collections.sort(eventsWithDistances, ascending(getComparator(DISTANCE_SORT)));
                 break;
@@ -93,7 +121,6 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
                 Collections.sort(eventsWithDistances, ascending(getComparator(DATE_SORT)));
                 break;
         }
-        view.showEvents(eventsWithDistances);
     }
 
     @Override
@@ -101,8 +128,17 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
         return NoOpEventsFragmentView.INSTANCE;
     }
 
-    public void addEventParticipant(String eventId, int position) {
+    public void addEventParticipant(String eventId) {
         repository.updateEventParticipants(eventId)
-                .subscribe(operationStatus -> view.showActionStatus(operationStatus, position));
+                .compose(applySchedulers())
+                .subscribe(operationStatus -> view.showActionStatus(operationStatus));
     }
+
+    public void removeEventParticipant(String eventId) {
+        repository.removeEventParticipant(eventId)
+                .compose(applySchedulers())
+                .subscribe(operationStatus -> view.showActionStatus(operationStatus));
+    }
+
+
 }

@@ -7,6 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import java.util.List;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
@@ -19,14 +24,14 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private static final int PAGE = 2;
-
-
+    @BindView(R.id.loading_panel) RelativeLayout loadingPanel;
+    @BindView(R.id.calendar_events_list) RecyclerView recyclerView;
+    @BindString(R.string.status_success_message) String successMessage;
+    @BindString(R.string.status_fail_message) String failMessage;
     private int columnCount = 1;
     private OnListFragmentInteractionListener listener;
     private EventsAdapter adapter;
     private View view;
-    private RecyclerView recyclerView;
-    private int page;
 
     public EventsFragment() {
         //no-op
@@ -43,14 +48,13 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt(ARG_PAGE);
-        setHasOptionsMenu(true);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_events_list, container, false);
+        ButterKnife.bind(this, view);
 
         return view;
     }
@@ -66,23 +70,27 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     }
 
     @Override
-    public void showEvents(List<EventWDistance> ewd) {
-        initEvents(ewd);
+    public void showEvents(List<EventWDistance> eventsWDistance, List<Boolean> attendance) {
+        initEvents(eventsWDistance, attendance);
     }
 
     @Override
-    public void initEvents(List<EventWDistance> ewd) {
+    public void initEvents(List<EventWDistance> eventsWDistances, List<Boolean> attendance) {
         Context context = getContext();
-        adapter = new EventsAdapter(context, ewd, listener, presenter);
-        recyclerView = (RecyclerView) view;
+        adapter = new EventsAdapter(context, eventsWDistances, attendance, listener, presenter);
         recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);
+        loadingPanel.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void showActionStatus(GenericQueryStatus genericQueryStatus, int position) {
-        EventsViewHolder viewHolder = (EventsViewHolder) recyclerView.findViewHolderForAdapterPosition(position);
-        viewHolder.showParticipationSavingStatus(genericQueryStatus);
+    public void showActionStatus(GenericQueryStatus status) {
+        if (status == GenericQueryStatus.STATUS_SUCCESS) {
+            Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), failMessage, Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

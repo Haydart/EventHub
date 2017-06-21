@@ -23,15 +23,19 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
 
     private EventsDatabaseInteractor eventDBInteractor;
     private EventParticipantsDatabaseInteractor eventPatricipantsDBInteractor;
+    private UsersEventsDatabaseInteractor userEventsDBInteractor;
     private ModelMapper<Event, RemoteEvent> eventMapper = new EventMapper();
 
     public EventsRepository() {
         eventDBInteractor = new EventsDatabaseInteractor();
         eventPatricipantsDBInteractor = new EventParticipantsDatabaseInteractor();
+        userEventsDBInteractor = new UsersEventsDatabaseInteractor();
+
     }
 
     public EventsRepository(List<PreferenceCategory> interestsList) {
         eventDBInteractor = new EventsDatabaseInteractor(interestsList);
+        userEventsDBInteractor = new UsersEventsDatabaseInteractor();
         eventPatricipantsDBInteractor = new EventParticipantsDatabaseInteractor();
     }
 
@@ -45,9 +49,26 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
                 .addEventParticipant(eventId);
     }
 
+    public Observable<GenericQueryStatus> removeEventParticipant(String eventId) {
+        return eventPatricipantsDBInteractor
+                .removeUserFromEvent(eventId);
+    }
+
     @Override
     public Observable<GenericQueryStatus> add(Iterable<Event> items) {
         return Observable.empty();
+    }
+
+    public Observable<List<Event>> queryForUserEvents() {
+        return userEventsDBInteractor
+                .getData()
+                .filter(event -> event != null)
+                .buffer(BUFFER_TIMESPAN, java.util.concurrent.TimeUnit.MILLISECONDS)
+                .filter(events -> !events.isEmpty());
+    }
+
+    public String getLastReferenceKey() {
+        return eventDBInteractor.getReferenceKey();
     }
 
     @Override
@@ -58,9 +79,5 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
                 .filter(event -> event != null)
                 .buffer(BUFFER_TIMESPAN, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .filter(events -> !events.isEmpty());
-    }
-
-    public String getLastReferenceKey() {
-        return eventDBInteractor.getReferenceKey();
     }
 }

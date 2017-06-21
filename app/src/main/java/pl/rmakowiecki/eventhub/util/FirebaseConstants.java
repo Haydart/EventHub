@@ -13,6 +13,4 @@ public class FirebaseConstants {
     public static final String USER_NAME_REFERENCE = "displayed_name";
     public static final String EVENTS_REFERENCE = "events";
     public static final String EVENT_ATTENDEES_REFERENCE = "attendees";
-
-
 }
