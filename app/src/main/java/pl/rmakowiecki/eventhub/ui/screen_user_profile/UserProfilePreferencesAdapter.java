@@ -5,20 +5,17 @@ import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.bignerdranch.expandablerecyclerview.ExpandableRecyclerAdapter;
-
 import java.util.List;
-
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferenceCategory;
 
-public class UserProfilePreferencesAdapter extends ExpandableRecyclerAdapter<PreferenceCategory,
+class UserProfilePreferencesAdapter extends ExpandableRecyclerAdapter<PreferenceCategory,
         String, UserProfileCategoryViewHolder, UserProfileSubCategoryViewHolder> {
 
     private LayoutInflater layoutInflater;
 
-    public UserProfilePreferencesAdapter(Context context, @NonNull List<PreferenceCategory> parentList) {
+    UserProfilePreferencesAdapter(Context context, @NonNull List<PreferenceCategory> parentList) {
         super(parentList);
         layoutInflater = LayoutInflater.from(context);
     }
