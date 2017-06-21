@@ -1,6 +1,8 @@
 package pl.rmakowiecki.eventhub.ui.screen_user_profile;
 
 import com.jenzz.noop.annotation.NoOp;
+
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.BaseView;
 import pl.rmakowiecki.eventhub.util.UserManager;
 
@@ -8,6 +10,8 @@ import pl.rmakowiecki.eventhub.util.UserManager;
 interface UserProfileView extends BaseView {
 
     void enableHomeButton();
+
+    void onUserDataLoaded(User user);
 
     void displayInterestsList();
 
@@ -25,7 +29,11 @@ interface UserProfileView extends BaseView {
 
     void showButtonProcessing();
 
-    void displayUserInfo(UserManager userDisplayedName);
+    void displayUserInfo(UserManager userManager, boolean isDifferentUser);
 
     void loadUserImage();
+
+    void readBundle();
+
+    void hideSettings();
 }

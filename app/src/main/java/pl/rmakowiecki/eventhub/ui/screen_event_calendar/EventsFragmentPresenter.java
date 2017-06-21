@@ -1,5 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,10 +33,12 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     private SortTypes sortType = SortTypes.DATE_SORT;
     private int position;
     private List<Event> allEvents = new ArrayList<>();
+    private String userName;
 
-    EventsFragmentPresenter(int position) {
+    EventsFragmentPresenter(int position, String displayName) {
         repository = new EventsRepository();
         this.position = position;
+        userName = displayName;
     }
 
     private void onViewInitialization() {
@@ -129,15 +133,16 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     }
 
     public void addEventParticipant(String eventId) {
-        repository.updateEventParticipants(eventId)
+        repository.updateEventParticipants(eventId, userName)
                 .compose(applySchedulers())
                 .subscribe(operationStatus -> view.showActionStatus(operationStatus));
     }
 
     public void removeEventParticipant(String eventId) {
+        Log.d("tag", "remove event part");
         repository.removeEventParticipant(eventId)
                 .compose(applySchedulers())
-                .subscribe(operationStatus -> view.showActionStatus(operationStatus));
+                .subscribe(operationStatus -> view.showLeaveActionStatus(operationStatus));
     }
 
 

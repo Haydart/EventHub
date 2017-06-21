@@ -40,7 +40,7 @@ public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDeta
     @Override
     public void onBindViewHolder(EventDetailsAttendeesViewHolder holder, int position) {
         EventAttendee attendee = attendees.get(position);
-        holder.bindView(attendee.getName());
+        holder.bindView(attendee.getName(), attendee.getId());
 
         UserProfileImageSpecification specification = new UserProfileImageSpecification(attendee.getId());
         byte[] image = profileImageRepository.getImage(specification);

@@ -35,7 +35,7 @@ public class EventParticipantsDatabaseInteractor extends BaseDatabaseInteractor<
         return Observable.empty();
     }
 
-    public Observable<GenericQueryStatus> addEventParticipant(String eventId) {
+    public Observable<GenericQueryStatus> addEventParticipant(String eventId, String userDisplayedName) {
         publishSubject = PublishSubject.create();
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         setDatabaseQueryNode();
@@ -43,7 +43,7 @@ public class EventParticipantsDatabaseInteractor extends BaseDatabaseInteractor<
                 .child(eventId)
                 .child(EVENT_ATTENDEES_REFERENCE)
                 .child(user.getUid())
-                .setValue("DISPLAY_NAME")
+                .setValue(userDisplayedName)
                 .addOnCompleteListener(task -> {
                     publishSubject.onNext(task.isSuccessful() ? GenericQueryStatus.STATUS_SUCCESS : GenericQueryStatus.STATUS_FAILURE);
                     publishSubject.onCompleted();

@@ -1,5 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
+import android.util.Log;
+
 import java.util.List;
 import pl.rmakowiecki.eventhub.api.EventsDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
@@ -44,9 +46,9 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
         return eventDBInteractor.addEvent(eventMapper.map(item));
     }
 
-    public Observable<GenericQueryStatus> updateEventParticipants(String eventId) {
+    public Observable<GenericQueryStatus> updateEventParticipants(String eventId, String userDisplayedName) {
         return eventPatricipantsDBInteractor
-                .addEventParticipant(eventId);
+                .addEventParticipant(eventId, userDisplayedName);
     }
 
     public Observable<GenericQueryStatus> removeEventParticipant(String eventId) {

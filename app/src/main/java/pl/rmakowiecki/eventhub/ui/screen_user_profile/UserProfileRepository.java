@@ -31,11 +31,12 @@ public class UserProfileRepository implements AddOperationRepository<User, Gener
     @Override
     public Observable<GenericQueryStatus> add(User user) {
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        userProfileDataInteractor.add(user.getName())
-                .compose(applySchedulers())
-                .subscribe((result) -> saveDatabaseQueryResult(result));
         if (firebaseUser != null) {
-            imageStorageInteractor.add(firebaseUser.getUid(), user.getPicture())
+            String userId = firebaseUser.getUid();
+            userProfileDataInteractor.add(userId, user.getName())
+                    .compose(applySchedulers())
+                    .subscribe((result) -> saveDatabaseQueryResult(result));
+            imageStorageInteractor.add(userId, user.getPicture())
                     .compose(applySchedulers())
                     .subscribe((result) -> saveStorageQueryResult(result));
         }
@@ -67,9 +68,14 @@ public class UserProfileRepository implements AddOperationRepository<User, Gener
 
     @Override
     public Observable<User> querySingle(Specification specification) {
-        return firebaseUser != null ? Observable.combineLatest(
-                imageStorageInteractor.getData(firebaseUser.getUid()),
-                userProfileDataInteractor.getData(),
+        UserProfileSpecification userProfileSpecification = (UserProfileSpecification) specification;
+        String userId = userProfileSpecification.getUserId();
+        if (userId.isEmpty() && firebaseUser != null)
+            userId = firebaseUser.getUid();
+
+        return !userId.isEmpty() ? Observable.combineLatest(
+                imageStorageInteractor.getData(userId),
+                userProfileDataInteractor.getData(userId),
                 (userPhoto, userName) -> new User(userName, userPhoto))
                 : Observable.empty();
     }

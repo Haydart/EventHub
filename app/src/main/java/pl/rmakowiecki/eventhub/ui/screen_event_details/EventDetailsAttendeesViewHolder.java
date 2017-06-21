@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_details;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,22 +9,29 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.squareup.picasso.Picasso;
+
+import butterknife.OnClick;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileActivity;
 
 import static pl.rmakowiecki.eventhub.background.Constants.EVENT_DETAILS_MORE_USERS;
+import static pl.rmakowiecki.eventhub.background.Constants.USER_PROFILE_EXTRA_IS_DIFFERENT_USER;
+import static pl.rmakowiecki.eventhub.background.Constants.USER_PROFILE_EXTRA_USER_ID;
 
 public class EventDetailsAttendeesViewHolder extends ParentViewHolder {
 
     @BindView(R.id.attending_user_image_view) ImageView attendeeImageView;
     @BindView(R.id.attending_user_text_view) TextView attendeeTextView;
 
+    private String attendeeId;
 
     public EventDetailsAttendeesViewHolder(View itemView) {
         super(itemView);
         ButterKnife.bind(this, itemView);
     }
 
-    public void bindView(String attendeeName) {
+    public void bindView(String attendeeName, String attendeeId) {
+        this.attendeeId = attendeeId;
         attendeeTextView.setText(attendeeName);
 
         if (attendeeName.equals(EVENT_DETAILS_MORE_USERS)) {
@@ -37,5 +45,18 @@ public class EventDetailsAttendeesViewHolder extends ParentViewHolder {
 
     public void loadPicture(Bitmap attendeePicture) {
         attendeeImageView.setImageBitmap(attendeePicture);
+    }
+
+    @OnClick(R.id.attending_user_image_view)
+    public void onImageClicked() {
+        if (!attendeeId.isEmpty())
+            launchUserProfileActivity();
+    }
+
+    private void launchUserProfileActivity() {
+        Intent intent = new Intent(itemView.getContext(), UserProfileActivity.class);
+        intent.putExtra(USER_PROFILE_EXTRA_IS_DIFFERENT_USER, true);
+        intent.putExtra(USER_PROFILE_EXTRA_USER_ID, attendeeId);
+        itemView.getContext().startActivity(intent);
     }
 }

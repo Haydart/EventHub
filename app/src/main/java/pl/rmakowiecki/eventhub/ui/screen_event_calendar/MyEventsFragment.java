@@ -28,6 +28,8 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
     @BindView(R.id.calendar_events_list) RecyclerView recyclerView;
     @BindString(R.string.status_success_message) String successMessage;
     @BindString(R.string.status_fail_message) String failMessage;
+    @BindString(R.string.status_leave_success_message) String leaveSuccessMessage;
+    @BindString(R.string.status_leave_fail_message) String leaveFailMessage;
     private int columnCount = 1;
     private OnListFragmentInteractionListener listener;
     private RecyclerView.Adapter adapter;
@@ -90,6 +92,15 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
             Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(getContext(), failMessage, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void showLeaveActionStatus(GenericQueryStatus status) {
+        if (status == GenericQueryStatus.STATUS_SUCCESS) {
+            Toast.makeText(getContext(), leaveSuccessMessage, Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getContext(), leaveFailMessage, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -20,15 +20,25 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
     private UserProfileRepository repository = new UserProfileRepository();
     private UserManager userManager = new UserAuthManager();
     private int saveResultCount;
+    private boolean isDifferentUser = false;
+    private String userId = userManager.getCurrentUserId();
 
     @Override
     protected void onViewStarted(UserProfileView view) {
         super.onViewStarted(view);
         view.enableHomeButton();
-        view.displayUserInfo(userManager);
+        view.readBundle();
+        view.displayUserInfo(userManager, isDifferentUser);
         view.displayInterestsList();
-        view.loadUserImage();
+        handleUserImage();
         wasButtonClicked = false;
+    }
+
+    private void handleUserImage() {
+        if (!isDifferentUser)
+            view.loadUserImage();
+        else
+            loadUserImageFromDatabase();
     }
 
     void onProfileSaveButtonClick(User user) {
@@ -88,6 +98,14 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
                 .subscribe(ignored -> view.launchMapAndFinish());
     }
 
+    public void loadUserImageFromDatabase() {
+        UserProfileSpecification specification = new UserProfileSpecification(userId);
+        repository
+                .querySingle(specification)
+                .compose(applySchedulers())
+                .subscribe(view::onUserDataLoaded);
+    }
+
     void onChooseImageButtonClicked() {
         view.showPictureSelectDialog();
     }
@@ -95,5 +113,13 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
     @Override
     public UserProfileView getNoOpView() {
         return NoOpUserProfileView.INSTANCE;
+    }
+
+    public void onBundleRead(boolean isDifferentUser, String userId) {
+        this.isDifferentUser = isDifferentUser;
+        this.userId = userId;
+
+        if (isDifferentUser)
+            view.hideSettings();
     }
 }
