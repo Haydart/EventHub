@@ -11,7 +11,7 @@ import pl.rmakowiecki.eventhub.util.UserAuthManager;
 import pl.rmakowiecki.eventhub.util.UserManager;
 import rx.Observable;
 
-public class EventDetailsPresenter extends BasePresenter<EventDetailsView> {
+class EventDetailsPresenter extends BasePresenter<EventDetailsView> {
 
     private EventImageRepository eventImageRepository;
     private UserManager userManager;
@@ -47,10 +47,12 @@ public class EventDetailsPresenter extends BasePresenter<EventDetailsView> {
     }
 
     private void handleAttendeesList() {
-        if (userManager.isUserAuthorized())
+        if (userManager.isUserAuthorized()) {
             view.initAttendeesList();
-        else
+        }
+        else {
             view.hideAttendeesList();
+        }
     }
 
     private void onEventPictureLoaded(byte[] pictureData) {
@@ -58,11 +60,11 @@ public class EventDetailsPresenter extends BasePresenter<EventDetailsView> {
             view.displayEventPicture(BitmapUtils.getBitmapFromBytes(pictureData));
     }
 
-    protected void onLoginButtonClicked() {
+    void onLoginButtonClicked() {
         view.launchAppFeaturesActivity();
     }
 
-    public void onJoinButtonClicked(Event event, String displayName) {
+    void onJoinButtonClicked(Event event, String displayName) {
         if (!userManager.isUserAuthorized())
             view.launchAppFeaturesActivity();
         else
@@ -86,31 +88,31 @@ public class EventDetailsPresenter extends BasePresenter<EventDetailsView> {
 
     private void onEventJoinStatus(GenericQueryStatus status) {
         if (status == GenericQueryStatus.STATUS_SUCCESS) {
-            handleDelayedOperation(view::showSuccessMessage, SHOW_BUTTON_RESULT_DELAY);
-            handleDelayedOperation(this::onUserAttendingEvent, BUTTON_ENABLE_DELAY);
+            performDelayedOperation(view::showSuccessMessage, SHOW_BUTTON_RESULT_DELAY);
+            performDelayedOperation(this::onUserAttendingEvent, BUTTON_ENABLE_DELAY);
         }
         else {
-            handleDelayedOperation(view::showFailureMessage, SHOW_BUTTON_RESULT_DELAY);
+            performDelayedOperation(view::showFailureMessage, SHOW_BUTTON_RESULT_DELAY);
         }
     }
 
     private void onEventLeaveStatus(GenericQueryStatus status) {
         if (status == GenericQueryStatus.STATUS_SUCCESS) {
-            handleDelayedOperation(view::showSuccessMessage, SHOW_BUTTON_RESULT_DELAY);
-            handleDelayedOperation(this::onUserLeavingEvent, BUTTON_ENABLE_DELAY);
+            performDelayedOperation(view::showSuccessMessage, SHOW_BUTTON_RESULT_DELAY);
+            performDelayedOperation(this::onUserLeavingEvent, BUTTON_ENABLE_DELAY);
         }
         else {
-            handleDelayedOperation(view::showFailureMessage, SHOW_BUTTON_RESULT_DELAY);
+            performDelayedOperation(view::showFailureMessage, SHOW_BUTTON_RESULT_DELAY);
         }
     }
 
-    private void handleDelayedOperation(Runnable operation, int delay) {
+    private void performDelayedOperation(Runnable operation, int delay) {
         Observable.timer(delay, TimeUnit.MILLISECONDS)
                 .compose(applySchedulers())
                 .subscribe(ignored -> operation.run());
     }
 
-    public void onUserAttendingEvent() {
+    void onUserAttendingEvent() {
         isUserAttendingEvent = true;
         updateJoinButtonState();
     }

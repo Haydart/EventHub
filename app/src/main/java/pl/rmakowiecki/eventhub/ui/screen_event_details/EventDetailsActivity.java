@@ -181,8 +181,9 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
                 attendees.add(attendee);
                 break;
             }
-            else
+            else {
                 presenter.onUserAttendingEvent();
+            }
         }
 
         return attendees;

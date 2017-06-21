@@ -59,11 +59,11 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     }
 
     @Override
-    public void readBundle() {
+    public void retrieveUserData() {
         Bundle extras = getIntent().getExtras();
         boolean isDifferentUser = extras.getBoolean(USER_PROFILE_EXTRA_IS_DIFFERENT_USER);
         String userId = extras.getString(USER_PROFILE_EXTRA_USER_ID);
-        presenter.onBundleRead(isDifferentUser, userId);
+        presenter.onUserDataRetrieved(isDifferentUser, userId);
     }
 
     @Override
@@ -90,14 +90,12 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     }
 
     @Override
-    public void onUserDataLoaded(User user) {
-        if (user != null) {
-            collapsingToolbarLayout.setTitle(user.getName());
-            byte[] pictureData = user.getPicture();
-            if (pictureData != null) {
-                Bitmap userImage = BitmapUtils.getBitmapFromBytes(pictureData);
-                setUserImage(userImage);
-            }
+    public void loadUserProfile(User user) {
+        collapsingToolbarLayout.setTitle(user.getName());
+        byte[] pictureData = user.getPicture();
+        if (pictureData != null) {
+            Bitmap userImage = BitmapUtils.getBitmapFromBytes(pictureData);
+            setUserImage(userImage);
         }
     }
 

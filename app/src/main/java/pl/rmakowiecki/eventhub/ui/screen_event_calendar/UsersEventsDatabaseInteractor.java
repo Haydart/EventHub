@@ -58,6 +58,11 @@ public class UsersEventsDatabaseInteractor extends BaseDatabaseInteractor<Event>
     }
 
     @Override
+    protected void setDatabaseQueryNode(String childKey) {
+        //no-op
+    }
+
+    @Override
     public Observable<Event> getData() {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         setDatabaseQueryNode();
@@ -95,6 +100,11 @@ public class UsersEventsDatabaseInteractor extends BaseDatabaseInteractor<Event>
         }
 
         return publishSubject;
+    }
+
+    @Override
+    public Observable<Event> getData(String childKey) {
+        return Observable.empty();
     }
 
     public Observable<Event> getData(int position) {

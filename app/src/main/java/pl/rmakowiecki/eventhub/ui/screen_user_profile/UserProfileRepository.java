@@ -35,10 +35,10 @@ public class UserProfileRepository implements AddOperationRepository<User, Gener
             String userId = firebaseUser.getUid();
             userProfileDataInteractor.add(userId, user.getName())
                     .compose(applySchedulers())
-                    .subscribe((result) -> saveDatabaseQueryResult(result));
+                    .subscribe(this::saveDatabaseQueryResult);
             imageStorageInteractor.add(userId, user.getPicture())
                     .compose(applySchedulers())
-                    .subscribe((result) -> saveStorageQueryResult(result));
+                    .subscribe(this::saveStorageQueryResult);
         }
         else {
             saveStorageQueryResult(GenericQueryStatus.STATUS_FAILURE);

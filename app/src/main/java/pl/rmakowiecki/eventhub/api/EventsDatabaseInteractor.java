@@ -114,7 +114,17 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
     }
 
     @Override
+    protected void setDatabaseQueryNode(String childKey) {
+        //no-op
+    }
+
+    @Override
     public Observable<Event> getData() {
+        return Observable.empty();
+    }
+
+    @Override
+    public Observable<Event> getData(String childKey) {
         return Observable.empty();
     }
 

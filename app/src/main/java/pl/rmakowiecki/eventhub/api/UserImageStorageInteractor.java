@@ -7,15 +7,25 @@ import rx.subjects.PublishSubject;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.USER_PROFILE_IMAGE_REFERENCE;
 
-public class UserImageStorageInteractor extends BaseSpecificStorageInteractor<byte[]> {
+public class UserImageStorageInteractor extends BaseStorageInteractor<byte[]> {
 
     private final long FIVE_MEGABYTES = 5 * 1024 * 1024;
+
+    @Override
+    protected void setStorageQueryNode() {
+        //no-op
+    }
 
     @Override
     protected void setStorageQueryNode(String childKey) {
         storageQueryNode = FirebaseStorage.getInstance().getReference()
                 .child(USER_PROFILE_IMAGE_REFERENCE)
                 .child(childKey);
+    }
+
+    @Override
+    public Observable<byte[]> getData() {
+        return Observable.empty();
     }
 
     @Override

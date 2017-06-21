@@ -8,7 +8,12 @@ import pl.rmakowiecki.eventhub.util.FirebaseConstants;
 import rx.Observable;
 import rx.subjects.PublishSubject;
 
-public class UserProfileInteractor extends BaseSpecificDatabaseInteractor<String> {
+public class UserProfileInteractor extends BaseDatabaseInteractor<String> {
+
+    @Override
+    protected void setDatabaseQueryNode() {
+        //no-op
+    }
 
     @Override
     protected void setDatabaseQueryNode(String userId) {
@@ -17,6 +22,11 @@ public class UserProfileInteractor extends BaseSpecificDatabaseInteractor<String
                 .child(FirebaseConstants.USER_DATA_REFERENCE)
                 .child(userId)
                 .child(FirebaseConstants.USER_NAME_REFERENCE);
+    }
+
+    @Override
+    public Observable<String> getData() {
+        return Observable.empty();
     }
 
     @Override

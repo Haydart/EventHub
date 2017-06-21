@@ -27,7 +27,7 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
     protected void onViewStarted(UserProfileView view) {
         super.onViewStarted(view);
         view.enableHomeButton();
-        view.readBundle();
+        view.retrieveUserData();
         view.displayUserInfo(userManager, isDifferentUser);
         view.displayInterestsList();
         handleUserImage();
@@ -35,10 +35,12 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
     }
 
     private void handleUserImage() {
-        if (!isDifferentUser)
+        if (!isDifferentUser) {
             view.loadUserImage();
-        else
+        }
+        else {
             loadUserImageFromDatabase();
+        }
     }
 
     void onProfileSaveButtonClick(User user) {
@@ -103,7 +105,12 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
         repository
                 .querySingle(specification)
                 .compose(applySchedulers())
-                .subscribe(view::onUserDataLoaded);
+                .subscribe(this::onUserDataLoaded);
+    }
+
+    private void onUserDataLoaded(User userData) {
+        if (userData != null)
+            view.loadUserProfile(userData);
     }
 
     void onChooseImageButtonClicked() {
@@ -115,7 +122,7 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
         return NoOpUserProfileView.INSTANCE;
     }
 
-    public void onBundleRead(boolean isDifferentUser, String userId) {
+    public void onUserDataRetrieved(boolean isDifferentUser, String userId) {
         this.isDifferentUser = isDifferentUser;
         this.userId = userId;
 

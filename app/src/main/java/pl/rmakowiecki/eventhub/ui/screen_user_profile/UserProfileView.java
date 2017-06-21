@@ -11,7 +11,7 @@ interface UserProfileView extends BaseView {
 
     void enableHomeButton();
 
-    void onUserDataLoaded(User user);
+    void loadUserProfile(User user);
 
     void displayInterestsList();
 
@@ -33,7 +33,7 @@ interface UserProfileView extends BaseView {
 
     void loadUserImage();
 
-    void readBundle();
+    void retrieveUserData();
 
     void hideSettings();
 }

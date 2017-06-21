@@ -15,6 +15,8 @@ public abstract class BaseStorageInteractor<T> {
     }
 
     protected abstract void setStorageQueryNode();
+    protected abstract void setStorageQueryNode(String childKey);
 
     public abstract Observable<T> getData();
+    public abstract Observable<T> getData(String childKey);
 }
