@@ -53,7 +53,7 @@
             </com.github.florent37.arclayout.ArcLayout>
 
             <FrameLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_collapseMode="parallax"
                 app:layout_collapseParallaxMultiplier="-1.5"
@@ -73,9 +73,11 @@
                     android:layout_width="@dimen/user_add_profile_image_size"
                     android:layout_height="@dimen/user_add_profile_image_size"
                     android:layout_gravity="top|right"
+                    android:layout_marginRight="@dimen/user_profile_image_right_margin"
                     android:layout_marginTop="@dimen/user_profile_image_margin">
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/add_image_circle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@color/colorAccent"

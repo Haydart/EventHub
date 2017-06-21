@@ -1,6 +1,7 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_details;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,17 @@ import java.util.List;
 
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
+import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileActivity;
 import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileImageSpecification;
 import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileImageRepository;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
+
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+import static pl.rmakowiecki.eventhub.background.Constants.USER_PROFILE_EXTRA_IS_DIFFERENT_USER;
+import static pl.rmakowiecki.eventhub.background.Constants.USER_PROFILE_EXTRA_USER_ID;
 
 public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDetailsAttendeesViewHolder> {
 
@@ -41,6 +47,7 @@ public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDeta
     public void onBindViewHolder(EventDetailsAttendeesViewHolder holder, int position) {
         EventAttendee attendee = attendees.get(position);
         holder.bindView(attendee.getName());
+        holder.itemView.setOnClickListener(v -> launchUserProfileActivity(attendee.getId()));
 
         UserProfileImageSpecification specification = new UserProfileImageSpecification(attendee.getId());
         byte[] image = profileImageRepository.getImage(specification);
@@ -60,6 +67,14 @@ public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDeta
                         }
                     });
         }
+    }
+
+    private void launchUserProfileActivity(String attendeeId) {
+        Intent intent = new Intent(context, UserProfileActivity.class);
+        intent.addFlags(FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra(USER_PROFILE_EXTRA_IS_DIFFERENT_USER, true);
+        intent.putExtra(USER_PROFILE_EXTRA_USER_ID, attendeeId);
+        context.startActivity(intent);
     }
 
     protected <T> Observable.Transformer<T, T> applySchedulers() {

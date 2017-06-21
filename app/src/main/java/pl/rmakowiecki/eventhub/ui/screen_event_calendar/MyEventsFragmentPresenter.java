@@ -139,7 +139,7 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
     public void removeEventParticipant(String eventId) {
         repository.removeEventParticipant(eventId)
                 .compose(applySchedulers())
-                .subscribe(operationStatus -> view.showActionStatus(operationStatus));
+                .subscribe(operationStatus -> view.showLeaveActionStatus(operationStatus));
     }
 
     @Override

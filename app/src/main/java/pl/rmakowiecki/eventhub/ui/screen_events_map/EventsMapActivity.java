@@ -66,6 +66,9 @@ import pl.rmakowiecki.eventhub.util.UserManager;
 import pl.rmakowiecki.eventhub.util.ViewAnimationListenerAdapter;
 import rx.android.schedulers.AndroidSchedulers;
 
+import static pl.rmakowiecki.eventhub.background.Constants.USER_PROFILE_EXTRA_IS_DIFFERENT_USER;
+import static pl.rmakowiecki.eventhub.background.Constants.USER_PROFILE_EXTRA_USER_ID;
+
 public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implements EventsMapView,
         OnMapReadyCallback,
         GoogleMap.OnCameraIdleListener,
@@ -350,7 +353,10 @@ public class EventsMapActivity extends BaseActivity<EventsMapPresenter> implemen
 
     @Override
     public void launchUserProfileScreen() {
-        startActivity(new Intent(this, UserProfileActivity.class));
+        Intent intent = new Intent(this, UserProfileActivity.class);
+        intent.putExtra(USER_PROFILE_EXTRA_IS_DIFFERENT_USER, false);
+        intent.putExtra(USER_PROFILE_EXTRA_USER_ID, userManager.getCurrentUserId());
+        startActivity(intent);
     }
 
     @Override

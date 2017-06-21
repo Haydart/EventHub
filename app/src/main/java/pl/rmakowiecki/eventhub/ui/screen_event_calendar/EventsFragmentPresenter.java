@@ -31,10 +31,12 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     private SortTypes sortType = SortTypes.DATE_SORT;
     private int position;
     private List<Event> allEvents = new ArrayList<>();
+    private String userName;
 
-    EventsFragmentPresenter(int position) {
+    EventsFragmentPresenter(int position, String displayName) {
         repository = new EventsRepository();
         this.position = position;
+        userName = displayName;
     }
 
     private void onViewInitialization() {
@@ -129,7 +131,7 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     }
 
     public void addEventParticipant(String eventId) {
-        repository.updateEventParticipants(eventId)
+        repository.updateEventParticipants(eventId, userName)
                 .compose(applySchedulers())
                 .subscribe(operationStatus -> view.showActionStatus(operationStatus));
     }
@@ -137,7 +139,7 @@ class EventsFragmentPresenter extends BasePresenter<EventsFragmentView> {
     public void removeEventParticipant(String eventId) {
         repository.removeEventParticipant(eventId)
                 .compose(applySchedulers())
-                .subscribe(operationStatus -> view.showActionStatus(operationStatus));
+                .subscribe(operationStatus -> view.showLeaveActionStatus(operationStatus));
     }
 
 

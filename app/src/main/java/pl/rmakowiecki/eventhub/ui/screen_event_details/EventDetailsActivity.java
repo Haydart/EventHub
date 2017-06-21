@@ -28,6 +28,7 @@ import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.ui.screen_app_features.AppFeaturesActivity;
 import pl.rmakowiecki.eventhub.util.DateUtils;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
 
 import static pl.rmakowiecki.eventhub.background.Constants.EVENT_DETAILS_MORE_USERS;
@@ -50,6 +51,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @BindView(R.id.event_details_no_attendees_text_view) TextView noAttendeesTextView;
     @BindView(R.id.event_details_attendees_layout) LinearLayout attendeesLinearLayout;
     @BindView(R.id.event_details_login_button) ActionButton loginActionButton;
+    @BindView(R.id.event_details_join_button) ActionButton joinEventActionButton;
     @BindView(R.id.event_details_not_logged_in_frame_layout) FrameLayout notLoggedInLayout;
     @BindString(R.string.event_details_date) String eventDateString;
     @BindString(R.string.event_details_time) String eventTimeString;
@@ -58,10 +60,14 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @BindString(R.string.event_details_name) String eventNameString;
     @BindString(R.string.event_details_attendees_count) String eventAttendeesString;
     @BindString(R.string.event_details_title) String eventDetailsTitleString;
+    @BindString(R.string.event_details_join) String joinButtonText;
+    @BindString(R.string.event_details_leave) String leaveButtonText;
+    @BindString(R.string.event_details_error) String failureMessageText;
 
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private Event event;
+    private PreferencesManager preferencesManager;
 
     @Override
     protected void initPresenter() {
@@ -71,6 +77,7 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        preferencesManager = new PreferencesManager(this);
         readEventFromBundle();
         setupToolbar();
     }
@@ -174,6 +181,9 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
                 attendees.add(attendee);
                 break;
             }
+            else {
+                presenter.onUserAttendingEvent();
+            }
         }
 
         return attendees;
@@ -194,9 +204,35 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
         presenter.onLoginButtonClicked();
     }
 
+    @OnClick(R.id.event_details_join_button)
+    protected void onJoinButtonClicked() {
+        presenter.onJoinButtonClicked(event, preferencesManager.getUserName());
+    }
+
     @Override
     public void launchAppFeaturesActivity() {
         Intent intent = new Intent(this, AppFeaturesActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void updateJoinEventButton(boolean isUserAttendingEvent) {
+        joinEventActionButton.setText(isUserAttendingEvent ? leaveButtonText : joinButtonText);
+        joinEventActionButton.setEnabled(true);
+    }
+
+    @Override
+    public void showFailureMessage() {
+        joinEventActionButton.showFailure(failureMessageText);
+    }
+
+    @Override
+    public void showButtonProcessing() {
+        joinEventActionButton.showProcessing();
+    }
+
+    @Override
+    public void showSuccessMessage() {
+        joinEventActionButton.showSuccess();
     }
 }

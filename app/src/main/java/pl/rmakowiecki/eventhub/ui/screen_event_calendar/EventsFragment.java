@@ -18,6 +18,7 @@ import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
 public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implements EventsFragmentView {
@@ -28,10 +29,13 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
     @BindView(R.id.calendar_events_list) RecyclerView recyclerView;
     @BindString(R.string.status_success_message) String successMessage;
     @BindString(R.string.status_fail_message) String failMessage;
+    @BindString(R.string.status_leave_success_message) String leaveSuccessMessage;
+    @BindString(R.string.status_leave_fail_message) String leaveFailMessage;
     private int columnCount = 1;
     private OnListFragmentInteractionListener listener;
     private EventsAdapter adapter;
     private View view;
+    private PreferencesManager manager;
 
     public EventsFragment() {
         //no-op
@@ -66,7 +70,7 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
 
     @Override
     protected void initPresenter() {
-        presenter = new EventsFragmentPresenter(PAGE);
+        presenter = new EventsFragmentPresenter(PAGE, manager.getUserName());
     }
 
     @Override
@@ -86,16 +90,18 @@ public class EventsFragment extends BaseFragment<EventsFragmentPresenter> implem
 
     @Override
     public void showActionStatus(GenericQueryStatus status) {
-        if (status == GenericQueryStatus.STATUS_SUCCESS) {
-            Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(getContext(), failMessage, Toast.LENGTH_SHORT).show();
-        }
+        Toast.makeText(getContext(), status == GenericQueryStatus.STATUS_SUCCESS ? successMessage : failMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showLeaveActionStatus(GenericQueryStatus status) {
+        Toast.makeText(getContext(), status == GenericQueryStatus.STATUS_SUCCESS ? leaveSuccessMessage : leaveFailMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        manager = new PreferencesManager(context);
         if (context instanceof OnListFragmentInteractionListener) {
             listener = (OnListFragmentInteractionListener) context;
         } else {

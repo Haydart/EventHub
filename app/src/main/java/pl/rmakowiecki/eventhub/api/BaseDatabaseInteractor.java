@@ -17,6 +17,8 @@ public abstract class BaseDatabaseInteractor<T> {
     }
 
     protected abstract void setDatabaseQueryNode();
+    protected abstract void setDatabaseQueryNode(String childKey);
 
     public abstract Observable<T> getData();
+    public abstract Observable<T> getData(String childKey);
 }

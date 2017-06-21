@@ -17,4 +17,6 @@ public interface EventsFragmentView extends BaseView {
     void initEvents(List<EventWDistance> eventsWithDistance, List<Boolean> attendance);
 
     void showActionStatus(GenericQueryStatus genericQueryStatus);
+
+    void showLeaveActionStatus(GenericQueryStatus operationStatus);
 }

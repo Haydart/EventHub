@@ -33,6 +33,8 @@ public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsF
     @BindView(R.id.calendar_personalized_events_list) RecyclerView recyclerView;
     @BindString(R.string.status_success_message) String successMessage;
     @BindString(R.string.status_fail_message) String failMessage;
+    @BindString(R.string.status_leave_success_message) String leaveSuccessMessage;
+    @BindString(R.string.status_leave_fail_message) String leaveFailMessage;
     private PreferencesManager preferencesManager;
     private int columnCount = 1;
     private PersonalizedEventsFragment.OnListFragmentInteractionListener listener;
@@ -93,13 +95,12 @@ public class PersonalizedEventsFragment extends BaseFragment<PersonalizedEventsF
 
     @Override
     public void showActionStatus(GenericQueryStatus status) {
-        if (status == GenericQueryStatus.STATUS_SUCCESS) {
-            Toast toast = Toast.makeText(getContext(), successMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        } else {
-            Toast toast = Toast.makeText(getContext(), failMessage, Toast.LENGTH_SHORT);
-            toast.show();
-        }
+        Toast.makeText(getContext(), status == GenericQueryStatus.STATUS_SUCCESS ? successMessage : failMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showLeaveActionStatus(GenericQueryStatus status) {
+        Toast.makeText(getContext(), status == GenericQueryStatus.STATUS_SUCCESS ? leaveSuccessMessage : leaveFailMessage, Toast.LENGTH_SHORT).show();
     }
 
     public void sortEvents(SortTypes type) {

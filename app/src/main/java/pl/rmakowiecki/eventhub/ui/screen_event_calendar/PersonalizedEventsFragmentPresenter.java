@@ -129,7 +129,7 @@ public class PersonalizedEventsFragmentPresenter extends BasePresenter<Personali
     }
 
     public void addEventParticipant(String eventId) {
-        repository.updateEventParticipants(eventId)
+        repository.updateEventParticipants(eventId, preferencesManager.getUserName())
                 .compose(applySchedulers())
                 .subscribe(operationStatus -> view.showActionStatus(operationStatus));
     }
@@ -137,7 +137,7 @@ public class PersonalizedEventsFragmentPresenter extends BasePresenter<Personali
     public void removeEventParticipant(String eventId) {
         repository.removeEventParticipant(eventId)
                 .compose(applySchedulers())
-                .subscribe(operationStatus -> view.showActionStatus(operationStatus));
+                .subscribe(operationStatus -> view.showLeaveActionStatus(operationStatus));
     }
 
     @Override

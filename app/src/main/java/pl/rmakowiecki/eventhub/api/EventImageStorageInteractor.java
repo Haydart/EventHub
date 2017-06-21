@@ -8,7 +8,7 @@ import rx.subjects.PublishSubject;
 
 import static pl.rmakowiecki.eventhub.util.FirebaseConstants.EVENT_IMAGE_REFERENCE;
 
-public class EventImageStorageInteractor extends BaseSpecificStorageInteractor<byte[]> {
+public class EventImageStorageInteractor extends BaseStorageInteractor<byte[]> {
 
     private final long FIVE_MEGABYTES = 5 * 1024 * 1024;
 
@@ -42,5 +42,15 @@ public class EventImageStorageInteractor extends BaseSpecificStorageInteractor<b
                 });
 
         return publishSubject;
+    }
+
+    @Override
+    protected void setStorageQueryNode() {
+        //no-op
+    }
+
+    @Override
+    public Observable<byte[]> getData() {
+        return Observable.empty();
     }
 }

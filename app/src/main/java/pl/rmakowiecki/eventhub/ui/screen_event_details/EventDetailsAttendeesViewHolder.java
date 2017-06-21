@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_details;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.view.View;
 import android.widget.ImageView;
@@ -8,15 +9,19 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
 import com.squareup.picasso.Picasso;
+
+import butterknife.OnClick;
 import pl.rmakowiecki.eventhub.R;
+import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileActivity;
 
 import static pl.rmakowiecki.eventhub.background.Constants.EVENT_DETAILS_MORE_USERS;
+import static pl.rmakowiecki.eventhub.background.Constants.USER_PROFILE_EXTRA_IS_DIFFERENT_USER;
+import static pl.rmakowiecki.eventhub.background.Constants.USER_PROFILE_EXTRA_USER_ID;
 
 public class EventDetailsAttendeesViewHolder extends ParentViewHolder {
 
     @BindView(R.id.attending_user_image_view) ImageView attendeeImageView;
     @BindView(R.id.attending_user_text_view) TextView attendeeTextView;
-
 
     public EventDetailsAttendeesViewHolder(View itemView) {
         super(itemView);

@@ -26,6 +26,11 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<R
                 .child(CATEGORIES_REFERENCE);
     }
 
+    @Override
+    protected void setDatabaseQueryNode(String childKey) {
+        //no-op
+    }
+
     private List<RemotePreference> parsePreferenceData(DataSnapshot dataSnapshot) {
         Map<String, Object> map = (HashMap<String, Object>)dataSnapshot.getValue();
         return getPreferenceListFromMap(map);
@@ -71,5 +76,10 @@ public class PreferencesDatabaseInteractor extends BaseDatabaseInteractor<List<R
         });
 
         return publishSubject;
+    }
+
+    @Override
+    public Observable<List<RemotePreference>> getData(String childKey) {
+        return Observable.empty();
     }
 }

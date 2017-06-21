@@ -28,6 +28,11 @@ public class LocaleDatabaseInteractor extends BaseDatabaseInteractor<List<Prefer
                 .child(utils.getLocaleString());
     }
 
+    @Override
+    protected void setDatabaseQueryNode(String childKey) {
+        //no-op
+    }
+
     private List<PreferenceLocale> parsePreferenceData(DataSnapshot dataSnapshot) {
         Map<String, Object> map = (HashMap<String, Object>)dataSnapshot.getValue();
         return getPreferenceListFromMap(map);
@@ -65,5 +70,10 @@ public class LocaleDatabaseInteractor extends BaseDatabaseInteractor<List<Prefer
         });
 
         return publishSubject;
+    }
+
+    @Override
+    public Observable<List<PreferenceLocale>> getData(String childKey) {
+        return Observable.empty();
     }
 }

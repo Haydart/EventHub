@@ -8,6 +8,7 @@ import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesLocale
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesRepository;
 import pl.rmakowiecki.eventhub.ui.screen_preference_categories.PreferencesSpecification;
 import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileRepository;
+import pl.rmakowiecki.eventhub.ui.screen_user_profile.UserProfileSpecification;
 import pl.rmakowiecki.eventhub.util.LocaleUtils;
 
 class SplashPresenter extends BasePresenter<SplashView> {
@@ -76,7 +77,7 @@ class SplashPresenter extends BasePresenter<SplashView> {
 
     private void queryUserImage() {
         new UserProfileRepository()
-                .querySingle(new PreferencesLocaleSpecification() {})
+                .querySingle(new UserProfileSpecification("") {})
                 .compose(applySchedulers())
                 .subscribe(view::saveUserData);
     }

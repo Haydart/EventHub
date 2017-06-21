@@ -44,9 +44,9 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
         return eventDBInteractor.addEvent(eventMapper.map(item));
     }
 
-    public Observable<GenericQueryStatus> updateEventParticipants(String eventId) {
+    public Observable<GenericQueryStatus> updateEventParticipants(String eventId, String userDisplayedName) {
         return eventPatricipantsDBInteractor
-                .addEventParticipant(eventId);
+                .addEventParticipant(eventId, userDisplayedName);
     }
 
     public Observable<GenericQueryStatus> removeEventParticipant(String eventId) {

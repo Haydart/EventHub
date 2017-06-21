@@ -34,6 +34,11 @@ public class InterestsDatabaseInteractor extends BaseDatabaseInteractor<List<Int
     }
 
     @Override
+    protected void setDatabaseQueryNode(String childKey) {
+        //no-op
+    }
+
+    @Override
     public Observable<List<Interest>> getData() {
         if (!setUser()) {
             return Observable.empty();
@@ -55,6 +60,11 @@ public class InterestsDatabaseInteractor extends BaseDatabaseInteractor<List<Int
         });
 
         return publishSubject;
+    }
+
+    @Override
+    public Observable<List<Interest>> getData(String childKey) {
+        return Observable.empty();
     }
 
     private List<Interest> parseInterestData(DataSnapshot dataSnapshot) {
