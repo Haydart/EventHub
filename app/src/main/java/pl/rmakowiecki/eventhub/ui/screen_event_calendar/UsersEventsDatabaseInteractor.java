@@ -104,7 +104,39 @@ public class UsersEventsDatabaseInteractor extends BaseDatabaseInteractor<Event>
 
     @Override
     public Observable<Event> getData(String childKey) {
-        return Observable.empty();
+        setDatabaseQueryNode();
+        publishSubject = PublishSubject.create();
+        databaseQueryNode
+                .child(childKey)
+                .child(EVENTS_REFERENCE)
+                .addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                        publishSubject.onNext(parseEventData(dataSnapshot));
+                    }
+
+                    @Override
+                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                        publishSubject.onNext(parseEventData(dataSnapshot));
+                    }
+
+                    @Override
+                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+                        publishSubject.onNext(removeAttendeeFromLocalList(dataSnapshot));
+                    }
+
+                    @Override
+                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+                        //no-op
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //no-op
+                    }
+                });
+
+        return publishSubject;
     }
 
     public Observable<Event> getData(int position) {

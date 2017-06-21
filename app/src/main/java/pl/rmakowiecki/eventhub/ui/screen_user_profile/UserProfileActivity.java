@@ -11,6 +11,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -22,6 +23,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
+import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
@@ -42,7 +44,8 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @BindView(R.id.user_profile_toolbar_layout) CollapsingToolbarLayout collapsingToolbarLayout;
     @BindView(R.id.user_profile_image_view) ImageView userImageView;
     @BindView(R.id.save_user_profile_action_button) ActionButton saveProfileButton;
-    @BindView(R.id.user_profile_preferences_recycler_view) RecyclerView recyclerView;
+    @BindView(R.id.user_profile_preferences_recycler_view) RecyclerView interestsRecyclerView;
+    @BindView(R.id.user_profile_events_recycler_view) RecyclerView eventsRecyclerView;
     @BindView(R.id.add_image_button) ImageView addImageView;
     @BindView(R.id.add_image_circle) CircleImageView addImageCircleView;
 
@@ -71,7 +74,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         saveProfileButton.setVisibility(View.INVISIBLE);
         addImageView.setVisibility(View.INVISIBLE);
         addImageCircleView.setVisibility(View.INVISIBLE);
-        recyclerView.setVisibility(View.INVISIBLE);
+        interestsRecyclerView.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -110,10 +113,18 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     public void displayInterestsList() {
         List<PreferenceCategory> displayList = preferencesManager.getInterestsDisplayList();
         if (!displayList.isEmpty()) {
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            interestsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
             adapter = new UserProfilePreferencesAdapter(this, displayList);
-            recyclerView.setAdapter(adapter);
+            interestsRecyclerView.setAdapter(adapter);
         }
+    }
+
+    @Override
+    public void displayEventsList(List<Event> events) {
+        eventsRecyclerView.setVisibility(View.VISIBLE);
+        eventsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        adapter = new UserProfileEventsAdapter(this, events);
+        eventsRecyclerView.setAdapter(adapter);
     }
 
     @Override

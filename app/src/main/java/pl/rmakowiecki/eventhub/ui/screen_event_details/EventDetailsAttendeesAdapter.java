@@ -7,7 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
@@ -28,13 +30,13 @@ public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDeta
     private Context context;
     private LayoutInflater layoutInflater;
     private List<EventAttendee> attendees;
-    private UserProfileImageRepository profileImageRepository;
+    private Map<String, byte[]> userPictureMap;
 
     public EventDetailsAttendeesAdapter(Context appContext, List<EventAttendee> attendees) {
         context = appContext;
+        userPictureMap = new HashMap<>();
         layoutInflater = LayoutInflater.from(context);
         this.attendees = attendees;
-        profileImageRepository = new UserProfileImageRepository();
     }
 
     @Override
@@ -49,21 +51,20 @@ public class EventDetailsAttendeesAdapter extends RecyclerView.Adapter<EventDeta
         holder.bindView(attendee.getName());
         holder.itemView.setOnClickListener(v -> launchUserProfileActivity(attendee.getId()));
 
-        UserProfileImageSpecification specification = new UserProfileImageSpecification(attendee.getId());
-        byte[] image = profileImageRepository.getImage(specification);
-        if (image != null) {
-            holder.loadPicture(BitmapUtils.getBitmapFromBytes(image));
-        }
-        else {
-            profileImageRepository
+        if (userPictureMap.containsKey(attendee.getId())) {
+            holder.loadPicture(BitmapUtils.getBitmapFromBytes(userPictureMap.get(attendee.getId())));
+        } else {
+            UserProfileImageSpecification specification = new UserProfileImageSpecification(attendee.getId());
+            new UserProfileImageRepository()
                     .querySingle(specification)
                     .compose(applySchedulers())
                     .subscribe(pictureData -> {
                         if (pictureData != null) {
-                            profileImageRepository.add(attendee.getId(), pictureData);
+                            userPictureMap.put(attendee.getId(), pictureData);
 
-                            if (holder != null)
+                            if (holder != null) {
                                 holder.loadPicture(BitmapUtils.getBitmapFromBytes(pictureData));
+                            }
                         }
                     });
         }
