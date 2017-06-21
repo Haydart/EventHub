@@ -31,6 +31,8 @@ public class EventsFragmentAdapter extends FragmentPagerAdapter {
                 return PersonalizedEventsFragment.newInstance(position);
             case 1:
                 return MyEventsFragment.newInstance(position);
+            case 2:
+                return EventsFragment.newInstance(position);
             default:
                 return EventsFragment.newInstance(position);
         }

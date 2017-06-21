@@ -5,6 +5,7 @@ package pl.rmakowiecki.eventhub.model.local;
  */
 
 public final class EventWDistance {
+
     private final Event event;
     private final double distanceCalculable;
     private final String distanceDisplayable;

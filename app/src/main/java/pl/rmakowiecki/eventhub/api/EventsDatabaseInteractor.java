@@ -25,6 +25,7 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
     private static final String DATABASE_PATH = "app_data/events";
     private static List<PreferenceCategory> interestsList;
+    private String referenceKey;
 
     public EventsDatabaseInteractor() {
     }
@@ -32,8 +33,6 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
     public EventsDatabaseInteractor(List<PreferenceCategory> interestsList) {
         this.interestsList = interestsList;
     }
-
-    private String referenceKey;
 
     private Event parseEventData(DataSnapshot dataSnapshot, int position) {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -59,6 +58,22 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
             }
         }
 
+        return event;
+    }
+
+    private Event removeAttendeeFromLocalList(DataSnapshot dataSnapshot, int position) {
+        Event event = parseEventData(dataSnapshot, position);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        List<EventAttendee> attendees = event.getAttendees();
+        int attendeePosition = -1;
+        for (EventAttendee attendee : attendees) {
+            if (attendee.getId().equals(user.getUid())) {
+                attendeePosition = attendees.indexOf(attendee);
+            }
+        }
+        if (attendeePosition >= 0) {
+            event.getAttendees().remove(attendeePosition);
+        }
         return event;
     }
 
@@ -119,7 +134,7 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                //TODO: implement reaction for removing event
+                publishSubject.onNext(removeAttendeeFromLocalList(dataSnapshot, position));
             }
 
             @Override
@@ -153,7 +168,7 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
-                //TODO: implement reaction for removing event
+                publishSubject.onNext(removeAttendeeFromLocalList(dataSnapshot, position));
             }
 
             @Override

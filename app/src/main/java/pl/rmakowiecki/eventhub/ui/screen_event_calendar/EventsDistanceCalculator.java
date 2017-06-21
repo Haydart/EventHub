@@ -37,13 +37,13 @@ public class EventsDistanceCalculator implements DistanceCalculator {
 
             if (distanceInMeters < 1000) {
                 distance = Integer.toString((int) distanceInMeters);
-                eventWDistance = new EventWDistance(event, distanceInMeters, distance + " m");
+                eventWDistance = new EventWDistance(event, distanceInMeters, distance + " m ");
             } else {
                 calculatedDistance = BigDecimal.valueOf(distanceInMeters / 1000)
                         .setScale(1, RoundingMode.HALF_UP)
                         .doubleValue();
                 distance = Double.toString(calculatedDistance);
-                eventWDistance = new EventWDistance(event, distanceInMeters, distance + " km");
+                eventWDistance = new EventWDistance(event, distanceInMeters, distance + " km ");
             }
             distances.add(eventWDistance);
         }

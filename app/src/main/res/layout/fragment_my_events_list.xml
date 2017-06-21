@@ -1,13 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/calendar_my_events_list"
-    android:name="pl.rmakowiecki.eventhub.ui.calendar_screen.myEventsFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginLeft="@dimen/standard_margin_large"
     android:layout_marginRight="@dimen/standard_margin_large"
-    app:layoutManager="LinearLayoutManager"
-    tools:context="pl.rmakowiecki.eventhub.ui.screen_event_calendar.MyEventsFragment"
-    tools:listitem="@layout/fragment_my_events" />
+    tools:context="pl.rmakowiecki.eventhub.ui.screen_event_calendar.MyEventsFragment">
+
+    <android.support.v7.widget.RecyclerView
+
+        android:id="@+id/calendar_events_list"
+        android:name="pl.rmakowiecki.eventhub.ui.calendar_screen.myEventsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:tag="calendar_events_list"
+        app:layoutManager="LinearLayoutManager"
+        tools:listitem="@layout/fragment_events"></android.support.v7.widget.RecyclerView>
+
+    <RelativeLayout
+        android:id="@+id/loading_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
+
+</FrameLayout>
+
+

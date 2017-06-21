@@ -84,9 +84,13 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
 
     @Override
     public void sortEvents(SortTypes sortType) {
-        EventsFragment allEventsFragment = (EventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":0");
+        PersonalizedEventsFragment personalizedEventsFragment =
+                (PersonalizedEventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":0");
         MyEventsFragment filteredEventsFragment = (MyEventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":1");
-        allEventsFragment.sortEvents(sortType);
+        EventsFragment allEventsFragment = (EventsFragment) getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewpager + ":2");
+
+        personalizedEventsFragment.sortEvents(sortType);
         filteredEventsFragment.sortEvents(sortType);
+        allEventsFragment.sortEvents(sortType);
     }
 }

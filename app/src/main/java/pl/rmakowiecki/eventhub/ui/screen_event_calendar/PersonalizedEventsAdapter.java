@@ -18,8 +18,9 @@ class PersonalizedEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
     private PersonalizedEventsFragment.OnListFragmentInteractionListener listener;
     private List<EventWDistance> items;
     private PersonalizedEventsFragmentPresenter presenter;
+    private List<Boolean> attendance;
 
-    public PersonalizedEventsAdapter(Context baseContext, List<EventWDistance> events,
+    public PersonalizedEventsAdapter(Context baseContext, List<EventWDistance> events, List<Boolean> attendance,
             PersonalizedEventsFragment.OnListFragmentInteractionListener listener,
             PersonalizedEventsFragmentPresenter presenter) {
         final LayoutInflater layoutInflater = LayoutInflater.from(baseContext);
@@ -27,6 +28,8 @@ class PersonalizedEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
         items = events;
         this.listener = listener;
         this.presenter = presenter;
+        this.attendance = attendance;
+
     }
 
     @Override
@@ -38,7 +41,7 @@ class PersonalizedEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     @Override
     public void onBindViewHolder(final EventsViewHolder holder, int position) {
-        holder.bindView(items.get(position));
+        holder.bindView(items.get(position), attendance.get(position));
     }
 
     @Override

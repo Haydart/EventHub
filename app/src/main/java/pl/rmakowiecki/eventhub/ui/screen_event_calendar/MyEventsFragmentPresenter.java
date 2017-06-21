@@ -5,9 +5,11 @@ import java.util.Collections;
 import java.util.List;
 import pl.rmakowiecki.eventhub.RxLocationProvider;
 import pl.rmakowiecki.eventhub.model.local.Event;
+import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
 import pl.rmakowiecki.eventhub.util.SortTypes;
+import pl.rmakowiecki.eventhub.util.UserAuthManager;
 
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DATE_SORT;
 import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.DISTANCE_SORT;
@@ -20,6 +22,7 @@ import static pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventComparator.g
 
 class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
 
+    UserAuthManager userManager = new UserAuthManager();
     private RxLocationProvider provider = new RxLocationProvider();
     private EventsDistanceCalculator calculator = new EventsDistanceCalculator();
     private EventsRepository repository;
@@ -27,6 +30,10 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
     private int position;
     private List<EventWDistance> eventsWithDistances = new ArrayList<>();
     private List<Event> allEvents = new ArrayList<>();
+    private List<Boolean> attendance = new ArrayList<>();
+    private UserAuthManager userAuthManager = new UserAuthManager();
+    private SortTypes sortType = SortTypes.DATE_SORT;
+
 
     MyEventsFragmentPresenter(int position) {
         repository = new EventsRepository();
@@ -39,14 +46,13 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
 
     private void acquireEvents() {
         repository
-                .query(new MyEventsSpecification(position) {
-                })
+                .queryForUserEvents()
                 .compose(applySchedulers())
                 .subscribe(this::updateEventsList);
     }
 
     private void updateEventsList(List<Event> events) {
-        boolean toRemove = false;
+        boolean toRemove;
         int position = 0;
         if (allEvents.isEmpty()) {
             allEvents = events;
@@ -62,7 +68,10 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
                 if (toRemove) {
                     allEvents.remove(position);
                 }
-                allEvents.add(event);
+                if (isUserAttending(event, userManager.getCurrentUserId())) {
+                    allEvents.add(event);
+                }
+
             }
         }
         passCompleteData();
@@ -75,8 +84,33 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
                 .subscribe(
                         coordinates -> {
                             eventsWithDistances = calculator.calculateDistances(coordinates, allEvents);
-                            view.showEvents(eventsWithDistances);
+                            sortEvents();
+                            setAttendance();
+                            view.showEvents(eventsWithDistances, attendance);
                         });
+    }
+
+    private void setAttendance() {
+        String userId = userAuthManager.getCurrentUserId();
+        Boolean userAttendance;
+        for (EventWDistance event : eventsWithDistances) {
+            userAttendance = false;
+            for (EventAttendee attendee : event.getEvent().getAttendees()) {
+                if (attendee.getId().equals(userId)) {
+                    userAttendance = true;
+                }
+            }
+            attendance.add(userAttendance);
+        }
+    }
+
+    private boolean isUserAttending(Event event, String currentUserId) {
+        for (EventAttendee attendee : event.getAttendees()) {
+            if (attendee.getId().equals(currentUserId)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -86,7 +120,13 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
     }
 
     void onSortRequested(SortTypes type) {
-        switch (type) {
+        sortType = type;
+        sortEvents();
+        view.showEvents(eventsWithDistances, attendance);
+    }
+
+    private void sortEvents() {
+        switch (sortType) {
             case DISTANCE_SORT:
                 Collections.sort(eventsWithDistances, ascending(getComparator(DISTANCE_SORT)));
                 break;
@@ -94,7 +134,11 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
                 Collections.sort(eventsWithDistances, ascending(getComparator(DATE_SORT)));
                 break;
         }
-        view.showEvents(eventsWithDistances);
+    }
+
+    public void removeEventParticipant(String eventId) {
+        repository.removeEventParticipant(eventId)
+                .subscribe(operationStatus -> view.showActionStatus(operationStatus));
     }
 
     @Override
