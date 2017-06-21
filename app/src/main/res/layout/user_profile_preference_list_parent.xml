@@ -17,7 +17,6 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/text_margin"
         android:textStyle="bold"
-        android:textSize="18sp"
-        tools:text="Rzemiosło" />
+        android:textSize="18sp" />
 
 </LinearLayout>
