@@ -73,7 +73,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
         List<PreferenceCategory> displayList = preferencesManager.getInterestsDisplayList();
         if (!displayList.isEmpty()) {
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            adapter = new UserProfilePreferencesAdapter(getBaseContext(), displayList);
+            adapter = new UserProfilePreferencesAdapter(this, displayList);
             recyclerView.setAdapter(adapter);
         }
     }
