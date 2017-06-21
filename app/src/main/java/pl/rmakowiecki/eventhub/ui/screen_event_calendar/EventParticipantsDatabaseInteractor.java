@@ -43,7 +43,7 @@ public class EventParticipantsDatabaseInteractor extends BaseDatabaseInteractor<
                 .child(eventId)
                 .child(EVENT_ATTENDEES_REFERENCE)
                 .child(user.getUid())
-                .setValue(user.getDisplayName())
+                .setValue("DISPLAY_NAME")
                 .addOnCompleteListener(task -> {
                     publishSubject.onNext(task.isSuccessful() ? GenericQueryStatus.STATUS_SUCCESS : GenericQueryStatus.STATUS_FAILURE);
                     publishSubject.onCompleted();
