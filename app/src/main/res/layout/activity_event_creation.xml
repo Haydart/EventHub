@@ -36,7 +36,7 @@
                 android:id="@+id/event_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="164dp"
-                android:src="@drawable/mudzin"
+                android:src="@drawable/auth_background"
                 android:visibility="gone" />
 
             <TextView

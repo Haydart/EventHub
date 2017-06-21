@@ -17,7 +17,7 @@ class CredentialsValidator {
             boolean isEmailValid = checkEmail(authCredentials.getEmail());
             boolean isPasswordValid = checkPassword(authCredentials.getPassword());
 
-            if (areAllCredentialsValid(isEmailValid, isPasswordValid)) {
+            if (areAllCredentialsValid(isEmailValid, isPasswordValid) && areFieldsFilled(authCredentials.getEmail(), authCredentials.getPassword())) {
                 callback.onAllCredentialsValid();
             }
         } else {
@@ -28,12 +28,20 @@ class CredentialsValidator {
             boolean isEmailValid = checkEmail(email);
             boolean isPasswordValid = checkPassword(password);
             boolean isPasswordRepeatValid = checkPasswordRepeat(password, passwordRepeat);
-            boolean arePasswordsFilled = arePasswordsFilled(password, passwordRepeat);
+            boolean arePasswordsFilled = areFieldsFilled(email, password, passwordRepeat);
 
             if (areAllCredentialsValid(isEmailValid, isPasswordValid, isPasswordRepeatValid, arePasswordsFilled)) {
                 callback.onAllCredentialsValid();
             }
         }
+    }
+
+    private boolean areFieldsFilled(String email, String password) {
+        return TextUtils.isNotEmpty(email) && TextUtils.isNotEmpty(password);
+    }
+
+    private boolean areFieldsFilled(String email, String password, String passwordRepeat) {
+        return TextUtils.isNotEmpty(email) && TextUtils.isNotEmpty(password) && TextUtils.isNotEmpty(passwordRepeat);
     }
 
     private boolean areAllCredentialsValid(boolean isEmailValid, boolean isPasswordValid) {
@@ -42,10 +50,6 @@ class CredentialsValidator {
 
     private boolean areAllCredentialsValid(boolean isEmailValid, boolean isPasswordValid, boolean isPasswordRepeatValid, boolean arePasswordsFilled) {
         return isEmailValid && isPasswordValid && isPasswordRepeatValid && arePasswordsFilled;
-    }
-
-    private boolean arePasswordsFilled(String password, String passwordRepeat) {
-        return TextUtils.isNotEmpty(password) && TextUtils.isNotEmpty(passwordRepeat);
     }
 
     private boolean checkEmail(String email) {

@@ -7,6 +7,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.daimajia.slider.library.Indicators.PagerIndicator;
@@ -29,17 +30,19 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
     @BindView(R.id.sign_up_action_button) ActionButton signUpActionButton;
     @BindView(R.id.content_layout) LinearLayout contentLayout;
     @BindView(R.id.arc_layout) ArcLayout arcLayout;
+    @BindString(R.string.button_text_sign_up) String joinButtonText;
+    @BindString(R.string.button_text_next) String nextTabButtonText;
+    @BindString(R.string.feature_slider_description_1) String feature1DescriptionText;
+    @BindString(R.string.feature_slider_description_2) String feature2DescriptionText;
+    @BindString(R.string.feature_slider_description_3) String feature3DescriptionText;
+    @BindString(R.string.feature_slider_description_4) String feature4DescriptionText;
 
+    private String[] featureDescriptionTexts;
     private int[] featuresRedIds = {
-            R.drawable.dziad,
-            R.drawable.mudzin,
-            R.drawable.wielblad
-    };
-    // TODO: 01/05/2017 remove temporary imagess & descriptions
-    private String[] featureDescriptionTexts = {
-            "Nasza apka jest dobra dla starych ludzi.",
-            "Nasza apka jest dobra dla murzynów.",
-            "Nasza apka jest dobra dla wielbłądów."
+            R.drawable.feature_1,
+            R.drawable.feature_2,
+            R.drawable.feature_3,
+            R.drawable.feature_4
     };
 
     @OnClick(R.id.sign_up_action_button)
@@ -51,6 +54,12 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initImageSlider();
+        featureDescriptionTexts = new String[] {
+                feature1DescriptionText,
+                feature2DescriptionText,
+                feature3DescriptionText,
+                feature4DescriptionText
+        };
     }
 
     private void initImageSlider() {
@@ -61,6 +70,7 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
                     .setScaleType(BaseSliderView.ScaleType.CenterCrop);
             featuresSliderLayout.addSlider(imageView);
         }
+        featuresSliderLayout.setCurrentPosition(0, false);
         featuresSliderLayout.setPresetTransformer(SliderLayout.Transformer.Accordion);
         featuresSliderLayout.setCustomIndicator(pagerIndicator);
         featuresSliderLayout.addOnPageChangeListener(this);
@@ -79,6 +89,7 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
     @Override
     public void changePageDescription(int position) {
         featureDescriptionTextView.setText(featureDescriptionTexts[position]);
+        featureDescriptionTextView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -148,6 +159,21 @@ public class AppFeaturesActivity extends BaseActivity<AppFeaturesPresenter> impl
         arcLayout.setVisibility(View.VISIBLE);
         signUpActionButton.setVisibility(View.VISIBLE);
         featureDescriptionTextView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showNextFeatureTab() {
+        featuresSliderLayout.moveNextPosition(true);
+    }
+
+    @Override
+    public void setButtonActionNextTab() {
+        signUpActionButton.setText(nextTabButtonText);
+    }
+
+    @Override
+    public void setButtonTextJoin() {
+        signUpActionButton.setText(joinButtonText);
     }
 
     @Override

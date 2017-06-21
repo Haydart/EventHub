@@ -23,7 +23,7 @@ import rx.android.schedulers.AndroidSchedulers;
 class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValidator.CredentialsValidationCallback,
         AuthResponseInterceptor {
 
-    public static final int SCREEN_LAUNCH_DELAY = 500;
+    private static final int SCREEN_LAUNCH_DELAY = 500;
     private AuthPerspective authPerspective = AuthPerspective.LOGIN;
     private CredentialsValidator credentialsValidator;
     private Subscription credentialsChangesSubscription;
@@ -37,23 +37,6 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
         credentialsValidator = new CredentialsValidator(this);
         authInteractor = new FirebaseAuthInteractor(this);
         preferenceInterestRepository = new PreferenceInterestRepository();
-    }
-
-    void onAuthActionButtonClicked(String email, String password) {
-        view.showButtonProcessing();
-        if (authPerspective == AuthPerspective.LOGIN) {
-            loginUser(email, password);
-        } else {
-            registerUser(email, password);
-        }
-    }
-
-    private void loginUser(String email, String password) {
-        authInteractor.loginUserWithEmail(email, password);
-    }
-
-    private void registerUser(String email, String password) {
-        authInteractor.registerUserWithEmail(email, password);
     }
 
     void onEmailChanged() {
@@ -90,6 +73,23 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
         authPerspective = AuthPerspective.REGISTER;
         view.openRegistrationForm();
         view.displayRegisterTextOnAuthButton();
+    }
+
+    void onAuthActionButtonClicked(String email, String password) {
+        view.showButtonProcessing();
+        if (authPerspective == AuthPerspective.LOGIN) {
+            loginUser(email, password);
+        } else {
+            registerUser(email, password);
+        }
+    }
+
+    private void loginUser(String email, String password) {
+        authInteractor.loginUserWithEmail(email, password);
+    }
+
+    private void registerUser(String email, String password) {
+        authInteractor.registerUserWithEmail(email, password);
     }
 
     @Override
@@ -133,6 +133,12 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public void onCredentialsDiscarded() {
         view.showRegisterCredentialsDiscardedError();
+    }
+
+    @Override
+    public void onSuccess() {
+        view.showSuccess();
+        launchPersonalizationScreenDelayed();
     }
 
     @Override

@@ -7,6 +7,8 @@ import rx.Observable;
 class AppFeaturesPresenter extends BasePresenter<AppFeaturesView> {
 
     private static final int SCREEN_TRANSITION_DURATION = 400;
+    private static final int LAST_TAB_POSITION = 3;
+    private int tabPosition;
 
     @Override
     protected void onViewVisible() {
@@ -16,14 +18,24 @@ class AppFeaturesPresenter extends BasePresenter<AppFeaturesView> {
     }
 
     void onPageSelected(int position) {
+        tabPosition = position;
         view.changePageDescription(position);
+        if (tabPosition != LAST_TAB_POSITION) {
+            view.setButtonActionNextTab();
+        } else {
+            view.setButtonTextJoin();
+        }
     }
 
     void onSignUpButtonClicked() {
-        view.animateOutTransition(SCREEN_TRANSITION_DURATION);
-        Observable.timer(SCREEN_TRANSITION_DURATION, TimeUnit.MILLISECONDS)
-                .compose(applySchedulers())
-                .subscribe(ignored -> view.launchAuthScreen());
+        if (tabPosition != LAST_TAB_POSITION) {
+            view.showNextFeatureTab();
+        } else {
+            view.animateOutTransition(SCREEN_TRANSITION_DURATION);
+            Observable.timer(SCREEN_TRANSITION_DURATION, TimeUnit.MILLISECONDS)
+                    .compose(applySchedulers())
+                    .subscribe(ignored -> view.launchAuthScreen());
+        }
     }
 
     @Override
