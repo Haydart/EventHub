@@ -76,6 +76,7 @@
                     android:layout_marginTop="@dimen/user_profile_image_margin">
 
                     <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/add_image_circle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@color/colorAccent"

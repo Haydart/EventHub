@@ -43,7 +43,8 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @BindView(R.id.user_profile_image_view) ImageView userImageView;
     @BindView(R.id.save_user_profile_action_button) ActionButton saveProfileButton;
     @BindView(R.id.user_profile_preferences_recycler_view) RecyclerView recyclerView;
-    @BindView(R.id.add_image_button) CircleImageView addImageCircleView;
+    @BindView(R.id.add_image_button) ImageView addImageView;
+    @BindView(R.id.add_image_circle) CircleImageView addImageCircleView;
 
     private Bitmap pictureBitmap;
     private DialogFragment fragment;
@@ -68,6 +69,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @Override
     public void hideSettings() {
         saveProfileButton.setVisibility(View.INVISIBLE);
+        addImageView.setVisibility(View.INVISIBLE);
         addImageCircleView.setVisibility(View.INVISIBLE);
         recyclerView.setVisibility(View.INVISIBLE);
     }
