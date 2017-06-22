@@ -5,6 +5,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import java.util.List;
 import pl.rmakowiecki.eventhub.api.BaseDatabaseInteractor;
 import pl.rmakowiecki.eventhub.model.local.Event;
@@ -30,6 +31,9 @@ public class UsersEventsDatabaseInteractor extends BaseDatabaseInteractor<Event>
 
         RemoteEvent remoteEvent = dataSnapshot.getValue(RemoteEvent.class);
         id = dataSnapshot.getKey();
+        if (dataSnapshot.getValue() == null) {
+            return null;
+        }
         event = new Event(new RemoteEventMapper().map(remoteEvent, id));
 
         return event;
@@ -109,5 +113,28 @@ public class UsersEventsDatabaseInteractor extends BaseDatabaseInteractor<Event>
 
     public Observable<Event> getData(int position) {
         return Observable.empty();
+    }
+
+    public Observable<Event> getSingle() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        setDatabaseQueryNode();
+        publishSubject = PublishSubject.create();
+        if (user != null) {
+            databaseQueryNode
+                    .child(user.getUid())
+                    .child(EVENTS_REFERENCE)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            publishSubject.onNext(parseEventData(dataSnapshot));
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            //no-op
+                        }
+                    });
+        }
+        return publishSubject;
     }
 }

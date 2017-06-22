@@ -7,6 +7,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import butterknife.BindString;
@@ -19,17 +20,21 @@ import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.BaseFragment;
 import pl.rmakowiecki.eventhub.util.SortTypes;
+import pl.rmakowiecki.eventhub.util.UserAuthManager;
 
 public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> implements MyEventsFragmentView {
 
     public static final String ARG_PAGE = "ARG_PAGE";
     private static final int PAGE = 1;
     @BindView(R.id.loading_panel) RelativeLayout loadingPanel;
+    @BindView(R.id.not_logged_panel) LinearLayout notLoggedPanel;
+    @BindView(R.id.no_my_events_panel) LinearLayout noEventsPanel;
     @BindView(R.id.calendar_events_list) RecyclerView recyclerView;
     @BindString(R.string.status_success_message) String successMessage;
     @BindString(R.string.status_fail_message) String failMessage;
     @BindString(R.string.status_leave_success_message) String leaveSuccessMessage;
     @BindString(R.string.status_leave_fail_message) String leaveFailMessage;
+    private UserAuthManager userAuthManager = new UserAuthManager();
     private int columnCount = 1;
     private OnListFragmentInteractionListener listener;
     private RecyclerView.Adapter adapter;
@@ -57,8 +62,21 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
             Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_my_events_list, container, false);
         ButterKnife.bind(this, view);
-
+        showPlaceholder();
         return view;
+    }
+
+    @Override
+    public void showPlaceholder() {
+        loadingPanel.setVisibility(View.GONE);
+        notLoggedPanel.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showNoEventsPanel() {
+        loadingPanel.setVisibility(View.GONE);
+        notLoggedPanel.setVisibility(View.GONE);
+        noEventsPanel.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -82,6 +100,8 @@ public class MyEventsFragment extends BaseFragment<MyEventsFragmentPresenter> im
         adapter = new MyEventsAdapter(context, eventWithDistance, attendance, listener, presenter);
         recyclerView.setLayoutManager(new GridLayoutManager(context, columnCount));
         recyclerView.setAdapter(adapter);
+        notLoggedPanel.setVisibility(View.GONE);
+        noEventsPanel.setVisibility(View.GONE);
         loadingPanel.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
     }

@@ -38,10 +38,28 @@ class MyEventsFragmentPresenter extends BasePresenter<MyEventsFragmentView> {
     MyEventsFragmentPresenter(int position) {
         repository = new EventsRepository();
         this.position = position;
+
     }
 
     private void onViewInitialization() {
         acquireEvents();
+        /*if (!userAuthManager.isUserAuthorized()){
+            view.showPlaceholder();
+        }else {
+            checkIfEventsPresent();
+        }*/
+
+    }
+
+    private void checkIfEventsPresent() {
+        repository
+                .queryForSingleEvent()
+                .compose(applySchedulers())
+                .subscribe(result -> {
+                    if (result.isEmpty()) {
+                        view.showNoEventsPanel();
+                    }
+                });
     }
 
     private void acquireEvents() {

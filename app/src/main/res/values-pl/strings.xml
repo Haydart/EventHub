@@ -21,6 +21,9 @@
   <string name="status_success_message">Dołączono pomyślnie!</string>
   <string name="status_fail_message">Nie udało się dołączyć!</string>
   <string name="status_leave_success_message">Zrezygnowano pomyślnie!</string>
+    <string name="empty_list_message_my_events">Nie bierzesz jeszcze udziału w żadnym wydarzeniu!</string>
+    <string name="empty_list_message_pers_events">W tej chwili nie ma wydarzeń zgodnych z Twoimi zainteresowaniami!</string>
+    <string name="anon_list_message_my_events">Zaloguj się aby zobaczyć wydarzenia, w których bierzesz udział!</string>
   <string name="status_leave_fail_message">Nie udało się zrezygnować!</string>
   <string name="day_tomorrow">Jutro</string>
   <string name="reverse_geocoding_no_address_found_error">Nie znaleziono adresu</string>
@@ -29,9 +32,9 @@
   <string name="title_sign_in">Zaloguj się</string>
   <string name="button_text_sign_up">Dołącz!</string>
   <string name="button_text_sign_in">Zaloguj</string>
-  <string name="camera_option_text">Zrob nowe zdjecie</string>
-  <string name="gallery_option_text">Wybierz zdjecie z galerii</string>
-  <string name="gallery_option_window_text">Wybierz swoje zdjecie:</string>
+    <string name="camera_option_text">Zrób nowe zdjecie</string>
+    <string name="gallery_option_text">Wybierz zdjęcie z galerii</string>
+    <string name="gallery_option_window_text">Wybierz swoje zdjęcie:</string>
   <string name="button_text_save_user_profile">Zapisz profil</string>
   <string name="save_user_profile_failure_text">Nie mozna polaczyc z serwerem.</string>
   <string name="title_logout">Wyloguj się</string>

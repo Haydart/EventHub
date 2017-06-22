@@ -39,16 +39,14 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
 
         Event event;
         String id;
-
+        if (dataSnapshot.getValue() == null) {
+            return null;
+        }
         RemoteEvent remoteEvent = dataSnapshot.getValue(RemoteEvent.class);
         id = dataSnapshot.getKey();
         event = new Event(new RemoteEventMapper().map(remoteEvent, id));
         if (position == 0) {
-            if (user != null) {
                 event = filterForPersonalizedEvents(event);
-            } else {
-                return null;
-            }
         }
         if (position == 1) {
             if (user != null) {
@@ -64,7 +62,10 @@ public class EventsDatabaseInteractor extends BaseDatabaseInteractor<Event> {
     private Event removeAttendeeFromLocalList(DataSnapshot dataSnapshot, int position) {
         Event event = parseEventData(dataSnapshot, position);
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        List<EventAttendee> attendees = event.getAttendees();
+        List<EventAttendee> attendees = new ArrayList<>();
+        if (event != null) {
+            attendees = event.getAttendees();
+        }
         int attendeePosition = -1;
         for (EventAttendee attendee : attendees) {
             if (attendee.getId().equals(user.getUid())) {
