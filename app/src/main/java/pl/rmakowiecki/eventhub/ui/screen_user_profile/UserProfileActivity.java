@@ -11,11 +11,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+
 import butterknife.BindView;
 import butterknife.OnClick;
 import java.util.List;
@@ -49,10 +49,10 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     @BindView(R.id.add_image_button) ImageView addImageView;
     @BindView(R.id.add_image_circle) CircleImageView addImageCircleView;
 
-    private Bitmap pictureBitmap;
     private DialogFragment fragment;
     private RecyclerView.Adapter adapter;
     private PreferencesManager preferencesManager;
+    private Bitmap profilePicture;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +103,8 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     }
 
     private void setUserImage(Bitmap userImage) {
-        if (userImage != null) {
-            pictureBitmap = userImage;
+        if (userImage != null && profilePicture == null) {
+            profilePicture = userImage;
             userImageView.setImageBitmap(userImage);
         }
     }
@@ -193,17 +193,17 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
     public void applyTakenPhoto(Intent data, AvatarSource sourceType) {
         switch (sourceType) {
             case CAMERA:
-                pictureBitmap = BitmapUtils.cropAndScaleBitmapFromCamera(data);
+                profilePicture = BitmapUtils.cropAndScaleBitmapFromCamera(data);
                 break;
             case GALLERY:
-                pictureBitmap = BitmapUtils.cropAndScaleBitmapFromGallery(data, this);
+                profilePicture = BitmapUtils.cropAndScaleBitmapFromGallery(data, this);
                 break;
             default:
                 return;
         }
 
-        if (pictureBitmap != null) {
-            userImageView.setImageBitmap(pictureBitmap); // TODO: 02.06.2017 Fix refreshing imageView when bitmap is already present
+        if (profilePicture != null) {
+            userImageView.setImageBitmap(profilePicture);
         }
     }
 
@@ -215,7 +215,7 @@ public class UserProfileActivity extends BaseActivity<UserProfilePresenter> impl
 
     @OnClick(R.id.save_user_profile_action_button)
     protected void saveProfileButtonClick() {
-        User user = new User(collapsingToolbarLayout.getTitle().toString(), BitmapUtils.getBytesFromBitmap(pictureBitmap));
+        User user = new User(collapsingToolbarLayout.getTitle().toString(), BitmapUtils.getBytesFromBitmap(profilePicture));
         presenter.onProfileSaveButtonClick(user);
         preferencesManager.saveUserDataLocally(user);
     }
