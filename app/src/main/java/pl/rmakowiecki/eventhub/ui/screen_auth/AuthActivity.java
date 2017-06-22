@@ -246,7 +246,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     private void createUserFromGoogleData(GoogleUser googleUser, Bitmap bitmap) {
         User user = new User(googleUser.getDisplayName(), BitmapUtils.getBytesFromBitmap(bitmap));
         preferencesManager.saveUserDataLocally(user);
-        presenter.saveUser(user);
+        presenter.onUserDataRetrieved(user);
     }
 
     @Override
