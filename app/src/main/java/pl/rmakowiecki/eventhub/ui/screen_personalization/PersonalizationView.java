@@ -20,4 +20,6 @@ interface PersonalizationView extends BaseView {
     void showPersonalizationUploadError();
 
     void launchMainScreen();
+
+    void saveUserDataLocally(String displayedNameText, byte[] userPhoto);
 }

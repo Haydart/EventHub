@@ -1,7 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import com.facebook.AccessToken;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -117,10 +116,25 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
 
     @Override
     public void onSuccess(AuthPerspective authPerspective) {
-        if (authPerspective == AuthPerspective.REGISTER)
-            saveInterests();
-        else
-            loadInterests();
+        if (authPerspective == AuthPerspective.REGISTER) {
+            saveUserInterests();
+            launchPersonalizationScreenDelayed();
+        } else {
+            loadUserInterests();
+        }
+    }
+
+    private void saveUserInterests() {
+        preferenceInterestRepository.savePreferences(preferencesManager.getUserInterestsMap());
+        view.showSuccess();
+    }
+
+    private void loadUserInterests() {
+        preferenceInterestRepository
+                .query(new PreferenceInterestSpecification() {
+                })
+                .compose(applySchedulers())
+                .subscribe(this::saveFetchedInterestsLocallyAndQuitScreen);
     }
 
     @Override
@@ -206,23 +220,10 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
         launchMainScreenDelayed();
     }
 
-    public void saveInterests() {
-        preferenceInterestRepository.savePreferences(preferencesManager.getUserInterestsMap());
-        view.showSuccess();
-        launchPersonalizationScreenDelayed();
-    }
-
-    public void loadInterests() {
-        preferenceInterestRepository
-                .query(new PreferenceInterestSpecification() {})
-                .compose(applySchedulers())
-                .subscribe(this::onInterestsLoaded);
-    }
-
-    private void onInterestsLoaded(List<Interest> interestsList) {
+    private void saveFetchedInterestsLocallyAndQuitScreen(List<Interest> interestsList) {
         preferencesManager.saveInterests(interestsList);
         view.showSuccess();
-        launchPersonalizationScreenDelayed();
+        launchMainScreenDelayed();
     }
 
     private void launchPersonalizationScreenDelayed() {

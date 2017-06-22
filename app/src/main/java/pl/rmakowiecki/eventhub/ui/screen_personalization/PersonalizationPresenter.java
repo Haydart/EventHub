@@ -38,6 +38,7 @@ class PersonalizationPresenter extends BasePresenter<PersonalizationView> {
                 .add(new User(displayedNameText, userPhoto))
                 .compose(applySchedulers())
                 .subscribe(this::handleResponse);
+        view.saveUserDataLocally(displayedNameText, userPhoto);
     }
 
     private void handleResponse(GenericQueryStatus genericQueryStatus) {

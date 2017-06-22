@@ -69,14 +69,14 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         preferencesManager = new PreferencesManager(this);
+        setupFacebookLoginCallbacks();
+        setupGoogleLoginClient();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
         registerCredentialsChanges();
-        setupFacebookLoginCallbacks();
-        setupGoogleLoginClient();
     }
 
     private void setupGoogleLoginClient() {
@@ -121,8 +121,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
             GoogleSignInAccount account = result.getSignInAccount();
             if (result.isSuccess() && account != null) {
                 presenter.onGoogleLoginSuccess(account.getIdToken(), new GoogleUser(account.getDisplayName(), account.getPhotoUrl()));
-            }
-            else {
+            } else {
                 presenter.onGoogleLoginError();
             }
         }
@@ -326,7 +325,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
 
     @Override
     public void launchMainScreen() {
-        finish();
+        finishAndRemoveTask();
     }
 
     @Override

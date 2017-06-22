@@ -3,6 +3,7 @@ package pl.rmakowiecki.eventhub.ui.screen_personalization;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.DialogFragment;
 import android.widget.ImageView;
@@ -12,20 +13,29 @@ import butterknife.OnClick;
 import butterknife.OnTextChanged;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.background.Constants;
+import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
 import pl.rmakowiecki.eventhub.ui.custom_view.ActionButton;
 import pl.rmakowiecki.eventhub.util.BitmapUtils;
+import pl.rmakowiecki.eventhub.util.PreferencesManager;
 
 public class PersonalizationActivity extends BaseActivity<PersonalizationPresenter> implements PersonalizationView, AvatarPickDialogFragment.AvatarPickDialogListener {
 
     @BindView(R.id.user_profile_image_view) ImageView userImageView;
     @BindView(R.id.personalization_action_button) ActionButton confirmButton;
 
-    @BindString(R.string.button_text_general_fail) String dataSendingFialureText;
+    @BindString(R.string.button_text_general_fail) String dataSendingFailureText;
 
     private Bitmap pictureBitmap;
     private DialogFragment fragment;
+    private PreferencesManager preferencesManager;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        preferencesManager = new PreferencesManager(this);
+    }
 
     @OnClick(R.id.add_image_button)
     public void onChooseImageButtonClicked() {
@@ -126,7 +136,7 @@ public class PersonalizationActivity extends BaseActivity<PersonalizationPresent
 
     @Override
     public void showPersonalizationUploadError() {
-        confirmButton.showFailure(dataSendingFialureText);
+        confirmButton.showFailure(dataSendingFailureText);
     }
 
     @Override
@@ -137,6 +147,13 @@ public class PersonalizationActivity extends BaseActivity<PersonalizationPresent
     @Override
     public void launchMainScreen() {
         finish();
+    }
+
+    @Override
+    public void saveUserDataLocally(String displayedNameText, byte[] userPhoto) {
+        preferencesManager.saveUserDataLocally(new User(
+                displayedNameText, userPhoto
+        ));
     }
 
     @Override
