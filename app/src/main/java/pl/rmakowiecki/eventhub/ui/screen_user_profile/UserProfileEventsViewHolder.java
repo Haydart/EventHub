@@ -6,15 +6,10 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
-
-import org.joda.time.DateTime;
-
-import java.util.Date;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import com.bignerdranch.expandablerecyclerview.ParentViewHolder;
+import org.joda.time.DateTime;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.util.DateUtils;
@@ -24,7 +19,7 @@ class UserProfileEventsViewHolder extends ParentViewHolder {
     @BindView(R.id.event_frame_layout) FrameLayout eventFrameLayout;
     @BindView(R.id.event_image_view) ImageView eventImageView;
     @BindView(R.id.event_name_text_view) TextView eventNameTextView;
-    @BindView(R.id.event_address_text_view) TextView eventAddressTextView;
+    @BindView(R.id.event_address_edit_text) TextView eventAddressTextView;
     @BindView(R.id.event_day_text_view) TextView eventDayTextView;
     @BindView(R.id.event_month_text_view) TextView eventMonthTextView;
 

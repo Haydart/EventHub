@@ -12,14 +12,13 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -46,13 +45,13 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     @BindView(R.id.coordinator_layout) CoordinatorLayout coordinatorLayout;
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.app_bar) AppBarLayout appBarLayout;
-    @BindView(R.id.picked_time_text_view) TextView timeTextView;
-    @BindView(R.id.picked_date_text_view) TextView dateTextView;
-    @BindView(R.id.event_address_text_view) TextView eventAddressTextView;
-    @BindView(R.id.event_name_edit_text) EditText eventNameEditText;
-    @BindView(R.id.event_description_edit_text) EditText eventDescriptionEditText;
+    @BindView(R.id.event_address_edit_text) TextInputEditText eventAddressEditText;
+    @BindView(R.id.event_name_edit_text) TextInputEditText eventNameEditText;
+    @BindView(R.id.event_description_edit_text) TextInputEditText eventDescriptionEditText;
     @BindView(R.id.event_image_view) ImageView eventImageView;
     @BindView(R.id.event_categories_recycler_view) RecyclerView eventCategoriesRecyclerView;
+    @BindView(R.id.event_date_button) ActionButton eventDateActionButton;
+    @BindView(R.id.event_time_button) ActionButton eventTimeActionButton;
     @BindView(R.id.create_event_action_button) ActionButton eventCreateActionButton;
     @BindString(R.string.save_user_profile_failure_text) String saveFailureText;
 
@@ -102,12 +101,12 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
     @Override
     public void showEventPlaceAddress() {
         String placeAddress = (String) getIntent().getExtras().get(Constants.PLACE_ADDRESS_EXTRA);
-        eventAddressTextView.setText(placeAddress != null ? placeAddress : "");
+        eventAddressEditText.setText(placeAddress != null ? placeAddress : "");
     }
 
-    @OnClick(R.id.avatar_button)
-    public void onAvatarButtonClicked() {
-        presenter.onEventAvatarButtonClicked();
+    @OnClick(R.id.event_image_view)
+    public void onEventImageClicked() {
+        presenter.onEventImageClicked();
     }
 
     @Override
@@ -123,12 +122,12 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
 
     @Override
     public void showPickedDate(String date) {
-        dateTextView.setText(date);
+        eventDateActionButton.setText(date);
     }
 
     @Override
     public void showPickedTime(String time) {
-        timeTextView.setText(time);
+        eventTimeActionButton.setText(time);
     }
 
     @Override
@@ -195,7 +194,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         startActivity(intent);
     }
 
-    @OnClick(R.id.date_button)
+    @OnClick(R.id.event_date_button)
     public void onDatePickerButtonClicked() {
         presenter.onDatePickerButtonClicked();
     }
@@ -209,7 +208,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
         datePickerDialog.show();
     }
 
-    @OnClick(R.id.time_button)
+    @OnClick(R.id.event_time_button)
     public void onTimePickerButtonClicked() {
         presenter.onTimePickerButtonClicked();
     }
@@ -290,7 +289,7 @@ public class EventCreationActivity extends BaseActivity<EventCreationPresenter> 
                 getEventCoordinates(),
                 eventNameEditText.getText().toString(),
                 eventDescriptionEditText.getText().toString(),
-                eventAddressTextView.getText().toString(),
+                eventAddressEditText.getText().toString(),
                 preferencesManager.getUserName(),
                 eventAvatarBitmap != null ? BitmapUtils.getBytesFromBitmap(eventAvatarBitmap) : new byte[]{}
         );

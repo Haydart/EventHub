@@ -3,7 +3,8 @@
     android:id="@+id/event_frame_layout"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/user_events_layout_height">
+    android:layout_height="@dimen/user_events_layout_height"
+    android:background="?android:attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/event_image_view"
@@ -19,7 +20,7 @@
         android:layout_marginLeft="@dimen/user_events_event_text_left_margin"/>
 
     <TextView
-        android:id="@+id/event_address_text_view"
+        android:id="@+id/event_address_edit_text"
         android:layout_width="@dimen/user_events_event_text_width"
         android:layout_height="@dimen/user_events_event_text_height"
         android:layout_marginTop="@dimen/user_events_event_bottom_margin"

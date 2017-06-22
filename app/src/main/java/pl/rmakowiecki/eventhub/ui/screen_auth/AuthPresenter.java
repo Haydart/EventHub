@@ -1,7 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_auth;
 
 import com.facebook.AccessToken;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -24,7 +23,7 @@ import rx.android.schedulers.AndroidSchedulers;
 class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValidator.CredentialsValidationCallback,
         AuthResponseInterceptor {
 
-    private static final int SCREEN_LAUNCH_DELAY = 500;
+    private static final int SCREEN_LAUNCH_DELAY = 1000;
     private AuthPerspective authPerspective = AuthPerspective.LOGIN;
     private CredentialsValidator credentialsValidator;
     private Subscription credentialsChangesSubscription;
@@ -206,13 +205,13 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
         launchMainScreenDelayed();
     }
 
-    public void saveInterests() {
+    private void saveInterests() {
         preferenceInterestRepository.savePreferences(preferencesManager.getUserInterestsMap());
         view.showSuccess();
         launchPersonalizationScreenDelayed();
     }
 
-    public void loadInterests() {
+    private void loadInterests() {
         preferenceInterestRepository
                 .query(new PreferenceInterestSpecification() {})
                 .compose(applySchedulers())
@@ -223,6 +222,10 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
         preferencesManager.saveInterests(interestsList);
         view.showSuccess();
         launchPersonalizationScreenDelayed();
+    }
+
+    void onUserDataRetrieved(User user) {
+        userProfileRepository.add(user);
     }
 
     private void launchPersonalizationScreenDelayed() {
@@ -240,9 +243,5 @@ class AuthPresenter extends BasePresenter<AuthView> implements CredentialsValida
     @Override
     public AuthView getNoOpView() {
         return NoOpAuthView.INSTANCE;
-    }
-
-    public void saveUser(User user) {
-        userProfileRepository.add(user);
     }
 }

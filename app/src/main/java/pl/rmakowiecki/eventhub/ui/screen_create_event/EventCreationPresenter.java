@@ -5,7 +5,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
-
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.model.local.EventAttendee;
 import pl.rmakowiecki.eventhub.model.local.LocationCoordinates;
@@ -75,7 +74,7 @@ class EventCreationPresenter extends BasePresenter<EventCreationView> {
         view.showPickedTime(String.format(Locale.getDefault(), "%d:%d", hourOfDay, minute));
     }
 
-    void onEventAvatarButtonClicked() {
+    void onEventImageClicked() {
         view.showAvatarSelectDialog();
     }
 
