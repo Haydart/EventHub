@@ -90,9 +90,8 @@ public class PreferencesManager {
     }
 
     public void saveInterests(List<Interest> interests) {
-        clearSharedPreferencesInterests();
-
         if (!interests.isEmpty()) {
+            clearSharedPreferencesInterests();
             for (Interest interest : interests) {
                 Set<String> subCategories = new HashSet<>();
                 subCategories.addAll(interest.getSubCategories());

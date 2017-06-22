@@ -5,6 +5,7 @@ import pl.rmakowiecki.eventhub.model.local.User;
 import pl.rmakowiecki.eventhub.repository.GenericQueryStatus;
 import pl.rmakowiecki.eventhub.ui.AvatarPickDialogFragment;
 import pl.rmakowiecki.eventhub.ui.BasePresenter;
+import pl.rmakowiecki.eventhub.ui.screen_event_calendar.EventsRepository;
 import pl.rmakowiecki.eventhub.util.UserAuthManager;
 import pl.rmakowiecki.eventhub.util.UserManager;
 import rx.Observable;
@@ -18,6 +19,7 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
 
     private boolean wasButtonClicked;
     private UserProfileRepository repository = new UserProfileRepository();
+    private EventsRepository eventsRepository = new EventsRepository();
     private UserManager userManager = new UserAuthManager();
     private int saveResultCount;
     private boolean isDifferentUser = false;
@@ -29,9 +31,21 @@ class UserProfilePresenter extends BasePresenter<UserProfileView> {
         view.enableHomeButton();
         view.retrieveUserData();
         view.displayUserInfo(userManager, isDifferentUser);
-        view.displayInterestsList();
+        if (!isDifferentUser) {
+            view.displayInterestsList();
+        }
+        else {
+            loadEventsList();
+        }
         handleUserImage();
         wasButtonClicked = false;
+    }
+
+    private void loadEventsList() {
+        eventsRepository
+                .queryForUserEvents(userId)
+                .compose(applySchedulers())
+                .subscribe(view::displayEventsList);
     }
 
     private void handleUserImage() {

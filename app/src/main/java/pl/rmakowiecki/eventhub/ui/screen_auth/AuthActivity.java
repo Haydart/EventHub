@@ -80,15 +80,17 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     }
 
     private void setupGoogleLoginClient() {
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getString(R.string.default_web_client_id))
-                .requestEmail()
-                .build();
+        if (googleApiClient == null) {
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build();
 
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this, connectionResult -> presenter.onGoogleLoginError())
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+            googleApiClient = new GoogleApiClient.Builder(this)
+                    .enableAutoManage(this, connectionResult -> presenter.onGoogleLoginError())
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+        }
     }
 
     private void setupFacebookLoginCallbacks() {
@@ -244,7 +246,7 @@ public class AuthActivity extends BaseActivity<AuthPresenter> implements AuthVie
     private void createUserFromGoogleData(GoogleUser googleUser, Bitmap bitmap) {
         User user = new User(googleUser.getDisplayName(), BitmapUtils.getBytesFromBitmap(bitmap));
         preferencesManager.saveUserDataLocally(user);
-        presenter.saveUser(user);
+        presenter.onUserDataRetrieved(user);
     }
 
     @Override

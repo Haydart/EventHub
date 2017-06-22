@@ -179,7 +179,6 @@ public class EventDetailsActivity extends BaseActivity<EventDetailsPresenter> im
                     break;
                 }
                 attendees.add(attendee);
-                break;
             }
             else {
                 presenter.onUserAttendingEvent();
