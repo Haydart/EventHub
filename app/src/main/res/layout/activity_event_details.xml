@@ -205,7 +205,6 @@
                         android:layout_height="@dimen/event_details_login_button_height"
                         android:layout_gravity="center"
                         android:layout_margin="@dimen/standard_margin_large"
-                        android:visibility="invisible"
                         app:button_shape="pill"
                         app:default_color="@color/colorPrimary"
                         app:failure_color="@color/failure_red"
