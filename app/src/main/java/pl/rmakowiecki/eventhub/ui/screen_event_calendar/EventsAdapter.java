@@ -14,6 +14,7 @@ class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     private OnListFragmentInteractionListener listener;
     private List<EventWDistance> items;
+    private UnauthorizedEventJoinListener unauthorizedListener;
     private List<Boolean> attendance;
     private EventsFragmentPresenter presenter;
 
@@ -23,6 +24,7 @@ class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
         items = events;
         this.listener = listener;
         this.presenter = presenter;
+        this.unauthorizedListener = (UnauthorizedEventJoinListener) context;
         this.attendance = attendance;
     }
 
@@ -30,7 +32,7 @@ class EventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
     public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_events, parent, false);
-        return new EventsViewHolder(view, presenter);
+        return new EventsViewHolder(view, presenter, unauthorizedListener);
     }
 
     @Override

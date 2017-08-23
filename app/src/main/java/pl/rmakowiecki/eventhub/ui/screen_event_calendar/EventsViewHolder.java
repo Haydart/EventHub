@@ -15,6 +15,7 @@ import org.joda.time.format.DateTimeFormatter;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 import pl.rmakowiecki.eventhub.ui.screen_event_details.EventDetailsActivity;
+import pl.rmakowiecki.eventhub.util.UserAuthManager;
 
 import static pl.rmakowiecki.eventhub.background.Constants.EVENT_DETAILS_PARCEL_KEY;
 
@@ -41,47 +42,57 @@ class EventsViewHolder extends RecyclerView.ViewHolder {
     private MyEventsFragmentPresenter myEventsPresenter;
     private PersonalizedEventsFragmentPresenter personalizedEventsPresenter;
     private EventWDistance eventWDistance;
+    private UserAuthManager userAuthManager = new UserAuthManager();
+    private UnauthorizedEventJoinListener unauthorizedListener;
 
-    EventsViewHolder(View view, EventsFragmentPresenter presenter) {
+    EventsViewHolder(View view, EventsFragmentPresenter presenter, UnauthorizedEventJoinListener unauthorizedListener) {
         super(view);
         ButterKnife.bind(this, view);
         this.view = view;
         this.eventsPresenter = presenter;
+        this.unauthorizedListener = unauthorizedListener;
         setupAttendButton();
     }
 
-    EventsViewHolder(View view, PersonalizedEventsFragmentPresenter presenter) {
+    EventsViewHolder(View view, PersonalizedEventsFragmentPresenter presenter, UnauthorizedEventJoinListener unauthorizedListener) {
         super(view);
         ButterKnife.bind(this, view);
         this.view = view;
         this.personalizedEventsPresenter = presenter;
+        this.unauthorizedListener = unauthorizedListener;
         setupAttendButton();
     }
 
-    EventsViewHolder(View view, MyEventsFragmentPresenter presenter) {
+    EventsViewHolder(View view, MyEventsFragmentPresenter presenter, UnauthorizedEventJoinListener unauthorizedListener) {
         super(view);
         ButterKnife.bind(this, view);
         this.view = view;
         this.myEventsPresenter = presenter;
+        this.unauthorizedListener = unauthorizedListener;
+
         setupAttendButton();
     }
 
     private void setupAttendButton() {
         attendButton.setOnClickListener(v -> {
-            if (attendButton.isChecked()) {
-                if (eventsPresenter != null) {
-                    eventsPresenter.addEventParticipant(eventWDistance.getEvent().getId());
-                } else if (personalizedEventsPresenter != null) {
-                    personalizedEventsPresenter.addEventParticipant(eventWDistance.getEvent().getId());
+            if (userAuthManager.isUserAuthorized()) {
+                if (attendButton.isChecked()) {
+                    if (eventsPresenter != null) {
+                        eventsPresenter.addEventParticipant(eventWDistance.getEvent().getId());
+                    } else if (personalizedEventsPresenter != null) {
+                        personalizedEventsPresenter.addEventParticipant(eventWDistance.getEvent().getId());
+                    }
+                } else {
+                    if (eventsPresenter != null) {
+                        eventsPresenter.removeEventParticipant(eventWDistance.getEvent().getId());
+                    } else if (personalizedEventsPresenter != null) {
+                        personalizedEventsPresenter.removeEventParticipant(eventWDistance.getEvent().getId());
+                    } else if (myEventsPresenter != null) {
+                        myEventsPresenter.removeEventParticipant(eventWDistance.getEvent().getId());
+                    }
                 }
             } else {
-                if (eventsPresenter != null) {
-                    eventsPresenter.removeEventParticipant(eventWDistance.getEvent().getId());
-                } else if (personalizedEventsPresenter != null) {
-                    personalizedEventsPresenter.removeEventParticipant(eventWDistance.getEvent().getId());
-                } else if (myEventsPresenter != null) {
-                    myEventsPresenter.removeEventParticipant(eventWDistance.getEvent().getId());
-                }
+                unauthorizedListener.onUnauthorizedJoinTry();
             }
         });
     }

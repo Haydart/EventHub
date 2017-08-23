@@ -30,6 +30,48 @@
             android:indeterminate="true" />
     </RelativeLayout>
 
+    <LinearLayout
+        android:id="@+id/not_logged_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/standard_margin_large"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_small"
+            android:gravity="center"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="@string/anon_list_message_my_events" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/no_my_events_panel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin_small"
+            android:gravity="center"
+            android:text="@string/empty_list_message_my_events"
+            android:textAppearance="?attr/textAppearanceListItem"
+            tools:text="@string/empty_list_message_my_events" />
+
+
+    </LinearLayout>
+
 
 </FrameLayout>
 

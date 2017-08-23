@@ -20,6 +20,7 @@ import rx.Observable;
 public class EventsRepository implements AddOperationRepository<Event, GenericQueryStatus>, QueryList<Event> {
 
     public static final int BUFFER_TIMESPAN = 200;
+    public static final int BUFFER_TIMESPAN_LOONG = 1000;
 
     private EventsDatabaseInteractor eventDBInteractor;
     private EventParticipantsDatabaseInteractor eventPatricipantsDBInteractor;
@@ -87,5 +88,12 @@ public class EventsRepository implements AddOperationRepository<Event, GenericQu
                 .filter(event -> event != null)
                 .buffer(BUFFER_TIMESPAN, java.util.concurrent.TimeUnit.MILLISECONDS)
                 .filter(events -> !events.isEmpty());
+    }
+
+    public Observable<List<Event>> queryForSingleEvent() {
+        return userEventsDBInteractor
+                .getSingle()
+                .filter(event -> event != null)
+                .buffer(BUFFER_TIMESPAN_LOONG, java.util.concurrent.TimeUnit.MILLISECONDS);
     }
 }

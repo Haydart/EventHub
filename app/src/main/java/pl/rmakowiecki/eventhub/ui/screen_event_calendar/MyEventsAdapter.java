@@ -12,6 +12,7 @@ import pl.rmakowiecki.eventhub.model.local.EventWDistance;
 class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
 
     private MyEventsFragment.OnListFragmentInteractionListener listener;
+    private UnauthorizedEventJoinListener unauthorizedListener;
     private List<EventWDistance> items;
     private MyEventsFragmentPresenter presenter;
     private List<Boolean> attendance;
@@ -24,6 +25,7 @@ class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
         items = events;
         this.listener = listener;
         this.presenter = presenter;
+        this.unauthorizedListener = (UnauthorizedEventJoinListener) context;
         this.attendance = attendance;
 
 
@@ -33,7 +35,7 @@ class MyEventsAdapter extends RecyclerView.Adapter<EventsViewHolder> {
     public EventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.fragment_events, parent, false);
-        return new EventsViewHolder(view, presenter);
+        return new EventsViewHolder(view, presenter, unauthorizedListener);
     }
 
     @Override

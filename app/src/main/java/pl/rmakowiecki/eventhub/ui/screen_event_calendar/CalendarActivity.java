@@ -1,5 +1,6 @@
 package pl.rmakowiecki.eventhub.ui.screen_event_calendar;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -13,12 +14,14 @@ import net.danlew.android.joda.JodaTimeAndroid;
 import pl.rmakowiecki.eventhub.R;
 import pl.rmakowiecki.eventhub.model.local.Event;
 import pl.rmakowiecki.eventhub.ui.BaseActivity;
+import pl.rmakowiecki.eventhub.ui.screen_app_features.AppFeaturesActivity;
 import pl.rmakowiecki.eventhub.util.SortTypes;
 
 public class CalendarActivity extends BaseActivity<CalendarPresenter>
         implements CalendarView, EventsFragment.OnListFragmentInteractionListener,
         MyEventsFragment.OnListFragmentInteractionListener,
-        PersonalizedEventsFragment.OnListFragmentInteractionListener {
+        PersonalizedEventsFragment.OnListFragmentInteractionListener,
+        UnauthorizedEventJoinListener {
 
     @BindView(R.id.toolbar) Toolbar calendarToolbar;
     @BindView(R.id.viewpager) ViewPager viewPager;
@@ -92,5 +95,12 @@ public class CalendarActivity extends BaseActivity<CalendarPresenter>
         personalizedEventsFragment.sortEvents(sortType);
         filteredEventsFragment.sortEvents(sortType);
         allEventsFragment.sortEvents(sortType);
+    }
+
+    @Override
+    public void onUnauthorizedJoinTry() {
+        Intent intent = new Intent(this, AppFeaturesActivity.class);
+        startActivity(intent);
+
     }
 }

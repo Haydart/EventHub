@@ -19,4 +19,8 @@ public interface MyEventsFragmentView extends BaseView {
     void showActionStatus(GenericQueryStatus genericQueryStatus);
 
     void showLeaveActionStatus(GenericQueryStatus operationStatus);
+
+    void showPlaceholder();
+
+    void showNoEventsPanel();
 }

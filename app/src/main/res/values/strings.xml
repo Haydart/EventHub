@@ -25,6 +25,9 @@
   <string name="status_success_message">Joining succeeded!</string>
   <string name="status_fail_message">Joining failed!</string>
   <string name="status_leave_success_message">Leaving succeeded!</string>
+    <string name="empty_list_message_my_events">You are not attending any events yet!</string>
+    <string name="empty_list_message_pers_events">There are no events meeting your preferences right now!</string>
+    <string name="anon_list_message_my_events">Sign in to see</string>
   <string name="status_leave_fail_message">Leaving failed!</string>
   <string name="day_tomorrow">Tomorrow</string>
   <string name="reverse_geocoding_no_address_found_error">No address found</string>
